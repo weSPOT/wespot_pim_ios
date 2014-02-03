@@ -293,7 +293,7 @@
     if (self.generalItem.managedObjectContext) {
         if ([self.generalItem.managedObjectContext hasChanges]){
             if (![self.generalItem.managedObjectContext save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@", _func__, error, [error userInfo]);
+                NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
                 abort();
             }
             [ ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];

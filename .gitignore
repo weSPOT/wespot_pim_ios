@@ -2,6 +2,8 @@
 .DS_Store
 
 # Xcode
+/gwt-unitCache
+/lib
 build/
 *.pbxuser
 !default.pbxuser
@@ -18,6 +20,13 @@ profile
 DerivedData
 *.hmap
 *.ipa
+UserInterfaceState.xcuserstate
+Appengine/.gwt/.gwt-log
+.idea
+/idea/*
+*.iml
+.settings
+**/*.pbxuser
 
 # CocoaPods
 Pods

@@ -39,7 +39,9 @@
 }
 
 /*!
- *  Create My Runs UIButton.
+ *  Override creation of My Runs UIButton.
+ *
+ *  Note: Create a hidden one so base class keeps working.
  */
 - (void) createMyRunsButton {
     if (!self.myRunsButton) {

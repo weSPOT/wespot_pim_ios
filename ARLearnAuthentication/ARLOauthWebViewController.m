@@ -13,6 +13,8 @@
 
 @interface ARLOauthWebViewController ()
 
+@property (strong, nonatomic)  UIView *navbarView;
+
 @end
 
 @implementation ARLOauthWebViewController
@@ -35,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
     self.webView = [[UIWebView alloc] init];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.webView];
@@ -45,29 +48,38 @@
     [self.backButton setTitle:NSLocalizedString(@"back", nil) forState:UIControlStateNormal];
     [self.backButton setAlpha:0.95];
 
-    [self.view addSubview:self.backButton];
+    self.navbarView = [[UIWebView alloc] init];
+    self.navbarView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.navbarView];
+    
+    [self.navbarView addSubview:self.backButton];
 
-    
     NSDictionary * viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys: self.webView, @"webView", self.backButton, @"backButton", nil];
+    [[NSDictionary alloc] initWithObjectsAndKeys: self.navbarView, @"navbarView", self.webView, @"webView", self.backButton, @"backButton", nil];
     
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|[navbarView]|"
+                               options:0
+                               metrics:nil
+                               views:viewsDictionary]];
+
     [self.view addConstraints:[NSLayoutConstraint
                           constraintsWithVisualFormat:@"H:|[webView]|"
                           options:0
                           metrics:nil
                           views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint
-                          constraintsWithVisualFormat:@"V:|[webView]|"
+                          constraintsWithVisualFormat:@"V:|[navbarView(==50)][webView]|"
                           options:0
                           metrics:nil
                           views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|-(==2)-[backButton]"
+                               constraintsWithVisualFormat:@"H:|-(==20)-[backButton]"
                                options:0
                                metrics:nil
                                views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|-(==2)-[backButton(==30)]"
+                               constraintsWithVisualFormat:@"V:|-(==30)-[backButton(==10)]"
                                options:0
                                metrics:nil
                                views:viewsDictionary]];

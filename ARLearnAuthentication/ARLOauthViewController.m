@@ -29,20 +29,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    // Back Button
     self.backButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.backButton setTitle:NSLocalizedString(@"back", nil) forState:UIControlStateNormal];
     self.backButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
 
-
     [self.view addSubview:self.backButton];
     
-    
+    // oAuth View
     self.oauthView = [[ARLOauthView alloc] init];
     self.oauthView.viewController = self;
     [self.view addSubview:self.oauthView];
     
-    
+    // Scan View
     self.scanView = [[ARLScanAuthView alloc] init];
     self.scanView.viewController = self;
     [self.view addSubview:self.scanView];

@@ -1,5 +1,5 @@
 //
-//  INQInquieyPartCell.h
+//  INQInquiryPartCell.h
 //  PersonalInquiryManager
 //
 //  Created by Stefaan Ternier on 9/6/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INQInquieyPartCell : UITableViewCell
+@interface INQInquiryPartCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *inquiryPartLabel;
 

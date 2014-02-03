@@ -10,6 +10,36 @@
 
 @interface INQInquiryPageTableViewController ()
 
+/*!
+ *  ID's and order of the cells.
+ */
+typedef NS_ENUM(NSInteger, indices) {
+    /*!
+     *  Messages.
+     */
+    MESSAGE = 0,
+    /*!
+     *  Hypothesis & question.
+     */
+    HYPOTHESIS = 1,
+    /*!
+     *  Planning
+     */
+    PLANNING = 2,
+    /*!
+     *  Data collection tasks.
+     */
+    DATACOLLECION = 3,
+    /*!
+     *  Analysis.
+     */
+    ANALYSIS = 4,
+    /*!
+     *  Operationalisation / notes.
+     */
+    NOTES = 5
+};
+
 @end
 
 @implementation INQInquiryPageTableViewController
@@ -36,6 +66,7 @@
 
      [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
     NSLog(@"[%s] desc %@", __func__, self.inquiry.desc);
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -53,7 +84,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -61,47 +92,90 @@
     return 1;
 }
 
+/*!
+ *  Creates Cells for the UITableView.
+ *
+ *  @param tableView The UITableView
+ *  @param indexPath The index path
+ *
+ *  @return The INQInquiryPartCell.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"inquiryPartCell";
+#warning exception because of Unkown class INQInquieyPartCell!!!!
+    //@try {
+        INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+        switch ([indexPath section]) {
+            case MESSAGE:
+                cell.inquiryPartLabel.text = @"Messages";
+                break;
+            case HYPOTHESIS:
+                cell.inquiryPartLabel.text = @"Hypothesis & question";
+                break;
+            case PLANNING:
+                cell.inquiryPartLabel.text = @"Planning";
+                break;
+            case DATACOLLECION:
+                cell.inquiryPartLabel.text = @"Data collection tasks";
+                break;
+            case ANALYSIS:
+                cell.inquiryPartLabel.text = @"Analysis";
+                break;
+                // ...
+    //      case NOTES:
+    //          cell.inquiryPartLabel.text = @"Notes";
+    //          break;
+            default:
+                break;
+        }
+
+        // Configure the cell...
     
-    INQInquieyPartCell *cell = (INQInquieyPartCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-
-    switch ([indexPath section]){
-        case 0:
-                cell.inquiryPartLabel.text = @"Hypothesis";
-            break;
-        case 1:
-            cell.inquiryPartLabel.text = @"Notes";
-            break;
-        case 2:
-            cell.inquiryPartLabel.text = @"Data Collection";
-            break;
-            // ...
-        default:
-            break;
-    }
-
-    // Configure the cell...
+//        return cell;
+//    } @catch (NSException *e) {
+//        NSLog(@"%@", e);
+//    }
+//    
+//    INQInquiryPartCell *cell;
+//    cell.inquiryPartLabel.text = @"ERROR";
     
     return cell;
 }
 
+/*!
+ *  Labels of the 3 tablel items.
+ *
+ *  @param tableView The UITableView
+ *  @param section   The Section Id
+ *
+ *  @return The Section Name.
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName;
     switch (section)
     {
-        case 0:
-            sectionName = NSLocalizedString(@"Question/Hypothesis", @"Question/Hypothesis");
+        case MESSAGE:
+            //sectionName = NSLocalizedString(@"Messages", @"Messages");
             break;
-        case 1:
-            sectionName = NSLocalizedString(@"Operationalisation", @"Operationalisation");
+        case HYPOTHESIS:
+            //sectionName = NSLocalizedString(@"Question/Hypothesis", @"Question/Hypothesis");
             break;
-        case 2:
-            sectionName = NSLocalizedString(@"Data Collection", @"Data Collection");
+        case PLANNING:
+            //sectionName = NSLocalizedString(@"Planning", @"Planning");
+            break;
+        case DATACOLLECION:
+            //sectionName = NSLocalizedString(@"Data Collection", @"Data Collection");
+            break;
+        case ANALYSIS:
+            //sectionName = NSLocalizedString(@"Analysis", @"Analysis");
             break;
             // ...
+//      case NOTES:
+//          sectionName = NSLocalizedString(@"Operationalisation", @"Operationalisation");
+//          break;
         default:
             sectionName = @"";
             break;

@@ -99,6 +99,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
     Account * generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
+   
     //    if ([segue.destinationViewController respondsToSelector:@selector(setGeneralItem:)]) {
     //        [segue.destinationViewController performSelector:@selector(setGeneralItem:) withObject:generalItem];
     //    }

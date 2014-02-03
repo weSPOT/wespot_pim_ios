@@ -10,6 +10,4 @@
 
 @interface INQOauthViewController : ARLOauthViewController
 
-
-
 @end

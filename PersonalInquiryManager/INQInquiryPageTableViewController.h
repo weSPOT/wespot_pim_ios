@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "INQInquieyPartCell.h"
+#import "INQInquiryPartCell.h"
 #import "Inquiry+Create.h"
 #import "INQHypothesisViewController.h"
 #import "INQNotesViewController.h"

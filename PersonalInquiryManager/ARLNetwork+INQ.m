@@ -108,16 +108,16 @@
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider {
     NSString * providerString;
     switch (oauthProvider.intValue) {
-        case 1:
+        case FACEBOOK:
             providerString = @"Facebook";
             break;
-        case 2:
+        case GOOGLE:
             providerString = @"Google";
             break;
-        case 3:
+        case LINKEDIN:
             providerString = @"LinkedIn";
             break;
-        case 4:
+        case TWITTER:
             providerString = @"Twitter";
             break;
         default:
@@ -135,16 +135,16 @@
  */
 + (NSNumber*) elggProviderByName: (NSString  *) oauthProvider {
     if ([oauthProvider isEqualToString:@"Facebook"]) {
-        return [NSNumber numberWithInt:1];
+        return [NSNumber numberWithInt:FACEBOOK];
     }
     if ([oauthProvider isEqualToString:@"Google"]) {
-        return [NSNumber numberWithInt:2];
+        return [NSNumber numberWithInt:GOOGLE];
     }
     if ([oauthProvider isEqualToString:@"LinkedIn"]) {
-        return [NSNumber numberWithInt:3];
+        return [NSNumber numberWithInt:LINKEDIN];
     }
     if ([oauthProvider isEqualToString:@"Twitter"]) {
-        return [NSNumber numberWithInt:4];
+        return [NSNumber numberWithInt:TWITTER];
     }
     
     return nil;

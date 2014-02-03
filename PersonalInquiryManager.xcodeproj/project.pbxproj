@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		342CF88117D9FF9900401E55 /* INQInquiryPageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */; };
-		342CF88417DA011300401E55 /* INQInquieyPartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquieyPartCell.m */; };
+		342CF88417DA011300401E55 /* INQInquireyPartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquireyPartCell.m */; };
 		342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88617DA07F700401E55 /* INQHypothesisViewController.m */; };
 		342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88917DA091600401E55 /* INQNotesViewController.m */; };
 		34539BB217B274D800352E9A /* INQSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BB117B274D800352E9A /* INQSplashScreenViewController.m */; };
@@ -166,13 +166,14 @@
 		34D6F1C217B67A7400BE1516 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1BF17B67A7400BE1516 /* Icon.png */; };
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
+		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		342CF87F17D9FF9900401E55 /* INQInquiryPageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryPageTableViewController.h; sourceTree = "<group>"; };
 		342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryPageTableViewController.m; sourceTree = "<group>"; };
-		342CF88217DA011300401E55 /* INQInquieyPartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquieyPartCell.h; sourceTree = "<group>"; };
-		342CF88317DA011300401E55 /* INQInquieyPartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquieyPartCell.m; sourceTree = "<group>"; };
+		342CF88217DA011300401E55 /* INQInquiryPartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryPartCell.h; sourceTree = "<group>"; };
+		342CF88317DA011300401E55 /* INQInquireyPartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquireyPartCell.m; sourceTree = "<group>"; };
 		342CF88517DA07F700401E55 /* INQHypothesisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQHypothesisViewController.h; sourceTree = "<group>"; };
 		342CF88617DA07F700401E55 /* INQHypothesisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQHypothesisViewController.m; sourceTree = "<group>"; };
 		342CF88817DA091600401E55 /* INQNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNotesViewController.h; sourceTree = "<group>"; };
@@ -487,6 +488,8 @@
 		34D6F1BF17B67A7400BE1516 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		34D6F1C017B67A7400BE1516 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
+		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
+		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -752,12 +755,14 @@
 				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
 				342CF87F17D9FF9900401E55 /* INQInquiryPageTableViewController.h */,
 				342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */,
-				342CF88217DA011300401E55 /* INQInquieyPartCell.h */,
-				342CF88317DA011300401E55 /* INQInquieyPartCell.m */,
+				342CF88217DA011300401E55 /* INQInquiryPartCell.h */,
+				342CF88317DA011300401E55 /* INQInquireyPartCell.m */,
 				342CF88517DA07F700401E55 /* INQHypothesisViewController.h */,
 				342CF88617DA07F700401E55 /* INQHypothesisViewController.m */,
 				342CF88817DA091600401E55 /* INQNotesViewController.h */,
 				342CF88917DA091600401E55 /* INQNotesViewController.m */,
+				8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */,
+				8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */,
 			);
 			path = PersonalInquiryManager;
 			sourceTree = "<group>";
@@ -1232,8 +1237,9 @@
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,
 				34D422D617B677420051E84C /* ARLAudioRecorderViewController.m in Sources */,
 				34D422D917B6775D0051E84C /* ARLAudioRecordButtons.m in Sources */,
+				8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */,
 				342CF88117D9FF9900401E55 /* INQInquiryPageTableViewController.m in Sources */,
-				342CF88417DA011300401E55 /* INQInquieyPartCell.m in Sources */,
+				342CF88417DA011300401E55 /* INQInquireyPartCell.m in Sources */,
 				342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */,
 				342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */,
 			);

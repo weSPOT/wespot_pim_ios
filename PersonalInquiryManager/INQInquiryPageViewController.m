@@ -13,6 +13,7 @@
 @end
 
 @implementation INQInquiryPageViewController
+
 @synthesize inquiry;
 @synthesize showDataCollection;
 @synthesize webView;
@@ -29,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
     NSLog(@"[%s] inquiry is %@", __func__, self.inquiry.inquiryId);
     
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -48,7 +50,6 @@
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
     NSLog(@"[%s] preparing for segue %@", __func__, self.inquiry.inquiryId);
     
     NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
@@ -62,9 +63,7 @@
     if ([segue.destinationViewController respondsToSelector:@selector(setRun:)]) {
         [segue.destinationViewController performSelector:@selector(setRun:) withObject:selectedRun];
     }
-    
 }
-
 
 - (void) createWebView {
     UIWebView* webViewLocal = [[UIWebView alloc] init];
@@ -112,8 +111,6 @@
     [synchronizer sync];
 
     [self.navigationController pushViewController:dataCollectionTasks animated:YES];
-
-
 }
 
 - (void) setConstraints {
@@ -129,7 +126,6 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-    
     
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|[webView]|"
@@ -149,6 +145,5 @@
                                metrics:nil
                                views:viewsDictionary]];
 }
-
 
 @end

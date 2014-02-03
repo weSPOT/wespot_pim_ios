@@ -23,4 +23,12 @@
 
 + (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId;
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId;
+
+typedef NS_ENUM(NSInteger,provider) {
+    FACEBOOK = 1,
+    GOOGLE = 2,
+    LINKEDIN = 3,
+    TWITTER = 4
+};
+
 @end

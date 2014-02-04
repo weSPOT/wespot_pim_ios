@@ -10,9 +10,9 @@
 
 @interface INQHypothesisViewController : UIViewController
 
-@property (strong, nonatomic)  NSString *hypothesis;
-
-@property (strong, nonatomic) UIWebView *hypothesisView;
+@property (strong, nonatomic) NSString *hypothesis;
+//@property (strong, nonatomic) UIWebView *hypothesisView;
 
 - (void) setHypothesis:(NSString*) hypothesis;
+
 @end

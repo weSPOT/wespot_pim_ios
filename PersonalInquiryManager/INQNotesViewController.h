@@ -10,6 +10,8 @@
 #import "ARLNetwork+INQ.h"
 
 @interface INQNotesViewController : UIViewController
-@property (strong, nonatomic) UIWebView *notesView;
+
+//@property (strong, nonatomic) UIWebView *notesView;
 @property (strong, nonatomic) NSNumber *inquiryId;
+
 @end

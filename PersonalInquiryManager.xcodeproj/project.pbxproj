@@ -167,6 +167,7 @@
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
 		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
+		8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -490,6 +491,8 @@
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
 		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
 		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
+		8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMessagesViewController.h; sourceTree = "<group>"; };
+		8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMessagesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -755,6 +758,8 @@
 				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
 				342CF87F17D9FF9900401E55 /* INQInquiryPageTableViewController.h */,
 				342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */,
+				8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */,
+				8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */,
 				342CF88217DA011300401E55 /* INQInquiryPartCell.h */,
 				342CF88317DA011300401E55 /* INQInquireyPartCell.m */,
 				342CF88517DA07F700401E55 /* INQHypothesisViewController.h */,
@@ -1197,6 +1202,7 @@
 				3454CD0F17B3A72E00C0DFFC /* ARLMapTableViewController.m in Sources */,
 				3454CD1017B3A72E00C0DFFC /* ARLMapViewController.m in Sources */,
 				3454CD1117B3A72E00C0DFFC /* ARLMultipleChoiceAnswerView.m in Sources */,
+				8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */,
 				3454CD1217B3A72E00C0DFFC /* ARLMultipleChoiceTestViewController.m in Sources */,
 				3454CD1317B3A72E00C0DFFC /* ARLNarratorItemViewController.m in Sources */,
 				3454CD1417B3A72E00C0DFFC /* ARLPageViewController.m in Sources */,

@@ -49,22 +49,30 @@ typedef NS_ENUM(NSInteger, indices) {
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
+    
     if (self) {
         // Custom initialization
     }
+    
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Load Icon.
     NSData* icon = [inquiry icon];
     if (icon) {
         UIImage * image = [UIImage imageWithData:icon];
         self.icon.image = image;
     }
-
-     [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
+    
+    // Load description
+    [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
+    // [self.inquiryDescription loadHTMLString:@"<html><body style='background-color:red;'>test</body></html>" baseURL:nil];
+  
+    
     NSLog(@"[%s] desc %@", __func__, self.inquiry.desc);
     
     // Uncomment the following line to preserve selection between presentations.
@@ -72,6 +80,55 @@ typedef NS_ENUM(NSInteger, indices) {
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+   
+    // Disable some conflicting XCODE habits.
+    self.icon.translatesAutoresizingMaskIntoConstraints = NO;
+    self.inquiryDescription.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Remove constraints.
+    [self.view removeConstraints:[self.view constraints]];
+
+    NSDictionary * viewsDictionary =
+    [[NSDictionary alloc] initWithObjectsAndKeys:
+     self.view, @"view",
+     self.icon, @"icon",
+     self.inquiryDescription, @"description",
+     nil];
+
+    NSString *constraint;
+    
+    constraint = [NSString stringWithFormat:@"H:|-5-[icon(==%0.0f)]-[description]-5-|", self.icon.image.size.width];
+    NSLog(@"Constraint: %@", constraint);
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:constraint
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+    constraint = [NSString stringWithFormat:@"V:|-5-[icon(==%0.0f)]-5-|", self.icon.image.size.height];
+    NSLog(@"Constraint: %@", constraint);
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:constraint
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+    constraint = @"V:|-5-[description(==icon)]";
+    NSLog(@"Constraint: %@", constraint);
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:constraint
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+    // This one breaks above...
+    //    constraint = [NSString stringWithFormat:@"V:[view(==%0.0f)]", self.icon.image.size.height+10];
+    //    NSLog(@"Constraint: %@", constraint);
+    //    [self.view addConstraints:[NSLayoutConstraint
+    //                               constraintsWithVisualFormat:constraint
+    //                               options:NSLayoutFormatDirectionLeadingToTrailing
+    //                               metrics:nil
+    //                               views:viewsDictionary]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +141,7 @@ typedef NS_ENUM(NSInteger, indices) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -96,175 +153,98 @@ typedef NS_ENUM(NSInteger, indices) {
  *  Creates Cells for the UITableView.
  *
  *  @param tableView The UITableView
- *  @param indexPath The index path
+ *  @param indexPath The index path containing the grouping/section and record index.
  *
  *  @return The INQInquiryPartCell.
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"inquiryPartCell";
-#warning exception because of Unkown class INQInquieyPartCell!!!!
-    //@try {
-        INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-        switch ([indexPath section]) {
-            case MESSAGE:
-                cell.inquiryPartLabel.text = @"Messages";
-                break;
-            case HYPOTHESIS:
-                cell.inquiryPartLabel.text = @"Hypothesis & question";
-                break;
-            case PLANNING:
-                cell.inquiryPartLabel.text = @"Planning";
-                break;
-            case DATACOLLECION:
-                cell.inquiryPartLabel.text = @"Data collection tasks";
-                break;
-            case ANALYSIS:
-                cell.inquiryPartLabel.text = @"Analysis";
-                break;
-                // ...
-    //      case NOTES:
-    //          cell.inquiryPartLabel.text = @"Notes";
-    //          break;
-            default:
-                break;
-        }
+    INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-        // Configure the cell...
-    
-//        return cell;
-//    } @catch (NSException *e) {
-//        NSLog(@"%@", e);
-//    }
-//    
-//    INQInquiryPartCell *cell;
-//    cell.inquiryPartLabel.text = @"ERROR";
-    
+    switch ([indexPath section]) {
+        case MESSAGE:
+            cell.inquiryPartLabel.text = @"Messages";
+            break;
+        case HYPOTHESIS:
+            cell.inquiryPartLabel.text = @"Hypothesis & question";
+            break;
+        case PLANNING:
+            cell.inquiryPartLabel.text = @"Planning";
+            break;
+        case DATACOLLECION:
+            cell.inquiryPartLabel.text = @"Data collection tasks";
+            break;
+        case ANALYSIS:
+            cell.inquiryPartLabel.text = @"Analysis";
+            break;
+            // ...
+        case NOTES:
+            cell.inquiryPartLabel.text = @"Notes";
+            break;
+        default:
+            break;
+    }
+
+    // Configure the cell...
+
     return cell;
 }
 
-/*!
- *  Labels of the 3 tablel items.
- *
- *  @param tableView The UITableView
- *  @param section   The Section Id
- *
- *  @return The Section Name.
- */
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *sectionName;
-    switch (section)
-    {
-        case MESSAGE:
-            //sectionName = NSLocalizedString(@"Messages", @"Messages");
-            break;
-        case HYPOTHESIS:
-            //sectionName = NSLocalizedString(@"Question/Hypothesis", @"Question/Hypothesis");
-            break;
-        case PLANNING:
-            //sectionName = NSLocalizedString(@"Planning", @"Planning");
-            break;
-        case DATACOLLECION:
-            //sectionName = NSLocalizedString(@"Data Collection", @"Data Collection");
-            break;
-        case ANALYSIS:
-            //sectionName = NSLocalizedString(@"Analysis", @"Analysis");
-            break;
-            // ...
-//      case NOTES:
-//          sectionName = NSLocalizedString(@"Operationalisation", @"Operationalisation");
-//          break;
-        default:
-            sectionName = @"";
-            break;
-    }
-    return sectionName;
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
+/*!
+ *  For each row in the table jump to the associated view.
+ *
+ *  @param tableView The UITableView
+ *  @param indexPath The NSIndexPath containing grouping/section and record index.
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController * newViewController;
+    
     switch ([indexPath section]){
+        case MESSAGE: {
+             // Create the new ViewController.
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MessagesView"];
+            
+            // Pass the parameters to render.
+            // [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+            }
+        break;
+        
         case HYPOTHESIS: {
-            NSLog(@"[%s] create and load hypothesis view from StoryBoard", __func__);
-            
-            // old code: create viewcontroller without storyboard designed content.
-            
-            //newViewController = [[INQHypothesisViewController alloc] init];
-            //[newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
-       
-            //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
-            //INQHypothesisViewController *hypothesisViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
-            //[self.navigationController pushViewController:hypothesisViewController animated:YES];
-            
-            // veg: Create the new ViewController
+            // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
             
-            // veg: Pass the hypothesis to render
+            // Pass the parameters to render.
             [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
             }
         break;
             
         case NOTES: {
-                newViewController = [[INQNotesViewController alloc] init];
-                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+            // Create the new ViewController.
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NotesView"];
+
+            // Pass the parameters to render.
+            [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
             }
             break;
             
         case DATACOLLECION: {
             
+            // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];
+            
+            // Pass the parameters to render.
             NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
             Run* selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
             NSNumber * gameId;
-//            if (!selectedRun.runId) {
-//                NSLog(@"[%s] not good and load hypothesis view", __func__);
-//                gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
-//
-//            }
+            
+            // if (!selectedRun.runId) {
+            //   NSLog(@"[%s] not good and load hypothesis view", __func__);
+            //}
             
             if (selectedRun.runId) {
                 [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
@@ -273,6 +253,7 @@ typedef NS_ENUM(NSInteger, indices) {
                 gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
             }
             
+            // Syncronize CoreData (RUNS & GAMES).
             ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
             ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             [synchronizer createContext:appDelegate.managedObjectContext];
@@ -282,31 +263,33 @@ typedef NS_ENUM(NSInteger, indices) {
             synchronizer.gameId = gameId;
             synchronizer.visibilityRunId = runId;
             synchronizer.syncGames = YES;
+            
             [synchronizer sync];
         }
         break;
             
-        case ANALYSIS:
-            break;
+        case ANALYSIS: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        break;
+          
+        case PLANNING: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        break;
             
-        case MESSAGE:
-            break;
+        default: {
+            NSLog(@"[%s] Unknown InquiryPart: %@",__func__, [NSNumber numberWithInteger:indexPath.section]);
+        }
             
-        default:
-            break;
+        break;
     }
     
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
-    
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
 
 @end

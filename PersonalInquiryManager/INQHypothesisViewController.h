@@ -14,6 +14,5 @@
 
 @property (strong, nonatomic) UIWebView *hypothesisView;
 
-
 - (void) setHypothesis:(NSString*) hypothesis;
 @end

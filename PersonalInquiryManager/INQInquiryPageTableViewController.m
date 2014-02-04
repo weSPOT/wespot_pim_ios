@@ -228,17 +228,33 @@ typedef NS_ENUM(NSInteger, indices) {
 {
     UIViewController * newViewController;
     switch ([indexPath section]){
-        case 0:
-            NSLog(@"[%s] create and load hypothesis view", __func__);
-            newViewController = [[INQHypothesisViewController alloc] init];
+        case HYPOTHESIS: {
+            NSLog(@"[%s] create and load hypothesis view from StoryBoard", __func__);
+            
+            // old code: create viewcontroller without storyboard designed content.
+            
+            //newViewController = [[INQHypothesisViewController alloc] init];
+            //[newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+       
+            //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+            //INQHypothesisViewController *hypothesisViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
+            //[self.navigationController pushViewController:hypothesisViewController animated:YES];
+            
+            // veg: Create the new ViewController
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
+            
+            // veg: Pass the hypothesis to render
             [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+            }
+        break;
+            
+        case NOTES: {
+                newViewController = [[INQNotesViewController alloc] init];
+                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+            }
             break;
-        case 1:
-            newViewController = [[INQNotesViewController alloc] init];
-            [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
-
-            break;
-        case 2: {
+            
+        case DATACOLLECION: {
             
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];
             NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
@@ -249,12 +265,14 @@ typedef NS_ENUM(NSInteger, indices) {
 //                gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
 //
 //            }
+            
             if (selectedRun.runId) {
                 [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
                 gameId = selectedRun.gameId;
             } else {
                 gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
             }
+            
             ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
             ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             [synchronizer createContext:appDelegate.managedObjectContext];
@@ -265,14 +283,22 @@ typedef NS_ENUM(NSInteger, indices) {
             synchronizer.visibilityRunId = runId;
             synchronizer.syncGames = YES;
             [synchronizer sync];
-            break;
         }
+        break;
+            
+        case ANALYSIS:
+            break;
+            
+        case MESSAGE:
+            break;
             
         default:
             break;
     }
-    if (newViewController)             [self.navigationController pushViewController:newViewController animated:YES];
-
+    
+    if (newViewController) {
+        [self.navigationController pushViewController:newViewController animated:YES];
+    }
     
     // Navigation logic may go here. Create and push another view controller.
     /*

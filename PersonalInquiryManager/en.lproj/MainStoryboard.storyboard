@@ -201,6 +201,29 @@
             </objects>
             <point key="canvasLocation" x="1762" y="441"/>
         </scene>
+        <!--Hypothesis View Controller - HypothesisView-->
+        <scene sceneID="Kbd-4e-y9J">
+            <objects>
+                <viewController storyboardIdentifier="HypothesisView" title="HypothesisView" id="2A5-XL-J74" customClass="INQHypothesisViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rYV-NZ-dQ8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4qW-XL-kSv">
+                                <rect key="frame" x="59" y="91" width="110" height="82"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="43"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1V4-80-rCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2114" y="441"/>
+        </scene>
         <!--Narrator Item View Controller-->
         <scene sceneID="kaR-sw-Udn">
             <objects>

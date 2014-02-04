@@ -20,9 +20,11 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
         self.view.backgroundColor = [UIColor whiteColor];
     }
+    
     return self;
 }
 - (void) setHypothesis:(NSString*) hypothesis {
@@ -35,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.hypothesisView = [[UIWebView alloc] init];
     self.hypothesisView.translatesAutoresizingMaskIntoConstraints = NO;
     self.hypothesisView.backgroundColor = [UIColor redColor];

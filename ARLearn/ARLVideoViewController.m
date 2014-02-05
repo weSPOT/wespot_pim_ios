@@ -145,6 +145,9 @@
     
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

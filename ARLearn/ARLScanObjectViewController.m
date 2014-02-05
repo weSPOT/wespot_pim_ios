@@ -76,7 +76,9 @@
                               multiplier:1 constant:0]];
 }
 
-
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

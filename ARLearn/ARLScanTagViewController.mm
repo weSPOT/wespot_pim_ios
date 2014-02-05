@@ -34,6 +34,9 @@
 	// Do any additional setup after loading the view.
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

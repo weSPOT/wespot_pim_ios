@@ -10,6 +10,5 @@
 
 @interface INQBadgesViewController : UIViewController  <UIWebViewDelegate>
 
-//@property (strong, nonatomic)  UIWebView *webView;
 
 @end

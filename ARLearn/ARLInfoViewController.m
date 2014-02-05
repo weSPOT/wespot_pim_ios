@@ -76,6 +76,9 @@
 ////    self.pageControl.currentPage = page;
 //}
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

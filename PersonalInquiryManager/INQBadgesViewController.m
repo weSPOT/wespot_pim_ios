@@ -12,8 +12,14 @@
 
 @end
 
+/*!
+ *  NOTE: The UINavigationBar is added and positioned manually so does not originate fro a navigation controller (yet).
+ */
 @implementation INQBadgesViewController
 
+/*!
+ *  Position NavigationBar and WebView manually with constraints.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -61,6 +67,11 @@
                                views:viewsDictionary]];
 }
 
+/*!
+ *  Load Content.
+ *
+ *  @param animated Animation is enabled if YES.
+ */
 - (void) viewDidAppear:(BOOL)animated {
     NSString * badgesUrl = [NSString stringWithFormat:@"http://ariadne.cs.kuleuven.be/navi/?user=%@&account=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"], [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
     
@@ -68,6 +79,14 @@
     
 }
 
+/*!
+ *  Setup UIWebViewDelegate's based Authentication.
+ *
+ *  NOTE: Seems ununsed.
+ *
+ *  @param authenticateUrl The Url to Authenticate against.
+ *  @param aDelegate       The Delegate.
+ */
 - (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate {
     UIWebView *web = (UIWebView*)(self.view.subviews[1]);
 
@@ -79,6 +98,9 @@
     [web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

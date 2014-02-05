@@ -20,6 +20,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

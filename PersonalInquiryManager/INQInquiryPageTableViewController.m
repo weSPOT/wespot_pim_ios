@@ -131,6 +131,9 @@ typedef NS_ENUM(NSInteger, indices) {
     //                               views:viewsDictionary]];
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

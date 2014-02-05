@@ -37,6 +37,9 @@
     [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

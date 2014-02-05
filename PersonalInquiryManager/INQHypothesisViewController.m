@@ -75,6 +75,9 @@
 //                               views:viewsDictionary]];
 }
 
+/*!
+ *  Low Memory Warning.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

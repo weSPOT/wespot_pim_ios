@@ -37,10 +37,9 @@
 
 - (void) setRun: (Run *) run {
     _run = run;
-//    self.title = run.title;
-//     [[self tabBarItem] setFinishedSelectedImage:[UIImage imageNamed:@"icon_maps.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"icon_maps.png"]];
-
-
+    
+    // self.title = run.title;
+    // [[self tabBarItem] setFinishedSelectedImage:[UIImage imageNamed:@"icon_maps.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"icon_maps.png"]];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -71,7 +70,7 @@
         GiMap * mapItem = [[GiMap alloc] init];
         mapItem.title = gi.name;
         mapItem.subtitle = gi.descriptionText;
-        mapItem.itemId = [NSNumber numberWithLongLong:gi.id];
+        mapItem.itemId = gi.id;
         mapItem.generalItem = gi;
         CLLocationCoordinate2D coords;
         coords.latitude = [gi.lat doubleValue];
@@ -84,13 +83,12 @@
     }
 }
 
-
 - (void)fetchedResultsChangeUpdate:(GeneralItem *)gi  {
     for (GiMap * mapItem in self.mapView.annotations) {
-        if ([mapItem.itemId isEqualToNumber:[NSNumber numberWithLongLong:gi.id]]) {
+        if ([mapItem.itemId isEqualToNumber:gi.id]) {
             mapItem.title = gi.name;
             mapItem.subtitle = gi.descriptionText;
-            mapItem.itemId = [NSNumber numberWithLongLong:gi.id];
+            mapItem.itemId = gi.id;
             mapItem.generalItem = gi;
             CLLocationCoordinate2D coords;
             coords.latitude = [gi.lat doubleValue];
@@ -104,7 +102,7 @@
 
 - (void)fetchedResultsChangeDelete:(GeneralItem*)gi  {
     for (GiMap * mapItem in self.mapView.annotations) {
-        if ([mapItem.itemId isEqualToNumber:[NSNumber numberWithLongLong:gi.id]]) {
+        if ([mapItem.itemId isEqualToNumber:gi.id]) {
             [self.mapView removeAnnotation:mapItem];
         }
     }

@@ -135,7 +135,7 @@
     for (NSDictionary *user in [dict objectForKey:@"result"]) {
         if ( [((NSObject *)[user objectForKey:@"oauthProvider"]) isKindOfClass: [NSString class]]) {
             
-            #warning veg - 03-02-2014 Are the oauthId/oauthProvider equal to the ones used to retrieve friends?
+            // veg - 03-02-2014 Are the oauthId/oauthProvider equal to the ones used to retrieve friends?
             NSString* oauthId = [user objectForKey:@"oauthId"];
             NSString* oauthProvider = [user objectForKey:@"oauthProvider"];
             NSString* name = [user objectForKey:@"name"];
@@ -143,21 +143,8 @@
             
             NSLog(@"[%s] user %@", __func__, user);
             
-            #warning veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
+            // veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
             NSNumber * oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];
-            
-//            if ([oauthProvider isEqualToString:@"Facebook"]) {
-//                oauthProviderType = [NSNumber  numberWithInt:1];
-//            }
-//            if ([oauthProvider isEqualToString:@"Google"]) {
-//                oauthProviderType = [NSNumber  numberWithInt:2];
-//            }
-//            if ([oauthProvider isEqualToString:@"LinkedIn"]) {
-//                oauthProviderType = [NSNumber  numberWithInt:3];
-//            }
-//            if ([oauthProvider isEqualToString:@"Twitter"]) {
-//                oauthProviderType = [NSNumber  numberWithInt:4];
-//            }
             
             [Account accountWithDictionary: [[NSDictionary alloc] initWithObjectsAndKeys:
                                              icon, @"icon",

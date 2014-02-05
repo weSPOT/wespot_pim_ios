@@ -11,7 +11,4 @@
 
 @interface INQSplashScreenViewController : ARLSplashScreenViewController
 
-
-
-
 @end

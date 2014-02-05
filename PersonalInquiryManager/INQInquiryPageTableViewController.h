@@ -19,6 +19,7 @@
 @interface INQInquiryPageTableViewController : UITableViewController
 
 @property (strong, nonatomic)  Inquiry *inquiry;
+
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
 

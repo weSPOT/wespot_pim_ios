@@ -53,7 +53,7 @@
  *  @return The Users as JSON.
  */
 + (id) getUsers {
-    #warning veg - 31-01-2014 Used elgUrl and apiKey constants.
+    // veg - 31-01-2014 Used elgUrl and apiKey constants.
     NSString * url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
     return [self returnJson:url];}
 

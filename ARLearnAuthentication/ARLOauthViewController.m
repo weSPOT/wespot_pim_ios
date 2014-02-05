@@ -10,12 +10,22 @@
 
 @interface ARLOauthViewController ()
 
+@property (readonly, nonatomic) CGFloat statusbarHeight;
+@property (readonly, nonatomic) CGFloat navbarHeight;
+
 @end
 
 @implementation ARLOauthViewController
 
-@synthesize scanView;
-@synthesize oauthView;
+-(CGFloat) statusbarHeight
+{
+    // NOTE: Not always turned yet when we try to retrieve the height.
+    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
+}
+
+-(CGFloat) navbarHeight {
+    return self.navigationController.navigationBar.bounds.size.height;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,9 +36,14 @@
     return self;
 }
 
+/*!
+ *  Load and Align Content.
+ */
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    // self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
     // Back Button
     self.backButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.backButton setTitle:NSLocalizedString(@"back", nil) forState:UIControlStateNormal];
@@ -47,17 +62,36 @@
     self.scanView.viewController = self;
     [self.view addSubview:self.scanView];
     
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        
-        [self setLandscapeConstraints];
-    } else {
-        [self setPortraitConstraints];
-    }
-
     [self initOauthUrls];
-    [self addGradient];
+    
+    [self doUpdateLayout];
 }
 
+/*!
+ *  Align Content.
+ *
+ *  @param animated Animation is enabled if YES.
+ */
+- (void) viewWillAppear:(BOOL)animated {
+    NSLog(@"[%s]", __func__);
+    
+    [self doUpdateLayout];
+}
+
+/*!
+ * Align Content.
+ *
+ *  @param animated Animation is enabled if YES.
+ */
+- (void) viewDidAppear:(BOOL)animated {
+    NSLog(@"[%s]", __func__);
+    
+    [self doUpdateLayout];
+}
+
+/*!
+ *  Add Gradient underneath the other Views.
+ */
 - (void) addGradient {
     UIColor *darkOp = [UIColor colorWithRed:(99.0f/256.0f) green:(187.0f/256.0f) blue:(255.0f/256.0f)alpha:0.5];
     UIColor *lightOp = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.01];
@@ -78,23 +112,18 @@
     [self.view.layer insertSublayer:gradient atIndex:0];
 }
 
-
-
-
 - (void) setPortraitConstraints {
-
     [self.view removeConstraints:[self.view constraints]];
     
-    NSDictionary * viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
+    NSDictionary * viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
      self.backButton, @"backButton",
-     self.scanView, @"scanView",
-     self.oauthView, @"oauthView", nil];
-
-    NSString* verticalContstraint = @"V:|-[backButton(==30)]-[scanView(==100)]-[oauthView(>=200)]-|";
+     self.scanView,   @"scanView",
+     self.oauthView,  @"oauthView",
+     nil];
     
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:verticalContstraint
+                               constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%@-[backButton(==30)]-[scanView(==100)]-[oauthView(>=200)]-|",
+                                                            [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8]]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -113,50 +142,82 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-
 }
 
 - (void) setLandscapeConstraints {
     [self.view removeConstraints:[self.view constraints]];
     
-    
-    NSDictionary * viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
-     self.scanView, @"scanView",
-     self.oauthView, @"oauthView", nil];
-    
-    NSString* horizontalContstraint = @"H:|-[scanView(==oauthView)]-[oauthView]-|";
+    NSDictionary * viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+        self.backButton, @"backButton",
+        self.scanView,   @"scanView",
+        self.oauthView,  @"oauthView",
+        nil];
     
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:horizontalContstraint
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|-[oauthView]-|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|-[scanView]-|"
+                               constraintsWithVisualFormat:@"H:|-[backButton]-[scanView(==oauthView)]-[oauthView]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
     
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%@-[backButton(==30)]|",
+                                                            [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8]]
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%@-[scanView]-|",
+                                                            [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8]]
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%@-[oauthView]-|",
+                                                            [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8]]
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+
 }
 
--(void)willRotateToInterfaceOrientation: (UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration {
-    if ((orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight)) {
+//-(void)willRotateToInterfaceOrientation: (UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration {
+//    if ((orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight)) {
+//        [self setLandscapeConstraints];
+//    } else {
+//        [self setPortraitConstraints];
+//    }
+//}
+
+- (void)doUpdateLayout
+{
+    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         [self setLandscapeConstraints];
     } else {
         [self setPortraitConstraints];
     }
+    
+    if (self.view.layer.sublayers.count>0 && [self.view.layer.sublayers[0] isKindOfClass:[CAGradientLayer class]]) {
+        [[self.view.layer.sublayers objectAtIndex:0] removeFromSuperlayer];
+    }
+    [self addGradient];
+}
+
+/*!
+ *  Re-apply Gradient.
+ *
+ *  @param fromInterfaceOrientation The new orientation.
+ */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self doUpdateLayout];
 }
 
 - (void)backClick {
     [self dismissViewControllerAnimated:TRUE completion:nil];
 }
-
 
 - (void) imagePickerController: (UIImagePickerController*) reader didFinishPickingMediaWithInfo: (NSDictionary*) info {
 
@@ -203,7 +264,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 - (void) initOauthUrls {
@@ -227,7 +287,6 @@
 
         }
     }
-    
 }
 
 - (void) oauth: (NSNumber *) providerId {

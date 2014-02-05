@@ -21,10 +21,12 @@
 @interface ARLSplashScreenViewController : UIViewController
 
 @property (strong, nonatomic) Account* account;
+
 @property (strong, nonatomic) UIButton* loginButton;
 @property (strong, nonatomic) UIButton* myRunsButton;
 @property (strong, nonatomic) UIButton* gamesButton;
 @property (strong, nonatomic) UIImageView* arlearnImage;
+
 @property (strong, nonatomic) ARLLoggedInView* loggedInView;
 
 - (void) createViewsProgrammatically ;

@@ -10,10 +10,9 @@
 
 @implementation ARLLoggedInView
 
-@synthesize accountImage;
-@synthesize loggedInAsLabel;
-@synthesize accountNameLabel;
-
+//@synthesize accountImage;
+//@synthesize loggedInAsLabel;
+//@synthesize accountNameLabel;
 
 - (id)init
 {

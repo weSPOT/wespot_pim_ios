@@ -30,7 +30,7 @@
          self.stopButton, @"stopButton",
          self.playButton, @"playButton", nil];
         
-#warning veg - 31-01-2014 Relaced all subsequent options:nil by options:0 to suppress warnings.
+        // veg - 31-01-2014 Relaced all subsequent options:nil by options:0 to suppress warnings.
         [self addConstraints:[NSLayoutConstraint
                               constraintsWithVisualFormat:@"V:|-0-[playButton(==70)]"
                               options:0

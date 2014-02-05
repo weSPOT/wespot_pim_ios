@@ -86,10 +86,10 @@
     Account * account = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
     cell.name.text = account.name;
-    //    cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
+        //cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
         NSData* icon = [account picture];
         if (icon) {
-            UIImage * image = [UIImage imageWithData:icon];
+            UIImage *image = [UIImage imageWithData:icon];
             cell.icon.image = image;
         }
 }
@@ -98,8 +98,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
-    Account * generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
+    Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
    
+    if (generalItem){
+        //veg Silence unused variable warning!
+    }
+    
     //    if ([segue.destinationViewController respondsToSelector:@selector(setGeneralItem:)]) {
     //        [segue.destinationViewController performSelector:@selector(setGeneralItem:) withObject:generalItem];
     //    }

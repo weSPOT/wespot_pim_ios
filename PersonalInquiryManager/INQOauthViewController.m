@@ -14,8 +14,12 @@
 
 @implementation INQOauthViewController
 
+/*!
+ *  Load Content.
+ */
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
     self.scanView.hidden = YES;
 }
 

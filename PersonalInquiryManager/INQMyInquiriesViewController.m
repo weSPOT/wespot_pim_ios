@@ -26,10 +26,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupFetchedResultsController];
-    
-
-    
-    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -46,7 +42,6 @@
 
 
 - (void)setupFetchedResultsController {
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
                                                                                      ascending:YES
@@ -70,9 +65,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
+    
     ARLMyInquiriesCell *cell = [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell"];
     if (cell == nil) {
         cell = [[ARLMyInquiriesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell"];

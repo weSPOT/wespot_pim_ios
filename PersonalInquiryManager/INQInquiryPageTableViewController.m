@@ -40,11 +40,17 @@ typedef NS_ENUM(NSInteger, indices) {
     NOTES = 5
 };
 
+@property (readonly, nonatomic) NSString *cellIdentifier;
+
 @end
 
 @implementation INQInquiryPageTableViewController
 
 @synthesize inquiry;
+
+-(NSString*) cellIdentifier {
+    return  @"inquiryPartCell";
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -88,12 +94,11 @@ typedef NS_ENUM(NSInteger, indices) {
     // Remove constraints.
     [self.view removeConstraints:[self.view constraints]];
 
-    NSDictionary * viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
-     self.view, @"view",
-     self.icon, @"icon",
-     self.inquiryDescription, @"description",
-     nil];
+    NSDictionary * viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+        self.view, @"view",
+        self.icon, @"icon",
+        self.inquiryDescription, @"description",
+        nil];
 
     NSString *constraint;
     
@@ -144,12 +149,12 @@ typedef NS_ENUM(NSInteger, indices) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 6;
 }
 
 /*!
@@ -162,29 +167,30 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"inquiryPartCell";
+    INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
+  
+    if (cell == nil) {
+        cell = [[INQInquiryPartCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+    }
 
-    INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-
-    switch ([indexPath section]) {
+    switch ([indexPath item]) {
         case MESSAGE:
-            cell.inquiryPartLabel.text = @"Messages";
+            cell.textLabel.text = @"Messages";
             break;
         case HYPOTHESIS:
-            cell.inquiryPartLabel.text = @"Hypothesis & question";
+            cell.textLabel.text = @"Hypothesis & question";
             break;
         case PLANNING:
-            cell.inquiryPartLabel.text = @"Planning";
+            cell.textLabel.text = @"Planning";
             break;
         case DATACOLLECION:
-            cell.inquiryPartLabel.text = @"Data collection tasks";
+            cell.textLabel.text = @"Data collection tasks";
             break;
         case ANALYSIS:
-            cell.inquiryPartLabel.text = @"Analysis";
+            cell.textLabel.text = @"Analysis";
             break;
-            // ...
         case NOTES:
-            cell.inquiryPartLabel.text = @"Notes";
+            cell.textLabel.text = @"Notes";
             break;
         default:
             break;
@@ -207,7 +213,7 @@ typedef NS_ENUM(NSInteger, indices) {
 {
     UIViewController * newViewController;
     
-    switch ([indexPath section]){
+    switch ([indexPath item]){
         case MESSAGE: {
              // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MessagesView"];

@@ -53,7 +53,6 @@
     }
     [self.myRunsButton setTitle:@"To Hide" forState:UIControlStateNormal];
     self.myRunsButton.hidden= YES;
-    
 }
 
 /*!

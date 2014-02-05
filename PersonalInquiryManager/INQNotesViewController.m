@@ -14,50 +14,11 @@
 
 @implementation INQNotesViewController
 
-//@synthesize notesView;
-@synthesize inquiryId;
-
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-////        self.view.backgroundColor = [UIColor clearColor];
-//    }
-//    return self;
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-//    self.notesView = [[UIWebView alloc] init];
-//    self.notesView.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    [self.view addSubview:self.notesView];
-//    
-//    [self.view removeConstraints:[self.view constraints]];
-//    
-//    NSDictionary * viewsDictionary =
-//    [[NSDictionary alloc] initWithObjectsAndKeys:
-//     self.notesView, @"notesView", nil];
-//    
-//    NSString* verticalContstraint = @"V:|[notesView]|";
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:verticalContstraint
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//    
-//    NSString* horizontalContstraint = @"H:|[notesView]|";
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:horizontalContstraint
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
     [self loadNotesFromWeb];
-    
 }
 
 - (void) loadNotesFromWeb {

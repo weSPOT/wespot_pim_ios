@@ -14,19 +14,6 @@
 
 @implementation INQInquiryPageViewController
 
-@synthesize inquiry;
-@synthesize showDataCollection;
-@synthesize webView;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,9 +24,9 @@
     [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
     
     [self createDataCollection];
-    [self createWebView];
-    [self createHypothesisView];
-    [self setConstraints];
+    //[self createWebView];
+    //[self createHypothesisView];
+    //[self setConstraints];
 }
 
 /*!
@@ -50,7 +37,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSLog(@"[%s] preparing for segue %@", __func__, self.inquiry.inquiryId);
@@ -63,29 +49,30 @@
     synchronizer.gameId = selectedRun.gameId;
     synchronizer.visibilityRunId = selectedRun.runId;
     [synchronizer sync];
+    
     if ([segue.destinationViewController respondsToSelector:@selector(setRun:)]) {
         [segue.destinationViewController performSelector:@selector(setRun:) withObject:selectedRun];
     }
 }
 
-- (void) createWebView {
-    UIWebView* webViewLocal = [[UIWebView alloc] init];
-    self.webView = webViewLocal;
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.webView loadHTMLString:self.inquiry.desc baseURL:nil];
-    [self.view addSubview:self.webView];
-}
+//- (void) createWebView {
+//    UIWebView* webViewLocal = [[UIWebView alloc] init];
+//    self.webView = webViewLocal;
+//    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self.webView loadHTMLString:self.inquiry.desc baseURL:nil];
+//    [self.view addSubview:self.webView];
+//}
 
-- (void) createHypothesisView {
-    if (!self.inquiry.hypothesis) {
-        self.inquiry.hypothesis = @"test";
-    }
-    UIWebView* hypothesisViewLocal = [[UIWebView alloc] init];
-    self.hypothesisView = hypothesisViewLocal;
-    self.hypothesisView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.webView loadHTMLString:self.inquiry.hypothesis baseURL:nil];
-    [self.view addSubview:self.hypothesisView];
-}
+//- (void) createHypothesisView {
+//    if (!self.inquiry.hypothesis) {
+//        self.inquiry.hypothesis = @"test";
+//    }
+//    UIWebView* hypothesisViewLocal = [[UIWebView alloc] init];
+//    self.hypothesisView = hypothesisViewLocal;
+//    self.hypothesisView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self.webView loadHTMLString:self.inquiry.hypothesis baseURL:nil];
+//    [self.view addSubview:self.hypothesisView];
+//}
 
 - (void) createDataCollection {
     UIButton * showDataCollectionLocal = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -116,37 +103,37 @@
     [self.navigationController pushViewController:dataCollectionTasks animated:YES];
 }
 
-- (void) setConstraints {
-    NSDictionary *viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
-     self.showDataCollection, @"showDataCollection",
-     self.webView, @"webView",
-     self.hypothesisView, @"hypothesisView",
-     nil];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|-[webView]-[hypothesisView]-[showDataCollection]-|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[webView]|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[hypothesisView]|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|-[showDataCollection]-|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-}
+//- (void) setConstraints {
+//    NSDictionary *viewsDictionary =
+//    [[NSDictionary alloc] initWithObjectsAndKeys:
+//     self.showDataCollection, @"showDataCollection",
+//     self.webView, @"webView",
+//     self.hypothesisView, @"hypothesisView",
+//     nil];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:@"V:|-[webView]-[hypothesisView]-[showDataCollection]-|"
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:@"H:|[webView]|"
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:@"H:|[hypothesisView]|"
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:@"H:|-[showDataCollection]-|"
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//}
 
 @end

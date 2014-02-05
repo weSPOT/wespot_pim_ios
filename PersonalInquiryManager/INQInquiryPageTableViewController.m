@@ -46,29 +46,29 @@ typedef NS_ENUM(NSInteger, indices) {
 
 @implementation INQInquiryPageTableViewController
 
-@synthesize inquiry;
+// @synthesize inquiry;
 
 -(NSString*) cellIdentifier {
     return  @"inquiryPartCell";
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    
-    if (self) {
-        // Custom initialization
-    }
-    
-    return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    
+//    if (self) {
+//        // Custom initialization
+//    }
+//    
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     // Load Icon.
-    NSData* icon = [inquiry icon];
+    NSData* icon = [self.inquiry icon];
     if (icon) {
         UIImage * image = [UIImage imageWithData:icon];
         self.icon.image = image;
@@ -142,6 +142,7 @@ typedef NS_ENUM(NSInteger, indices) {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 

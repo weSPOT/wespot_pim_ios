@@ -16,6 +16,7 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
     [self setupFetchedResultsController];
 }
 
@@ -43,17 +44,12 @@
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    return self;
-}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -94,7 +90,6 @@
         }
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
@@ -111,6 +106,5 @@
     //        [segue.destinationViewController performSelector:@selector(setRun:) withObject:self.run];
     //    }
 }
-
 
 @end

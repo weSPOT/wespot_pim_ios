@@ -166,6 +166,10 @@
 		34D6F1C217B67A7400BE1516 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1BF17B67A7400BE1516 /* Icon.png */; };
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
+		8D4DF87418A3AF15009CD9BA /* INQMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */; };
+		8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87618A3B207009CD9BA /* INQMainCell.m */; };
+		8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */; };
+		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
 		8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */; };
 /* End PBXBuildFile section */
@@ -489,6 +493,13 @@
 		34D6F1BF17B67A7400BE1516 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		34D6F1C017B67A7400BE1516 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
+		8D4DF87218A3AF15009CD9BA /* INQMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainViewController.h; sourceTree = "<group>"; };
+		8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainViewController.m; sourceTree = "<group>"; };
+		8D4DF87518A3B207009CD9BA /* INQMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainCell.h; sourceTree = "<group>"; };
+		8D4DF87618A3B207009CD9BA /* INQMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainCell.m; sourceTree = "<group>"; };
+		8D4DF87818A3BEFB009CD9BA /* INQSplashImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashImageViewController.h; sourceTree = "<group>"; };
+		8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashImageViewController.m; sourceTree = "<group>"; };
+		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
 		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
 		8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMessagesViewController.h; sourceTree = "<group>"; };
@@ -729,6 +740,11 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
+				8D4DF87818A3BEFB009CD9BA /* INQSplashImageViewController.h */,
+				8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */,
+				8D4DF87218A3AF15009CD9BA /* INQMainViewController.h */,
+				8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */,
 				347AD0C817B3795C00B4B345 /* Network */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
@@ -747,6 +763,8 @@
 				347AD0C517B296A700B4B345 /* INQFriendsTableViewCell.h */,
 				347AD0C617B296A700B4B345 /* INQFriendsTableViewCell.m */,
 				3454CC8817B394E500C0DFFC /* ARLMyInquiriesCell.h */,
+				8D4DF87518A3B207009CD9BA /* INQMainCell.h */,
+				8D4DF87618A3B207009CD9BA /* INQMainCell.m */,
 				3454CC8917B394E500C0DFFC /* ARLMyInquiriesCell.m */,
 				3454CC8517B3935800C0DFFC /* INQMyInquiriesViewController.h */,
 				3454CC8617B3935800C0DFFC /* INQMyInquiriesViewController.m */,
@@ -1119,6 +1137,7 @@
 				34D4230317B677BD0051E84C /* cb_green_off.png in Resources */,
 				34D4230417B677BD0051E84C /* cb_green_off@2x.png in Resources */,
 				34D4230517B677BD0051E84C /* cb_green_on.png in Resources */,
+				8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */,
 				34D4230617B677BD0051E84C /* cb_green_on@2x.png in Resources */,
 				34D4230717B677BD0051E84C /* dc_calculator_128.png in Resources */,
 				34D4230817B677BD0051E84C /* dc_calculator_128_grey.png in Resources */,
@@ -1163,15 +1182,18 @@
 				34539BB217B274D800352E9A /* INQSplashScreenViewController.m in Sources */,
 				34539BBF17B2759A00352E9A /* ARLBean.m in Sources */,
 				347ACF2B17B27DD700B4B345 /* ARLNotificationPlayer.m in Sources */,
+				8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */,
 				347ACF2C17B27DD700B4B345 /* ARLNotificationSubscriber.m in Sources */,
 				347ACF3817B27F4D00B4B345 /* ARLAppearDisappearDelegator.m in Sources */,
 				347ACF8C17B2852B00B4B345 /* ARLCloudSynchronizer.m in Sources */,
 				347ACF8D17B2852B00B4B345 /* ARLFileCloudSynchronizer.m in Sources */,
 				347ACF8E17B2852B00B4B345 /* ARLNetwork.m in Sources */,
+				8D4DF87418A3AF15009CD9BA /* INQMainViewController.m in Sources */,
 				347AD09517B286F200B4B345 /* ARLAccountDelegator.m in Sources */,
 				347AD09617B286F200B4B345 /* ARLLoggedInView.m in Sources */,
 				347AD09717B286F200B4B345 /* ARLOauthListViewController.m in Sources */,
 				347AD09817B286F200B4B345 /* ARLOauthView.m in Sources */,
+				8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */,
 				347AD09917B286F200B4B345 /* ARLOauthViewController.m in Sources */,
 				347AD09A17B286F200B4B345 /* ARLOauthWebViewController.m in Sources */,
 				347AD09B17B286F200B4B345 /* ARLScanAuthView.m in Sources */,

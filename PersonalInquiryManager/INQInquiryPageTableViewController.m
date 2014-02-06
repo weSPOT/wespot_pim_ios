@@ -46,22 +46,9 @@ typedef NS_ENUM(NSInteger, indices) {
 
 @implementation INQInquiryPageTableViewController
 
-// @synthesize inquiry;
-
 -(NSString*) cellIdentifier {
     return  @"inquiryPartCell";
 }
-
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    
-//    if (self) {
-//        // Custom initialization
-//    }
-//    
-//    return self;
-//}
 
 - (void)viewDidLoad
 {

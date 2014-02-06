@@ -10,21 +10,41 @@
 
 @interface ARLNarratorItemViewController ()
 
+@property (readonly, nonatomic) CGFloat statusbarHeight;
+@property (readonly, nonatomic) CGFloat navbarHeight;
+@property (readonly, nonatomic) CGFloat tabbarHeight;
+@property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
+
+@property (strong, nonatomic)  UIWebView *webView;
+@property (strong, nonatomic)  ARLDataCollectionWidget* dataCollectionWidget;
+
 @end
 
 @implementation ARLNarratorItemViewController
 
-@synthesize generalItem = _generalItem;
-@synthesize run = _run;
-@synthesize headerText= _headerText;
-@synthesize dataCollectionWidget = _dataCollectionWidget;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
+-(CGFloat) statusbarHeight
+{
+    // NOTE: Not always turned yet when we try to retrieve the height.
+    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
+
+-(CGFloat) navbarHeight {
+    return self.navigationController.navigationBar.bounds.size.height;
+}
+
+-(CGFloat) tabbarHeight {
+    return self.tabBarController.tabBar.bounds.size.height;
+}
+
+
+-(UIInterfaceOrientation) interfaceOrientation {
+    return [[UIApplication sharedApplication] statusBarOrientation];
+}
+
+//@synthesize generalItem = _generalItem;
+//@synthesize run = _run;
+//@synthesize headerText= _headerText;
+//@synthesize dataCollectionWidget = _dataCollectionWidget;
 
 /*!
  *  Low Memory Warning.
@@ -37,25 +57,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.headerText.title = self.generalItem.name;
+    NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
+    
+    //self.headerText.title = self.generalItem.name;
     self.webView = [[UIWebView alloc] init];
-    [self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
-    NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
-
+    
     self.dataCollectionWidget = [[ARLDataCollectionWidget alloc] init:[jsonDict objectForKey:@"openQuestion"] viewController:self];
     if (self.dataCollectionWidget.isVisible) {
         self.dataCollectionWidget.run = self.run;
         self.dataCollectionWidget.generalItem = self.generalItem;
     }
     
+    [self.view addSubview:self.webView];
+    [self.view addSubview:self.dataCollectionWidget];
+    
+    [self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
+
     [self setConstraints];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.generalItem.managedObjectContext];
-
 }
 
 - (void)handleDataModelChange:(NSNotification *)note
@@ -64,16 +87,16 @@
     NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
     
     for(NSManagedObject *obj in updatedObjects){
-        
         if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
             GeneralItem* changedObject = (GeneralItem*) obj;
             if (self.generalItem == changedObject) {
-                self.headerText.title = self.generalItem.name;
+                self.navigationItem.title = self.generalItem.name;
+                
+                NSLog(@"[%s] TEXT='%@'",__func__, self.generalItem.richText);
                 
                 [self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
             }
         }
-        
     }
 
     for(NSManagedObject *obj in deletedObjects){
@@ -84,63 +107,49 @@
 
                 [self.navigationController popViewControllerAnimated:NO];
                 [self dismissViewControllerAnimated:TRUE completion:nil];
-
             }
         }
     }
-    
 }
 
 - (void) setConstraints {
-    
-    UIWebView* webView = self.webView;
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    ARLDataCollectionWidget* widget = self.dataCollectionWidget;
-    [self.mainView addSubview:webView];
-    [self.mainView addSubview:self.dataCollectionWidget];
-    
-    NSDictionary *viewsDictionary;
-    if (widget) {
-        viewsDictionary =
-        [[NSDictionary alloc] initWithObjectsAndKeys:
-         webView, @"webView",
-         widget, @"widget", nil];
-    } else {
-        viewsDictionary =
-        [[NSDictionary alloc] initWithObjectsAndKeys:
-         webView, @"webView", nil];
-    }
-    
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dataCollectionWidget.translatesAutoresizingMaskIntoConstraints = NO;
+
+    NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+        self.webView, @"webView",
+        self.dataCollectionWidget, @"widget",
+        nil];
+ 
     NSString* verticalContstraint;
-    if (widget.isVisible) {
-        verticalContstraint = @"V:|[webView(>=100)]-[widget(==80)]|";
+    if (self.dataCollectionWidget.isVisible) {
+        verticalContstraint = @"V:|-%@-[webView(>=100)]-[widget(==80)]-%@-|";
         
     } else {
-        verticalContstraint = @"V:|[webView(>=100)]|";
+        verticalContstraint = @"V:|-%@-[webView(>=100)]-%@-|";
     }
+
+    verticalContstraint = [NSString stringWithFormat:verticalContstraint,
+                                [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8],
+                                [NSNumber numberWithInteger:self.tabbarHeight+8]];
     
-    [self.mainView addConstraints:[NSLayoutConstraint
+    [self.view addConstraints:[NSLayoutConstraint
                                    constraintsWithVisualFormat:verticalContstraint
                                    options:NSLayoutFormatDirectionLeadingToTrailing
                                    metrics:nil
                                    views:viewsDictionary]];
   
-    [self.mainView addConstraints:[NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"H:|[webView]|"
+    [self.view addConstraints:[NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"H:|-[webView]-|"
                                    options:NSLayoutFormatDirectionLeadingToTrailing
                                    metrics:nil
-                                   views:NSDictionaryOfVariableBindings(webView)]];
+                                   views:viewsDictionary]];
     
-    if (widget.isVisible) {
-        [self.mainView addConstraints:[NSLayoutConstraint
-                                       constraintsWithVisualFormat:@"H:|[widget]|"
-                                       options:NSLayoutFormatDirectionLeadingToTrailing
-                                       metrics:nil
-                                       views:NSDictionaryOfVariableBindings(widget)]];
-    }
-    
+    [self.view addConstraints:[NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"H:|-[widget]-|"
+                                   options:NSLayoutFormatDirectionLeadingToTrailing
+                                   metrics:nil
+                                   views:viewsDictionary]];
 }
-
 
 @end

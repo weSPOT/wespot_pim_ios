@@ -11,16 +11,12 @@
 #import "GeneralItemData.h"
 #import "ARLDataCollectionWidget.h"
 
-
 @interface ARLNarratorItemViewController : UIViewController
 
 @property (strong, nonatomic) GeneralItem * generalItem;
 @property (strong, nonatomic) Run * run;
 
-@property (strong, nonatomic)  ARLDataCollectionWidget* dataCollectionWidget;
-
-@property (strong, nonatomic) IBOutlet UIView *mainView;
-@property (strong, nonatomic)  UIWebView *webView;
+#warning this one can not easily be deleted (seems to be tied to a segue).
 @property (weak, nonatomic) IBOutlet UINavigationItem *headerText;
 
 @end

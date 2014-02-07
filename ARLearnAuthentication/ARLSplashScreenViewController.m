@@ -32,20 +32,6 @@
     return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
-//@synthesize account;
-//@synthesize loginButton;
-//@synthesize arlearnImage;
-//@synthesize myRunsButton;
-
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 //     return (interfaceOrientation == UIInterfaceOrientationPortrait) ;
@@ -66,11 +52,6 @@
     [self.loggedInView.layer setCornerRadius:10.0f];
     [self.loggedInView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [self.loggedInView.layer setBorderWidth:1.5f];
-    
-    
-    //[self createLoggedInImage]
-    
-    //[self addGradient];
 }
 
 /*!
@@ -98,8 +79,6 @@
     [self.view.layer insertSublayer:gradient atIndex:0];
     
     [self.view setNeedsDisplay];
-    
-    // NSLog(@"[%s] %d Layers",__func__, self.view.layer.sublayers.count);
 }
 
 /*!
@@ -116,8 +95,6 @@
     [self.loggedInView setAccount:self.account];
     
     [self doUpdateLayout];
-    
-  //  [self.view setNeedsDisplay];
 }
 
 /*!
@@ -385,6 +362,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
@@ -408,7 +386,7 @@
 
 - (void) gamesClicked {
     UINavigationController * monitorMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"gameLibrary"];
-//    [monitorMenuViewController.navigationController setNavigationBarHidden:YES animated:YES];
+    //[monitorMenuViewController.navigationController setNavigationBarHidden:YES animated:YES];
     [self presentViewController:monitorMenuViewController animated:NO completion:nil];
 }
 

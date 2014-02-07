@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQSplashScreenViewController.h"
+#import "INQLoginScreenViewController.h"
 
-@implementation INQSplashScreenViewController
+@implementation INQLoginScreenViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,8 +62,7 @@
  *
  *  If clicked (and logged-in) we swap the view for the default (splash logo/login) view.
  */
-- (void) loginClicked {
-    
+- (void) loginClicked {  
     if (self.account) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];

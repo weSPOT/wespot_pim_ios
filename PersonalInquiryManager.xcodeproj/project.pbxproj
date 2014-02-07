@@ -11,7 +11,7 @@
 		342CF88417DA011300401E55 /* INQInquireyPartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquireyPartCell.m */; };
 		342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88617DA07F700401E55 /* INQHypothesisViewController.m */; };
 		342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88917DA091600401E55 /* INQNotesViewController.m */; };
-		34539BB217B274D800352E9A /* INQSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BB117B274D800352E9A /* INQSplashScreenViewController.m */; };
+		34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BB117B274D800352E9A /* INQLoginScreenViewController.m */; };
 		34539BBF17B2759A00352E9A /* ARLBean.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BBD17B2759A00352E9A /* ARLBean.m */; };
 		34539BDE17B275B600352E9A /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34539BD817B275B600352E9A /* libzbar.a */; };
 		3454CC8717B3935800C0DFFC /* INQMyInquiriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC8617B3935800C0DFFC /* INQMyInquiriesViewController.m */; };
@@ -183,8 +183,8 @@
 		342CF88617DA07F700401E55 /* INQHypothesisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQHypothesisViewController.m; sourceTree = "<group>"; };
 		342CF88817DA091600401E55 /* INQNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNotesViewController.h; sourceTree = "<group>"; };
 		342CF88917DA091600401E55 /* INQNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNotesViewController.m; sourceTree = "<group>"; };
-		34539BB017B274D800352E9A /* INQSplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashScreenViewController.h; sourceTree = "<group>"; };
-		34539BB117B274D800352E9A /* INQSplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashScreenViewController.m; sourceTree = "<group>"; };
+		34539BB017B274D800352E9A /* INQLoginScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLoginScreenViewController.h; sourceTree = "<group>"; };
+		34539BB117B274D800352E9A /* INQLoginScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLoginScreenViewController.m; sourceTree = "<group>"; };
 		34539BBC17B2759A00352E9A /* ARLBean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLBean.h; sourceTree = "<group>"; };
 		34539BBD17B2759A00352E9A /* ARLBean.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLBean.m; sourceTree = "<group>"; };
 		34539BBE17B2759A00352E9A /* ARLearnBeans-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARLearnBeans-Prefix.pch"; sourceTree = "<group>"; };
@@ -754,8 +754,8 @@
 				3477E6A31769C9A000F3A5F3 /* ARLViewController.h */,
 				3477E6A41769C9A000F3A5F3 /* ARLViewController.m */,
 				3477E68F1769C9A000F3A5F3 /* Supporting Files */,
-				34539BB017B274D800352E9A /* INQSplashScreenViewController.h */,
-				34539BB117B274D800352E9A /* INQSplashScreenViewController.m */,
+				34539BB017B274D800352E9A /* INQLoginScreenViewController.h */,
+				34539BB117B274D800352E9A /* INQLoginScreenViewController.m */,
 				347AD0BC17B28F3C00B4B345 /* INQBadgesViewController.h */,
 				347AD0BD17B28F3C00B4B345 /* INQBadgesViewController.m */,
 				347AD0BF17B2947200B4B345 /* INQFriendsActivity.h */,
@@ -1179,7 +1179,7 @@
 				3477E6951769C9A000F3A5F3 /* main.m in Sources */,
 				3477E6991769C9A000F3A5F3 /* ARLAppDelegate.m in Sources */,
 				3477E6A51769C9A000F3A5F3 /* ARLViewController.m in Sources */,
-				34539BB217B274D800352E9A /* INQSplashScreenViewController.m in Sources */,
+				34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */,
 				34539BBF17B2759A00352E9A /* ARLBean.m in Sources */,
 				347ACF2B17B27DD700B4B345 /* ARLNotificationPlayer.m in Sources */,
 				8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */,

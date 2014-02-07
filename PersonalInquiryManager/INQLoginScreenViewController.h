@@ -9,6 +9,6 @@
 #import "ARLSplashScreenViewController.h"
 #import "INQOauthViewController.h"
 
-@interface INQSplashScreenViewController : ARLSplashScreenViewController
+@interface INQLoginScreenViewController : ARLSplashScreenViewController
 
 @end

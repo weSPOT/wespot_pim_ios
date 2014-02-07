@@ -70,10 +70,10 @@
             </objects>
             <point key="canvasLocation" x="1741" y="1021"/>
         </scene>
-        <!--Splash Screen View Controller - Me-->
+        <!--Login Screen View Controller - Me-->
         <scene sceneID="j8i-99-U92">
             <objects>
-                <viewController storyboardIdentifier="SplashView" id="pUU-cQ-xlc" customClass="INQSplashScreenViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashView" id="pUU-cQ-xlc" customClass="INQLoginScreenViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VhJ-RX-SCt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

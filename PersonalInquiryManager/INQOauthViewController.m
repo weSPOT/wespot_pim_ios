@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, services) {
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     
-   if (cell == nil) {
+    if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
     
@@ -93,6 +93,7 @@ typedef NS_ENUM(NSInteger, services) {
             cell.textLabel.text = @"Twitter";
             break;
     }
+    
     return cell;
 }
 

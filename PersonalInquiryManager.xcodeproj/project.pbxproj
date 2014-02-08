@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		342CF88117D9FF9900401E55 /* INQInquiryPageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */; };
-		342CF88417DA011300401E55 /* INQInquireyPartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquireyPartCell.m */; };
+		342CF88417DA011300401E55 /* INQInquiryPartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquiryPartCell.m */; };
 		342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88617DA07F700401E55 /* INQHypothesisViewController.m */; };
 		342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88917DA091600401E55 /* INQNotesViewController.m */; };
 		34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BB117B274D800352E9A /* INQLoginScreenViewController.m */; };
@@ -178,7 +178,7 @@
 		342CF87F17D9FF9900401E55 /* INQInquiryPageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryPageTableViewController.h; sourceTree = "<group>"; };
 		342CF88017D9FF9900401E55 /* INQInquiryPageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryPageTableViewController.m; sourceTree = "<group>"; };
 		342CF88217DA011300401E55 /* INQInquiryPartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryPartCell.h; sourceTree = "<group>"; };
-		342CF88317DA011300401E55 /* INQInquireyPartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquireyPartCell.m; sourceTree = "<group>"; };
+		342CF88317DA011300401E55 /* INQInquiryPartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryPartCell.m; sourceTree = "<group>"; };
 		342CF88517DA07F700401E55 /* INQHypothesisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQHypothesisViewController.h; sourceTree = "<group>"; };
 		342CF88617DA07F700401E55 /* INQHypothesisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQHypothesisViewController.m; sourceTree = "<group>"; };
 		342CF88817DA091600401E55 /* INQNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNotesViewController.h; sourceTree = "<group>"; };
@@ -779,7 +779,7 @@
 				8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */,
 				8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */,
 				342CF88217DA011300401E55 /* INQInquiryPartCell.h */,
-				342CF88317DA011300401E55 /* INQInquireyPartCell.m */,
+				342CF88317DA011300401E55 /* INQInquiryPartCell.m */,
 				342CF88517DA07F700401E55 /* INQHypothesisViewController.h */,
 				342CF88617DA07F700401E55 /* INQHypothesisViewController.m */,
 				342CF88817DA091600401E55 /* INQNotesViewController.h */,
@@ -1267,7 +1267,7 @@
 				34D422D917B6775D0051E84C /* ARLAudioRecordButtons.m in Sources */,
 				8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */,
 				342CF88117D9FF9900401E55 /* INQInquiryPageTableViewController.m in Sources */,
-				342CF88417DA011300401E55 /* INQInquireyPartCell.m in Sources */,
+				342CF88417DA011300401E55 /* INQInquiryPartCell.m in Sources */,
 				342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */,
 				342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */,
 			);

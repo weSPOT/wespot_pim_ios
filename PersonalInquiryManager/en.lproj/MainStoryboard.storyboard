@@ -77,6 +77,18 @@
                     <view key="view" contentMode="scaleToFill" id="VhJ-RX-SCt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Sci-cb-OTP">
+                                <rect key="frame" x="211" y="363" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="nxa-Ma-zfy" kind="push" id="RxA-Pq-3p1"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Me" id="Zht-Uw-Njh"/>
@@ -85,6 +97,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v1P-nu-UPj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="951" y="-126"/>
+        </scene>
+        <!--Oauth View Controller - Login Services-->
+        <scene sceneID="qX7-Hs-Wed">
+            <objects>
+                <tableViewController storyboardIdentifier="LoginServices" title="Login Services" id="nxa-Ma-zfy" customClass="INQOauthViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mYj-Yh-FES">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="PYj-l6-9eg" style="IBUITableViewCellStyleDefault" id="rei-Fe-x5J">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rei-Fe-x5J" id="yJY-dB-aSA">
+                                    <rect key="frame" x="0.0" y="0.0" width="253" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PYj-l6-9eg">
+                                            <rect key="frame" x="15" y="0.0" width="238" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="nxa-Ma-zfy" id="yoX-v7-giN"/>
+                            <outlet property="delegate" destination="nxa-Ma-zfy" id="66w-29-ahz"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Login Services" id="O4l-va-JuH"/>
+                    <connections>
+                        <outlet property="LoginServices" destination="mYj-Yh-FES" id="Ohk-Tu-OQv"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gw6-uT-3Cl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1346" y="-126"/>
         </scene>
         <!--Navigation Controller - SplashLogin-->
         <scene sceneID="hlS-ji-MOa">

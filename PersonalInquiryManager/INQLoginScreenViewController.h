@@ -9,6 +9,9 @@
 #import "ARLSplashScreenViewController.h"
 #import "INQOauthViewController.h"
 
-@interface INQLoginScreenViewController : ARLSplashScreenViewController
+@interface INQLoginScreenViewController : UIViewController
+
+@property (strong, nonatomic) UIButton* loginButton;
+// @property (strong, nonatomic) Account* account;
 
 @end

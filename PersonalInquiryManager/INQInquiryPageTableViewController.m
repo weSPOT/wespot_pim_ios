@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECION = 3,
+    DATACOLLECTION = 3,
     /*!
      *  Analysis.
      */
@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, indices) {
         case PLANNING:
             cell.textLabel.text = @"Planning";
             break;
-        case DATACOLLECION:
+        case DATACOLLECTION:
             cell.textLabel.text = @"Data collection tasks";
             break;
         case ANALYSIS:
@@ -229,7 +229,7 @@ typedef NS_ENUM(NSInteger, indices) {
             }
             break;
             
-        case DATACOLLECION: {
+        case DATACOLLECTION: {
             
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];

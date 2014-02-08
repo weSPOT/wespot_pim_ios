@@ -12,6 +12,7 @@
 
 @property (readonly, nonatomic) CGFloat statusbarHeight;
 @property (readonly, nonatomic) CGFloat navbarHeight;
+@property (readonly, nonatomic) CGFloat tabbarHeight;
 @property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
 
 @end
@@ -26,6 +27,10 @@
 
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
+}
+
+-(CGFloat) tabbarHeight {
+    return self.tabBarController.tabBar.bounds.size.height;
 }
 
 -(UIInterfaceOrientation) interfaceOrientation {
@@ -82,6 +87,23 @@
 }
 
 /*!
+ *  Sets the isLoggedIn property of the AppDelegate.
+ */
+- (void)doUpdateLoggedIn {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelector:@selector(setIsLoggedIn:) withObject: [NSNumber numberWithBool:self.account!=nil?YES:NO]];
+}
+
+/*!
+ *  Sets the isLoggedIn property of the AppDelegate.
+ */
+- (NSNumber *)isLoggedIn {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+
+    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
+}
+
+/*!
  *  Load and Align Content.
  *
  *  @param animated Animation is enabled if YES.
@@ -93,6 +115,14 @@
     [self createViewsProgrammatically];
     
     [self.loggedInView setAccount:self.account];
+    
+    [self doUpdateLoggedIn];
+    
+    if (self.isLoggedIn!=0 || self.isLoggedIn==nil) {
+        [self.loginButton setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
+    } else {
+        [self.loginButton setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
+    }
     
     [self doUpdateLayout];
 }
@@ -114,7 +144,7 @@
     
     NSLog(@"[%s]", __func__);
     
-    if (self.account) {
+    if (self.isLoggedIn) {
         [self createLoggedInView];
         [self createMyRunsButton];
         [self createGamesButton];
@@ -156,7 +186,8 @@
         [self.loginButton addTarget:self action:@selector(loginClicked) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.loginButton];
     }
-    if (self.account) {
+    
+    if (self.isLoggedIn) {
         [self.loginButton setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
     } else {
         [self.loginButton setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
@@ -202,8 +233,9 @@
 
         // verticalContstraint = @"V:|-[loggedInView(==100)]-[arlearnImage(==150)]-(>=10)-[loginButton]-[myRunsButton]-[gamesButton]-|";
 
-        verticalContstraint = [NSString stringWithFormat:@"V:|-%@-[loggedInView(==100)]-[arlearnImage(==150)]-(>=10)-[loginButton]-[myRunsButton]-|",
-                                [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8]];
+        verticalContstraint = [NSString stringWithFormat:@"V:|-%@-[loggedInView(==100)]-[arlearnImage(==150)]-(>=10)-[loginButton]-[myRunsButton]-%@-|",
+                                [NSNumber numberWithInteger:self.navbarHeight+self.statusbarHeight+8],
+                                [NSNumber numberWithInteger:self.tabbarHeight +8]];
         
         [self.view addConstraints:[NSLayoutConstraint
                                    constraintsWithVisualFormat:@"H:|-[myRunsButton]-|"
@@ -351,9 +383,8 @@
 }
 
 - (void) fetchCurrentAccount {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    self.account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
-                                       withManagedContext:appDelegate.managedObjectContext] ;
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
 }
 
 /*!
@@ -371,6 +402,7 @@
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
         self.account = nil;
+        [self doUpdateLoggedIn];
         [self createViewsProgrammatically];
     } else {
         ARLOauthViewController *controller = [[ARLOauthViewController alloc] init];

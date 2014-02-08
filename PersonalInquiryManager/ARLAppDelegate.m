@@ -14,6 +14,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize isLoggedIn = _isLoggedIn;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -134,6 +135,37 @@
 
 - (NSURL *)applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+/*!
+ *  Setter for isLoggedIn property.
+ *
+ *  @param b If TRUE the user is logged-in.
+ */
+- (void)setIsLoggedIn:(NSNumber *)b {
+    NSLog(@"[%s] IsLoggedIn: %@", __func__, b);
+    
+    _isLoggedIn = b;
+}
+
+/*!
+ *  Getter for isLoggedIn property.
+ *
+ *  @return If TRUE the user is logged-in.
+ */
+- (NSNumber *)isLoggedIn {
+   NSLog(@"[%s] IsLoggedIn: %@", __func__, _isLoggedIn);
+    
+    return _isLoggedIn;
+}
+
+- (Account *) fetchCurrentAccount {
+    Account *account =[Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+                                   withManagedContext:self.managedObjectContext];
+
+    self.isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];
+    
+    return account;
 }
 
 @end

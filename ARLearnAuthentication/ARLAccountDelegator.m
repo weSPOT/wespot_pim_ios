@@ -31,11 +31,7 @@
     [Response deleteAll:context];    
     
     [self saveChanges:context];
-   
-    
 }
-
-
 
 + (void) saveChanges : (NSManagedObjectContext * ) context {
     
@@ -48,7 +44,6 @@
             }
         }
     }
-
 }
 
 @end

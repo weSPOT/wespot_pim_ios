@@ -8,52 +8,50 @@
 
 #import "INQLoginScreenViewController.h"
 
+@interface INQLoginScreenViewController (UIConstraintBasedLayoutDebugging)
+
+
+@end
+
 @implementation INQLoginScreenViewController
+
+//@synthesize account = _account;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    /*self.account =*/ [self fetchCurrentAccount];
+    
+    [self createLoginButton];
+    [self adjustLoginButton];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+}
+
+///*!
+// *  Sets the isLoggedIn property of the AppDelegate.
+// */
+//- (void)doUpdateLoggedIn {
+//    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+//    [appDelegate performSelector:@selector(setIsLoggedIn:) withObject: [NSNumber numberWithBool:self.account!=nil?YES:NO]];
+//}
+
+- (Account *) fetchCurrentAccount {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
+}
+
+/*!
+ *  Sets the isLoggedIn property of the AppDelegate.
+ */
+- (NSNumber *)isLoggedIn {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    if (!self.loggedInView) {
-        NSLog(@"[%s] hide tabBar", __func__);
-        self.tabBarController.tabBar.hidden = YES;
-    } else {
-        self.tabBarController.tabBar.hidden = NO;
-    }
+    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
 }
 
-/*!
- *  Create the ARLEarn Logo UIImageView.
- */
-- (void) createARLearnImage {
-    if (!self.arlearnImage) {
-        self.arlearnImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wespot_logo.png"]];
-        self.arlearnImage.translatesAutoresizingMaskIntoConstraints = NO;
-        self.arlearnImage.contentMode = UIViewContentModeScaleAspectFit;
-        
-        [self.view addSubview:self.arlearnImage];
-    }
-}
-
-/*!
- *  Override creation of My Runs UIButton.
- *
- *  Note: Create a hidden one so base class keeps working.
- */
-- (void) createMyRunsButton {
-    if (!self.myRunsButton) {
-        self.myRunsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.myRunsButton.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [self.myRunsButton addTarget:self action:@selector(myRunsClicked) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:self.myRunsButton];
-    }
-    [self.myRunsButton setTitle:@"To Hide" forState:UIControlStateNormal];
-    self.myRunsButton.hidden= YES;
-}
 
 /*!
  *  Outlet for Login Button Click.
@@ -63,18 +61,57 @@
  *  If clicked (and logged-in) we swap the view for the default (splash logo/login) view.
  */
 - (void) loginClicked {  
-    if (self.account) {
+    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
         
-        self.account = nil;
-        self.tabBarController.tabBar.hidden = YES;
+ //       self.account = nil;
+ //       self.tabBarController.tabBar.hidden = YES;
         
-        [self createViewsProgrammatically];
+ //       [self createViewsProgrammatically];
+        
+        [self adjustLoginButton];
     } else {
-        ARLOauthViewController *controller = [[INQOauthViewController alloc] init];
+        //NQOauthViewController *controller = [[INQOauthViewController alloc] init];
         
-        [self presentViewController:controller animated:TRUE completion:nil];
+        INQOauthViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginServices"];
+        
+        [self.navigationController pushViewController:controller animated:YES];
+        // [self presentViewController:controller animated:TRUE completion:nil];
+    }
+}
+
+- (void) createLoginButton {
+    if (!self.loginButton) {
+        self.loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.loginButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.loginButton addTarget:self action:@selector(loginClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.loginButton];
+        
+        NSDictionary * viewsDictionary;
+        
+        viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                           self.loginButton,  @"loginButton",
+                           nil];
+        [self.view addConstraints:[NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"V:|-[loginButton]-|"
+                                   options:NSLayoutFormatDirectionLeadingToTrailing
+                                   metrics:nil
+                                   views:viewsDictionary]];
+        
+        [self.view addConstraints:[NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"H:|-[loginButton]-|"
+                                   options:NSLayoutFormatDirectionLeadingToTrailing
+                                   metrics:nil
+                                   views:viewsDictionary]];
+    }
+}
+
+- (void) adjustLoginButton  {
+    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+        [self.loginButton setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
+    } else {
+        [self.loginButton setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
     }
 }
 

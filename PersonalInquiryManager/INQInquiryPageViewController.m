@@ -103,37 +103,4 @@
     [self.navigationController pushViewController:dataCollectionTasks animated:YES];
 }
 
-//- (void) setConstraints {
-//    NSDictionary *viewsDictionary =
-//    [[NSDictionary alloc] initWithObjectsAndKeys:
-//     self.showDataCollection, @"showDataCollection",
-//     self.webView, @"webView",
-//     self.hypothesisView, @"hypothesisView",
-//     nil];
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:@"V:|-[webView]-[hypothesisView]-[showDataCollection]-|"
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:@"H:|[webView]|"
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:@"H:|[hypothesisView]|"
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//    
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:@"H:|-[showDataCollection]-|"
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//}
-
 @end

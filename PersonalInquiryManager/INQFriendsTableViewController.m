@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQFriendsActivity.h"
+#import "INQFriendsTableViewController.h"
 
-@interface INQFriendsActivity ()
+@interface INQFriendsTableViewController ()
 
 @end
 
-@implementation INQFriendsActivity
+@implementation INQFriendsTableViewController
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -29,9 +29,7 @@
 - (void)setupFetchedResultsController {
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
-                                                                                     ascending:YES
-                                                                                      selector:@selector(localizedCaseInsensitiveCompare:)]];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     NSNumber* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     request.predicate = [NSPredicate predicateWithFormat:
@@ -40,10 +38,7 @@
                          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
     
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                        managedObjectContext:appDelegate.managedObjectContext
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

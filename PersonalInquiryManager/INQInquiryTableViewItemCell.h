@@ -10,6 +10,4 @@
 
 @interface INQInquiryTableViewItemCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *inquiryPartLabel;
-
 @end

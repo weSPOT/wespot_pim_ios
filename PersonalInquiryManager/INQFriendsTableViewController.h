@@ -14,6 +14,6 @@
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"
 
-@interface INQFriendsActivity :  CoreDataTableViewController 
+@interface INQFriendsTableViewController :  CoreDataTableViewController 
 
 @end

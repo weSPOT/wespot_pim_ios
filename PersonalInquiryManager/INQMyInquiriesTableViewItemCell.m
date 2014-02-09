@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-//#import "INQMyInquiriesTableViewItemCell.h"
+#import "INQMyInquiriesTableViewItemCell.h"
 
-@implementation INQMyInquiriesTableViewItemCell : UITableViewCell
+@implementation INQMyInquiriesTableViewItemCell 
 
 @end

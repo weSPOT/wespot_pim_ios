@@ -155,12 +155,14 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    INQInquiryTableViewItemCell *cell = (INQInquiryTableViewItemCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
   
     if (cell == nil) {
-        cell = [[INQInquiryTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-
+    
+    // Configure the cell...
+    
     switch ([indexPath item]) {
         case MESSAGE:
             cell.textLabel.text = @"Messages";
@@ -183,8 +185,6 @@ typedef NS_ENUM(NSInteger, indices) {
         default:
             break;
     }
-
-    // Configure the cell...
 
     return cell;
 }

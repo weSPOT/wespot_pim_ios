@@ -73,6 +73,7 @@
     if (cell == nil) {
         cell = [[INQMyInquiriesTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell"];
     }
+    
     cell.title.text = generalItem.title;
     NSData* icon = [generalItem icon];
     if (icon) {

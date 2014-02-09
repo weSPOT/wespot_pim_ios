@@ -8,6 +8,8 @@
 
 #import "INQInquiryPageViewController.h"
 
+#import "INQGeneralItemTableViewController.h"
+
 @interface INQInquiryPageViewController ()
 
 @end

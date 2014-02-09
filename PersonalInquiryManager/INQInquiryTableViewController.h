@@ -14,7 +14,6 @@
 #import "ARLNetwork+INQ.h"
 #import "ARLCloudSynchronizer.h"
 #import "Run+ARLearnBeanCreate.h"
-#import "INQGeneralItemTableViewController.h"
 
 @interface INQInquiryTableViewController : UITableViewController
 

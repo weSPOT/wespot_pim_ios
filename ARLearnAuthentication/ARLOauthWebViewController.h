@@ -13,10 +13,9 @@
 
 @interface ARLOauthWebViewController : UIViewController  <UIWebViewDelegate>
 
-@property (strong, nonatomic)  UIWebView *webView;
 @property (weak, nonatomic) NSString * domain;
 @property (strong, nonatomic) UIViewController * selfRef;
-@property (strong, nonatomic) UIButton* backButton;
 
 - (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate;
+
 @end

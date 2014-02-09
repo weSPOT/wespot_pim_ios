@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, tools) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   	
+
     // Do any additional setup after loading the view, typically from a nib.
     
     // Uncomment the following line to preserve selection between presentations.
@@ -66,8 +66,31 @@ typedef NS_ENUM(NSInteger, tools) {
     
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"login" style:UIBarButtonItemStyleDone target:self action:@selector(loginButtonButtonTap:)];
+    
+    [self fetchCurrentAccount];
+    
+    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+        [loginButton setTitle:NSLocalizedString(@"logout", nil)];
+    } else {
+        [loginButton setTitle:NSLocalizedString(@"login", nil)];
+    }
+    
+    self.navigationItem.rightBarButtonItem = loginButton;
+}
+
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+}
+
+-(void)loginButtonButtonTap:(id)sender {
+    //[self performSegueWithIdentifier:@"GotoLogin" sender:sender];
+    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginView"];
+    [self.navigationController pushViewController:newViewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,6 +204,20 @@ typedef NS_ENUM(NSInteger, tools) {
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
+}
+
+/*!
+ *  Sets the isLoggedIn property of the AppDelegate.
+ */
+- (NSNumber *)isLoggedIn {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
+}
+
+- (Account *) fetchCurrentAccount {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
 }
 
 @end

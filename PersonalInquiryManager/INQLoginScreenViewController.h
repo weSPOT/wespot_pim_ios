@@ -12,6 +12,6 @@
 @interface INQLoginScreenViewController : UIViewController
 
 @property (strong, nonatomic) UIButton* loginButton;
-// @property (strong, nonatomic) Account* account;
+
 
 @end

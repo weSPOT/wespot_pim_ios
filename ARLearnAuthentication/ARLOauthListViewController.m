@@ -40,7 +40,6 @@
 - (void) viewWillAppear:(BOOL)animated {
     
     NSLog(@"view will app");
-    
 }
 
 /*!
@@ -54,7 +53,6 @@
 
 - (IBAction)facebookButton:(id)sender {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 - (IBAction)googleButton:(id)sender {
@@ -71,8 +69,6 @@
 }
 
 - (IBAction)qrScan:(id)sender {
-    
-    
     ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
     reader.supportedOrientationsMask = ZBarOrientationMaskAll;
@@ -141,7 +137,6 @@
 //- (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {
 //    [self dismissModalViewControllerAnimated:NO];
 //}
-
 
 -(void) disappear {
      NSLog(@"about to disappear");

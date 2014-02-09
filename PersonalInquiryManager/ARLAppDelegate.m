@@ -160,7 +160,7 @@
 }
 
 - (Account *) fetchCurrentAccount {
-    Account *account =[Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+    Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
                                    withManagedContext:self.managedObjectContext];
 
     self.isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];

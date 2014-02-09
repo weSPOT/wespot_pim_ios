@@ -105,29 +105,21 @@ typedef NS_ENUM(NSInteger, services) {
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController * newViewController;
-    NSString *loginString;
-    
-    switch ([indexPath item]){
-        case GOOGLE: {
-            // Create the new ViewController.
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MessagesView"];
-            
-            loginString  = [self getOAuthLoginUrl:[NSNumber numberWithInt:[indexPath item]]];
-            
-            // Pass the parameters to render.
-            // [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
-        }
-            break;
-    }
+    //UIViewController * newViewController;
+
+    // Create the new ViewController.
+    NSString *loginString  = [self getOAuthLoginUrl:[NSNumber numberWithInt:[indexPath item]]];
     
     if (loginString) {
-        ARLOauthWebViewController* svc = [[ARLOauthWebViewController alloc] init];
-        [self presentViewController:svc animated:YES completion:nil];
-        [svc loadAuthenticateUrl:loginString delegate:svc];
+        ARLOauthWebViewController* svc = [self.storyboard instantiateViewControllerWithIdentifier:@"oauthWebView"];
+        
+        //ARLOauthWebViewController* svc = [[ARLOauthWebViewController alloc] init];
+        //[self presentViewController:svc animated:YES completion:nil];
+        [self.navigationController pushViewController:svc animated:YES];
+        
+        [svc loadAuthenticateUrl:  @"https://accounts.google.com/o/oauth2/auth?redirect_uri=http://streetlearn.appspot.com/oauth/google&response_type=code&client_id=594104153413-8ddgvbqp0g21pid8fm8u2dau37521b16.apps.googleusercontent.com&approval_prompt=force&scope=profile+email" delegate:svc];
     }
 }
-
 
 -(NSString *) getOAuthLoginUrl:(NSNumber *) serviceId {
     NSString *url;

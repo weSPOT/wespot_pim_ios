@@ -19,24 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    /*self.account =*/ [self fetchCurrentAccount];
-    
-    [self createLoginButton];
-    [self adjustLoginButton];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self fetchCurrentAccount];
+    
+    [self createLoginButton];
+    [self adjustLoginButton];
 }
-
-///*!
-// *  Sets the isLoggedIn property of the AppDelegate.
-// */
-//- (void)doUpdateLoggedIn {
-//    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-//    [appDelegate performSelector:@selector(setIsLoggedIn:) withObject: [NSNumber numberWithBool:self.account!=nil?YES:NO]];
-//}
 
 - (Account *) fetchCurrentAccount {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -52,7 +45,6 @@
     return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
 }
 
-
 /*!
  *  Outlet for Login Button Click.
  *
@@ -64,16 +56,9 @@
     if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
-        
- //       self.account = nil;
- //       self.tabBarController.tabBar.hidden = YES;
-        
- //       [self createViewsProgrammatically];
-        
+#warning not enough to toggle isLoggedIn.
         [self adjustLoginButton];
     } else {
-        //NQOauthViewController *controller = [[INQOauthViewController alloc] init];
-        
         INQOauthViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginServices"];
         
         [self.navigationController pushViewController:controller animated:YES];

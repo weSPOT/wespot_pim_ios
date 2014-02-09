@@ -13,7 +13,7 @@
 
 @interface ARLOauthWebViewController ()
 
-@property (strong, nonatomic)  UIView *navbarView;
+@property (strong, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
@@ -36,52 +36,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
-    self.webView = [[UIWebView alloc] init];
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.webView];
-    
-    self.backButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.backButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.backButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    [self.backButton setTitle:NSLocalizedString(@"back", nil) forState:UIControlStateNormal];
-    [self.backButton setAlpha:0.95];
 
-    self.navbarView = [[UIWebView alloc] init];
-    self.navbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.navbarView];
-    
-    [self.navbarView addSubview:self.backButton];
 
-    NSDictionary * viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys: self.navbarView, @"navbarView", self.webView, @"webView", self.backButton, @"backButton", nil];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[navbarView]|"
-                               options:0
-                               metrics:nil
-                               views:viewsDictionary]];
-
-    [self.view addConstraints:[NSLayoutConstraint
-                          constraintsWithVisualFormat:@"H:|[webView]|"
-                          options:0
-                          metrics:nil
-                          views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
-                          constraintsWithVisualFormat:@"V:|[navbarView(==50)][webView]|"
-                          options:0
-                          metrics:nil
-                          views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|-(==20)-[backButton]"
-                               options:0
-                               metrics:nil
-                               views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|-(==30)-[backButton(==10)]"
-                               options:0
-                               metrics:nil
-                               views:viewsDictionary]];
 }
 
 /*!
@@ -95,17 +51,21 @@
 
 - (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate {
     [self deleteARLearnCookie];
-//    self.delegate = aDelegate;
-    self.webView.delegate = self;
-    self.webView.scalesPageToFit = YES;
+
     self.domain = [[NSURL URLWithString:authenticateUrl] host];
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
+    
+    UIWebView *web = (UIWebView *)self.view;
+    
+    [web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+   
     NSString * urlAsString =request.URL.description;
+  
+    NSLog(@"[%s] %@",__func__, request.URL.absoluteString);
+    
     if (!([urlAsString rangeOfString:@"twitter?denied="].location == NSNotFound)) {
-//        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         [self close];
         return YES;
     }
@@ -118,8 +78,11 @@
     if (!([urlAsString rangeOfString:@"oauth.html?accessToken="].location == NSNotFound)) {
         NSArray *listItems = [urlAsString componentsSeparatedByString:@"accessToken="];
         NSString * lastObject =[listItems lastObject];
+        
         listItems = [lastObject componentsSeparatedByString:@"&"];
+        
         [[NSUserDefaults standardUserDefaults] setObject:[listItems objectAtIndex:0] forKey:@"auth"];
+        
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         NSDictionary *accountDetails = [ARLNetwork accountDetails];
 
@@ -127,50 +90,62 @@
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
 
-        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];        
+        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+        
         [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        
         [self close];
+        
         return YES;
         
     } else if (!([urlAsString rangeOfString:@"about:blank"].location == NSNotFound)) {
         return YES;
+        
     } else if (!([urlAsString rangeOfString:@"accounts.google.com/o/oauth2/approval?"].location == NSNotFound)) {
         return YES;
+        
     } else if (!([urlAsString rangeOfString:@"google?code="].location == NSNotFound)) {
         return YES;
+        
     } else if (!([urlAsString rangeOfString:@"o/oauth2/auth?redirect_uri"].location == NSNotFound)) {
         return YES;
+        
     } else if (!([urlAsString rangeOfString:@"appspot.com/oauth"].location == NSNotFound)) {
         return YES;
+        
     }else if (!([urlAsString rangeOfString:@"authenticate?oauth_token="].location == NSNotFound)) {
         return YES;
+        
     }else if (!([urlAsString rangeOfString:@"oauth/twitter?oauth_token="].location == NSNotFound)) {
         return YES;
+        
     }else if (!([urlAsString rangeOfString:@"https://api.twitter.com/oauth/authenticate"].location == NSNotFound)) {
         return YES;
+        
     }else if (!([urlAsString rangeOfString:@"dialog/oauth"].location == NSNotFound)) {
         return YES;
-    }else {
         
+    }else {
         NSLog(@"not found %@", urlAsString);
-//        [self close];
         return YES;
-
     }
+    
     return YES;
     
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
+}
+
 -(void) close {
-    if([NSThread isMainThread]) {
-        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        self.selfRef = nil;
-    } else {
-        [self performSelectorOnMainThread:@selector(close)
-                               withObject:nil
-                            waitUntilDone:YES];
-    }
+    self.selfRef = nil;
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) deleteARLearnCookie {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INQFriendsTableViewCell : UITableViewCell
+@interface INQFriendsTableViewItemCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UIImageView *icon;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CoreDataTableViewController.h"
 #import "Account.h"
-#import "INQFriendsTableViewCell.h"
+#import "INQFriendsTableViewItemCell.h"
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"

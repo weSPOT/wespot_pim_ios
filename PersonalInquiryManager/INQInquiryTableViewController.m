@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQInquiryPageTableViewController.h"
+#import "INQInquiryTableViewController.h"
 
-@interface INQInquiryPageTableViewController ()
+@interface INQInquiryTableViewController ()
 
 /*!
  *  ID's and order of the cells.
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, indices) {
 
 @end
 
-@implementation INQInquiryPageTableViewController
+@implementation INQInquiryTableViewController
 
 -(NSString*) cellIdentifier {
     return  @"inquiryPartCell";
@@ -155,10 +155,10 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    INQInquiryPartCell *cell = (INQInquiryPartCell*) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    INQInquiryTableViewItemCell *cell = (INQInquiryTableViewItemCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
   
     if (cell == nil) {
-        cell = [[INQInquiryPartCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+        cell = [[INQInquiryTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
 
     switch ([indexPath item]) {

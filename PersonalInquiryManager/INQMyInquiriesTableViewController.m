@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQMyInquiriesViewController.h"
+#import "INQMyInquiriesTableViewController.h"
 
-@interface INQMyInquiriesViewController ()
+@interface INQMyInquiriesTableViewController ()
 
 @end
 
-@implementation INQMyInquiriesViewController
+@implementation INQMyInquiriesTableViewController
 
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 //{
@@ -69,9 +69,9 @@
 {
     Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
-    ARLMyInquiriesCell *cell = [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell"];
+    INQMyInquiriesTableViewItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell"];
     if (cell == nil) {
-        cell = [[ARLMyInquiriesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell"];
+        cell = [[INQMyInquiriesTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell"];
     }
     cell.title.text = generalItem.title;
     NSData* icon = [generalItem icon];
@@ -84,7 +84,7 @@
     return cell;
 }
 
--(void) configureCell: (ARLMyInquiriesCell *) cell atIndexPath:(NSIndexPath *)indexPath {
+-(void) configureCell: (INQMyInquiriesTableViewItemCell *) cell atIndexPath:(NSIndexPath *)indexPath {
     Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
     cell.title.text = generalItem.title;

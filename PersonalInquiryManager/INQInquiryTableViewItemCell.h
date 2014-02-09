@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INQInquiryPartCell : UITableViewCell
+@interface INQInquiryTableViewItemCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *inquiryPartLabel;
 

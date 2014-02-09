@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "INQInquiryPartCell.h"
+#import "INQInquiryTableViewItemCell.h"
 #import "Inquiry+Create.h"
 #import "INQHypothesisViewController.h"
 #import "INQNotesViewController.h"
@@ -16,7 +16,7 @@
 #import "Run+ARLearnBeanCreate.h"
 #import "INQGeneralItemTableViewController.h"
 
-@interface INQInquiryPageTableViewController : UITableViewController
+@interface INQInquiryTableViewController : UITableViewController
 
 @property (strong, nonatomic)  Inquiry *inquiry;
 

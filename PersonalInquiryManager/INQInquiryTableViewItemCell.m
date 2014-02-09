@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQInquiryPartCell.h"
+#import "INQInquiryTableViewItemCell.h"
 
-@implementation INQInquiryPartCell
+@implementation INQInquiryTableViewItemCell
 
 //- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 //{

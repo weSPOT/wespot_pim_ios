@@ -55,9 +55,9 @@
     
     
     Account * generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-    INQFriendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell"];
+    INQFriendsTableViewItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell"];
     if (cell == nil) {
-        cell = [[INQFriendsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendsCell"];
+        cell = [[INQFriendsTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendsCell"];
     }
     cell.name.text = generalItem.name;
     cell.name.font = [UIFont boldSystemFontOfSize:16.0f];
@@ -74,11 +74,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    INQFriendsTableViewCell *cell = (INQFriendsTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    INQFriendsTableViewItemCell *cell = (INQFriendsTableViewItemCell*) [tableView cellForRowAtIndexPath:indexPath];
     cell.name.font = [UIFont systemFontOfSize:16.0f];
 }
 
--(void) configureCell: (INQFriendsTableViewCell *) cell atIndexPath:(NSIndexPath *)indexPath {
+-(void) configureCell: (INQFriendsTableViewItemCell *) cell atIndexPath:(NSIndexPath *)indexPath {
     Account * account = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
     cell.name.text = account.name;

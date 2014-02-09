@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Account+Create.h"
+#import "INQOauthViewController.h"
 
 @interface INQMainViewController : UITableViewController
 

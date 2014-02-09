@@ -10,10 +10,10 @@
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"
-#import "ARLMyInquiriesCell.h"
+#import "INQMyInquiriesTableViewItemCell.h"
 #import "Inquiry+Create.h"
 #import "ARLCloudSynchronizer.h"
 
-@interface INQMyInquiriesViewController : CoreDataTableViewController
+@interface INQMyInquiriesTableViewController : CoreDataTableViewController
 
 @end

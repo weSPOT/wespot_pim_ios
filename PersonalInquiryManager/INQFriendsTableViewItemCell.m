@@ -1,14 +1,14 @@
 //
-//  ARLMyInquiriesCell.m
+//  INQFriendsTableViewCell.m
 //  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 8/8/13.
+//  Created by Stefaan Ternier on 8/7/13.
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "ARLMyInquiriesCell.h"
+#import "INQFriendsTableViewItemCell.h"
 
-@implementation ARLMyInquiriesCell
+@implementation INQFriendsTableViewItemCell
 
 //- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 //{

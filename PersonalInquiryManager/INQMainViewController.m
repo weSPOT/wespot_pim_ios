@@ -43,6 +43,7 @@ typedef NS_ENUM(NSInteger, tools) {
 };
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
+@property (strong, nonatomic) UIBarButtonItem *loginButton;
 
 @end
 
@@ -69,17 +70,12 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"login" style:UIBarButtonItemStyleDone target:self action:@selector(loginButtonButtonTap:)];
-    
-    [self fetchCurrentAccount];
-    
-    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
-        [loginButton setTitle:NSLocalizedString(@"logout", nil)];
-    } else {
-        [loginButton setTitle:NSLocalizedString(@"login", nil)];
+    if (!self.loginButton) {
+        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"login" style:UIBarButtonItemStyleDone target:self action:@selector(loginButtonButtonTap:)];
+        self.navigationItem.rightBarButtonItem = self.loginButton;
     }
-    
-    self.navigationItem.rightBarButtonItem = loginButton;
+
+    [self adjustLoginButton];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -88,9 +84,18 @@ typedef NS_ENUM(NSInteger, tools) {
 }
 
 -(void)loginButtonButtonTap:(id)sender {
-    //[self performSegueWithIdentifier:@"GotoLogin" sender:sender];
-    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginView"];
-    [self.navigationController pushViewController:newViewController animated:YES];
+  if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
+      
+        //#warning not enough to toggle isLoggedIn.
+         [self adjustLoginButton];
+    } else {
+        INQOauthViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginServices"];
+        
+        [self.navigationController pushViewController:controller animated:YES];
+        // [self presentViewController:controller animated:TRUE completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -218,6 +223,16 @@ typedef NS_ENUM(NSInteger, tools) {
 - (Account *) fetchCurrentAccount {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
+}
+
+- (void) adjustLoginButton  {
+    [self fetchCurrentAccount];
+    
+    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+        [self.loginButton setTitle:NSLocalizedString(@"Logout", nil)];
+    } else {
+        [self.loginButton setTitle:NSLocalizedString(@"Login", nil)];
+    }
 }
 
 @end

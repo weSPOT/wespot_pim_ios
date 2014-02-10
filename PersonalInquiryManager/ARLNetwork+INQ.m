@@ -44,7 +44,6 @@
 + (id) getFriends : (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
     return [self returnJson:url];
-    
 }
 
 /*!

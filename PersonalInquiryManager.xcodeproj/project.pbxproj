@@ -740,27 +740,26 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
-				8D0249F518A7FCA0009D0566 /* Obsolete */,
-				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
-				8D0249FD18A80B08009D0566 /* Splash */,
-				8D0249FE18A80B12009D0566 /* Main */,
-				347AD0C817B3795C00B4B345 /* Network */,
-				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
-				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
+				8D0249F518A7FCA0009D0566 /* _Obsolete */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
 				3477E6981769C9A000F3A5F3 /* ARLAppDelegate.m */,
-				3477E6A01769C9A000F3A5F3 /* MainStoryboard.storyboard */,
-				3477E68F1769C9A000F3A5F3 /* Supporting Files */,
+				8D024A0018A8EFBF009D0566 /* Authentication */,
 				8D0249FF18A80B1B009D0566 /* Badges */,
+				8D0249F918A80A4F009D0566 /* DataCollection */,
 				8D0249F618A809C9009D0566 /* Friends */,
+				8D0249FA18A80A73009D0566 /* Hypothesis */,
+				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
 				8D0249F718A809D4009D0566 /* Inquiries */,
 				8D0249F818A809EB009D0566 /* Inquiry */,
-				8D0249F918A80A4F009D0566 /* DataCollection */,
-				3454CD4D17B3D0BA00C0DFFC /* INQOauthViewController.h */,
-				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
+				8D0249FE18A80B12009D0566 /* Main */,
+				3477E6A01769C9A000F3A5F3 /* MainStoryboard.storyboard */,
 				8D0249FB18A80A7F009D0566 /* Messages */,
-				8D0249FA18A80A73009D0566 /* Hypothesis */,
+				347AD0C817B3795C00B4B345 /* Network */,
 				8D0249FC18A80A8C009D0566 /* Notes */,
+				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
+				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
+				8D0249FD18A80B08009D0566 /* Splash */,
+				3477E68F1769C9A000F3A5F3 /* Supporting Files */,
 			);
 			path = PersonalInquiryManager;
 			sourceTree = "<group>";
@@ -1033,9 +1032,11 @@
 			path = images;
 			sourceTree = "<group>";
 		};
-		8D0249F518A7FCA0009D0566 /* Obsolete */ = {
+		8D0249F518A7FCA0009D0566 /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
+				3454CC8B17B39B2E00C0DFFC /* INQInquiryPageViewController.h */,
+				3454CC8C17B39B2E00C0DFFC /* INQInquiryPageViewController.m */,
 				8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */,
 				8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */,
 				342CF88217DA011300401E55 /* INQInquiryTableViewItemCell.h */,
@@ -1047,7 +1048,7 @@
 				34539BB017B274D800352E9A /* INQLoginScreenViewController.h */,
 				34539BB117B274D800352E9A /* INQLoginScreenViewController.m */,
 			);
-			name = Obsolete;
+			name = _Obsolete;
 			sourceTree = "<group>";
 		};
 		8D0249F618A809C9009D0566 /* Friends */ = {
@@ -1077,8 +1078,6 @@
 			children = (
 				342CF87F17D9FF9900401E55 /* INQInquiryTableViewController.h */,
 				342CF88017D9FF9900401E55 /* INQInquiryTableViewController.m */,
-				3454CC8B17B39B2E00C0DFFC /* INQInquiryPageViewController.h */,
-				3454CC8C17B39B2E00C0DFFC /* INQInquiryPageViewController.m */,
 			);
 			name = Inquiry;
 			sourceTree = "<group>";
@@ -1144,6 +1143,15 @@
 				347AD0BD17B28F3C00B4B345 /* INQBadgesViewController.m */,
 			);
 			name = Badges;
+			sourceTree = "<group>";
+		};
+		8D024A0018A8EFBF009D0566 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				3454CD4D17B3D0BA00C0DFFC /* INQOauthViewController.h */,
+				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
+			);
+			name = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

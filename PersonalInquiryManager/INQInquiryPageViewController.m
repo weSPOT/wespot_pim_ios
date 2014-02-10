@@ -44,7 +44,7 @@
     NSLog(@"[%s] preparing for segue %@", __func__, self.inquiry.inquiryId);
     
     NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
-    Run* selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
+    Run* selectedRun = [Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     [synchronizer createContext:appDelegate.managedObjectContext];
@@ -56,25 +56,6 @@
         [segue.destinationViewController performSelector:@selector(setRun:) withObject:selectedRun];
     }
 }
-
-//- (void) createWebView {
-//    UIWebView* webViewLocal = [[UIWebView alloc] init];
-//    self.webView = webViewLocal;
-//    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.webView loadHTMLString:self.inquiry.desc baseURL:nil];
-//    [self.view addSubview:self.webView];
-//}
-
-//- (void) createHypothesisView {
-//    if (!self.inquiry.hypothesis) {
-//        self.inquiry.hypothesis = @"test";
-//    }
-//    UIWebView* hypothesisViewLocal = [[UIWebView alloc] init];
-//    self.hypothesisView = hypothesisViewLocal;
-//    self.hypothesisView.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.webView loadHTMLString:self.inquiry.hypothesis baseURL:nil];
-//    [self.view addSubview:self.hypothesisView];
-//}
 
 - (void) createDataCollection {
     UIButton * showDataCollectionLocal = [UIButton buttonWithType:UIButtonTypeRoundedRect];

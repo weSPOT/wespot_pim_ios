@@ -14,6 +14,26 @@
 
 @implementation INQGeneralItemTableViewController
 
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+}
+
+- (void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+}
+
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return [super numberOfRowsInSection:section];
+//}
+
+//
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+//    return 1;
+//}
+
 /*!
  *  Return the Table Data one Cell at a Time.
  *
@@ -25,9 +45,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Fetch Data from CoreData
-    GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
+    GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
 
     // Dequeue a TableCell and intialize if nececsary.
+    // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
     ARLGeneralItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:generalItem.type];
     if (cell == nil) {
         cell = [[ARLGeneralItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
@@ -35,10 +56,13 @@
     
     // Add correct content to the Table Cell.
     cell.giTitleLabel.text = generalItem.name;
+    
+    // Set Font to Bold if unread.
     cell.giTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    
     [self setDCIcon:cell withGi:generalItem];
 
-#warning veg: This cannot be correct as all dat Collection Cells will contain the same content!
+    // If Read set Font to normal.
     for (Action * action in generalItem.actions) {
         if (action.run == self.run) {
             if ([action.action isEqualToString:@"read"]) {
@@ -46,7 +70,8 @@
             }
         }
     }
-    //    cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
+    
+    // cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
     
     return cell;
 }
@@ -61,8 +86,8 @@
     GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
     
     cell.giTitleLabel.text = generalItem.name;
-    //    cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
-        cell.icon.image = [UIImage imageNamed:@"dc_calculator_128.png"];
+    //cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
+    cell.icon.image = [UIImage imageNamed:@"dc_calculator_128.png"];
 }
 
 /*!

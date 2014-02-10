@@ -91,7 +91,6 @@
     } else {
         [self saveContext];
     }
-    
 }
 
 /*!
@@ -102,7 +101,7 @@
 - (void) syncronizeInquiries{
     NSDictionary * dict = [ARLNetwork getInquiries:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
     
-    // NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
+    NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
     
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
         Inquiry* newInquiry = [Inquiry inquirytWithDictionary:inquiryDict inManagedObjectContext:self.context];

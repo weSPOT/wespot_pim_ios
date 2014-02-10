@@ -11,44 +11,43 @@
 
 @interface ARLGeneralItemTableViewController ()
 
-
 @end
 
 @implementation ARLGeneralItemTableViewController
 
-@synthesize run = _run;
+// @synthesize run = _run;
 
 - (void)setupFetchedResultsController {
-
     if (self.run.runId) {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
-                                                                                     ascending:YES
-                                                                                      selector:@selector(localizedCaseInsensitiveCompare:)]];
-    request.predicate = [NSPredicate predicateWithFormat:
-                         @"visible = 1 and run.runId = %lld",
-                         [self.run.runId longLongValue]];
-    
-    NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, nil];
-    [request setSortDescriptors:sortDescriptors];
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                        managedObjectContext:self.run.managedObjectContext
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
+        request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                                         ascending:YES
+                                                                                          selector:@selector(localizedCaseInsensitiveCompare:)]];
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"visible = 1 and run.runId = %lld",
+                             [self.run.runId longLongValue]];
+#warning Which SortDescriptor is used? 
+        NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, nil];
+        [request setSortDescriptors:sortDescriptors];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.run.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
     }
-
 }
 
 - (void) setRun: (Run *) run {
     _run = run;
-//    self.title = run.title;
+    
+    //self.title = run.title;
+    
     [self setupFetchedResultsController];
 }
 
 - (void) viewDidLoad {
-// [[self tabBarItem] setFinishedSelectedImage:[UIImage imageNamed:@"list_icon.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"list_icon.png"]];
-//    [[[self tabBarController] tabBar] setBackgroundImage:[UIImage imageNamed:@"list_icon.png"]];
+//  [[self tabBarItem] setFinishedSelectedImage:[UIImage imageNamed:@"list_icon.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"list_icon.png"]];
+//  [[[self tabBarController] tabBar] setBackgroundImage:[UIImage imageNamed:@"list_icon.png"]];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -60,7 +59,6 @@
         synchronizer.visibilityRunId = self.run.runId;
         [synchronizer sync];
     });
-   
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -73,11 +71,8 @@
     return 1;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    
     GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
     ARLGeneralItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:generalItem.type];
     if (cell == nil) {
@@ -92,7 +87,7 @@
             }
         }
     }
-//    cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
+//  cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
    
     return cell;
 }
@@ -114,7 +109,6 @@
     }
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
@@ -128,7 +122,7 @@
     [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
     [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
 
-//    [ARLNetwork publishAction:self.run.runId action:@"read" itemId:generalItem.id itemType:generalItem.type];
+//  numberOfRowsInSection[ARLNetwork publishAction:self.run.runId action:@"read" itemId:generalItem.id itemType:generalItem.type];
 }
 
 @end

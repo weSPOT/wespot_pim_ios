@@ -10,7 +10,6 @@
 
 @interface INQLoginScreenViewController (UIConstraintBasedLayoutDebugging)
 
-
 @end
 
 @implementation INQLoginScreenViewController

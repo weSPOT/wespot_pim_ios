@@ -47,8 +47,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     Account * generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     INQFriendsTableViewItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell"];
     if (cell == nil) {

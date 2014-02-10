@@ -108,9 +108,6 @@
     
 }
 
-
-
-
 - (void) syncronizeRuns{ //: (NSManagedObjectContext *) context
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
     NSDictionary * dict = [ARLNetwork runsParticipateFrom:lastDate];
@@ -162,14 +159,12 @@
     //    [self saveContext];
     
     self.gameId = nil;
-    
-    
 }
-
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements {
     Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
     [self synchronizeGeneralItemsAndVisibilityStatements:run];
+   
     self.visibilityRunId = nil;
 }
 

@@ -90,22 +90,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    INQFriendsTableViewItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell1"];
    
     if (cell == nil) {
-        cell = [[INQFriendsTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendsCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendsCell1"];
     }
 
     switch (indexPath.section) {
         case FRIENDS : {
             Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
             
-            cell.name.text = generalItem.name;
-            cell.name.font = [UIFont boldSystemFontOfSize:16.0f];
+            cell.textLabel.text = generalItem.name;
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
 #warning TODO Friends Icons do not show immediately.
             NSData* icon = [generalItem picture];
             if (icon) {
-                cell.icon.image = [UIImage imageWithData:icon];
+                cell.imageView.image = [UIImage imageWithData:icon];
             } else {
             
             // LocalId == oauthId
@@ -121,14 +121,14 @@
             break;
             
         case USERS : {
-            cell.name.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
+            cell.textLabel.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
             
             NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
             NSLog(@"[%s] USERS %@", __func__, [self.AllUsers[indexPath.item] objectForKey:@"oauthId"]);
             
             NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
             if (imageData) {
-                cell.icon.image = [UIImage imageWithData:imageData];
+                cell.imageView.image = [UIImage imageWithData:imageData];
             }
         }
             break;
@@ -138,8 +138,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    INQFriendsTableViewItemCell *cell = (INQFriendsTableViewItemCell*) [tableView cellForRowAtIndexPath:indexPath];
-    cell.name.font = [UIFont systemFontOfSize:16.0f];
+    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    
+    cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
 }
 
 //-(void) configureCell: (INQFriendsTableViewItemCell *) cell atIndexPath:(NSIndexPath *)indexPath {

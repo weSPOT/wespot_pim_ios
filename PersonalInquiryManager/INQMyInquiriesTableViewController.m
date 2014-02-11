@@ -69,30 +69,29 @@
 {
     Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
-    INQMyInquiriesTableViewItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell"];
+    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell1"];
     if (cell == nil) {
-        cell = [[INQMyInquiriesTableViewItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell1"];
     }
     
-    cell.title.text = generalItem.title;
+    cell.textLabel.text = generalItem.title;
     NSData* icon = [generalItem icon];
     if (icon) {
         UIImage * image = [UIImage imageWithData:icon];
-        cell.icon.image = image;
+        cell.imageView.image=image;
     }
 
-    
     return cell;
 }
 
--(void) configureCell: (INQMyInquiriesTableViewItemCell *) cell atIndexPath:(NSIndexPath *)indexPath {
+-(void) configureCell: (UITableViewCell *) cell atIndexPath:(NSIndexPath *)indexPath {
     Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
-    cell.title.text = generalItem.title;
+    cell.textLabel.text = generalItem.title;
     NSData* icon = [generalItem icon];
     if (icon) {
         UIImage * image = [UIImage imageWithData:icon];
-        cell.icon.image = image;
+        cell.imageView.image = image;
     }
 }
 

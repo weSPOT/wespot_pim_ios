@@ -90,13 +90,6 @@ typedef NS_ENUM(NSInteger, tools) {
         //#warning not enough to toggle isLoggedIn.
          [self adjustLoginButton];
     } else {
-        //INQOauthViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
-        
-        //[self.navigationController pushViewController:controller animated:YES];
-        // [self presentViewController:controller animated:TRUE completion:nil];
-        
-        
-        
         UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
         
         if (newViewController) {
@@ -139,6 +132,7 @@ typedef NS_ENUM(NSInteger, tools) {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+#warning Fill Icon too.
     switch (indexPath.section) {
         case MYINQUIRES: {
                 cell.textLabel.Text = @"My inquiries";

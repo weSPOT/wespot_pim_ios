@@ -15,7 +15,7 @@
 		34539BBF17B2759A00352E9A /* ARLBean.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BBD17B2759A00352E9A /* ARLBean.m */; };
 		34539BDE17B275B600352E9A /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34539BD817B275B600352E9A /* libzbar.a */; };
 		3454CC8717B3935800C0DFFC /* INQMyInquiriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC8617B3935800C0DFFC /* INQMyInquiriesTableViewController.m */; };
-		3454CC8A17B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC8917B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.m */; };
+		3454CC8A17B394E500C0DFFC /* INQIconTextTableViewItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC8917B394E500C0DFFC /* INQIconTextTableViewItemCell.m */; };
 		3454CC8D17B39B2E00C0DFFC /* INQInquiryPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC8C17B39B2E00C0DFFC /* INQInquiryPageViewController.m */; };
 		3454CCFD17B3A72E00C0DFFC /* ARLAnswerItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC9217B3A72E00C0DFFC /* ARLAnswerItemView.m */; };
 		3454CCFF17B3A72E00C0DFFC /* ARLAudioObjectPlayButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 3454CC9617B3A72E00C0DFFC /* ARLAudioObjectPlayButtons.m */; };
@@ -212,8 +212,8 @@
 		34539BD817B275B600352E9A /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
 		3454CC8517B3935800C0DFFC /* INQMyInquiriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMyInquiriesTableViewController.h; sourceTree = "<group>"; };
 		3454CC8617B3935800C0DFFC /* INQMyInquiriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMyInquiriesTableViewController.m; sourceTree = "<group>"; };
-		3454CC8817B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMyInquiriesTableViewItemCell.h; sourceTree = "<group>"; };
-		3454CC8917B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMyInquiriesTableViewItemCell.m; sourceTree = "<group>"; };
+		3454CC8817B394E500C0DFFC /* INQIconTextTableViewItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQIconTextTableViewItemCell.h; sourceTree = "<group>"; };
+		3454CC8917B394E500C0DFFC /* INQIconTextTableViewItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQIconTextTableViewItemCell.m; sourceTree = "<group>"; };
 		3454CC8B17B39B2E00C0DFFC /* INQInquiryPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryPageViewController.h; sourceTree = "<group>"; };
 		3454CC8C17B39B2E00C0DFFC /* INQInquiryPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryPageViewController.m; sourceTree = "<group>"; };
 		3454CC9117B3A72E00C0DFFC /* ARLAnswerItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLAnswerItemView.h; sourceTree = "<group>"; };
@@ -743,6 +743,7 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8D58C06218AA80DB00D4D776 /* Cell */,
 				8D0249F518A7FCA0009D0566 /* _Obsolete */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
 				3477E6981769C9A000F3A5F3 /* ARLAppDelegate.m */,
@@ -1038,6 +1039,10 @@
 		8D0249F518A7FCA0009D0566 /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
+				3454CC8817B394E500C0DFFC /* INQIconTextTableViewItemCell.h */,
+				3454CC8917B394E500C0DFFC /* INQIconTextTableViewItemCell.m */,
+				347AD0C517B296A700B4B345 /* INQFriendsTableViewItemCell.h */,
+				347AD0C617B296A700B4B345 /* INQFriendsTableViewItemCell.m */,
 				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
 				3454CD4D17B3D0BA00C0DFFC /* INQOauthViewController.h */,
 				3454CC8B17B39B2E00C0DFFC /* INQInquiryPageViewController.h */,
@@ -1061,8 +1066,6 @@
 			children = (
 				347AD0BF17B2947200B4B345 /* INQFriendsTableViewController.h */,
 				347AD0C017B2947200B4B345 /* INQFriendsTableViewController.m */,
-				347AD0C517B296A700B4B345 /* INQFriendsTableViewItemCell.h */,
-				347AD0C617B296A700B4B345 /* INQFriendsTableViewItemCell.m */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -1070,8 +1073,6 @@
 		8D0249F718A809D4009D0566 /* Inquiries */ = {
 			isa = PBXGroup;
 			children = (
-				3454CC8817B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.h */,
-				3454CC8917B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.m */,
 				3454CC8517B3935800C0DFFC /* INQMyInquiriesTableViewController.h */,
 				3454CC8617B3935800C0DFFC /* INQMyInquiriesTableViewController.m */,
 			);
@@ -1157,6 +1158,13 @@
 				8D02769318AA556300DA8482 /* INQLoginViewController.h */,
 			);
 			name = Authentication;
+			sourceTree = "<group>";
+		};
+		8D58C06218AA80DB00D4D776 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1306,7 +1314,7 @@
 				347AD0CB17B3797C00B4B345 /* ARLNetwork+INQ.m in Sources */,
 				347AD0CE17B37BAF00B4B345 /* INQCloudSynchronizer.m in Sources */,
 				3454CC8717B3935800C0DFFC /* INQMyInquiriesTableViewController.m in Sources */,
-				3454CC8A17B394E500C0DFFC /* INQMyInquiriesTableViewItemCell.m in Sources */,
+				3454CC8A17B394E500C0DFFC /* INQIconTextTableViewItemCell.m in Sources */,
 				3454CC8D17B39B2E00C0DFFC /* INQInquiryPageViewController.m in Sources */,
 				3454CCFD17B3A72E00C0DFFC /* ARLAnswerItemView.m in Sources */,
 				3454CCFF17B3A72E00C0DFFC /* ARLAudioObjectPlayButtons.m in Sources */,

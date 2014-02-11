@@ -8,32 +8,6 @@
 
 #import "INQFriendsTableViewController.h"
 
-@interface INQFriendsTableViewController ()
-
-/*!
- *  ID's and order of the cells.
- */
-typedef NS_ENUM(NSInteger, groups) {
-    /*!
-     *  My Friends.
-     */
-    FRIENDS = 0,
-    
-    /*!
-     *  Available Users in Run.
-     */
-    USERS,
-
-    /*!
-     *  Number of items in this NS_ENUM
-     */
-    numGoups,
-};
-
-@property (strong,nonatomic) NSArray *AllUsers;
-
-@end
-
 @implementation INQFriendsTableViewController
 
 - (void) viewDidLoad {
@@ -59,8 +33,8 @@ typedef NS_ENUM(NSInteger, groups) {
 }
 
 - (void)setupFetchedResultsController {
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     NSNumber* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
@@ -71,6 +45,11 @@ typedef NS_ENUM(NSInteger, groups) {
     
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    
+    self.fetchedResultsController.delegate = self;
+    
+    NSError *error;
+    [self.fetchedResultsController performFetch:&error];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -123,32 +102,29 @@ typedef NS_ENUM(NSInteger, groups) {
             
             cell.name.text = generalItem.name;
             cell.name.font = [UIFont boldSystemFontOfSize:16.0f];
-            
+#warning TODO Friends Icons do not show immediately.
             NSData* icon = [generalItem picture];
             if (icon) {
                 cell.icon.image = [UIImage imageWithData:icon];
-//            } else {
+            } else {
+            
+            // LocalId == oauthId
 //                for (NSDictionary *dict in self.AllUsers) {
-//                    if ([dict objectForKey:@"oauthId"] == generalItem.localId) {
-//                        NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
-//                        NSLog(@"[%s] %@", __func__, imageURL);
+//                    if ([dict objectForKey:@"oautId"] == generalItem.localId) {
 //                        
-//                        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-//                        if (imageData) {
-//                            cell.icon.image = [UIImage imageWithData:imageData];
-//                        }
-//
+//                        NSLog(@"FOUND");
 //                    }
 //                }
             }
+            NSLog(@"[%s] FRIENDS %@", __func__, generalItem.localId);
         }
             break;
             
         case USERS : {
-            cell.name.text = [self.AllUsers[indexPath.item] objectForKey:@"name"];
+            cell.name.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
             
             NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
-            NSLog(@"[%s] %@", __func__, imageURL);
+            NSLog(@"[%s] USERS %@", __func__, [self.AllUsers[indexPath.item] objectForKey:@"oauthId"]);
             
             NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
             if (imageData) {
@@ -188,5 +164,19 @@ typedef NS_ENUM(NSInteger, groups) {
         //veg Silence unused variable warning!
     }
 }
+
+//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+//    
+//    UITableView *table = (UITableView *)self.view;
+//    [table reloadData];
+////    NSRange range = NSMakeRange(FRIENDS, 1);
+////    NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
+//    
+////    [table reloadSections:section withRowAnimation:NO];
+//    
+//    
+// //  INQFriendsTableViewItemCell *cell = (INQFriendsTableViewItemCell *)[table cellForRowAtIndexPath:indexPath];
+// //   cell.textLabel.text = @"TEST";
+//}
 
 @end

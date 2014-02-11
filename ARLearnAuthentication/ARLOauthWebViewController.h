@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) NSString * domain;
 @property (strong, nonatomic) UIViewController * selfRef;
+@property (strong, nonatomic) UINavigationController *NavigationAfterClose;
 
 - (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate;
 

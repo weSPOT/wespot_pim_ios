@@ -166,6 +166,7 @@
 		34D6F1C217B67A7400BE1516 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1BF17B67A7400BE1516 /* Icon.png */; };
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
+		8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D02769418AA556300DA8482 /* INQLoginViewController.m */; };
 		8D4DF87418A3AF15009CD9BA /* INQMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */; };
 		8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87618A3B207009CD9BA /* INQMainCell.m */; };
 		8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */; };
@@ -493,6 +494,8 @@
 		34D6F1BF17B67A7400BE1516 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		34D6F1C017B67A7400BE1516 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
+		8D02769318AA556300DA8482 /* INQLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLoginViewController.h; sourceTree = "<group>"; };
+		8D02769418AA556300DA8482 /* INQLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLoginViewController.m; sourceTree = "<group>"; };
 		8D4DF87218A3AF15009CD9BA /* INQMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainViewController.h; sourceTree = "<group>"; };
 		8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainViewController.m; sourceTree = "<group>"; };
 		8D4DF87518A3B207009CD9BA /* INQMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainCell.h; sourceTree = "<group>"; };
@@ -1035,6 +1038,8 @@
 		8D0249F518A7FCA0009D0566 /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
+				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
+				3454CD4D17B3D0BA00C0DFFC /* INQOauthViewController.h */,
 				3454CC8B17B39B2E00C0DFFC /* INQInquiryPageViewController.h */,
 				3454CC8C17B39B2E00C0DFFC /* INQInquiryPageViewController.m */,
 				8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */,
@@ -1148,8 +1153,8 @@
 		8D024A0018A8EFBF009D0566 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				3454CD4D17B3D0BA00C0DFFC /* INQOauthViewController.h */,
-				3454CD4E17B3D0BA00C0DFFC /* INQOauthViewController.m */,
+				8D02769418AA556300DA8482 /* INQLoginViewController.m */,
+				8D02769318AA556300DA8482 /* INQLoginViewController.h */,
 			);
 			name = Authentication;
 			sourceTree = "<group>";
@@ -1293,6 +1298,7 @@
 				347AD09917B286F200B4B345 /* ARLOauthViewController.m in Sources */,
 				347AD09A17B286F200B4B345 /* ARLOauthWebViewController.m in Sources */,
 				347AD09B17B286F200B4B345 /* ARLScanAuthView.m in Sources */,
+				8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */,
 				347AD09C17B286F200B4B345 /* ARLSplashScreenViewController.m in Sources */,
 				347AD0BE17B28F3C00B4B345 /* INQBadgesViewController.m in Sources */,
 				347AD0C117B2947200B4B345 /* INQFriendsTableViewController.m in Sources */,

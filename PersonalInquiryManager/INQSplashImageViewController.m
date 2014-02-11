@@ -45,7 +45,7 @@
             [imageViewFade removeFromSuperview];
           
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AfterSplashController"];
+                UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabs"];
                 
                 if (newViewController) {
                     // Move to another UINavigationController or UITabBarController etc.

@@ -108,7 +108,6 @@
             [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         }
-
 }
 
 

@@ -36,8 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-
 }
 
 /*!
@@ -131,7 +129,6 @@
     }
     
     return YES;
-    
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -145,7 +142,12 @@
 -(void) close {
     self.selfRef = nil;
 
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.NavigationAfterClose) {
+          [self.navigationController presentViewController:self.NavigationAfterClose animated:YES  completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+        // ß[self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (void) deleteARLearnCookie {

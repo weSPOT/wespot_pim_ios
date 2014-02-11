@@ -70,46 +70,102 @@
             </objects>
             <point key="canvasLocation" x="1741" y="1021"/>
         </scene>
-        <!--Oauth View Controller - Login Services-->
-        <scene sceneID="qX7-Hs-Wed">
+        <!--LoginNavigation-->
+        <scene sceneID="ULO-8m-Ssd">
             <objects>
-                <tableViewController storyboardIdentifier="LoginServices" title="Login Services" id="nxa-Ma-zfy" customClass="INQOauthViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mYj-Yh-FES">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="PYj-l6-9eg" style="IBUITableViewCellStyleDefault" id="rei-Fe-x5J">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rei-Fe-x5J" id="yJY-dB-aSA">
-                                    <rect key="frame" x="0.0" y="0.0" width="253" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PYj-l6-9eg">
-                                            <rect key="frame" x="15" y="0.0" width="238" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="nxa-Ma-zfy" id="yoX-v7-giN"/>
-                            <outlet property="delegate" destination="nxa-Ma-zfy" id="66w-29-ahz"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="kkm-LG-q9C"/>
-                    <navigationItem key="navigationItem" title="Login Services" id="O4l-va-JuH"/>
+                <navigationController storyboardIdentifier="LoginNavigation" title="Login" definesPresentationContext="YES" toolbarHidden="NO" id="lxh-SV-HgK" userLabel="LoginNavigation" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" id="n7r-7Y-uc9"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ItE-DZ-hNb">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="OG8-l5-SS5">
+                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
-                        <outlet property="LoginServices" destination="mYj-Yh-FES" id="Ohk-Tu-OQv"/>
+                        <segue destination="C65-w6-g4e" kind="relationship" relationship="rootViewController" id="peY-fI-GUk"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Gw6-uT-3Cl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wFM-wp-ihN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="779" y="-148"/>
+        </scene>
+        <!--LoginView-->
+        <scene sceneID="hoo-Xn-bBd">
+            <objects>
+                <viewController storyboardIdentifier="LoginView" id="C65-w6-g4e" userLabel="LoginView" customClass="INQLoginViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KYl-R1-yfB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user name" minimumFontSize="17" id="e3Q-ey-D0v">
+                                <rect key="frame" x="20" y="210" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" minimumFontSize="17" id="I8s-ST-ART">
+                                <rect key="frame" x="20" y="248" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weSPOT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hNw-Yk-opI">
+                                <rect key="frame" x="20" y="65" width="280" height="137"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wb2-eO-8PX">
+                                <rect key="frame" x="137" y="286" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Login">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginButtonAction:" destination="C65-w6-g4e" eventType="touchUpInside" id="mNz-sA-t81"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="uRf-6N-Pga"/>
+                    <toolbarItems>
+                        <barButtonItem title="Facebook" style="plain" id="6K9-D5-hpa">
+                            <connections>
+                                <action selector="facebookButtonAction:" destination="C65-w6-g4e" id="hCa-R2-sNm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Google" style="plain" id="Zvk-7G-K0w">
+                            <connections>
+                                <action selector="googleButtonAction:" destination="C65-w6-g4e" id="9LG-W4-ME9"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Linked-in" style="plain" id="AjJ-9C-6Jj">
+                            <connections>
+                                <action selector="linkedinButtonAction:" destination="C65-w6-g4e" id="BYx-ZV-Zpb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Twitter" style="plain" id="ev6-qW-R7F">
+                            <connections>
+                                <action selector="twitterButtonAction:" destination="C65-w6-g4e" id="4xa-ee-glN"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Login" id="T3s-PS-Baz">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Hfu-fQ-5M5"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="facebookButton" destination="6K9-D5-hpa" id="L19-5g-ky3"/>
+                        <outlet property="googleButton" destination="Zvk-7G-K0w" id="JJL-BG-XY3"/>
+                        <outlet property="linkedinButton" destination="AjJ-9C-6Jj" id="fGs-S6-UDf"/>
+                        <outlet property="twitterButton" destination="ev6-qW-R7F" id="fj0-Ut-iaM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IoI-GH-y7I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1300" y="-148"/>
         </scene>
@@ -364,11 +420,11 @@
             </objects>
             <point key="canvasLocation" x="2593" y="2187"/>
         </scene>
-        <!--Navigation Controller - Main-->
+        <!--MainNavigation-->
         <scene sceneID="ci8-Q4-vWJ">
             <objects>
-                <navigationController storyboardIdentifier="MainViewNav" title="Main" definesPresentationContext="YES" id="M4Q-ds-Y79" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Main" id="qpn-Jo-Ib2"/>
+                <navigationController storyboardIdentifier="MainNavigation" title="Main" definesPresentationContext="YES" id="M4Q-ds-Y79" userLabel="MainNavigation" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Main" id="Pz3-VK-Ul5"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wFK-ys-ccH">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -382,12 +438,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Azu-zL-l1e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="791" y="452"/>
+            <point key="canvasLocation" x="779" y="452"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--SplashNavigation-->
         <scene sceneID="DEM-PG-LpQ">
             <objects>
-                <navigationController definesPresentationContext="YES" id="JIo-qM-5I2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SplashNavigation" definesPresentationContext="YES" id="JIo-qM-5I2" userLabel="SplashNavigation" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFx-bv-tIo">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -399,10 +455,10 @@
             </objects>
             <point key="canvasLocation" x="-523" y="452"/>
         </scene>
-        <!--Splash Image View Controller-->
+        <!--SplashView-->
         <scene sceneID="teY-4p-Udi">
             <objects>
-                <viewController storyboardIdentifier="StartView" id="Uqj-u2-UUO" customClass="INQSplashImageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashView" id="Uqj-u2-UUO" userLabel="SplashView" customClass="INQSplashImageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vTy-vy-BiE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -415,7 +471,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="fuE-ct-sKb"/>
                 </viewController>
@@ -423,10 +479,10 @@
             </objects>
             <point key="canvasLocation" x="-84" y="452"/>
         </scene>
-        <!--Tab Bar Controller - Main-->
+        <!--MainTabs-->
         <scene sceneID="OdW-OD-7le">
             <objects>
-                <tabBarController storyboardIdentifier="AfterSplashController" title="Main" definesPresentationContext="YES" id="V5L-pB-L3J" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabs" title="Main" definesPresentationContext="YES" id="V5L-pB-L3J" userLabel="MainTabs" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Zbs-cb-v88">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
@@ -439,13 +495,13 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FWx-hm-OQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="333" y="452"/>
+            <point key="canvasLocation" x="337" y="452"/>
         </scene>
-        <!--Main View Controller - Main-->
+        <!--MainView-->
         <scene sceneID="B9d-fT-mDT">
             <objects>
-                <tableViewController storyboardIdentifier="MainView" id="mph-xo-zGo" customClass="INQMainViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8Ih-Qf-Br3" userLabel="LOGIN" colorLabel="IBBuiltInLabel-Blue">
+                <tableViewController storyboardIdentifier="MainView" title="Main" id="mph-xo-zGo" userLabel="MainView" customClass="INQMainViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8Ih-Qf-Br3" colorLabel="IBBuiltInLabel-Blue">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -473,7 +529,7 @@
                             <outlet property="delegate" destination="mph-xo-zGo" id="pez-pR-ceh"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Main" id="Ggw-hV-c0W"/>
+                    <tabBarItem key="tabBarItem" title="Main" id="D85-Um-wlv"/>
                     <navigationItem key="navigationItem" title="Main" id="vFt-AZ-sMZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7LK-ag-gEm" userLabel="First Responder" sceneMemberID="firstResponder"/>

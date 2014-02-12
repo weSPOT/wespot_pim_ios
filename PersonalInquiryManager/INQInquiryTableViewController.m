@@ -148,7 +148,7 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 /*!
@@ -161,7 +161,14 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return numItems;
+    switch (section) {
+        case 0 :
+            return numItems;
+        case 1 :
+            return 1;
+    }
+    
+    return 0;
 }
 
 /*!
@@ -181,27 +188,35 @@ typedef NS_ENUM(NSInteger, indices) {
     }
     
     // Configure the cell...
-    
-    switch ([indexPath item]) {
-        case HYPOTHESIS:
-            cell.textLabel.text = @"Hypothesis";
+    switch (indexPath.section) {
+        case 0 : {
+            switch (indexPath.item) {
+                case HYPOTHESIS:
+                    cell.textLabel.text = @"Hypothesis";
+                    break;
+                case PLAN:
+                    cell.textLabel.text = @"Plan";
+                    break;
+                case DATACOLLECTION:
+                    cell.textLabel.text = @"Collect Data";
+                    break;
+                case ANALYSIS:
+                    cell.textLabel.text = @"Analysis";
+                    break;
+                case DISCUSS:
+                    cell.textLabel.text = @"Discuss";
+                    break;
+                case COMMUNICATE:
+                    cell.textLabel.text = @"Commnicate";
+                    break;
+                default:
+                    break;
+            }
+            }
             break;
-        case PLAN:
-            cell.textLabel.text = @"Plan";
-            break;
-        case DATACOLLECTION:
-            cell.textLabel.text = @"Collect Data";
-            break;
-        case ANALYSIS:
-            cell.textLabel.text = @"Analysis";
-            break;
-        case DISCUSS:
-            cell.textLabel.text = @"Discuss";
-            break;
-        case COMMUNICATE:
-            cell.textLabel.text = @"Commnicate";
-            break;
-        default:
+            
+        case 1:
+            cell.textLabel.text = @"Invite friends";
             break;
     }
 
@@ -220,87 +235,98 @@ typedef NS_ENUM(NSInteger, indices) {
 {
     UIViewController * newViewController;
     
-    switch ([indexPath item]){
-        case HYPOTHESIS: {
-            // Create the new ViewController.
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
-            
-            // Pass the parameters to render.
-            [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+    switch (indexPath.section) {
+        case 0: {
+            switch (indexPath.item){
+                case HYPOTHESIS: {
+                    // Create the new ViewController.
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
+                    
+                    // Pass the parameters to render.
+                    [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+                    }
+                break;
+                    
+                case PLAN: {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                break;
+                    
+               case DATACOLLECTION: {
+                    
+                    // Create the new ViewController.
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];
+                    
+                    // Pass the parameters to render.
+                    NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
+                    Run* selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
+                    NSNumber * gameId;
+                    
+                    // if (!selectedRun.runId) {
+                    //   NSLog(@"[%s] not good and load hypothesis view", __func__);
+                    //}
+                    
+                    if (selectedRun.runId) {
+                        [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
+                        gameId = selectedRun.gameId;
+                    } else {
+                        gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
+                    }
+                    
+                    // Syncronize CoreData (RUNS & GAMES).
+                    ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+                    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                    [synchronizer createContext:appDelegate.managedObjectContext];
+                    if (!selectedRun) {
+                        synchronizer.syncRuns = YES;
+                    }
+                    synchronizer.gameId = gameId;
+                    synchronizer.visibilityRunId = runId;
+                    synchronizer.syncGames = YES;
+                    
+                    [synchronizer sync];
+                }
+                    break;
+                    
+                case ANALYSIS: {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                    
+                case DISCUSS: {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                    
+                case COMMUNICATE: {
+                    //// Create the new ViewController.
+                    //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NotesView"];
+                    //
+                    //// Pass the parameters to render.
+                    //[newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                    
+                default: {
+                    NSLog(@"[%s] Unknown InquiryPart: %@",__func__, [NSNumber numberWithInteger:indexPath.section]);
+                }
+                    
+                break;
             }
-        break;
-            
-        case PLAN: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        break;
-            
-       case DATACOLLECTION: {
-            
-            // Create the new ViewController.
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];
-            
-            // Pass the parameters to render.
-            NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
-            Run* selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
-            NSNumber * gameId;
-            
-            // if (!selectedRun.runId) {
-            //   NSLog(@"[%s] not good and load hypothesis view", __func__);
-            //}
-            
-            if (selectedRun.runId) {
-                [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
-                gameId = selectedRun.gameId;
-            } else {
-                gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
-            }
-            
-            // Syncronize CoreData (RUNS & GAMES).
-            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            [synchronizer createContext:appDelegate.managedObjectContext];
-            if (!selectedRun) {
-                synchronizer.syncRuns = YES;
-            }
-            synchronizer.gameId = gameId;
-            synchronizer.visibilityRunId = runId;
-            synchronizer.syncGames = YES;
-            
-            [synchronizer sync];
-        }
             break;
             
-        case ANALYSIS: {
+        case 1: {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
             break;
-            
-        case DISCUSS: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
         }
-            break;
-            
-        case COMMUNICATE: {
-            //// Create the new ViewController.
-            //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NotesView"];
-            //
-            //// Pass the parameters to render.
-            //[newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-            break;
-            
-        default: {
-            NSLog(@"[%s] Unknown InquiryPart: %@",__func__, [NSNumber numberWithInteger:indexPath.section]);
-        }
-            
-        break;
     }
     
     if (newViewController) {

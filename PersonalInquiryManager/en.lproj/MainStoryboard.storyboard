@@ -233,7 +233,7 @@
             </objects>
             <point key="canvasLocation" x="1741" y="-148"/>
         </scene>
-        <!--My Inquiries Table View Controller - My inquiries-->
+        <!--My Inquiries Table View Controller - Inquiry list-->
         <scene sceneID="ZXS-Fq-qlc">
             <objects>
                 <viewController storyboardIdentifier="MyInquiriesView" id="XfV-8E-bXQ" customClass="INQMyInquiriesTableViewController" sceneMemberID="viewController">
@@ -270,7 +270,7 @@
                         </prototypes>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="My Inquiries" id="vbs-3N-PVP"/>
-                    <navigationItem key="navigationItem" title="My inquiries" id="oVx-GY-gEG"/>
+                    <navigationItem key="navigationItem" title="Inquiry list" id="oVx-GY-gEG"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zno-7L-FuE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -312,7 +312,7 @@
                         </prototypes>
                         <sections/>
                     </tableView>
-                    <navigationItem key="navigationItem" id="mV9-HV-prf"/>
+                    <navigationItem key="navigationItem" title="Inquiry" id="mV9-HV-prf"/>
                     <connections>
                         <outlet property="icon" destination="n3r-Y1-wLP" id="IeN-sw-zfA"/>
                         <outlet property="inquiryDescription" destination="jXi-kd-Wbk" id="sEp-fv-x0b"/>
@@ -336,7 +336,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1V4-80-rCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2593" y="1021"/>
+            <point key="canvasLocation" x="2585" y="452"/>
         </scene>
         <!--Narrator Item View Controller - Collection Task #1-->
         <scene sceneID="kaR-sw-Udn">
@@ -355,7 +355,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TUk-gi-42g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3001" y="2187"/>
+            <point key="canvasLocation" x="2984" y="1586"/>
         </scene>
         <!--Notes View Controller - Notes-->
         <scene sceneID="XIq-1U-3iK">
@@ -370,36 +370,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S2e-8n-KJm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2593" y="1586"/>
-        </scene>
-        <!--Messages View Controller - Messages-->
-        <scene sceneID="hvV-pG-I0a">
-            <objects>
-                <tableViewController storyboardIdentifier="MessagesView" title="Messages" id="tfl-eT-1QF" customClass="INQMessagesViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gqX-AJ-TIq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" id="OdX-pI-fFG">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OdX-pI-fFG" id="h69-36-ugZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="tfl-eT-1QF" id="cSm-RO-eif"/>
-                            <outlet property="delegate" destination="tfl-eT-1QF" id="VaT-ci-dfz"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Messages" id="syJ-W7-bxj"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6Fz-9m-L3h" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2593" y="452"/>
+            <point key="canvasLocation" x="2585" y="1021"/>
         </scene>
         <!--General Item Table View Controller - Data Collection Tasks-->
         <scene sceneID="DTQ-oG-YsK">
@@ -444,7 +415,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2593" y="2187"/>
+            <point key="canvasLocation" x="2585" y="1586"/>
         </scene>
         <!--MainNavigation-->
         <scene sceneID="ci8-Q4-vWJ">

@@ -772,9 +772,7 @@
 				8D0249F818A809EB009D0566 /* Inquiry */,
 				8D0249FE18A80B12009D0566 /* Main */,
 				3477E6A01769C9A000F3A5F3 /* MainStoryboard.storyboard */,
-				8D0249FB18A80A7F009D0566 /* Messages */,
 				347AD0C817B3795C00B4B345 /* Network */,
-				8D0249FC18A80A8C009D0566 /* Notes */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
 				8D0249FD18A80B08009D0566 /* Splash */,
@@ -1054,6 +1052,10 @@
 		8D0249F518A7FCA0009D0566 /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
+				342CF88817DA091600401E55 /* INQNotesViewController.h */,
+				342CF88917DA091600401E55 /* INQNotesViewController.m */,
+				8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */,
+				8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */,
 				3454CC8817B394E500C0DFFC /* INQIconTextTableViewItemCell.h */,
 				3454CC8917B394E500C0DFFC /* INQIconTextTableViewItemCell.m */,
 				347AD0C517B296A700B4B345 /* INQFriendsTableViewItemCell.h */,
@@ -1121,24 +1123,6 @@
 				342CF88617DA07F700401E55 /* INQHypothesisViewController.m */,
 			);
 			name = Hypothesis;
-			sourceTree = "<group>";
-		};
-		8D0249FB18A80A7F009D0566 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */,
-				8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */,
-			);
-			name = Messages;
-			sourceTree = "<group>";
-		};
-		8D0249FC18A80A8C009D0566 /* Notes */ = {
-			isa = PBXGroup;
-			children = (
-				342CF88817DA091600401E55 /* INQNotesViewController.h */,
-				342CF88917DA091600401E55 /* INQNotesViewController.m */,
-			);
-			name = Notes;
 			sourceTree = "<group>";
 		};
 		8D0249FD18A80B08009D0566 /* Splash */ = {

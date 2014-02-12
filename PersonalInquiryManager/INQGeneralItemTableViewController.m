@@ -18,6 +18,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Add swipeGestures
+    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+                                                    initWithTarget:self
+                                                    action:@selector(oneFingerSwipeLeft:)];
+    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:oneFingerSwipeLeft];
+    
+    UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
+                                                     initWithTarget:self
+                                                     action:@selector(oneFingerSwipeRight:)];
+    [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:oneFingerSwipeRight];
 }
 
 - (void) viewDidAppear:(BOOL)animated{
@@ -130,6 +143,25 @@
     if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
         cell.icon.image = [UIImage imageNamed:@"dc_video_128.png"];
     }
+}
+
+- (void)oneFingerSwipeLeft:(UITapGestureRecognizer *)recognizer {
+    // Insert your own code to handle swipe left
+    
+    NSLog(@"Swipe Left");
+}
+
+- (void)oneFingerSwipeRight:(UITapGestureRecognizer *)recognizer {
+    // Insert your own code to handle swipe right
+    
+    NSLog(@"Swipe Right");
+    
+    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
+    
+    NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [stackViewControllers removeLastObject];
+    [stackViewControllers addObject:newViewController];
+    [self.navigationController setViewControllers:stackViewControllers animated:YES];
 }
 
 @end

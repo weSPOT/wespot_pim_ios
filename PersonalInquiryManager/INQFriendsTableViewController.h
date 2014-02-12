@@ -13,30 +13,6 @@
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"
 
-@interface INQFriendsTableViewController :  UITableViewController   <NSFetchedResultsControllerDelegate>
-
-//CoreDataTableViewController
-/*!
- *  ID's and order of the cells.
- */
-typedef NS_ENUM(NSInteger, groups) {
-    /*!
-     *  My Friends.
-     */
-    FRIENDS = 0,
-    
-    /*!
-     *  Available Users in Run.
-     */
-    USERS,
-    
-    /*!
-     *  Number of items in this NS_ENUM
-     */
-    numGoups,
-};
-
-@property (strong, nonatomic) NSArray *AllUsers;
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@interface INQFriendsTableViewController :  UITableViewController <NSFetchedResultsControllerDelegate>
 
 @end

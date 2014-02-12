@@ -10,9 +10,31 @@
 
 @interface INQMyInquiriesTableViewController ()
 
+/*!
+ *  ID's and order of the cells sections.
+ */
+typedef NS_ENUM(NSInteger, inquiries) {
+    /*!
+     *  New Inquiry.
+     */
+    NEW = 0,
+    /*!
+     *  Open inquiries.
+     */
+    OPEN = 1,
+};
+
+- (IBAction)newInquiryTap:(UIButton *)sender;
+
+@property (readonly, nonatomic) NSString *cellIdentifier;
+
 @end
 
 @implementation INQMyInquiriesTableViewController
+
+-(NSString*) cellIdentifier {
+    return  @"inquiriesCell1";
+}
 
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 //{
@@ -55,24 +77,46 @@
     [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
 }
 
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    return self;
-//}
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.fetchedResultsController.fetchedObjects count];
+}
 
+/*!
+ *  Return the Table Data one Cell at a Time.
+ *
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
+ *
+ *  @return The Cell Content.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-    
-    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"inquiriesCell1"];
+    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"inquiriesCell1"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
+    
+    Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
     cell.textLabel.text = generalItem.title;
     NSData* icon = [generalItem icon];
@@ -81,27 +125,32 @@
         cell.imageView.image=image;
     }
 
+
     return cell;
 }
 
--(void) configureCell: (UITableViewCell *) cell atIndexPath:(NSIndexPath *)indexPath {
-    Inquiry * generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
+/*!
+ *  For each row in the table jump to the associated view.
+ *
+ *  @param tableView The UITableView
+ *  @param indexPath The NSIndexPath containing grouping/section and record index.
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Inquiry * inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
-    cell.textLabel.text = generalItem.title;
-    NSData* icon = [generalItem icon];
-    if (icon) {
-        UIImage * image = [UIImage imageWithData:icon];
-        cell.imageView.image = image;
+    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquireyParts"];
+    
+    if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
+        [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];
     }
+    
+    [self.navigationController pushViewController:newViewController animated:YES];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    Inquiry * inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-
-    if ([segue.destinationViewController respondsToSelector:@selector(setInquiry:)]) {
-        [segue.destinationViewController performSelector:@selector(setInquiry:) withObject:inquiry];
-    }
+- (IBAction)newInquiryTap:(UIButton *)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 @end

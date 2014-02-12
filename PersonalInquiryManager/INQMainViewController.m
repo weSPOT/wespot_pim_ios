@@ -109,12 +109,27 @@ typedef NS_ENUM(NSInteger, tools) {
 
 #pragma mark - Table view data source
 
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     return 2;
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
@@ -127,6 +142,14 @@ typedef NS_ENUM(NSInteger, tools) {
     return 0;
 }
 
+/*!
+ *  Return the Table Data one Cell at a Time.
+ *
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
+ *
+ *  @return The Cell Content.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];

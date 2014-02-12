@@ -8,7 +8,20 @@
 
 #import "INQFriendsTableViewController.h"
 
+@interface INQFriendsTableViewController ()
+
+@property (readonly, nonatomic) NSString *cellIdentifier;
+
+@property (strong, nonatomic) NSArray *AllUsers;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
+@end
+
 @implementation INQFriendsTableViewController
+
+-(NSString*) cellIdentifier {
+    return  @"friendsCell1";
+}
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -52,88 +65,84 @@
     [self.fetchedResultsController performFetch:&error];
 }
 
+#pragma mark - Table view data source
+
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return numGoups;
+    return 1;
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    switch (section) {
-        case FRIENDS:
-            return [[self.fetchedResultsController fetchedObjects] count];
-        case USERS:
-            if (!self.AllUsers) {
-                [self getAllUsers];
-            }
-            return self.AllUsers.count;
-    }
-    
-    return 0;
+
+    return [[self.fetchedResultsController fetchedObjects] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString * sectionName = @"Error";
-    
-    switch (section) {
-    case FRIENDS:
-        sectionName = @"Friends";
-        break;
-    case USERS:
-        sectionName = @"Users";
-        break;
-    }
-    
-    return sectionName;
+    return @"Friends";
 }
 
+/*!
+ *  Return the Table Data one Cell at a Time.
+ *
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
+ *
+ *  @return The Cell Content.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendsCell1"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
    
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendsCell1"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
 
-    switch (indexPath.section) {
-        case FRIENDS : {
-            Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-            
-            cell.textLabel.text = generalItem.name;
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-#warning TODO Friends Icons do not show immediately.
-            NSData* icon = [generalItem picture];
-            if (icon) {
-                cell.imageView.image = [UIImage imageWithData:icon];
-            } else {
-            
-            // LocalId == oauthId
-//                for (NSDictionary *dict in self.AllUsers) {
-//                    if ([dict objectForKey:@"oautId"] == generalItem.localId) {
-//                        
-//                        NSLog(@"FOUND");
-//                    }
-//                }
-            }
-            NSLog(@"[%s] FRIENDS %@", __func__, generalItem.localId);
-        }
-            break;
-            
-        case USERS : {
-            cell.textLabel.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
-            
-            NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
-            NSLog(@"[%s] USERS %@", __func__, [self.AllUsers[indexPath.item] objectForKey:@"oauthId"]);
-            
-            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-            if (imageData) {
-                cell.imageView.image = [UIImage imageWithData:imageData];
+    // Configure the cell...
+    
+    Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
+    
+    cell.textLabel.text = generalItem.name;
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+  
+    NSData* icon = [generalItem picture];
+    if (icon) {
+        cell.imageView.image = [UIImage imageWithData:icon];
+    } else {
+        // Fixup for Friends Icons do not show immediately (icon property is empty).
+        // LocalId == oauthId
+        for (NSDictionary *dict in self.AllUsers) {
+            if ([[dict objectForKey:@"oauthId"] isEqualToString:generalItem.localId]) {
+                NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
+                
+                //NSLog(@"[%s] USERS %@", __func__, [dict objectForKey:@"oauthId"]);
+                
+                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                if (imageData) {
+                    cell.imageView.image = [UIImage imageWithData:imageData];
+                }
+                
+                break;
             }
         }
-            break;
     }
-
+    
     return cell;
 }
 
@@ -142,42 +151,5 @@
     
     cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
 }
-
-//-(void) configureCell: (INQFriendsTableViewItemCell *) cell atIndexPath:(NSIndexPath *)indexPath {
-//    Account * account = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-//    
-//    cell.name.text = account.name;
-//    //cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
-//    
-//    NSData* icon = [account picture];
-//    if (icon) {
-//        UIImage *image = [UIImage imageWithData:icon];
-//        cell.icon.image = image;
-//    }
-//}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
-    Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-   
-    if (generalItem){
-        //veg Silence unused variable warning!
-    }
-}
-
-//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-//    
-//    UITableView *table = (UITableView *)self.view;
-//    [table reloadData];
-////    NSRange range = NSMakeRange(FRIENDS, 1);
-////    NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
-//    
-////    [table reloadSections:section withRowAnimation:NO];
-//    
-//    
-// //  INQFriendsTableViewItemCell *cell = (INQFriendsTableViewItemCell *)[table cellForRowAtIndexPath:indexPath];
-// //   cell.textLabel.text = @"TEST";
-//}
 
 @end

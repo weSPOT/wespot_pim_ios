@@ -24,12 +24,26 @@
     [super viewDidAppear:animated];
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 //- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 //{
 //    return [super numberOfRowsInSection:section];
 //}
 
-//
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 //- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 //    return 1;
 //}

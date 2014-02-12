@@ -20,14 +20,15 @@
     return  @"MessageCell";
 }
 
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+        self.view.backgroundColor = [UIColor whiteColor];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -46,24 +47,47 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     return 1;
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Dummy implementation.
     // Return the number of rows in the section.
     return 4;
 }
 
+/*!
+ *  Return the Table Data one Cell at a Time.
+ *
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
+ *
+ *  @return The Cell Content.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];

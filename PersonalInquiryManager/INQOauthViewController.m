@@ -53,23 +53,38 @@ typedef NS_ENUM(NSInteger, services) {
 
 #pragma mark - Table view data source
 
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 4;
 }
 
 /*!
- *  Creates Cells for the UITableView.
+ *  Return the Table Data one Cell at a Time.
  *
- *  @param tableView The UITableView
- *  @param indexPath The index path containing the grouping/section and record index.
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
  *
- *  @return The INQInquiryPartCell.
+ *  @return The Cell Content.
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

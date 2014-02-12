@@ -15,29 +15,33 @@
  */
 typedef NS_ENUM(NSInteger, indices) {
     /*!
-     *  Messages.
-     */
-    MESSAGE = 0,
-    /*!
      *  Hypothesis & question.
      */
-    HYPOTHESIS = 1,
+    HYPOTHESIS = 0,
     /*!
-     *  Planning
+     *  Plan
      */
-    PLANNING = 2,
+    PLAN,
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECTION = 3,
+    DATACOLLECTION,
     /*!
      *  Analysis.
      */
-    ANALYSIS = 4,
+    ANALYSIS,
     /*!
-     *  Operationalisation / notes.
+     *  Discussion.
      */
-    NOTES = 5
+    DISCUSS,
+    /*!
+     *  Communication.
+     */
+    COMMUNICATE,
+    /*!
+     *  Number of items in this NS_ENUM
+     */
+    numItems,
 };
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
@@ -135,23 +139,38 @@ typedef NS_ENUM(NSInteger, indices) {
 
 #pragma mark - Table view data source
 
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
 
+/*!
+ *  Return the number of Rows in a Section.
+ *
+ *  @param tableView The Table to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return numItems;
 }
 
 /*!
- *  Creates Cells for the UITableView.
+ *  Return the Table Data one Cell at a Time.
  *
- *  @param tableView The UITableView
- *  @param indexPath The index path containing the grouping/section and record index.
+ *  @param tableView The Table to be served.
+ *  @param indexPath The IndexPath of the TableCell.
  *
- *  @return The INQInquiryPartCell.
+ *  @return The Cell Content.
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -164,23 +183,23 @@ typedef NS_ENUM(NSInteger, indices) {
     // Configure the cell...
     
     switch ([indexPath item]) {
-        case MESSAGE:
-            cell.textLabel.text = @"Messages";
-            break;
         case HYPOTHESIS:
-            cell.textLabel.text = @"Hypothesis & question";
+            cell.textLabel.text = @"Hypothesis";
             break;
-        case PLANNING:
-            cell.textLabel.text = @"Planning";
+        case PLAN:
+            cell.textLabel.text = @"Plan";
             break;
         case DATACOLLECTION:
-            cell.textLabel.text = @"Data collection tasks";
+            cell.textLabel.text = @"Collect Data";
             break;
         case ANALYSIS:
             cell.textLabel.text = @"Analysis";
             break;
-        case NOTES:
-            cell.textLabel.text = @"Notes";
+        case DISCUSS:
+            cell.textLabel.text = @"Discuss";
+            break;
+        case COMMUNICATE:
+            cell.textLabel.text = @"Commnicate";
             break;
         default:
             break;
@@ -202,15 +221,6 @@ typedef NS_ENUM(NSInteger, indices) {
     UIViewController * newViewController;
     
     switch ([indexPath item]){
-        case MESSAGE: {
-             // Create the new ViewController.
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MessagesView"];
-            
-            // Pass the parameters to render.
-            // [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
-            }
-        break;
-        
         case HYPOTHESIS: {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
@@ -220,16 +230,13 @@ typedef NS_ENUM(NSInteger, indices) {
             }
         break;
             
-        case NOTES: {
-            // Create the new ViewController.
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NotesView"];
-
-            // Pass the parameters to render.
-            [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
-            }
-            break;
+        case PLAN: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        break;
             
-        case DATACOLLECTION: {
+       case DATACOLLECTION: {
             
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"dataCollectionTasks"];
@@ -263,19 +270,31 @@ typedef NS_ENUM(NSInteger, indices) {
             
             [synchronizer sync];
         }
-        break;
+            break;
             
         case ANALYSIS: {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        break;
-          
-        case PLANNING: {
+            break;
+            
+        case DISCUSS: {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        break;
+            break;
+            
+        case COMMUNICATE: {
+            //// Create the new ViewController.
+            //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NotesView"];
+            //
+            //// Pass the parameters to render.
+            //[newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+            break;
             
         default: {
             NSLog(@"[%s] Unknown InquiryPart: %@",__func__, [NSNumber numberWithInteger:indexPath.section]);

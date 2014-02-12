@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ARLOauthViewController.h"
 
-@interface INQLoginViewController : UIViewController
+@interface INQLoginViewController : UIViewController  <UITextFieldDelegate>
 
 @end

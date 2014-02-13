@@ -1,47 +1,37 @@
 //
-//  INQHypothesisViewController.m
+//  INQPlanViewController.h
 //  PersonalInquiryManager
 //
 //  Created by Stefaan Ternier on 9/6/13.
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQHypothesisViewController.h"
+#import "INQPlanViewController.h"
 
-@interface INQHypothesisViewController ()
+@interface INQPlanViewController ()
 
 @end
 
-@implementation INQHypothesisViewController
-
-- (void) setHypothesis:(NSString*) hypothesis {
-    if (_hypothesis != hypothesis){
-        _hypothesis = hypothesis;
-    }
-    
-    NSLog(@"[%s] Loading %@", __func__, self.hypothesis);
-    
-    // Add swipeGestures
-    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
-                                                     initWithTarget:self
-                                                     action:@selector(oneFingerSwipeLeft:)];
-    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer:oneFingerSwipeLeft];
-
-    UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
-                                                      initWithTarget:self
-                                                      action:@selector(oneFingerSwipeRight:)];
-    [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:oneFingerSwipeRight];
-    
-    UIWebView *web = (UIWebView*) self.view;
-    
-    [web loadHTMLString:self.hypothesis  baseURL:nil];
-}
+@implementation INQPlanViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+	// Do any additional setup after loading the view.
+    
+    // Add swipeGestures
+    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+                                                    initWithTarget:self
+                                                    action:@selector(oneFingerSwipeLeft:)];
+    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:oneFingerSwipeLeft];
+    
+    UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
+                                                     initWithTarget:self
+                                                     action:@selector(oneFingerSwipeRight:)];
+    [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:oneFingerSwipeRight];
 }
 
 /*!
@@ -50,7 +40,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
     // Dispose of any resources that can be recreated.
 }
 
@@ -78,7 +67,7 @@
 
 - (void)oneFingerSwipeRight:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe right
-
+    
     NSLog(@"Swipe Right");
     
     UIViewController *newViewController;

@@ -10,7 +10,7 @@
 #import "INQInquiryTableViewItemCell.h"
 #import "Inquiry+Create.h"
 #import "INQHypothesisViewController.h"
-#import "INQNotesViewController.h"
+#import "INQPlanViewController.h"
 #import "ARLNetwork+INQ.h"
 #import "ARLCloudSynchronizer.h"
 #import "Run+ARLearnBeanCreate.h"
@@ -21,5 +21,10 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
+
+@property (nonatomic) NSInteger currentPart;
+
+- (UIViewController *)nextPart;
+- (UIViewController *)prevPart;
 
 @end

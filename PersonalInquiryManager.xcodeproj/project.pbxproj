@@ -10,7 +10,6 @@
 		342CF88117D9FF9900401E55 /* INQInquiryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88017D9FF9900401E55 /* INQInquiryTableViewController.m */; };
 		342CF88417DA011300401E55 /* INQInquiryTableViewItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88317DA011300401E55 /* INQInquiryTableViewItemCell.m */; };
 		342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88617DA07F700401E55 /* INQHypothesisViewController.m */; };
-		342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342CF88917DA091600401E55 /* INQNotesViewController.m */; };
 		34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BB117B274D800352E9A /* INQLoginScreenViewController.m */; };
 		34539BBF17B2759A00352E9A /* ARLBean.m in Sources */ = {isa = PBXBuildFile; fileRef = 34539BBD17B2759A00352E9A /* ARLBean.m */; };
 		34539BDE17B275B600352E9A /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34539BD817B275B600352E9A /* libzbar.a */; };
@@ -167,11 +166,16 @@
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
 		8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D02769418AA556300DA8482 /* INQLoginViewController.m */; };
-		8D3F8AF418AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AED18AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.m */; };
-		8D3F8AF518AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AEF18AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.m */; };
-		8D3F8AF618AB94FC00B233A6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AF118AB94FC00B233A6 /* TPKeyboardAvoidingTableView.m */; };
-		8D3F8AF718AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AF318AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		8D3F8AFA18ABB96F00B233A6 /* INQAddFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AF918ABB96F00B233A6 /* INQAddFriendTableViewController.m */; };
+		8D3F8B0418ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */; };
+		8D3F8B0518ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFF18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m */; };
+		8D3F8B0618ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B0118ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m */; };
+		8D3F8B0718ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B0318ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
+		8D3F8B0B18ACBDB900B233A6 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B0A18ACBDB900B233A6 /* iCarousel.m */; };
+		8D3F8B1218ACE16B00B233A6 /* INQAnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1118ACE16B00B233A6 /* INQAnalysisViewController.m */; };
+		8D3F8B1518ACE18600B233A6 /* INQDiscussViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1418ACE18600B233A6 /* INQDiscussViewController.m */; };
+		8D3F8B1818ACE19F00B233A6 /* INQCommunicateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1718ACE19F00B233A6 /* INQCommunicateViewController.m */; };
+		8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */; };
 		8D4DF87418A3AF15009CD9BA /* INQMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */; };
 		8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87618A3B207009CD9BA /* INQMainCell.m */; };
 		8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */; };
@@ -187,8 +191,6 @@
 		342CF88317DA011300401E55 /* INQInquiryTableViewItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryTableViewItemCell.m; sourceTree = "<group>"; };
 		342CF88517DA07F700401E55 /* INQHypothesisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQHypothesisViewController.h; sourceTree = "<group>"; };
 		342CF88617DA07F700401E55 /* INQHypothesisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQHypothesisViewController.m; sourceTree = "<group>"; };
-		342CF88817DA091600401E55 /* INQNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNotesViewController.h; sourceTree = "<group>"; };
-		342CF88917DA091600401E55 /* INQNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNotesViewController.m; sourceTree = "<group>"; };
 		34539BB017B274D800352E9A /* INQLoginScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLoginScreenViewController.h; sourceTree = "<group>"; };
 		34539BB117B274D800352E9A /* INQLoginScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLoginScreenViewController.m; sourceTree = "<group>"; };
 		34539BBC17B2759A00352E9A /* ARLBean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLBean.h; sourceTree = "<group>"; };
@@ -501,16 +503,26 @@
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
 		8D02769318AA556300DA8482 /* INQLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLoginViewController.h; sourceTree = "<group>"; };
 		8D02769418AA556300DA8482 /* INQLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLoginViewController.m; sourceTree = "<group>"; };
-		8D3F8AEC18AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
-		8D3F8AED18AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
-		8D3F8AEE18AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
-		8D3F8AEF18AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
-		8D3F8AF018AB94FC00B233A6 /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
-		8D3F8AF118AB94FC00B233A6 /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
-		8D3F8AF218AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TPKeyboardAvoidingAdditions.h"; sourceTree = "<group>"; };
-		8D3F8AF318AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
 		8D3F8AF818ABB96F00B233A6 /* INQAddFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddFriendTableViewController.h; sourceTree = "<group>"; };
 		8D3F8AF918ABB96F00B233A6 /* INQAddFriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAddFriendTableViewController.m; sourceTree = "<group>"; };
+		8D3F8AFC18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
+		8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
+		8D3F8AFE18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
+		8D3F8AFF18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		8D3F8B0018ACBD9100B233A6 /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
+		8D3F8B0118ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
+		8D3F8B0218ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TPKeyboardAvoidingAdditions.h"; sourceTree = "<group>"; };
+		8D3F8B0318ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
+		8D3F8B0918ACBDB900B233A6 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		8D3F8B0A18ACBDB900B233A6 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		8D3F8B1018ACE16B00B233A6 /* INQAnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQAnalysisViewController.h; path = Analysis/INQAnalysisViewController.h; sourceTree = "<group>"; };
+		8D3F8B1118ACE16B00B233A6 /* INQAnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQAnalysisViewController.m; path = Analysis/INQAnalysisViewController.m; sourceTree = "<group>"; };
+		8D3F8B1318ACE18500B233A6 /* INQDiscussViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQDiscussViewController.h; path = Discuss/INQDiscussViewController.h; sourceTree = "<group>"; };
+		8D3F8B1418ACE18600B233A6 /* INQDiscussViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQDiscussViewController.m; path = Discuss/INQDiscussViewController.m; sourceTree = "<group>"; };
+		8D3F8B1618ACE19F00B233A6 /* INQCommunicateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQCommunicateViewController.h; path = Communicate/INQCommunicateViewController.h; sourceTree = "<group>"; };
+		8D3F8B1718ACE19F00B233A6 /* INQCommunicateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQCommunicateViewController.m; path = Communicate/INQCommunicateViewController.m; sourceTree = "<group>"; };
+		8D3F8B1A18ACE31900B233A6 /* INQPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPlanViewController.h; sourceTree = "<group>"; };
+		8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPlanViewController.m; sourceTree = "<group>"; };
 		8D4DF87218A3AF15009CD9BA /* INQMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainViewController.h; sourceTree = "<group>"; };
 		8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainViewController.m; sourceTree = "<group>"; };
 		8D4DF87518A3B207009CD9BA /* INQMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainCell.h; sourceTree = "<group>"; };
@@ -708,22 +720,23 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
-				8D3F8AEB18AB94E000B233A6 /* TPKeyboardAvoiding */,
-				34D6F1BF17B67A7400BE1516 /* Icon.png */,
-				34D6F1C017B67A7400BE1516 /* Icon@2x.png */,
-				34D6F1C117B67A7400BE1516 /* Icon57.png */,
-				34D422DA17B677BC0051E84C /* images */,
-				34D4228717B670EC0051E84C /* CoreData */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				347AD08417B286F200B4B345 /* ARLearnAuthentication */,
-				347ACF8417B2852B00B4B345 /* ArlearnNetworkApi */,
-				347ACF6C17B283FB00B4B345 /* libiconv.2.4.0.dylib */,
-				347ACF2617B27DD700B4B345 /* ARLearnContextAwareNotification */,
-				34539BC017B275B600352E9A /* ZBarSDK */,
 				34539BBB17B2759A00352E9A /* ARLearnBeans */,
-				3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */,
+				347ACF2617B27DD700B4B345 /* ARLearnContextAwareNotification */,
+				347ACF8417B2852B00B4B345 /* ArlearnNetworkApi */,
+				34D4228717B670EC0051E84C /* CoreData */,
 				3477E6871769C9A000F3A5F3 /* Frameworks */,
+				8D3F8B0818ACBDB900B233A6 /* iCarousel */,
+				34D6F1BF17B67A7400BE1516 /* Icon.png */,
+				34D6F1C117B67A7400BE1516 /* Icon57.png */,
+				34D6F1C017B67A7400BE1516 /* Icon@2x.png */,
+				34D422DA17B677BC0051E84C /* images */,
+				347ACF6C17B283FB00B4B345 /* libiconv.2.4.0.dylib */,
+				3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */,
 				3477E6861769C9A000F3A5F3 /* Products */,
+				8D3F8AFB18ACBD9100B233A6 /* TPKeyboardAvoiding */,
+				34539BC017B275B600352E9A /* ZBarSDK */,
 			);
 			sourceTree = "<group>";
 		};
@@ -760,11 +773,14 @@
 			isa = PBXGroup;
 			children = (
 				8D0249F518A7FCA0009D0566 /* _Obsolete */,
+				8D3F8B0D18ACE0E400B233A6 /* Analysis */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
 				3477E6981769C9A000F3A5F3 /* ARLAppDelegate.m */,
 				8D024A0018A8EFBF009D0566 /* Authentication */,
 				8D0249FF18A80B1B009D0566 /* Badges */,
+				8D3F8B0F18ACE0F500B233A6 /* Communicate */,
 				8D0249F918A80A4F009D0566 /* DataCollection */,
+				8D3F8B0E18ACE0EC00B233A6 /* Discuss */,
 				8D0249F618A809C9009D0566 /* Friends */,
 				8D0249FA18A80A73009D0566 /* Hypothesis */,
 				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
@@ -775,6 +791,7 @@
 				347AD0C817B3795C00B4B345 /* Network */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
+				8D3F8B1918ACE2DC00B233A6 /* Plan */,
 				8D0249FD18A80B08009D0566 /* Splash */,
 				3477E68F1769C9A000F3A5F3 /* Supporting Files */,
 			);
@@ -1052,8 +1069,6 @@
 		8D0249F518A7FCA0009D0566 /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
-				342CF88817DA091600401E55 /* INQNotesViewController.h */,
-				342CF88917DA091600401E55 /* INQNotesViewController.m */,
 				8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */,
 				8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */,
 				3454CC8817B394E500C0DFFC /* INQIconTextTableViewItemCell.h */,
@@ -1161,19 +1176,64 @@
 			name = Authentication;
 			sourceTree = "<group>";
 		};
-		8D3F8AEB18AB94E000B233A6 /* TPKeyboardAvoiding */ = {
+		8D3F8AFB18ACBD9100B233A6 /* TPKeyboardAvoiding */ = {
 			isa = PBXGroup;
 			children = (
-				8D3F8AEC18AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.h */,
-				8D3F8AED18AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.m */,
-				8D3F8AEE18AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.h */,
-				8D3F8AEF18AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.m */,
-				8D3F8AF018AB94FC00B233A6 /* TPKeyboardAvoidingTableView.h */,
-				8D3F8AF118AB94FC00B233A6 /* TPKeyboardAvoidingTableView.m */,
-				8D3F8AF218AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */,
-				8D3F8AF318AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */,
+				8D3F8AFC18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.h */,
+				8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */,
+				8D3F8AFE18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.h */,
+				8D3F8AFF18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m */,
+				8D3F8B0018ACBD9100B233A6 /* TPKeyboardAvoidingTableView.h */,
+				8D3F8B0118ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m */,
+				8D3F8B0218ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */,
+				8D3F8B0318ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */,
 			);
-			name = TPKeyboardAvoiding;
+			path = TPKeyboardAvoiding;
+			sourceTree = "<group>";
+		};
+		8D3F8B0818ACBDB900B233A6 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F8B0918ACBDB900B233A6 /* iCarousel.h */,
+				8D3F8B0A18ACBDB900B233A6 /* iCarousel.m */,
+			);
+			path = iCarousel;
+			sourceTree = "<group>";
+		};
+		8D3F8B0D18ACE0E400B233A6 /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F8B1018ACE16B00B233A6 /* INQAnalysisViewController.h */,
+				8D3F8B1118ACE16B00B233A6 /* INQAnalysisViewController.m */,
+			);
+			name = Analysis;
+			sourceTree = "<group>";
+		};
+		8D3F8B0E18ACE0EC00B233A6 /* Discuss */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F8B1318ACE18500B233A6 /* INQDiscussViewController.h */,
+				8D3F8B1418ACE18600B233A6 /* INQDiscussViewController.m */,
+			);
+			name = Discuss;
+			sourceTree = "<group>";
+		};
+		8D3F8B0F18ACE0F500B233A6 /* Communicate */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F8B1618ACE19F00B233A6 /* INQCommunicateViewController.h */,
+				8D3F8B1718ACE19F00B233A6 /* INQCommunicateViewController.m */,
+			);
+			name = Communicate;
+			sourceTree = "<group>";
+		};
+		8D3F8B1918ACE2DC00B233A6 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F8B1A18ACE31900B233A6 /* INQPlanViewController.h */,
+				8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */,
+			);
+			path = Plan;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1298,12 +1358,12 @@
 				3477E6991769C9A000F3A5F3 /* ARLAppDelegate.m in Sources */,
 				3477E6A51769C9A000F3A5F3 /* ARLViewController.m in Sources */,
 				34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */,
+				8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */,
 				34539BBF17B2759A00352E9A /* ARLBean.m in Sources */,
 				347ACF2B17B27DD700B4B345 /* ARLNotificationPlayer.m in Sources */,
 				8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */,
 				347ACF2C17B27DD700B4B345 /* ARLNotificationSubscriber.m in Sources */,
 				347ACF3817B27F4D00B4B345 /* ARLAppearDisappearDelegator.m in Sources */,
-				8D3F8AF618AB94FC00B233A6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				347ACF8C17B2852B00B4B345 /* ARLCloudSynchronizer.m in Sources */,
 				347ACF8D17B2852B00B4B345 /* ARLFileCloudSynchronizer.m in Sources */,
 				347ACF8E17B2852B00B4B345 /* ARLNetwork.m in Sources */,
@@ -1315,6 +1375,7 @@
 				8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */,
 				347AD09917B286F200B4B345 /* ARLOauthViewController.m in Sources */,
 				347AD09A17B286F200B4B345 /* ARLOauthWebViewController.m in Sources */,
+				8D3F8B0B18ACBDB900B233A6 /* iCarousel.m in Sources */,
 				347AD09B17B286F200B4B345 /* ARLScanAuthView.m in Sources */,
 				8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */,
 				347AD09C17B286F200B4B345 /* ARLSplashScreenViewController.m in Sources */,
@@ -1324,12 +1385,16 @@
 				347AD0CB17B3797C00B4B345 /* ARLNetwork+INQ.m in Sources */,
 				347AD0CE17B37BAF00B4B345 /* INQCloudSynchronizer.m in Sources */,
 				3454CC8717B3935800C0DFFC /* INQMyInquiriesTableViewController.m in Sources */,
+				8D3F8B0718ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				3454CC8A17B394E500C0DFFC /* INQIconTextTableViewItemCell.m in Sources */,
+				8D3F8B0618ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				3454CC8D17B39B2E00C0DFFC /* INQInquiryPageViewController.m in Sources */,
 				3454CCFD17B3A72E00C0DFFC /* ARLAnswerItemView.m in Sources */,
 				3454CCFF17B3A72E00C0DFFC /* ARLAudioObjectPlayButtons.m in Sources */,
 				3454CD0017B3A72E00C0DFFC /* ARLAudioObjectPlayer.m in Sources */,
+				8D3F8B1818ACE19F00B233A6 /* INQCommunicateViewController.m in Sources */,
 				3454CD0117B3A72E00C0DFFC /* ARLAudioRecorder.m in Sources */,
+				8D3F8B0518ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				3454CD0217B3A72E00C0DFFC /* ARLAudioViewController.m in Sources */,
 				3454CD0317B3A72E00C0DFFC /* ARLCustomViewController.m in Sources */,
 				3454CD0417B3A72E00C0DFFC /* ARLDataCollectionWidget.m in Sources */,
@@ -1343,7 +1408,6 @@
 				3454CD0E17B3A72E00C0DFFC /* ARLInfoViewController.m in Sources */,
 				3454CD0F17B3A72E00C0DFFC /* ARLMapTableViewController.m in Sources */,
 				3454CD1017B3A72E00C0DFFC /* ARLMapViewController.m in Sources */,
-				8D3F8AF718AB94FC00B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				3454CD1117B3A72E00C0DFFC /* ARLMultipleChoiceAnswerView.m in Sources */,
 				8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */,
 				3454CD1217B3A72E00C0DFFC /* ARLMultipleChoiceTestViewController.m in Sources */,
@@ -1361,7 +1425,6 @@
 				3454CD4717B3C80200C0DFFC /* INQGeneralItemTableViewController.m in Sources */,
 				3454CD4F17B3D0BA00C0DFFC /* INQOauthViewController.m in Sources */,
 				34D422B617B670ED0051E84C /* Account+Create.m in Sources */,
-				8D3F8AF518AB94FC00B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				34D422B717B670ED0051E84C /* Account.m in Sources */,
 				34D422B817B670ED0051E84C /* Action+Create.m in Sources */,
 				34D422B917B670ED0051E84C /* Action.m in Sources */,
@@ -1369,6 +1432,7 @@
 				34D422BB17B670ED0051E84C /* CoreDataTableViewController.m in Sources */,
 				34D422BC17B670ED0051E84C /* CurrentItemVisibility+Create.m in Sources */,
 				34D422BD17B670ED0051E84C /* CurrentItemVisibility.m in Sources */,
+				8D3F8B0418ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */,
 				34D422BF17B670ED0051E84C /* Game.m in Sources */,
 				34D422C017B670ED0051E84C /* GeneralItem+ARLearnBeanCreate.m in Sources */,
@@ -1379,11 +1443,12 @@
 				34D422C517B670ED0051E84C /* GeneralItemVisibility.m in Sources */,
 				34D422C617B670ED0051E84C /* Inquiry.m in Sources */,
 				34D422C717B670ED0051E84C /* Response+Create.m in Sources */,
-				8D3F8AF418AB94FC00B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				8D3F8B1218ACE16B00B233A6 /* INQAnalysisViewController.m in Sources */,
 				34D422C817B670ED0051E84C /* Response.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
 				34D422CA17B670ED0051E84C /* Run.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,
+				8D3F8B1518ACE18600B233A6 /* INQDiscussViewController.m in Sources */,
 				34D422CC17B670ED0051E84C /* SynchronizationBookKeeping.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,
 				34D422D617B677420051E84C /* ARLAudioRecorderViewController.m in Sources */,
@@ -1393,7 +1458,6 @@
 				8D3F8AFA18ABB96F00B233A6 /* INQAddFriendTableViewController.m in Sources */,
 				342CF88417DA011300401E55 /* INQInquiryTableViewItemCell.m in Sources */,
 				342CF88717DA07F700401E55 /* INQHypothesisViewController.m in Sources */,
-				342CF88A17DA091600401E55 /* INQNotesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

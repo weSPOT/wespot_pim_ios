@@ -1,5 +1,5 @@
 //
-//  INQNotesViewController.h
+//  INQPlanViewController.h
 //  PersonalInquiryManager
 //
 //  Created by Stefaan Ternier on 9/6/13.
@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ARLNetwork+INQ.h"
 
-@interface INQNotesViewController : UIViewController
+@interface INQPlanViewController : UIViewController
 
-//@property (strong, nonatomic) UIWebView *notesView;
 @property (strong, nonatomic) NSNumber *inquiryId;
 
 @end

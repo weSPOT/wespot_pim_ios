@@ -327,11 +327,21 @@
             <objects>
                 <viewController storyboardIdentifier="HypothesisView" title="Hypothesis &amp; question" id="2A5-XL-J74" customClass="INQHypothesisViewController" sceneMemberID="viewController">
                     <webView key="view" contentMode="scaleToFill" id="7rs-nX-46f">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </webView>
-                    <navigationItem key="navigationItem" id="PtH-4Q-gzy"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" title="Hypothesis" id="PtH-4Q-gzy">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="FKI-LZ-cCV">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="PXG-D5-8qt">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1V4-80-rCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -343,7 +353,7 @@
             <objects>
                 <viewController id="QXf-FC-4Co" customClass="ARLNarratorItemViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Koa-9g-uR4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -357,27 +367,38 @@
             </objects>
             <point key="canvasLocation" x="2984" y="1586"/>
         </scene>
-        <!--Notes View Controller - Notes-->
+        <!--Plan View-->
         <scene sceneID="XIq-1U-3iK">
             <objects>
-                <viewController storyboardIdentifier="NotesView" title="Notes" id="mn0-Jq-sNa" customClass="INQNotesViewController" sceneMemberID="viewController">
-                    <webView key="view" contentMode="scaleToFill" id="qYz-Lw-xIW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                <viewController storyboardIdentifier="PlanView" title="Plan" id="mn0-Jq-sNa" userLabel="Plan View" customClass="INQPlanViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SAs-5W-JGM">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </webView>
-                    <navigationItem key="navigationItem" title="Notes" id="M8i-Qn-YpF"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Plan" id="M8i-Qn-YpF">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="9l9-PG-epJ">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" currentPage="1" id="yu7-U3-nDj">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S2e-8n-KJm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2585" y="1021"/>
         </scene>
-        <!--General Item Table View Controller - Data Collection Tasks-->
+        <!--General Item Table View Controller - Collect data-->
         <scene sceneID="DTQ-oG-YsK">
             <objects>
-                <tableViewController storyboardIdentifier="dataCollectionTasks" id="cZ5-E8-4wN" customClass="INQGeneralItemTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CollectDataView" id="cZ5-E8-4wN" customClass="INQGeneralItemTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="0r1-eD-vkc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -411,7 +432,18 @@
                             <outlet property="delegate" destination="cZ5-E8-4wN" id="Vhk-xg-Dcc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Data Collection Tasks" id="ZrF-qp-4XE"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="iM6-7p-ihI">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" currentPage="2" id="cjG-vV-vum">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -523,6 +555,84 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7LK-ag-gEm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1300" y="452"/>
+        </scene>
+        <!--Analysis View-->
+        <scene sceneID="ynt-bl-3u1">
+            <objects>
+                <viewController storyboardIdentifier="AnalysisView" title="Analysis" id="4rj-LE-YEU" userLabel="Analysis View" customClass="INQAnalysisViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jRz-Hy-qag">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Analysis" id="S6t-lb-W8v">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="JcP-4L-DZS">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" currentPage="3" id="wzL-0k-gjS">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fm0-gD-4Hh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2585" y="2153"/>
+        </scene>
+        <!--Discuss View-->
+        <scene sceneID="Rqp-Xu-www">
+            <objects>
+                <viewController storyboardIdentifier="DiscussView" title="Analysis" id="vdD-jd-pdT" userLabel="Discuss View" customClass="INQDiscussViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UiW-LV-h83">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Discuss" id="DJe-h3-fbB">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="uMc-MQ-ACT">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" currentPage="4" id="dfT-C2-A0T">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eRm-Pc-ohE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2585" y="2712"/>
+        </scene>
+        <!--Communicate View-->
+        <scene sceneID="GCL-bQ-7El">
+            <objects>
+                <viewController storyboardIdentifier="CommunicateView" title="Analysis" id="8JJ-mJ-WU8" userLabel="Communicate View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ji0-Hk-Kcd">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Communicate" id="Qbr-5I-Uj5">
+                        <barButtonItem key="rightBarButtonItem" title="parts" style="plain" id="ILj-yM-Okf">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" currentPage="5" id="zMw-cT-nd5">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OTc-2Y-b5x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2590" y="3282"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

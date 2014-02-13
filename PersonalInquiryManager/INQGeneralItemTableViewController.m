@@ -149,6 +149,22 @@
     // Insert your own code to handle swipe left
     
     NSLog(@"Swipe Left");
+    
+    UIViewController *newViewController;
+    
+    NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [stackViewControllers removeLastObject];
+    
+    UIViewController *inquiryViewController = [stackViewControllers lastObject];
+    
+    if ([inquiryViewController respondsToSelector:@selector(nextPart)]) {
+        newViewController =  [inquiryViewController performSelector:@selector(nextPart)];
+    }
+    
+    if (newViewController) {
+        [stackViewControllers addObject:newViewController];
+        [self.navigationController setViewControllers:stackViewControllers animated:YES];
+    }
 }
 
 - (void)oneFingerSwipeRight:(UITapGestureRecognizer *)recognizer {
@@ -156,12 +172,30 @@
     
     NSLog(@"Swipe Right");
     
-    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
+    UIViewController *newViewController;
     
     NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
     [stackViewControllers removeLastObject];
-    [stackViewControllers addObject:newViewController];
-    [self.navigationController setViewControllers:stackViewControllers animated:YES];
+    
+    UIViewController *inquiryViewController = [stackViewControllers lastObject];
+    
+    if ([inquiryViewController respondsToSelector:@selector(prevPart)]) {
+        newViewController =  [inquiryViewController performSelector:@selector(prevPart)];
+    }
+    
+    if (newViewController) {
+        [stackViewControllers addObject:newViewController];
+        [self.navigationController setViewControllers:stackViewControllers animated:NO];
+        
+//        [UIView animateWithDuration:2.75
+//                         animations:^{
+//                             NSLog(@"BINGO1");
+//                             //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                             [self.navigationController setViewControllers:stackViewControllers animated:NO];
+//                             [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:newViewController.view cache:NO];
+//                             NSLog(@"BINGO2");
+//                         }];
+    }
 }
 
 @end

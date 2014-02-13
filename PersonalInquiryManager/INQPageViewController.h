@@ -10,6 +10,6 @@
 
 @interface INQPageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
-//@property (strong, nonatomic) UIPageViewController *pageController;
+@property (strong, nonatomic) NSNumber *currentPageIndex;
 
 @end

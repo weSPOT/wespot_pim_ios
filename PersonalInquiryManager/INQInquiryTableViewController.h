@@ -23,9 +23,4 @@
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
 
-@property (strong, nonatomic) NSNumber *currentPart;
-
-- (UIViewController *)nextPart;
-- (UIViewController *)prevPart;
-
 @end

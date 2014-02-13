@@ -58,8 +58,6 @@ typedef NS_ENUM(NSInteger, indices) {
 {
     [super viewDidLoad];
     
-    self.currentPart = nil;
-    
     // Load Icon.
     NSData* icon = [self.inquiry icon];
     if (icon) {
@@ -303,44 +301,6 @@ typedef NS_ENUM(NSInteger, indices) {
             
             break;
     }
-    if (newViewController) {
-        self.currentPart = index;
-    }
-    
-    return newViewController;
-}
-
-- (UIViewController *)nextPart
-{
-    NSNumber *newPart = [NSNumber numberWithInt:[self.currentPart intValue]+1];
-    newPart = [NSNumber numberWithInt:([newPart intValue] % numItems)];
-    
-    NSLog(@"[%s] %@ -> %@", __func__, self.currentPart, newPart);
-    
-    UIViewController * newViewController = [self CreateInquiryPartViewController:newPart];
-  
-    if (newViewController) {
-        self.currentPart=newPart;
-    }
-    
-    return newViewController;
-}
-
-- (UIViewController *)prevPart {
-
-    NSNumber *newPart = [NSNumber numberWithInt:(self.currentPart<=0)?numItems-1:[self.currentPart intValue]-1];
-    newPart = [NSNumber numberWithInt:([newPart intValue] % numItems)];
-      
-//  self.currentPart--;
-//  self.currentPart %= numItems;
-    
-    NSLog(@"[%s] %@ -> %@", __func__, self.currentPart, newPart);
-    
-    UIViewController * newViewController = [self CreateInquiryPartViewController:newPart];
-  
-    if (newViewController) {
-        self.currentPart = newPart;
-    }
     
     return newViewController;
 }
@@ -357,13 +317,15 @@ typedef NS_ENUM(NSInteger, indices) {
     
     switch (indexPath.section) {
         case 0: {
-            newViewController = [self CreateInquiryPartViewController:[NSNumber numberWithInt:indexPath.item]];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
+            if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
+                [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
+            }
             break;
             
         case 1: {
-          newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
         }
             break;
         }

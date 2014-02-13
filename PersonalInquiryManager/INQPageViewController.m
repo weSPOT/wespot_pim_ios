@@ -10,46 +10,52 @@
 
 @interface INQPageViewController ()
 
+#error TODO Correct Initial Number in PageControl (self.currentPageIndex and PageViewController are not in sync).
+#error TODO Cannot scroll backwards property starting from the last page..
+
 @end
 
 @implementation INQPageViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
+   
+    NSLog(@"[%s] %@", __func__, self.currentPageIndex);
     
-//    self.pageController =[ self.storyboard   instantiateViewControllerWithIdentifier:@"PageViewController"];
-     self.dataSource = self;
-    
-//    [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-//    [[self.pageController view] setFrame:[[self view] bounds]];
-    
-    UIViewController *initialViewController = [self viewControllerAtIndex:0];
+    self.dataSource = self;
+    UIViewController *initialViewController = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
     [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
-    //[self addChildViewController:self.pageController];
-    //[[self view] addSubview:[self.pageController view]];
     [self didMoveToParentViewController:self];
 }
 
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
     
+    // Dispose of any resources that can be recreated.
+}
+
+
+- (void)initWithInitialPage:(NSNumber *)index {
+    NSLog(@"[%s] %@", __func__, index);
+    
+    self.currentPageIndex = index;
 }
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
     UIViewController *newViewController;
     
+    // Find the InqueryViewController as it hosts the code that creates the SubViews.
     NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
     [stackViewControllers removeLastObject];
     
     UIViewController *inquiryViewController = [stackViewControllers lastObject];
     
+    // Ask the InqueryViewController to create and initialize the requested ViewController.
     if ([inquiryViewController respondsToSelector:@selector(CreateInquiryPartViewController:)]) {
         newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
     }
@@ -58,7 +64,6 @@
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
- 
     NSUInteger index = 0;
     
     NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
@@ -75,38 +80,24 @@
     }
     
     // Decrease the index by 1 to return
-    index--;
-    
-    
+    self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] - 1];
+
     NSLog(@"[%s] Showing Page: %d",__func__, index);
     
-    return [self viewControllerAtIndex:index];
+    return [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    // Increase the index by 1 to return
+    self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] + 1];
     
-    NSUInteger index = 0;
-    
-    NSMutableArray *stackViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [stackViewControllers removeLastObject];
-    
-    UIViewController *inquiryViewController = [stackViewControllers lastObject];
-    
-    if ([inquiryViewController respondsToSelector:@selector(currentPart)]) {
-        index  = [(NSNumber *)[inquiryViewController performSelector:@selector(currentPart)] intValue];
-    }
-    
-    // NSUInteger index = [(APPChildViewController *)viewController index];
-    
-    index++;
-    
-    if (index == 6) {
+    if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:6]]) {
         return nil;
     }
     
-    NSLog(@"[%s] Showing Page: %d",__func__, index);
+    NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex );
     
-    return [self viewControllerAtIndex:index];
+    return [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {

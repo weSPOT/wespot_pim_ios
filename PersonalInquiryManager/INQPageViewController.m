@@ -18,21 +18,21 @@
     
     [super viewDidLoad];
     
-    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+//    self.pageController =[ self.storyboard   instantiateViewControllerWithIdentifier:@"PageViewController"];
+     self.dataSource = self;
     
-    self.dataSource = self;
-    [[self.pageController view] setFrame:[[self view] bounds]];
+//    [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+//    [[self.pageController view] setFrame:[[self view] bounds]];
     
     UIViewController *initialViewController = [self viewControllerAtIndex:0];
     
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
-    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
-    [self addChildViewController:self.pageController];
-    [[self view] addSubview:[self.pageController view]];
-    [self.pageController didMoveToParentViewController:self];
-    
+    //[self addChildViewController:self.pageController];
+    //[[self view] addSubview:[self.pageController view]];
+    [self didMoveToParentViewController:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,9 +53,6 @@
     if ([inquiryViewController respondsToSelector:@selector(CreateInquiryPartViewController:)]) {
         newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
     }
-
-//    APPChildViewController *childViewController = [[APPChildViewController alloc] initWithNibName:@"APPChildViewController" bundle:nil];
-   // childViewController.index = index;
     
     return newViewController;
 }
@@ -73,8 +70,6 @@
          index  = [(NSNumber *)[inquiryViewController performSelector:@selector(currentPart)] intValue];
     }
     
-    // NSUInteger index = [(APPChildViewController *)viewController index];
-    
     if (index == 0) {
         return nil;
     }
@@ -86,7 +81,6 @@
     NSLog(@"[%s] Showing Page: %d",__func__, index);
     
     return [self viewControllerAtIndex:index];
-    
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {

@@ -133,7 +133,7 @@ typedef NS_ENUM(NSInteger, services) {
 
 - (void)performLogin:(NSInteger)serviceId {
     ARLOauthWebViewController* svc = [self.storyboard instantiateViewControllerWithIdentifier:@"oauthWebView"];
-    svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabs"];
+    svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
     
     [self.navigationController pushViewController:svc animated:YES];
     

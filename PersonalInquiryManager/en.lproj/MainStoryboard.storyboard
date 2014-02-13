@@ -76,6 +76,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="wgh-aw-plO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yxd-ti-F0v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -325,40 +326,41 @@
         <!--Page View Controller-->
         <scene sceneID="HA2-1u-Qfh">
             <objects>
-                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZ3-S5-0WF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2527" y="730"/>
-        </scene>
-        <!--Page View Controller-->
-        <scene sceneID="emH-rz-cZA">
-            <objects>
-                <viewController storyboardIdentifier="PageViewConrollerOld" id="flR-xE-DCt" customClass="INQPageViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hNO-NB-CdI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="M56-X1-Jvp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2608" y="452"/>
+            <point key="canvasLocation" x="2604" y="452"/>
         </scene>
         <!--Hypothesis View Controller - Hypothesis & question-->
         <scene sceneID="Kbd-4e-y9J">
             <objects>
                 <viewController storyboardIdentifier="HypothesisView" title="Hypothesis &amp; question" id="2A5-XL-J74" customClass="INQHypothesisViewController" sceneMemberID="viewController">
                     <webView key="view" contentMode="scaleToFill" id="7rs-nX-46f">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </webView>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Hypothesis" id="PtH-4Q-gzy"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <navigationItem key="navigationItem" title="Hypothesis" id="PtH-4Q-gzy">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="d7H-zd-vbx">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="lMC-7F-OmR">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1V4-80-rCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="xxC-2a-EVq">
+                    <rect key="frame" x="0.0" y="0.0" width="38" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </pageControl>
             </objects>
             <point key="canvasLocation" x="3011" y="-734"/>
         </scene>
@@ -367,7 +369,7 @@
             <objects>
                 <viewController id="QXf-FC-4Co" customClass="ARLNarratorItemViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Koa-9g-uR4">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -392,7 +394,15 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Plan" id="M8i-Qn-YpF"/>
+                    <navigationItem key="navigationItem" title="Plan" id="M8i-Qn-YpF">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="zvP-Bq-dr4">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="vhL-eJ-HGX">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
@@ -405,7 +415,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="CollectDataView" id="cZ5-E8-4wN" customClass="INQGeneralItemTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="0r1-eD-vkc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -441,8 +451,15 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="ViW-ID-EfY">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="JbG-Bu-yz3">
+                                <rect key="frame" x="16" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -508,24 +525,6 @@
             </objects>
             <point key="canvasLocation" x="-84" y="452"/>
         </scene>
-        <!--MainTabs-->
-        <scene sceneID="OdW-OD-7le">
-            <objects>
-                <tabBarController storyboardIdentifier="MainTabs" title="Main" definesPresentationContext="YES" id="V5L-pB-L3J" userLabel="MainTabs" sceneMemberID="viewController">
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="Zbs-cb-v88">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="M4Q-ds-Y79" kind="relationship" relationship="viewControllers" id="AHu-6L-wUZ"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FWx-hm-OQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="337" y="452"/>
-        </scene>
         <!--MainView-->
         <scene sceneID="B9d-fT-mDT">
             <objects>
@@ -567,7 +566,15 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Analysis" id="S6t-lb-W8v"/>
+                    <navigationItem key="navigationItem" title="Analysis" id="S6t-lb-W8v">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="i2v-5J-izL">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="dLo-LU-BqW">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
@@ -586,7 +593,15 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Discuss" id="DJe-h3-fbB"/>
+                    <navigationItem key="navigationItem" title="Discuss" id="DJe-h3-fbB">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="TVc-6N-hxy">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="Fcr-9n-IVY">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
@@ -605,11 +620,45 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Communicate" id="Qbr-5I-Uj5"/>
+                    <navigationItem key="navigationItem" title="Communicate" id="Qbr-5I-Uj5">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="9Vy-16-bs6">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="3Ga-5f-7ft">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OTc-2Y-b5x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3011" y="2160"/>
+        </scene>
+        <!--Communicate View-->
+        <scene sceneID="gJf-yS-rNI">
+            <objects>
+                <viewController storyboardIdentifier="CommunicateView" title="Analysis" id="UyB-Q7-Qrq" userLabel="Communicate View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EY3-eg-2RG">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Communicate" id="Tr7-Gx-Cdd">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="kiI-jH-BY3">
+                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="oGg-4Q-Cy6">
+                                <rect key="frame" x="204" y="4" width="100" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="52R-3e-ACX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3011" y="2160"/>
         </scene>

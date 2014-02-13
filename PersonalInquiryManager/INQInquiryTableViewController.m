@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, indices) {
 {
     [super viewDidLoad];
     
-    self.currentPart = -1;
+    self.currentPart = nil;
     
     // Load Icon.
     NSData* icon = [self.inquiry icon];
@@ -227,10 +227,11 @@ typedef NS_ENUM(NSInteger, indices) {
 
 #pragma mark - Table view delegate
 
-- (UIViewController *)CreateInquiryPartViewController:(NSInteger)index
+- (UIViewController *)CreateInquiryPartViewController:(NSNumber *)index
 {
     UIViewController *newViewController;
-    switch (index){
+    
+    switch ([index intValue]){
         case HYPOTHESIS: {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
@@ -297,23 +298,24 @@ typedef NS_ENUM(NSInteger, indices) {
             break;
             
         default: {
-            NSLog(@"[%s] Unknown InquiryPart: %@",__func__, [NSNumber numberWithInteger:index]);
+            NSLog(@"[%s] Unknown InquiryPart: %@",__func__, index);
         }
             
             break;
     }
-
-    self.currentPart = (newViewController)?index:-1;
+    if (newViewController) {
+        self.currentPart = index;
+    }
     
     return newViewController;
 }
 
 - (UIViewController *)nextPart
 {
-    NSInteger newPart = self.currentPart+1;
-    newPart %= numItems;
+    NSNumber *newPart = [NSNumber numberWithInt:[self.currentPart intValue]+1];
+    newPart = [NSNumber numberWithInt:([newPart intValue] % numItems)];
     
-    NSLog(@"[%s] %d -> %d", __func__, self.currentPart, newPart);
+    NSLog(@"[%s] %@ -> %@", __func__, self.currentPart, newPart);
     
     UIViewController * newViewController = [self CreateInquiryPartViewController:newPart];
   
@@ -324,15 +326,15 @@ typedef NS_ENUM(NSInteger, indices) {
     return newViewController;
 }
 
-- (UIViewController *)prevPart
-{
-    NSInteger newPart = (self.currentPart<=0)?numItems-1:self.currentPart-1;
-    newPart %= numItems;
-    
+- (UIViewController *)prevPart {
+
+    NSNumber *newPart = [NSNumber numberWithInt:(self.currentPart<=0)?numItems-1:[self.currentPart intValue]-1];
+    newPart = [NSNumber numberWithInt:([newPart intValue] % numItems)];
+      
 //  self.currentPart--;
 //  self.currentPart %= numItems;
     
-    NSLog(@"[%s] %d -> %d", __func__, self.currentPart, newPart);
+    NSLog(@"[%s] %@ -> %@", __func__, self.currentPart, newPart);
     
     UIViewController * newViewController = [self CreateInquiryPartViewController:newPart];
   
@@ -355,12 +357,13 @@ typedef NS_ENUM(NSInteger, indices) {
     
     switch (indexPath.section) {
         case 0: {
-            newViewController = [self CreateInquiryPartViewController:indexPath.item];
+            newViewController = [self CreateInquiryPartViewController:[NSNumber numberWithInt:indexPath.item]];
             break;
             
         case 1: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+          newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
         }
             break;
         }

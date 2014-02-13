@@ -166,6 +166,7 @@
 		34D6F1C317B67A7400BE1516 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C017B67A7400BE1516 /* Icon@2x.png */; };
 		34D6F1C417B67A7400BE1516 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D6F1C117B67A7400BE1516 /* Icon57.png */; };
 		8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D02769418AA556300DA8482 /* INQLoginViewController.m */; };
+		8D1ABDE618ACFA4100EA5850 /* INQPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */; };
 		8D3F8AFA18ABB96F00B233A6 /* INQAddFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AF918ABB96F00B233A6 /* INQAddFriendTableViewController.m */; };
 		8D3F8B0418ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */; };
 		8D3F8B0518ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFF18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m */; };
@@ -503,6 +504,8 @@
 		34D6F1C117B67A7400BE1516 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
 		8D02769318AA556300DA8482 /* INQLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLoginViewController.h; sourceTree = "<group>"; };
 		8D02769418AA556300DA8482 /* INQLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLoginViewController.m; sourceTree = "<group>"; };
+		8D1ABDE418ACFA4100EA5850 /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
+		8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
 		8D3F8AF818ABB96F00B233A6 /* INQAddFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddFriendTableViewController.h; sourceTree = "<group>"; };
 		8D3F8AF918ABB96F00B233A6 /* INQAddFriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAddFriendTableViewController.m; sourceTree = "<group>"; };
 		8D3F8AFC18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
@@ -772,6 +775,8 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8D1ABDE418ACFA4100EA5850 /* INQPageViewController.h */,
+				8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */,
 				8D0249F518A7FCA0009D0566 /* _Obsolete */,
 				8D3F8B0D18ACE0E400B233A6 /* Analysis */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
@@ -1375,6 +1380,7 @@
 				8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */,
 				347AD09917B286F200B4B345 /* ARLOauthViewController.m in Sources */,
 				347AD09A17B286F200B4B345 /* ARLOauthWebViewController.m in Sources */,
+				8D1ABDE618ACFA4100EA5850 /* INQPageViewController.m in Sources */,
 				8D3F8B0B18ACBDB900B233A6 /* iCarousel.m in Sources */,
 				347AD09B17B286F200B4B345 /* ARLScanAuthView.m in Sources */,
 				8D02769518AA556300DA8482 /* INQLoginViewController.m in Sources */,

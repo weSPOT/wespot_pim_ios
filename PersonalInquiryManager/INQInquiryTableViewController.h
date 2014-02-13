@@ -14,6 +14,7 @@
 #import "ARLNetwork+INQ.h"
 #import "ARLCloudSynchronizer.h"
 #import "Run+ARLearnBeanCreate.h"
+#import "INQPageViewController.h"
 
 @interface INQInquiryTableViewController : UITableViewController
 
@@ -22,7 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
 
-@property (nonatomic) NSInteger currentPart;
+@property (strong, nonatomic) NSNumber *currentPart;
 
 - (UIViewController *)nextPart;
 - (UIViewController *)prevPart;

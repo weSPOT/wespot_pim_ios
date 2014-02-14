@@ -489,10 +489,14 @@
         <!--SplashNavigation-->
         <scene sceneID="DEM-PG-LpQ">
             <objects>
-                <navigationController storyboardIdentifier="SplashNavigation" definesPresentationContext="YES" id="JIo-qM-5I2" userLabel="SplashNavigation" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SplashNavigation" definesPresentationContext="YES" navigationBarHidden="YES" id="JIo-qM-5I2" userLabel="SplashNavigation" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFx-bv-tIo">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="KeE-Gc-s6i">
+                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Uqj-u2-UUO" kind="relationship" relationship="rootViewController" id="GRm-ZQ-vBi"/>
                     </connections>
@@ -500,6 +504,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bMA-Yx-UYn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-523" y="452"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="6ok-KE-msh">
+            <objects>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="R07-3X-IJB" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S1G-Ey-0ph" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="270" y="452"/>
         </scene>
         <!--SplashView-->
         <scene sceneID="teY-4p-Udi">
@@ -516,14 +528,32 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9IN-Xd-zta">
+                                <rect key="frame" x="61" y="363" width="75" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Start again">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xSP-FW-8Vi">
+                                <rect key="frame" x="214" y="363" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Go">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="fuE-ct-sKb"/>
+                    <connections>
+                        <outlet property="startPIM" destination="xSP-FW-8Vi" id="m00-ga-SA1"/>
+                        <outlet property="startWalkthrough" destination="9IN-Xd-zta" id="FG9-Wu-L6t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qx-D2-SNO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-84" y="452"/>
+            <point key="canvasLocation" x="-121" y="452"/>
         </scene>
         <!--MainView-->
         <scene sceneID="B9d-fT-mDT">
@@ -661,6 +691,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52R-3e-ACX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3011" y="2160"/>
+        </scene>
+        <!--Page Content View Controller-->
+        <scene sceneID="OU4-5z-vf9">
+            <objects>
+                <viewController storyboardIdentifier="PageContentViewController" id="xtb-aC-6c9" customClass="PageContentViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QOy-u2-ecb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qVL-jm-viM">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="x2T-2H-AHu">
+                                <rect key="frame" x="29" y="32" width="263" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="qVL-jm-viM" id="32X-2m-uY8"/>
+                        <outlet property="titleLabel" destination="x2T-2H-AHu" id="fQV-wZ-zZ8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q64-dG-trf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="279" y="990"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

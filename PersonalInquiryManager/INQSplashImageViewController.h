@@ -9,6 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface INQSplashImageViewController : UIViewController
+#import "Account+Create.h"
+#import "PageContentViewController.h"
+
+@interface INQSplashImageViewController : UIViewController <UIPageViewControllerDataSource>
+
+
+@property (weak, nonatomic) IBOutlet UIButton *startWalkthrough;
+@property (weak, nonatomic) IBOutlet UIButton *startPIM;
+
+@property (strong, nonatomic) UIPageViewController *pageViewController;
+@property (strong, nonatomic) NSArray *pageTitles;
+@property (strong, nonatomic) NSArray *pageImages;
 
 @end

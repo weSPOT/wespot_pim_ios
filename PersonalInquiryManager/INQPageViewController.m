@@ -20,9 +20,7 @@
 #warning UIPageViewControl pages erratic when in scroll mode. Curl seems to be ok (but lacks the Page Control at the bottom).
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-    //NSLog(@"[%s] %@", __func__, self.currentPageIndex);
-    
+
     self.dataSource = self;
 }
 
@@ -34,13 +32,9 @@
     [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [self didMoveToParentViewController:self];
-    
-//    [self updatePageControl];
 }
 
 - (void)initWithInitialPage:(NSNumber *)index {
-   //NSLog(@"[%s] %@", __func__, index);
-    
     self.currentPageIndex = index;
 }
 
@@ -57,11 +51,9 @@
     if ([inquiryViewController respondsToSelector:@selector(CreateInquiryPartViewController:)]) {
         
         newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
-        NSLog(@"Fetching new viewcontroller %@", [newViewController class]);
-        NSLog(@"ViewControllers %d", self.viewControllers.count);
+//        NSLog(@"Fetching new viewcontroller %@", [newViewController class]);
+//        NSLog(@"ViewControllers %d", self.viewControllers.count);
     }
-    
-    // [self updatePageControl];
     
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     
@@ -69,8 +61,6 @@
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    
-    //self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue]];
 
     if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:0]]) {
         return nil;
@@ -79,7 +69,7 @@
     // Decrease the index by 1 to return
     self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] - 1];
 
-    //NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
+    NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
     
     UIViewController *view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     
@@ -103,29 +93,16 @@
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+   
     // The number of items reflected in the page indicator.
     return 6;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+   
     // The selected item reflected in the page indicator.
-    return 0;
+    return [self.currentPageIndex unsignedIntValue];
 }
-
-//-(void)updatePageControl{
-//    if ([self view]) {
-//        NSArray *subviews = self.view.subviews;
-//        UIPageControl *thisControl = nil;
-//        for (int i=0; i<[subviews count]; i++) {
-//            // ßNSLog(@"[%s] %@",__func__, [[subviews objectAtIndex:i] class]);
-//            if ([[subviews objectAtIndex:i] isKindOfClass:[UIPageControl class]]) {
-//                thisControl = (UIPageControl *)[subviews objectAtIndex:i];
-//                thisControl.currentPage = [self.currentPageIndex integerValue];
-//                break;
-//            }
-//        }
-//    }
-//}
 
 -(void)setCurrentPageIndex:(NSNumber *)currentPageIndex
 {

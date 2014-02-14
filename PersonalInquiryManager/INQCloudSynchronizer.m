@@ -101,7 +101,7 @@
 - (void) syncronizeInquiries{
     NSDictionary * dict = [ARLNetwork getInquiries:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
     
-    NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
+    //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
     
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
         Inquiry* newInquiry = [Inquiry inquirytWithDictionary:inquiryDict inManagedObjectContext:self.context];
@@ -110,7 +110,7 @@
         if (hypDict) {
 
             if ([hypDict count] != 0) {
-            NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+                //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
                 NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
                 if (hypString) {
                     newInquiry.hypothesis = hypString;
@@ -141,7 +141,7 @@
             NSString* name = [user objectForKey:@"name"];
             NSString* icon = [user objectForKey:@"icon"];
             
-            NSLog(@"[%s] user %@", __func__, user);
+            //NSLog(@"[%s] user %@", __func__, user);
             
             // veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
             NSNumber * oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];

@@ -80,7 +80,7 @@
  */
 + (id) getHypothesis:  (NSNumber *) inquiryId {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
-    NSLog(@"url %@", url);
+    //NSLog(@"url %@", url);
     return [self returnJson:url];
     
 }

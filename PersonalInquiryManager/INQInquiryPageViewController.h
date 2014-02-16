@@ -15,8 +15,6 @@
 
 @interface INQInquiryPageViewController : UIViewController
 
-#warning this class seems to be unused (summary of a Inquiry)!
-
 @property (strong, nonatomic)  Inquiry *inquiry;
 
 @property (weak, nonatomic) UIButton *showDataCollection;

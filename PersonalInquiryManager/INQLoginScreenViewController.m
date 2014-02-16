@@ -55,7 +55,7 @@
     if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
-#warning not enough to toggle isLoggedIn.
+
         [self adjustLoginButton];
     } else {
         INQOauthViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginServices"];

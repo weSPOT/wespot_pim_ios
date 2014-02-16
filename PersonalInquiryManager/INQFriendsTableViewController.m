@@ -99,7 +99,7 @@
 }
 
 /*!
- *  Return the Table Data one Cell at a Time.
+ *  Return the Tab/Users/veg/Developer/PersonalInquiryManager/PersonalInquiryManager/INQFriendsTableViewController.mle Data one Cell at a Time.
  *
  *  @param tableView The Table to be served.
  *  @param indexPath The IndexPath of the TableCell.

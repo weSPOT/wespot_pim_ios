@@ -317,7 +317,7 @@ typedef NS_ENUM(NSInteger, indices) {
     
     switch (indexPath.section) {
         case 0: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
             if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
                 [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
             }

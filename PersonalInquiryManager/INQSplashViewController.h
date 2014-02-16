@@ -10,10 +10,9 @@
 #import <UIKit/UIKit.h>
 
 #import "Account+Create.h"
-#import "PageContentViewController.h"
+#import "INQSplashContentViewController.h"
 
-@interface INQSplashImageViewController : UIViewController <UIPageViewControllerDataSource>
-
+@interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource>
 
 @property (weak, nonatomic) IBOutlet UIButton *startWalkthrough;
 @property (weak, nonatomic) IBOutlet UIButton *startPIM;

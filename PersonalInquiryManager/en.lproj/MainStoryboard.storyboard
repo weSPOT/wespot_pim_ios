@@ -323,10 +323,10 @@
             </objects>
             <point key="canvasLocation" x="2177" y="452"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Page View Controller - Inquiry Part Page Controller-->
         <scene sceneID="HA2-1u-Qfh">
             <objects>
-                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="none" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="InquiryPartPageViewController" autoresizesArchivedViewToFullSize="NO" title="Inquiry Part Page Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="none" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </pageViewController>
@@ -471,6 +471,7 @@
             <objects>
                 <navigationController storyboardIdentifier="MainNavigation" title="Main" definesPresentationContext="YES" id="M4Q-ds-Y79" userLabel="MainNavigation" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Main" id="Pz3-VK-Ul5"/>
+                    <navigationItem key="navigationItem" id="hlr-nF-hAm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wFK-ys-ccH">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -505,10 +506,10 @@
             </objects>
             <point key="canvasLocation" x="-523" y="452"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Page View Controller - Splash PageView Controller-->
         <scene sceneID="6ok-KE-msh">
             <objects>
-                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="R07-3X-IJB" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="SplashPageViewController" autoresizesArchivedViewToFullSize="NO" title="Splash PageView Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="R07-3X-IJB" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S1G-Ey-0ph" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="270" y="452"/>
@@ -516,7 +517,7 @@
         <!--SplashView-->
         <scene sceneID="teY-4p-Udi">
             <objects>
-                <viewController storyboardIdentifier="SplashView" id="Uqj-u2-UUO" userLabel="SplashView" customClass="INQSplashImageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashView" id="Uqj-u2-UUO" userLabel="SplashView" customClass="INQSplashViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vTy-vy-BiE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -528,28 +529,30 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9IN-Xd-zta">
-                                <rect key="frame" x="61" y="363" width="75" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oLC-oa-lLf">
+                                <rect key="frame" x="118" y="450" width="75" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start again">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="StartAgainClick:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="RxK-Ka-2ud"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xSP-FW-8Vi">
-                                <rect key="frame" x="214" y="363" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="RfQ-ly-gGD">
+                                <rect key="frame" x="254" y="450" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Go">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="GoClick:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="Wbm-Cr-9Eq"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="fuE-ct-sKb"/>
-                    <connections>
-                        <outlet property="startPIM" destination="xSP-FW-8Vi" id="m00-ga-SA1"/>
-                        <outlet property="startWalkthrough" destination="9IN-Xd-zta" id="FG9-Wu-L6t"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qx-D2-SNO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -692,16 +695,16 @@
             </objects>
             <point key="canvasLocation" x="3011" y="2160"/>
         </scene>
-        <!--Page Content View Controller-->
+        <!--Splash Content View Controller - SplashContentViewController-->
         <scene sceneID="OU4-5z-vf9">
             <objects>
-                <viewController storyboardIdentifier="PageContentViewController" id="xtb-aC-6c9" customClass="PageContentViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashContentViewController" title="SplashContentViewController" id="xtb-aC-6c9" customClass="INQSplashContentViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QOy-u2-ecb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qVL-jm-viM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="11" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="x2T-2H-AHu">
@@ -720,7 +723,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q64-dG-trf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="279" y="990"/>
+            <point key="canvasLocation" x="270" y="1021"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

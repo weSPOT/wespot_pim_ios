@@ -179,11 +179,11 @@
 		8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */; };
 		8D4DF87418A3AF15009CD9BA /* INQMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */; };
 		8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87618A3B207009CD9BA /* INQMainCell.m */; };
-		8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */; };
+		8D4DF87A18A3BEFB009CD9BA /* INQSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
 		8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */; };
-		8DF5525518AE560B00033677 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF5525418AE560B00033677 /* PageContentViewController.m */; };
+		8DF5525518AE560B00033677 /* INQSplashContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF5525418AE560B00033677 /* INQSplashContentViewController.m */; };
 		8DF5525A18AE603000033677 /* page1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF5525618AE603000033677 /* page1.png */; };
 		8DF5525B18AE603000033677 /* page2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF5525718AE603000033677 /* page2.png */; };
 		8DF5525C18AE603000033677 /* page3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF5525818AE603000033677 /* page3.png */; };
@@ -535,15 +535,15 @@
 		8D4DF87318A3AF15009CD9BA /* INQMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainViewController.m; sourceTree = "<group>"; };
 		8D4DF87518A3B207009CD9BA /* INQMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMainCell.h; sourceTree = "<group>"; };
 		8D4DF87618A3B207009CD9BA /* INQMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMainCell.m; sourceTree = "<group>"; };
-		8D4DF87818A3BEFB009CD9BA /* INQSplashImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashImageViewController.h; sourceTree = "<group>"; };
-		8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashImageViewController.m; sourceTree = "<group>"; };
+		8D4DF87818A3BEFB009CD9BA /* INQSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashViewController.h; sourceTree = "<group>"; };
+		8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashViewController.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
 		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
 		8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMessagesViewController.h; sourceTree = "<group>"; };
 		8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMessagesViewController.m; sourceTree = "<group>"; };
-		8DF5525318AE560B00033677 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
-		8DF5525418AE560B00033677 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
+		8DF5525318AE560B00033677 /* INQSplashContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashContentViewController.h; sourceTree = "<group>"; };
+		8DF5525418AE560B00033677 /* INQSplashContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashContentViewController.m; sourceTree = "<group>"; };
 		8DF5525618AE603000033677 /* page1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page1.png; sourceTree = "<group>"; };
 		8DF5525718AE603000033677 /* page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page2.png; sourceTree = "<group>"; };
 		8DF5525818AE603000033677 /* page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page3.png; sourceTree = "<group>"; };
@@ -1162,10 +1162,10 @@
 				8DF5525718AE603000033677 /* page2.png */,
 				8DF5525818AE603000033677 /* page3.png */,
 				8DF5525918AE603000033677 /* page4.png */,
-				8DF5525318AE560B00033677 /* PageContentViewController.h */,
-				8DF5525418AE560B00033677 /* PageContentViewController.m */,
-				8D4DF87818A3BEFB009CD9BA /* INQSplashImageViewController.h */,
-				8D4DF87918A3BEFB009CD9BA /* INQSplashImageViewController.m */,
+				8DF5525318AE560B00033677 /* INQSplashContentViewController.h */,
+				8DF5525418AE560B00033677 /* INQSplashContentViewController.m */,
+				8D4DF87818A3BEFB009CD9BA /* INQSplashViewController.h */,
+				8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */,
 			);
 			name = Splash;
 			sourceTree = "<group>";
@@ -1406,7 +1406,7 @@
 				347AD09617B286F200B4B345 /* ARLLoggedInView.m in Sources */,
 				347AD09717B286F200B4B345 /* ARLOauthListViewController.m in Sources */,
 				347AD09817B286F200B4B345 /* ARLOauthView.m in Sources */,
-				8D4DF87A18A3BEFB009CD9BA /* INQSplashImageViewController.m in Sources */,
+				8D4DF87A18A3BEFB009CD9BA /* INQSplashViewController.m in Sources */,
 				347AD09917B286F200B4B345 /* ARLOauthViewController.m in Sources */,
 				347AD09A17B286F200B4B345 /* ARLOauthWebViewController.m in Sources */,
 				8D1ABDE618ACFA4100EA5850 /* INQPageViewController.m in Sources */,
@@ -1473,7 +1473,7 @@
 				34D422C017B670ED0051E84C /* GeneralItem+ARLearnBeanCreate.m in Sources */,
 				34D422C117B670ED0051E84C /* GeneralItem.m in Sources */,
 				34D422C217B670ED0051E84C /* GeneralItemData+Extra.m in Sources */,
-				8DF5525518AE560B00033677 /* PageContentViewController.m in Sources */,
+				8DF5525518AE560B00033677 /* INQSplashContentViewController.m in Sources */,
 				34D422C317B670ED0051E84C /* GeneralItemData.m in Sources */,
 				34D422C417B670ED0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m in Sources */,
 				34D422C517B670ED0051E84C /* GeneralItemVisibility.m in Sources */,

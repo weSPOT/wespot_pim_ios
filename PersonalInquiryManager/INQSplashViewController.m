@@ -12,8 +12,8 @@
 
 @interface INQSplashViewController ()
 
-- (IBAction)StartAgainClick:(UIButton *)sender;
-- (IBAction)GoClick:(UIButton *)sender;
+@property (strong, nonatomic) UIBarButtonItem *loginButton;
+@property (strong, nonatomic) UIBarButtonItem *spacerButton;
 
 @end
 
@@ -24,6 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
     [self fetchCurrentAccount];
     
@@ -42,7 +44,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     // Create the data model
-    _pageTitles = @[@"Over 200 Tips and Tricks", @"Discover Hidden Features", @"Bookmark Favorite Tip", @"Free Regular Update"];
+    _pageTitles = @[@"1-Over 200 Tips and Tricks", @"2-Discover Hidden Features", @"3-Bookmark Favorite Tip", @"4-Free Regular Update"];
     _pageImages = @[@"page1.png", @"page2.png", @"page3.png", @"page4.png"];
 
     // Create page view controller
@@ -62,10 +64,16 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-//    [self.navigationItem setHidesBackButton:YES animated:YES];
-//    self.navigationController.navigationBar.hidden = YES;
-    
     [super viewDidAppear:animated];
+    
+    [self.navigationController setToolbarHidden:NO];
+    
+    if (!self.loginButton) {
+        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+        
+        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -116,6 +124,7 @@
     }
     
     index--;
+    
     return [self viewControllerAtIndex:index];
 }
 
@@ -128,6 +137,7 @@
     }
     
     index++;
+   
     if (index == [self.pageTitles count]) {
         return nil;
     }
@@ -144,14 +154,14 @@
     return 0;
 }
 
-- (IBAction)StartAgainClick:(UIButton *)sender {
-    INQSplashContentViewController *startingViewController = [self viewControllerAtIndex:0];
-    NSArray *viewControllers = @[startingViewController];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-}
+//- (IBAction)StartAgainClick:(UIButton *)sender {
+//    INQSplashContentViewController *startingViewController = [self viewControllerAtIndex:0];
+//    NSArray *viewControllers = @[startingViewController];
+//    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+//}
 
-- (IBAction)GoClick:(UIButton *)sender {
-    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
+- (IBAction)loginButtonButtonTap:(UIButton *)sender {
+    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
     
     if (newViewController) {
         // Move to another UINavigationController or UITabBarController etc.

@@ -238,7 +238,7 @@
         <scene sceneID="ZXS-Fq-qlc">
             <objects>
                 <viewController storyboardIdentifier="MyInquiriesView" id="XfV-8E-bXQ" customClass="INQMyInquiriesTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jkv-id-DFD">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="jkv-id-DFD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -261,7 +261,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="djl-Vl-GVB">
-                                <rect key="frame" x="0.0" y="77" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="110" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="djl-Vl-GVB" id="Zu7-Rp-b61">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -326,7 +326,7 @@
         <!--Page View Controller - Inquiry Part Page Controller-->
         <scene sceneID="HA2-1u-Qfh">
             <objects>
-                <pageViewController storyboardIdentifier="InquiryPartPageViewController" autoresizesArchivedViewToFullSize="NO" title="Inquiry Part Page Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="none" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="InquiryPartPageViewController" autoresizesArchivedViewToFullSize="NO" title="Inquiry Part Page Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </pageViewController>
@@ -454,15 +454,11 @@
         <scene sceneID="ci8-Q4-vWJ">
             <objects>
                 <navigationController storyboardIdentifier="MainNavigation" title="Main" definesPresentationContext="YES" id="M4Q-ds-Y79" userLabel="MainNavigation" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Main" id="Pz3-VK-Ul5"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="hlr-nF-hAm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wFK-ys-ccH">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="64E-5M-cdJ">
-                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
                     <connections>
                         <segue destination="mph-xo-zGo" kind="relationship" relationship="rootViewController" id="Ahd-pe-ksr"/>
                     </connections>
@@ -513,26 +509,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oLC-oa-lLf">
-                                <rect key="frame" x="118" y="450" width="75" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Start again">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="StartAgainClick:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="RxK-Ka-2ud"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="RfQ-ly-gGD">
-                                <rect key="frame" x="254" y="450" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="GoClick:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="Wbm-Cr-9Eq"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
@@ -547,12 +523,12 @@
             <objects>
                 <tableViewController storyboardIdentifier="MainView" title="Main" id="mph-xo-zGo" userLabel="MainView" customClass="INQMainViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8Ih-Qf-Br3" colorLabel="IBBuiltInLabel-Blue">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mainPartCell" id="Qi2-AE-dwq">
-                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qi2-AE-dwq" id="BIm-7M-uF0">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -565,8 +541,9 @@
                             <outlet property="delegate" destination="mph-xo-zGo" id="pez-pR-ceh"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Menu" id="D85-Um-wlv"/>
-                    <navigationItem key="navigationItem" title="Menu" id="vFt-AZ-sMZ"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="vFt-AZ-sMZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7LK-ag-gEm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -664,7 +641,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qVL-jm-viM">
-                                <rect key="frame" x="11" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="331" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="x2T-2H-AHu">
@@ -684,6 +661,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q64-dG-trf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="270" y="1021"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lnE-Nb-nZi">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="am6-e5-orZ" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="WwQ-mt-sba">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ETX-Y4-P52" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

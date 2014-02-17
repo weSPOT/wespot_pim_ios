@@ -43,7 +43,9 @@ typedef NS_ENUM(NSInteger, tools) {
 };
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
+
 @property (strong, nonatomic) UIBarButtonItem *loginButton;
+@property (strong, nonatomic) UIBarButtonItem *spacerButton;
 
 @end
 
@@ -57,29 +59,27 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     if (!self.loginButton) {
-        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"login" style:UIBarButtonItemStyleDone target:self action:@selector(loginButtonButtonTap:)];
-        self.navigationItem.rightBarButtonItem = self.loginButton;
+        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+
+        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
     }
 
     [self adjustLoginButton];
 }
 
+
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
+    
+    [self.navigationController setToolbarHidden:NO];
 }
 
 -(void)loginButtonButtonTap:(id)sender {

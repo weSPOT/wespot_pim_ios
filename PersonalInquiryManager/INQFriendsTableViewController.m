@@ -26,6 +26,8 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    [self.navigationController setToolbarHidden:YES];
+    
     [self setupFetchedResultsController];
     
     if (!self.AllUsers) {

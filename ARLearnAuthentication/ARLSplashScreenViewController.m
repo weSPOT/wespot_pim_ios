@@ -372,6 +372,14 @@
     [self addGradient];
 }
 
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//    // Return YES for supported orientations
+//  
+//    
+//    // Use this to allow upside down as well
+//    //return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+//}
+
 /*!
  *  Re-apply Constrants and Gradient.
  *

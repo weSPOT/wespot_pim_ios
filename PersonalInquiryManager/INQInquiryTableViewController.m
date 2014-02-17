@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, indices) {
     NSString *constraint;
     
     constraint = [NSString stringWithFormat:@"H:|-5-[icon(==%0.0f)]-[description]-5-|", self.icon.image.size.width];
-    NSLog(@"Constraint: %@", constraint);
+    //NSLog(@"Constraint: %@", constraint);
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:constraint
                                options:NSLayoutFormatDirectionLeadingToTrailing
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, indices) {
                                views:viewsDictionary]];
 
     constraint = [NSString stringWithFormat:@"V:|-5-[icon(==%0.0f)]-5-|", self.icon.image.size.height];
-    NSLog(@"Constraint: %@", constraint);
+    //NSLog(@"Constraint: %@", constraint);
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:constraint
                                options:NSLayoutFormatDirectionLeadingToTrailing
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, indices) {
                                views:viewsDictionary]];
 
     constraint = @"V:|-5-[description(==icon)]";
-    NSLog(@"Constraint: %@", constraint);
+    //NSLog(@"Constraint: %@", constraint);
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:constraint
                                options:NSLayoutFormatDirectionLeadingToTrailing

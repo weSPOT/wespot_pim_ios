@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.navigationController setToolbarHidden:YES];
+    
     [self setupFetchedResultsController];
 }
 

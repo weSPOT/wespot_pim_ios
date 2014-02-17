@@ -32,10 +32,12 @@
  *
  *  @return The number of Rows in the requested section.
  */
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return [super numberOfRowsInSection:section];
-//}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSLog(@"[%s] %d", __func__, [self.fetchedResultsController.fetchedObjects count]);
+    
+    return [self.fetchedResultsController.fetchedObjects count];
+}
 
 /*!
  *  The number of sections in a Table.
@@ -44,9 +46,9 @@
  *
  *  @return The number of sections.
  */
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    return 1;
-//}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
 
 /*!
  *  Return the Table Data one Cell at a Time.

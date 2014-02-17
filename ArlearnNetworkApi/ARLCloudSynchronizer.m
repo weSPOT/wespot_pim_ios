@@ -109,6 +109,8 @@
 }
 
 - (void) syncronizeRuns{ //: (NSManagedObjectContext *) context
+    NSLog(@"[%s]", __func__);
+    
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
     NSDictionary * dict = [ARLNetwork runsParticipateFrom:lastDate];
     NSNumber * serverTime = [dict objectForKey:@"serverTime"];
@@ -122,6 +124,8 @@
 }
 
 - (void) syncronizeGames { //: (NSManagedObjectContext *) context{
+    NSLog(@"[%s]", __func__);
+
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myGames"];
     NSDictionary * gdict = [ARLNetwork gamesParticipateFrom:lastDate];
     NSNumber * serverTime = [gdict objectForKey:@"serverTime"];
@@ -138,6 +142,8 @@
 }
 
 - (void) synchronizeGeneralItemsWithGame {//: (Game *) game {
+    NSLog(@"[%s]", __func__);
+
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
 //    lastDate = [NSNumber numberWithInt:0];
     NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId from:lastDate];
@@ -162,6 +168,8 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements {
+    NSLog(@"[%s]", __func__);
+
     Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
     [self synchronizeGeneralItemsAndVisibilityStatements:run];
    
@@ -169,6 +177,8 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
+    NSLog(@"[%s]", __func__);
+
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
 
     NSDictionary * visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
@@ -194,6 +204,8 @@
 }
 
 - (void) synchronizeActions {
+    NSLog(@"[%s]", __func__);
+
     NSArray* actions =  [Action getUnsyncedActions:self.context];
     for (Action* action in actions) {
         [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.id time:action.time itemType:action.generalItem.type];
@@ -203,6 +215,8 @@
     
 }
 - (void) synchronizeResponses {
+    NSLog(@"[%s]", __func__);
+
     NSArray* responses =  [Response getUnsyncedReponses:self.context];
     for (Response* resp in responses) {
         if (resp.value) {

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Account+Create.h"
 #import "INQOauthViewController.h"
+#import "INQCloudSynchronizer.h"
 
 @interface INQMainViewController : UITableViewController
 

@@ -979,10 +979,10 @@
 		347AD0C817B3795C00B4B345 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				347AD0C917B3797C00B4B345 /* ARLNetwork+INQ.h */,
-				347AD0CA17B3797C00B4B345 /* ARLNetwork+INQ.m */,
 				347AD0CC17B37BAF00B4B345 /* INQCloudSynchronizer.h */,
 				347AD0CD17B37BAF00B4B345 /* INQCloudSynchronizer.m */,
+				347AD0C917B3797C00B4B345 /* ARLNetwork+INQ.h */,
+				347AD0CA17B3797C00B4B345 /* ARLNetwork+INQ.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";

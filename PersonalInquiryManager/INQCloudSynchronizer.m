@@ -17,6 +17,7 @@
  */
 + (void) syncUsers: (NSManagedObjectContext*) context {
     INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
+  
     [synchronizer createContext:context];
     synchronizer.syncUsers = YES;
     [synchronizer sync];
@@ -29,6 +30,7 @@
  */
 + (void) syncInquiries: (NSManagedObjectContext*) context {
     INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
+    
     [synchronizer createContext:context];
     synchronizer.syncInquiries = YES;
     [synchronizer sync];
@@ -99,6 +101,8 @@
  *  Runs on a separate thread in the background.
  */
 - (void) syncronizeInquiries{
+    NSLog(@"[%s]", __func__);
+
     NSDictionary * dict = [ARLNetwork getInquiries:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
     
     //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
@@ -128,6 +132,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) syncAllUsers{
+    NSLog(@"[%s]", __func__);
     
     // Fetch Account default values for localId and withProviderId.
     NSDictionary * dict = [ARLNetwork getFriends:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];

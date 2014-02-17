@@ -44,8 +44,9 @@ typedef NS_ENUM(NSInteger, tools) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
-@property (strong, nonatomic) UIBarButtonItem *loginButton;
 @property (strong, nonatomic) UIBarButtonItem *spacerButton;
+@property (strong, nonatomic) UIBarButtonItem *syncButton;
+@property (strong, nonatomic) UIBarButtonItem *loginButton;
 
 @end
 
@@ -67,9 +68,10 @@ typedef NS_ENUM(NSInteger, tools) {
     
     if (!self.loginButton) {
         self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.syncButton = [[UIBarButtonItem alloc] initWithTitle:@"Sync" style:UIBarButtonItemStyleBordered target:self action:@selector(syncButtonButtonTap:)];
         self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
 
-        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
+        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.loginButton,nil];
     }
 
     [self adjustLoginButton];
@@ -98,6 +100,16 @@ typedef NS_ENUM(NSInteger, tools) {
             [self.navigationController presentViewController:newViewController animated:YES completion:nil];
         }
     }
+}
+-(void)syncButtonButtonTap:(id)sender {
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    [ARLCloudSynchronizer syncActions:appDelegate.managedObjectContext];
+    [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
+    [ARLCloudSynchronizer syncResponses:appDelegate.managedObjectContext];
+    
+    [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
+    [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
 }
 
 - (void)didReceiveMemoryWarning

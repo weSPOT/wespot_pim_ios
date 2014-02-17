@@ -65,7 +65,6 @@
  *  @return The Inquiries as JSON.
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-    
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId,[self elggProviderId:oauthProvider]];
     return [self returnJson:url];
     
@@ -82,7 +81,6 @@
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
     //NSLog(@"url %@", url);
     return [self returnJson:url];
-    
 }
 
 /*!
@@ -184,6 +182,5 @@
     
     return [[self returnJson:url] objectForKey:@"result"];
 }
-
 
 @end

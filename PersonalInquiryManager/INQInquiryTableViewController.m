@@ -39,9 +39,28 @@ typedef NS_ENUM(NSInteger, indices) {
      */
     COMMUNICATE,
     /*!
-     *  Number of items in this NS_ENUM
+     *  Number of items in this NS_ENUM.
      */
     numItems,
+};
+
+/*!
+ *  TableView Sections.
+ */
+typedef NS_ENUM(NSInteger, sections) {
+    /*!
+     *  Inquiry Parts
+     */
+    PARTS =0,
+    /*!
+     *  Invite Friends.
+     */
+    INVITE,
+    
+    /*!
+     *  NUmber of Sections.
+     */
+    numSections
 };
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
@@ -148,7 +167,7 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return numSections;
 }
 
 /*!
@@ -189,7 +208,7 @@ typedef NS_ENUM(NSInteger, indices) {
     
     // Configure the cell...
     switch (indexPath.section) {
-        case 0 : {
+        case PARTS : {
             switch (indexPath.item) {
                 case HYPOTHESIS:
                     cell.textLabel.text = @"Hypothesis";
@@ -207,7 +226,7 @@ typedef NS_ENUM(NSInteger, indices) {
                     cell.textLabel.text = @"Discuss";
                     break;
                 case COMMUNICATE:
-                    cell.textLabel.text = @"Commnicate";
+                    cell.textLabel.text = @"Communicate";
                     break;
                 default:
                     break;
@@ -215,7 +234,7 @@ typedef NS_ENUM(NSInteger, indices) {
             }
             break;
             
-        case 1:
+        case INVITE:
             cell.textLabel.text = @"Invite friends";
             break;
     }
@@ -259,24 +278,32 @@ typedef NS_ENUM(NSInteger, indices) {
             //}
             
             if (selectedRun.runId) {
-                [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
+                //[newViewController performSelector:@selector(setRun:) withObject:selectedRun];
                 gameId = selectedRun.gameId;
             } else {
                 gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
             }
             
-            // Syncronize CoreData (RUNS & GAMES).
-            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            [synchronizer createContext:appDelegate.managedObjectContext];
-            if (!selectedRun) {
-                synchronizer.syncRuns = YES;
-            }
-            synchronizer.gameId = gameId;
-            synchronizer.visibilityRunId = runId;
-            synchronizer.syncGames = YES;
+#warning Disabled for now...
             
-            [synchronizer sync];
+            // Synchronize CoreData (RUNS & GAMES).
+//            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+//            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//            [synchronizer createContext:appDelegate.managedObjectContext];
+//            if (!selectedRun) {
+//                synchronizer.syncRuns = YES;
+//            }
+//            synchronizer.gameId = gameId;
+//            synchronizer.visibilityRunId = runId;
+//            synchronizer.syncGames = YES;
+//            
+//            [synchronizer sync];
+       
+            // new code.,.,,
+            if (selectedRun.runId) {
+                [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
+            }
+        
         }
             break;
             
@@ -316,14 +343,14 @@ typedef NS_ENUM(NSInteger, indices) {
     UIViewController * newViewController;
     
     switch (indexPath.section) {
-        case 0: {
+        case PARTS: {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
             if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
                 [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
             }
             break;
             
-        case 1: {
+        case INVITE: {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }

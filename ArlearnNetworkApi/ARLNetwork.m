@@ -17,6 +17,7 @@
                                                        timeoutInterval:60.0];
     [request setHTTPMethod:method];
     [request setValue:applicationjson forHTTPHeaderField:accept];
+    
     return request;
 }
 
@@ -29,6 +30,9 @@
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
+    
+    [self dumpJsonData:jsonData url:urlString];
+    
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
@@ -46,6 +50,9 @@
 
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
+
+    [self dumpJsonData:jsonData url:urlString];
+    
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
@@ -54,6 +61,9 @@
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
+  
+    [self dumpJsonData:jsonData url:urlString];
+    
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
@@ -79,7 +89,16 @@
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         //return [NSString stringWithUTF8String:[jsonData bytes]];
     }
+    
+    [self dumpJsonData:jsonData url:urlString];
+    
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"returnin gsth";
+}
+
++(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"\r\n\r\n[%s]\r\n%@\r\n%@\r\n\r\n", __func__, url, jsonString);
 }
 
 + (NSData *) stringToData: (NSString * ) string {

@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, inquiries) {
      *  Open inquiries.
      */
     OPEN = 1,
+    /*!
+     *  Number of Inquires
+     */
+    numInquiries
 };
 
 - (IBAction)newInquiryTap:(UIButton *)sender;

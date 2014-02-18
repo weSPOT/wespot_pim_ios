@@ -17,7 +17,6 @@ typedef NS_ENUM(NSInteger, PlayingState) {
     ReadyToPlayStatus,
     PlayingStatus,
     PausedStatus
-    
 };
 
 @interface ARLAudioObjectPlayer : NSObject <AVAudioPlayerDelegate> {

@@ -22,15 +22,23 @@
  */
 + (id) returnJson: (NSString *) url {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:60.0];
+                                                        cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                        timeoutInterval:60.0];
     [request setHTTPMethod:@"GET"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
+    [self dumpJsonData:jsonData url:url];
+    
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+}
+
++(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"\r\n\r\n[%s]\r\n%@\r\n%@\r\n\r\n", __func__, url, jsonString);
 }
 
 /*!
@@ -43,6 +51,7 @@
  */
 + (id) getFriends : (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
+
     return [self returnJson:url];
 }
 
@@ -54,7 +63,9 @@
 + (id) getUsers {
     // veg - 31-01-2014 Used elgUrl and apiKey constants.
     NSString * url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
-    return [self returnJson:url];}
+
+    return [self returnJson:url];
+}
 
 /*!
  *  Return the Inquiries of a User.
@@ -66,8 +77,8 @@
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId,[self elggProviderId:oauthProvider]];
+
     return [self returnJson:url];
-    
 }
 
 /*!
@@ -79,7 +90,7 @@
  */
 + (id) getHypothesis:  (NSNumber *) inquiryId {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
-    //NSLog(@"url %@", url);
+
     return [self returnJson:url];
 }
 

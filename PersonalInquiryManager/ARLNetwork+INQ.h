@@ -7,7 +7,9 @@
 //
 
 #import "ARLNetwork.h"
-#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
+
+//#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
+#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
 #define apiKey @"27936b77bcb9bb67df2965c6518f37a77a7ab9f8"
 
 @interface ARLNetwork (INQ)
@@ -24,11 +26,32 @@
 + (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId;
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId;
 
-typedef NS_ENUM(NSInteger,provider) {
+/*!
+ *  ID's and order of the cells.
+ 
+ *  Must match ARLNetwork oauthInfo!
+ */
+typedef NS_ENUM(NSInteger, services) {
+    /*!
+     *  Facebook.
+     */
     FACEBOOK = 1,
-    GOOGLE = 2,
-    LINKEDIN = 3,
-    TWITTER = 4
+    /*!
+     *  Google.
+     */
+    GOOGLE,
+    /*!
+     *  Linked-in
+     */
+    LINKEDIN,
+    /*!
+     *  Twitter.
+     */
+    TWITTER,
+    /*!
+     *  Number of oAuth Services.
+     */
+    numServices
 };
 
 @end

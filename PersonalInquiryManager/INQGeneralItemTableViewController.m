@@ -14,7 +14,6 @@
 
 @implementation INQGeneralItemTableViewController
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,10 +69,8 @@
         cell = [[ARLGeneralItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
     }
     
-    // Add correct content to the Table Cell.
-    cell.giTitleLabel.text = generalItem.name;
-    
     // Set Font to Bold if unread.
+    cell.giTitleLabel.text = generalItem.name;
     cell.giTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     
     [self setDCIcon:cell withGi:generalItem];
@@ -87,23 +84,7 @@
         }
     }
     
-    // cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
-    
     return cell;
-}
-
-/*!
- *  Customize Cells to match the Action retrieved.
- *
- *  @param cell      The TableCell to customize.
- *  @param indexPath The IndexPath of the TableCell.
- */
--(void) configureCell: (ARLGeneralItemTableViewCell *) cell atIndexPath:(NSIndexPath *)indexPath {
-    GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
-    
-    cell.giTitleLabel.text = generalItem.name;
-    //cell.detailTextLabel.text = [NSString stringWithFormat:@"vis statements %d", [generalItem.visibility count] ];
-    cell.icon.image = [UIImage imageNamed:@"dc_calculator_128.png"];
 }
 
 /*!

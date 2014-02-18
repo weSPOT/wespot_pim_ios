@@ -143,7 +143,7 @@
  *  @param b If TRUE the user is logged-in.
  */
 - (void)setIsLoggedIn:(NSNumber *)b {
-    NSLog(@"[%s] IsLoggedIn: %@", __func__, b);
+    // NSLog(@"[%s] IsLoggedIn: %@", __func__, b);
     
     _isLoggedIn = b;
 }
@@ -154,7 +154,7 @@
  *  @return If TRUE the user is logged-in.
  */
 - (NSNumber *)isLoggedIn {
-   NSLog(@"[%s] IsLoggedIn: %@", __func__, _isLoggedIn);
+   // NSLog(@"[%s] IsLoggedIn: %@", __func__, _isLoggedIn);
     
     return _isLoggedIn;
 }

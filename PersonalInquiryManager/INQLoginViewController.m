@@ -23,15 +23,19 @@ typedef NS_ENUM(NSInteger, services) {
     /*!
      *  Google.
      */
-    GOOGLE = 2,
+    GOOGLE,
     /*!
      *  Linked-in
      */
-    LINKEDIN = 3,
+    LINKEDIN,
     /*!
      *  Twitter.
      */
-    TWITTER = 4,
+    TWITTER,
+    /*!
+     *  Number of oAuth Services.
+     */
+    numServices
 };
 
 @property (weak, nonatomic) IBOutlet UILabel *wespotLabel;

@@ -103,13 +103,21 @@
 - (void) syncronizeInquiries{
     NSLog(@"[%s]", __func__);
 
-    NSDictionary * dict = [ARLNetwork getInquiries:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
+    id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
+    id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
+    
+    NSLog(@"[%s] %@ %@", __func__, localId, providerId);
+    
+    NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
     
     //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
     
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
         Inquiry* newInquiry = [Inquiry inquirytWithDictionary:inquiryDict inManagedObjectContext:self.context];
         
+        NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
+        
+        // REST CALL (costs time)!
         id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
         if (hypDict) {
 

@@ -7,18 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-//#define serviceUrl @"http://ar-learn.appspot.com"
-#define serviceUrl @"http://streetlearn.appspot.com"
-//#define serviceUrl @"http://192.168.1.8:8080"
-#define textplain @"text/plain"
+//#define serviceUrl    @"http://ar-learn.appspot.com"
+#define serviceUrl      @"http://streetlearn.appspot.com"
+//#define serviceUrl    @"http://192.168.1.8:8080"
+#define textplain       @"text/plain"
 
-#define accept @"Accept"
-#define contenttype @"Content-Type"
+#define accept          @"Accept"
+#define contenttype     @"Content-Type"
 #define applicationjson @"application/json"
-#define textplain @"text/plain"
+#define textplain       @"text/plain"
 #define xwwformurlencode @"application/x-www-form-urlencoded"
-#define GET @"GET"
-#define POST @"POST"
+#define GET             @"GET"
+#define POST            @"POST"
 
 //#define myRunsPostfix @"myRuns"
 

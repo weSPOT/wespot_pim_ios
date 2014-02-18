@@ -15,8 +15,6 @@
 
 @implementation ARLGeneralItemTableViewController
 
-// @synthesize run = _run;
-
 - (void)setupFetchedResultsController {
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
@@ -40,7 +38,7 @@
 - (void) setRun: (Run *) run {
     _run = run;
     
-    //self.title = run.title;
+    // self.title = run.title;
     
     [self setupFetchedResultsController];
 }

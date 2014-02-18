@@ -21,7 +21,11 @@ typedef NS_ENUM(NSInteger, groups) {
     /*!
      *  Profiles/Badges/Friends.
      */
-    TOOLS = 1,
+    TOOLS,
+    /*!
+     *  Number of Groups
+     */
+    numGroups
 };
 
 /*!
@@ -35,11 +39,15 @@ typedef NS_ENUM(NSInteger, tools) {
     /*!
      *  Badges.
      */
-    BADGES = 1,
+    BADGES,
     /*!
      *  Friends.
      */
-    FRIENDS = 2,
+    FRIENDS,
+    /*!
+     *  Number of Tools
+     */
+    numTools
 };
 
 @property (readonly, nonatomic) NSString *cellIdentifier;

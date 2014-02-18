@@ -25,15 +25,19 @@ typedef NS_ENUM(NSInteger, services) {
     /*!
      *  Google.
      */
-    GOOGLE = 1,
+    GOOGLE,
     /*!
      *  Linked-in
      */
-    LINKEDIN = 2,
+    LINKEDIN,
     /*!
      *  Twitter.
      */
-    TWITTER = 3,
+    TWITTER,
+    /*!
+     *  Services Count
+     */
+    numServices
 };
 
 @end

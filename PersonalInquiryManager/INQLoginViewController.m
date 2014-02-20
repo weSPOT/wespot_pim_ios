@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, services) {
 @property (weak, nonatomic) IBOutlet UITextField *usernameEdit;
 @property (weak, nonatomic) IBOutlet UITextField *passwordEdit;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIImageView *background;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *facebookButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *googleButton;
@@ -132,7 +133,15 @@ typedef NS_ENUM(NSInteger, services) {
 }
 
 - (IBAction)backButtonAction:(UIBarButtonItem *)sender {
-       [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"MainTabs"] animated:YES  completion:nil];
+    [self fetchCurrentAccount];
+    
+    NSLog(@"[%s] IsLoggedIn: %@", __func__, self.isLoggedIn);
+    
+    if ([self.isLoggedIn isEqualToNumber: [NSNumber numberWithBool:YES]]) {
+        [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"] animated:YES  completion:nil];
+    }else {
+        [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:YES  completion:nil];
+    }
 }
 
 - (void)performLogin:(NSInteger)serviceId {
@@ -197,11 +206,11 @@ typedef NS_ENUM(NSInteger, services) {
 - (void) adjustLoginButton  {
     [self fetchCurrentAccount];
     
-    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
-        self.navigationItem.title = NSLocalizedString(@"Logout", nil);
-    } else {
-        self.navigationItem.title = NSLocalizedString(@"Login", nil);
-    }
+//    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+//        self.navigationItem.title = NSLocalizedString(@"Logout", nil);
+//    } else {
+//        self.navigationItem.title = NSLocalizedString(@"Login", nil);
+//    }
 }
 
 - (void) addConstraints {
@@ -212,6 +221,7 @@ typedef NS_ENUM(NSInteger, services) {
         self.loginButton,   @"login",
         self.view,          @"view",
         self.scrollView,    @"scroll",
+        self.background,    @"background",
         nil];
     
     // Fails
@@ -224,7 +234,8 @@ typedef NS_ENUM(NSInteger, services) {
     self.passwordEdit.translatesAutoresizingMaskIntoConstraints = NO;
     self.loginButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    self.background.translatesAutoresizingMaskIntoConstraints = NO;
+ 
     // Size UIScrollView to View.
     [self.view addConstraint: [NSLayoutConstraint
                                constraintWithItem:self.scrollView
@@ -261,7 +272,7 @@ typedef NS_ENUM(NSInteger, services) {
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: @"V:|-[wespot(84)]-[username]-[password]-[login]"
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[wespot(84)]-[username]-[password]-[login]",10 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -315,6 +326,18 @@ typedef NS_ENUM(NSInteger, services) {
                                views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:[login(==200)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    // Background
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat: @"V:|[background]|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat: @"H:|[background]|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

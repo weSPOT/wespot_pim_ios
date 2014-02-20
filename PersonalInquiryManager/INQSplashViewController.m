@@ -74,6 +74,9 @@
         
         self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
     }
+    
+    
+    [self addConstraints];
 }
 
 - (void)didReceiveMemoryWarning
@@ -168,6 +171,31 @@
         // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
         [self.navigationController presentViewController:newViewController animated:YES  completion:nil];
     }
+}
+
+- (void) addConstraints {
+    NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     self.backgroundImage,   @"background",
+                                     nil];
+    
+    // Fails
+    // for (UIView *view in [viewsDictionary keyEnumerator]) {
+    //   view.translatesAutoresizingMaskIntoConstraints = NO;
+    // }
+    
+    self.backgroundImage.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Size vertically
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat: @"V:|[background]|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat: @"H:|[background]|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
 }
 
 @end

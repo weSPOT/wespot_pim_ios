@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "Splash-568h@2x.png"
+      "filename" : "mainmenu_HD.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Splash@2x.png"
+      "filename" : "mainmenu_HD-1.png"
     }
   ],
   "info" : {

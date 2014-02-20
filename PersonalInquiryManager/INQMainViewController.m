@@ -69,6 +69,11 @@ typedef NS_ENUM(NSInteger, tools) {
     [super viewDidLoad];
 
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
+  
+    //See http://stackoverflow.com/questions/5825397/uitableview-background-image
+    //self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
 }
 
 -(void)viewWillAppear:(BOOL)animated {

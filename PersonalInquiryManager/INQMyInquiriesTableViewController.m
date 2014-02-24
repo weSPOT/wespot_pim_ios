@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
 - (IBAction)newInquiryTap:(UIButton *)sender;
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
+@property (weak, nonatomic) IBOutlet UIView *inqueriesView;
 
 @end
 
@@ -53,6 +54,12 @@ typedef NS_ENUM(NSInteger, inquiries) {
     [super viewDidLoad];
     
     [self.navigationController setToolbarHidden:YES];
+    
+    //See http://stackoverflow.com/questions/5825397/uitableview-background-image
+    //self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.inqueriesView.backgroundColor = [UIColor clearColor];
     
     [self setupFetchedResultsController];
 }
@@ -121,6 +128,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
+    cell.backgroundColor = [UIColor clearColor];
     
     Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     

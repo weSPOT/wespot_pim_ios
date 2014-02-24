@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSArray *AllUsers;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (weak, nonatomic) IBOutlet UIView *friendsView;
 
 @end
 
@@ -25,6 +26,10 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.friendsView.backgroundColor=[UIColor clearColor];
     
     [self.navigationController setToolbarHidden:YES];
     
@@ -115,7 +120,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-
+    
+    cell.backgroundColor = [UIColor clearColor];
+    
     // Configure the cell...
     
     Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);

@@ -47,6 +47,9 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Friends" id="JPj-jY-OxM"/>
+                    <connections>
+                        <outlet property="friendsView" destination="HeC-Cf-WYu" id="cJk-9m-xz6"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Is1-zh-t8r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -276,6 +279,9 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="My Inquiries" id="vbs-3N-PVP"/>
                     <navigationItem key="navigationItem" title="Inquiry list" id="oVx-GY-gEG"/>
+                    <connections>
+                        <outlet property="inqueriesView" destination="IpS-3b-vbz" id="ftT-AR-f0a"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zno-7L-FuE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -320,6 +326,7 @@
                     <navigationItem key="navigationItem" title="Inquiry" id="mV9-HV-prf"/>
                     <connections>
                         <outlet property="icon" destination="n3r-Y1-wLP" id="IeN-sw-zfA"/>
+                        <outlet property="inqueryView" destination="TNb-Db-gih" id="MN2-Ov-IdN"/>
                         <outlet property="inquiryDescription" destination="jXi-kd-Wbk" id="sEp-fv-x0b"/>
                     </connections>
                 </viewController>

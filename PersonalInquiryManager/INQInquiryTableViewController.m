@@ -77,6 +77,13 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     [super viewDidLoad];
     
+    //See http://stackoverflow.com/questions/5825397/uitableview-background-image
+    //self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.inqueryView.backgroundColor = [UIColor clearColor];
+    
     // Load Icon.
     NSData* icon = [self.inquiry icon];
     if (icon) {
@@ -205,6 +212,8 @@ typedef NS_ENUM(NSInteger, sections) {
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
+    
+    cell.backgroundColor = [UIColor clearColor];
     
     // Configure the cell...
     switch (indexPath.section) {

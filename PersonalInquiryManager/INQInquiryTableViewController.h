@@ -22,5 +22,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
+@property (weak, nonatomic) IBOutlet UIView *inqueryView;
 
 @end

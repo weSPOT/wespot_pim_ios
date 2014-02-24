@@ -179,6 +179,8 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
+    cell.backgroundColor = [UIColor clearColor];
+
     // Configure the cell...
 #warning Fill Icon too.
     switch (indexPath.section) {

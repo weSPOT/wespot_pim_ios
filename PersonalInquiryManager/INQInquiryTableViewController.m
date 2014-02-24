@@ -213,7 +213,7 @@ typedef NS_ENUM(NSInteger, sections) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
     
-    cell.backgroundColor = [UIColor clearColor];
+    // cell.backgroundColor = [UIColor clearColor];
     
     // Configure the cell...
     switch (indexPath.section) {

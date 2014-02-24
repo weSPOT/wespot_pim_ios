@@ -17,6 +17,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.title = @"Collect Data";
 }
 
 - (void) viewDidAppear:(BOOL)animated{
@@ -68,6 +72,7 @@
     if (cell == nil) {
         cell = [[ARLGeneralItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
     }
+    // cell.backgroundColor= [UIColor clearColor];
     
     // Set Font to Bold if unread.
     cell.giTitleLabel.text = generalItem.name;

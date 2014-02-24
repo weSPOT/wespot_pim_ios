@@ -83,6 +83,8 @@ typedef NS_ENUM(NSInteger, services) {
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonAction:)];
     
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    
     self.usernameEdit.delegate = self;
     self.passwordEdit.delegate = self;
     

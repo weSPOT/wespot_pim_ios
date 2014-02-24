@@ -10,11 +10,28 @@
 
 @interface INQFriendsTableViewController ()
 
+/*!
+ *  ID's and order of the cells sections.
+ */
+typedef NS_ENUM(NSInteger, friends) {
+    /*!
+     *  Add a Friend.
+     */
+    ADD = 0,
+    /*!
+     *  Friends.
+     */
+    FRIENDS,
+    /*!
+     *  Number of Inquires
+     */
+    numFriends
+};
+
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (strong, nonatomic) NSArray *AllUsers;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (weak, nonatomic) IBOutlet UIView *friendsView;
 
 @end
 
@@ -29,7 +46,6 @@
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.friendsView.backgroundColor=[UIColor clearColor];
     
     [self.navigationController setToolbarHidden:YES];
     
@@ -82,7 +98,7 @@
  *  @return The number of sections.
  */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return numFriends;
 }
 
 /*!
@@ -96,13 +112,28 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-
-    return [[self.fetchedResultsController fetchedObjects] count];
+    switch (section) {
+        case ADD:
+            return 1;
+        case FRIENDS:
+            return [[self.fetchedResultsController fetchedObjects] count];
+    }
+    
+    // Error
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Friends";
+    switch (section){
+        case ADD:
+            return @"";
+        case FRIENDS:
+            return @"Friends";
+    }
+    
+    // Error
+    return @"";
 }
 
 /*!
@@ -125,29 +156,38 @@
     
     // Configure the cell...
     
-    Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-    
-    cell.textLabel.text = generalItem.name;
-    cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-  
-    NSData* icon = [generalItem picture];
-    if (icon) {
-        cell.imageView.image = [UIImage imageWithData:icon];
-    } else {
-        // Fixup for Friends Icons do not show immediately (icon property is empty).
-        // LocalId == oauthId
-        for (NSDictionary *dict in self.AllUsers) {
-            if ([[dict objectForKey:@"oauthId"] isEqualToString:generalItem.localId]) {
-                NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
-                
-                //NSLog(@"[%s] USERS %@", __func__, [dict objectForKey:@"oauthId"]);
-                
-                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                if (imageData) {
-                    cell.imageView.image = [UIImage imageWithData:imageData];
+    switch (indexPath.section) {
+        case ADD:
+            cell.textLabel.text = @"Add friend";
+            break;
+        case FRIENDS:{
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            
+            Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            
+            cell.textLabel.text = generalItem.name;
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+          
+            NSData* icon = [generalItem picture];
+            if (icon) {
+                cell.imageView.image = [UIImage imageWithData:icon];
+            } else {
+                // Fixup for Friends Icons do not show immediately (icon property is empty).
+                // LocalId == oauthId
+                for (NSDictionary *dict in self.AllUsers) {
+                    if ([[dict objectForKey:@"oauthId"] isEqualToString:generalItem.localId]) {
+                        NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
+                        
+                        //NSLog(@"[%s] USERS %@", __func__, [dict objectForKey:@"oauthId"]);
+                        
+                        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                        if (imageData) {
+                            cell.imageView.image = [UIImage imageWithData:imageData];
+                        }
+                        
+                        break;
+                    }
                 }
-                
-                break;
             }
         }
     }
@@ -156,9 +196,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    switch (indexPath.section) {
+        case ADD: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        case FRIENDS:
+        {
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            
+            UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:ip];
     
-    cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+            cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+        }
+    }
 }
 
 @end

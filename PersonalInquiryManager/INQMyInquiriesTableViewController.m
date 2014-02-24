@@ -31,7 +31,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
 - (IBAction)newInquiryTap:(UIButton *)sender;
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
-@property (weak, nonatomic) IBOutlet UIView *inqueriesView;
+
+//@property (weak, nonatomic) IBOutlet UIView *inqueriesView;
 
 @end
 
@@ -59,7 +60,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
     //self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    self.inqueriesView.backgroundColor = [UIColor clearColor];
+    self.navigationController.view .backgroundColor = [UIColor clearColor];
+    // self.inqueriesView.backgroundColor = [UIColor clearColor];
     
     [self setupFetchedResultsController];
 }
@@ -98,7 +100,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
  *  @return The number of sections.
  */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return numInquiries;
 }
 
 /*!
@@ -111,7 +113,27 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.fetchedResultsController.fetchedObjects count];
+    switch (section){
+        case NEW:
+            return 1;
+        case OPEN:
+            return [self.fetchedResultsController.fetchedObjects count];
+    }
+    
+    // Error
+    return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch (section){
+        case NEW:
+            return @"";
+        case OPEN:
+            return @"";
+    }
+    
+    // Error
+    return @"";
 }
 
 /*!
@@ -128,18 +150,25 @@ typedef NS_ENUM(NSInteger, inquiries) {
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-    cell.backgroundColor = [UIColor clearColor];
+    // cell.backgroundColor = [UIColor clearColor];
     
-    Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
-    
-    cell.textLabel.text = generalItem.title;
-    NSData* icon = [generalItem icon];
-    if (icon) {
-        UIImage * image = [UIImage imageWithData:icon];
-        cell.imageView.image=image;
+    switch (indexPath.section) {
+        case NEW:
+            cell.textLabel.text = @"New inquiry";
+            break;
+        case OPEN: {
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            
+            Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            
+            cell.textLabel.text = generalItem.title;
+            NSData* icon = [generalItem icon];
+            if (icon) {
+                UIImage * image = [UIImage imageWithData:icon];
+                cell.imageView.image=image;
+            }
+        }
     }
-
-
     return cell;
 }
 
@@ -151,20 +180,33 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Inquiry * inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:indexPath]);
     
-    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquireyParts"];
-    
-    if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
-        [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];
+    switch (indexPath.section) {
+        case NEW: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+            break;
+        case OPEN:{
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            
+            Inquiry * inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            
+            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquireyParts"];
+            
+            if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
+                [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];
+            }
+            
+            [self.navigationController pushViewController:newViewController animated:YES];
+        }
+            break;
     }
-    
-    [self.navigationController pushViewController:newViewController animated:YES];
 }
 
-- (IBAction)newInquiryTap:(UIButton *)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-}
+//- (IBAction)newInquiryTap:(UIButton *)sender {
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//    [alert show];
+//}
 
 @end

@@ -74,6 +74,8 @@ typedef NS_ENUM(NSInteger, tools) {
     //self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -179,7 +181,7 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
-    cell.backgroundColor = [UIColor clearColor];
+    // cell.backgroundColor = [UIColor clearColor];
 
     // Configure the cell...
 #warning Fill Icon too.

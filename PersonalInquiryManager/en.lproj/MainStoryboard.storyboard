@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="JIo-qM-5I2">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
@@ -13,27 +13,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="HeC-Cf-WYu">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PZr-Wa-1cC">
-                                    <rect key="frame" x="109" y="13" width="101" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Add friend">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="newInquiryTap:" destination="XfV-8E-bXQ" eventType="touchUpInside" id="z4b-UJ-jGM"/>
-                                        <segue destination="z5o-6O-JKl" kind="push" id="e9E-AR-3D7"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="friendsCell1" id="a5G-wD-wV8">
-                                <rect key="frame" x="0.0" y="110" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a5G-wD-wV8" id="11F-xN-rnT">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -47,9 +29,6 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Friends" id="JPj-jY-OxM"/>
-                    <connections>
-                        <outlet property="friendsView" destination="HeC-Cf-WYu" id="cJk-9m-xz6"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Is1-zh-t8r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -174,7 +153,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="uRf-6N-Pga"/>
                     <toolbarItems>
                         <barButtonItem title="Facebook" style="plain" id="6K9-D5-hpa">
                             <connections>
@@ -249,26 +227,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="IpS-3b-vbz">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Oyu-6u-Lg6">
-                                    <rect key="frame" x="65" y="13" width="101" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="New inquiry">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="newInquiryTap:" destination="XfV-8E-bXQ" eventType="touchUpInside" id="vf6-Ph-qeN"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="djl-Vl-GVB">
-                                <rect key="frame" x="0.0" y="110" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="djl-Vl-GVB" id="Zu7-Rp-b61">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -279,9 +240,6 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="My Inquiries" id="vbs-3N-PVP"/>
                     <navigationItem key="navigationItem" title="Inquiry list" id="oVx-GY-gEG"/>
-                    <connections>
-                        <outlet property="inqueriesView" destination="IpS-3b-vbz" id="ftT-AR-f0a"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zno-7L-FuE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -334,13 +292,10 @@
             </objects>
             <point key="canvasLocation" x="2177" y="452"/>
         </scene>
-        <!--Page View Controller - Inquiry Part Page Controller-->
+        <!--Page View Controller-->
         <scene sceneID="HA2-1u-Qfh">
             <objects>
-                <pageViewController storyboardIdentifier="InquiryPartPageViewController" autoresizesArchivedViewToFullSize="NO" title="Inquiry Part Page Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                </pageViewController>
+                <pageViewController storyboardIdentifier="InquiryPartPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="rfM-p2-x41" customClass="INQPageViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZ3-S5-0WF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2604" y="452"/>
@@ -405,10 +360,10 @@
             </objects>
             <point key="canvasLocation" x="3011" y="-148"/>
         </scene>
-        <!--General Item Table View Controller - Collect data-->
+        <!--General Item Table View Controller - - -->
         <scene sceneID="DTQ-oG-YsK">
             <objects>
-                <tableViewController storyboardIdentifier="CollectDataView" id="cZ5-E8-4wN" customClass="INQGeneralItemTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CollectDataView" title="-" id="cZ5-E8-4wN" customClass="INQGeneralItemTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="0r1-eD-vkc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -446,16 +401,7 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="ViW-ID-EfY">
-                            <pageControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="6" id="JbG-Bu-yz3">
-                                <rect key="frame" x="16" y="4" width="100" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                            </pageControl>
-                        </barButtonItem>
-                    </navigationItem>
-                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -465,7 +411,6 @@
         <scene sceneID="ci8-Q4-vWJ">
             <objects>
                 <navigationController storyboardIdentifier="MainNavigation" title="Main" definesPresentationContext="YES" id="M4Q-ds-Y79" userLabel="MainNavigation" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="hlr-nF-hAm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wFK-ys-ccH">
                         <autoresizingMask key="autoresizingMask"/>
@@ -534,12 +479,12 @@
             <objects>
                 <tableViewController storyboardIdentifier="MainView" title="Main" id="mph-xo-zGo" userLabel="MainView" customClass="INQMainViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8Ih-Qf-Br3" colorLabel="IBBuiltInLabel-Blue">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mainPartCell" id="Qi2-AE-dwq">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qi2-AE-dwq" id="BIm-7M-uF0">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -552,7 +497,6 @@
                             <outlet property="delegate" destination="mph-xo-zGo" id="pez-pR-ceh"/>
                         </connections>
                     </tableView>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vFt-AZ-sMZ"/>
                 </tableViewController>

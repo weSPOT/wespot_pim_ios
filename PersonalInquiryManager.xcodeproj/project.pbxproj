@@ -1303,6 +1303,11 @@
 				CLASSPREFIX = ARL;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Stefaan Ternier";
+				TargetAttributes = {
+					3477E6841769C9A000F3A5F3 = {
+						DevelopmentTeam = S7QLRYVQ5F;
+					};
+				};
 			};
 			buildConfigurationList = 3477E6801769C9A000F3A5F3 /* Build configuration list for PBXProject "PersonalInquiryManager" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1610,19 +1615,19 @@
 		3477E6A91769C9A000F3A5F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Stefaan Ternier (LCG6376CH6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stefaan Ternier (LCG6376CH6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PersonalInquiryManager/PersonalInquiryManager-Prefix.pch";
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EFA7C045-F2B7-492F-8A7F-00A7ABEB8D07";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EFA7C045-F2B7-492F-8A7F-00A7ABEB8D07";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -1632,19 +1637,19 @@
 		3477E6AA1769C9A000F3A5F3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Open Universiteit (GND5FJCB67)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Open Universiteit (GND5FJCB67)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PersonalInquiryManager/PersonalInquiryManager-Prefix.pch";
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5CF4AC90-C41C-4A43-969E-68CE7C9D6610";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5CF4AC90-C41C-4A43-969E-68CE7C9D6610";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;

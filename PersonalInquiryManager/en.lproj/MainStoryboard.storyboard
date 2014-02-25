@@ -228,7 +228,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="djl-Vl-GVB">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="inquiriesCell" id="djl-Vl-GVB">
                                 <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="djl-Vl-GVB" id="Zu7-Rp-b61">
@@ -253,25 +253,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" autoresizesSubviews="NO" contentMode="scaleToFill" id="TNb-Db-gih">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="n3r-Y1-wLP">
-                                    <rect key="frame" x="20" y="4" width="86" height="95"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </imageView>
-                                <webView contentMode="scaleToFill" id="jXi-kd-Wbk">
-                                    <rect key="frame" x="114" y="4" width="180" height="95"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.40113366168478259" green="0.40113366168478259" blue="0.40113366168478259" alpha="1" colorSpace="calibratedRGB"/>
-                                </webView>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="inquiryPartCell" id="cPM-9C-1zH" customClass="INQIconTextTableViewItemCell">
-                                <rect key="frame" x="0.0" y="165" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cPM-9C-1zH" id="hnl-F9-y3C">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -282,11 +266,6 @@
                         <sections/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Inquiry" id="mV9-HV-prf"/>
-                    <connections>
-                        <outlet property="icon" destination="n3r-Y1-wLP" id="IeN-sw-zfA"/>
-                        <outlet property="inqueryView" destination="TNb-Db-gih" id="MN2-Ov-IdN"/>
-                        <outlet property="inquiryDescription" destination="jXi-kd-Wbk" id="sEp-fv-x0b"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gvc-4B-10i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

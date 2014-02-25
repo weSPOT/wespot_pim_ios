@@ -28,8 +28,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
     numInquiries
 };
 
-- (IBAction)newInquiryTap:(UIButton *)sender;
-
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 //@property (weak, nonatomic) IBOutlet UIView *inqueriesView;
@@ -39,7 +37,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
 @implementation INQMyInquiriesTableViewController
 
 -(NSString*) cellIdentifier {
-    return  @"inquiriesCell1";
+    return  @"inquiriesCell";
 }
 
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

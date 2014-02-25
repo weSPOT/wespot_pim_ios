@@ -16,12 +16,10 @@
 #import "Run+ARLearnBeanCreate.h"
 #import "INQPageViewController.h"
 
-@interface INQInquiryTableViewController : UITableViewController
+@interface INQInquiryTableViewController : UITableViewController <UIWebViewDelegate>
 
 @property (strong, nonatomic)  Inquiry *inquiry;
 
-@property (weak, nonatomic) IBOutlet UIImageView *icon;
-@property (weak, nonatomic) IBOutlet UIWebView *inquiryDescription;
-@property (weak, nonatomic) IBOutlet UIView *inqueryView;
+//@property (weak, nonatomic) IBOutlet UIView *inqueryView;
 
 @end

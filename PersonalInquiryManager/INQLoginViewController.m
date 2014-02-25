@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, services) {
 //    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
 //        self.navigationItem.title = NSLocalizedString(@"Logout", nil);
 //    } else {
-//        self.navigationItem.title = NSLocalizedString(@"Login", nil);
+//        self.navigationItem.title = NSLocalizedString(@"Login", nil);orientat
 //    }
 }
 

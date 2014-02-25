@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, friends) {
     [super viewDidLoad];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    // self.navigationController.view.backgroundColor = [UIColor clearColor];
     
     [self.navigationController setToolbarHidden:YES];
     
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, friends) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
     
-    cell.backgroundColor = [UIColor clearColor];
+    // cell.backgroundColor = [UIColor clearColor];
     
     // Configure the cell...
     
@@ -198,8 +198,9 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case ADD: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
+            
+            [self.navigationController pushViewController:newViewController animated:YES];
         }
         case FRIENDS:
         {

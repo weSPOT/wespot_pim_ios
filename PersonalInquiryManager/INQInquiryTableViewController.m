@@ -51,7 +51,11 @@ typedef NS_ENUM(NSInteger, sections) {
     /*!
      *  Inquiry Parts
      */
-    PARTS =0,
+    HEADER =0,
+    /*!
+     *  Inquiry Parts
+     */
+    PARTS,
     /*!
      *  Invite Friends.
      */
@@ -65,11 +69,17 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
+@property (readonly, nonatomic) CGFloat navbarWidth;
+
 @end
 
 @implementation INQInquiryTableViewController
 
--(NSString*) cellIdentifier {
+-(CGFloat) navbarWidth {
+    return self.navigationController.navigationBar.bounds.size.width;
+}
+
+-(NSString *) cellIdentifier {
     return  @"inquiryPartCell";
 }
 
@@ -82,21 +92,21 @@ typedef NS_ENUM(NSInteger, sections) {
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.inqueryView.backgroundColor = [UIColor clearColor];
+    //self.inqueryView.backgroundColor = [UIColor clearColor];
     
     // Load Icon.
-    NSData* icon = [self.inquiry icon];
-    if (icon) {
-        UIImage * image = [UIImage imageWithData:icon];
-        self.icon.image = image;
-    }
+//    NSData *icon = [self.inquiry icon];
+//    if (icon) {
+//        UIImage *image = [UIImage imageWithData:icon];
+//        self.icon.image = image;
+//    }
     
     // Load description
-    [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
+//    [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
     // [self.inquiryDescription loadHTMLString:@"<html><body style='background-color:red;'>test</body></html>" baseURL:nil];
   
     
-    NSLog(@"[%s] desc %@", __func__, self.inquiry.desc);
+//    NSLog(@"[%s] desc %@", __func__, self.inquiry.desc);
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -105,52 +115,43 @@ typedef NS_ENUM(NSInteger, sections) {
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
    
     // Disable some conflicting XCODE habits.
-    self.icon.translatesAutoresizingMaskIntoConstraints = NO;
-    self.inquiryDescription.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.icon.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.inquiryDescription.translatesAutoresizingMaskIntoConstraints = NO;
     
     // Remove constraints.
-    [self.view removeConstraints:[self.view constraints]];
-
-    NSDictionary * viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-        self.view, @"view",
-        self.icon, @"icon",
-        self.inquiryDescription, @"description",
-        nil];
-
-    NSString *constraint;
-    
-    constraint = [NSString stringWithFormat:@"H:|-5-[icon(==%0.0f)]-[description]-5-|", self.icon.image.size.width];
-    //NSLog(@"Constraint: %@", constraint);
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:constraint
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-
-    constraint = [NSString stringWithFormat:@"V:|-5-[icon(==%0.0f)]-5-|", self.icon.image.size.height];
-    //NSLog(@"Constraint: %@", constraint);
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:constraint
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-
-    constraint = @"V:|-5-[description(==icon)]";
-    //NSLog(@"Constraint: %@", constraint);
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:constraint
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-
-    // This one breaks above...
-    //    constraint = [NSString stringWithFormat:@"V:[view(==%0.0f)]", self.icon.image.size.height+10];
-    //    NSLog(@"Constraint: %@", constraint);
-    //    [self.view addConstraints:[NSLayoutConstraint
-    //                               constraintsWithVisualFormat:constraint
-    //                               options:NSLayoutFormatDirectionLeadingToTrailing
-    //                               metrics:nil
-    //                               views:viewsDictionary]];
+//    [self.view removeConstraints:[self.view constraints]];
+//
+//    NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+//        self.view, @"view",
+//        self.icon, @"icon",
+//        self.inquiryDescription, @"description",
+//        nil];
+//
+//    NSString *constraint;
+//    
+//    constraint = [NSString stringWithFormat:@"H:|-5-[icon(==%0.0f)]-[description]-5-|", self.icon.image.size.width];
+//    //NSLog(@"Constraint: %@", constraint);
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:constraint
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//
+//    constraint = [NSString stringWithFormat:@"V:|-5-[icon(==%0.0f)]-5-|", self.icon.image.size.height];
+//    //NSLog(@"Constraint: %@", constraint);
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:constraint
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
+//
+//    constraint = @"V:|-5-[description(==icon)]";
+//    //NSLog(@"Constraint: %@", constraint);
+//    [self.view addConstraints:[NSLayoutConstraint
+//                               constraintsWithVisualFormat:constraint
+//                               options:NSLayoutFormatDirectionLeadingToTrailing
+//                               metrics:nil
+//                               views:viewsDictionary]];
 }
 
 /*!
@@ -188,9 +189,11 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0 :
+        case HEADER:
+            return 1;
+        case PARTS :
             return numItems;
-        case 1 :
+        case INVITE :
             return 1;
     }
     
@@ -217,6 +220,90 @@ typedef NS_ENUM(NSInteger, sections) {
     
     // Configure the cell...
     switch (indexPath.section) {
+        case HEADER:
+            //TODO
+            if (cell.contentView.subviews.count==0)
+            {
+                
+                // [cell.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+                
+                // Icon
+                NSData* icon = [self.inquiry icon];
+                UIImage *image;
+                if (icon) {
+                    image = [UIImage imageWithData:icon];
+                }
+                UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
+                imageView.backgroundColor = [UIColor orangeColor];
+                //[imageView setFrame:CGRectMake(5, 5, imageView.frame.size.width, imageView.frame.size.height)];
+                imageView.translatesAutoresizingMaskIntoConstraints = NO;
+          
+                [cell.contentView addSubview:imageView];
+                
+                //Tile
+                UITextView *textView = [[UITextView alloc] init];
+                textView.backgroundColor = [UIColor orangeColor];
+                textView.editable = NO;
+                textView.text = self.inquiry.title;
+                //textView.frame = CGRectMake(110, 5, self.navbarWidth-115, 100);
+                
+                textView.translatesAutoresizingMaskIntoConstraints = NO;
+                [cell.contentView addSubview:textView];
+
+                // Description
+                UIWebView *webView = [[UIWebView alloc] init];
+                // webView.delegate = self;
+                webView.backgroundColor = [UIColor orangeColor];
+                //webView.frame = CGRectMake(5, 110, self.navbarWidth-10, 100);
+                [webView loadHTMLString:self.inquiry.desc baseURL:nil];
+                
+                webView.translatesAutoresizingMaskIntoConstraints = NO;
+                [cell.contentView addSubview:webView];
+         
+                //Remove Constraints
+                
+                //Add Constraints
+                NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                 imageView, @"icon",
+                                                 textView, @"text",
+                                                 webView, @"description",
+                                                 nil];
+                
+                [cell.contentView addConstraints:[NSLayoutConstraint
+                                           constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
+                                           options:NSLayoutFormatDirectionLeadingToTrailing
+                                           metrics:nil
+                                           views:viewsDictionary]];
+
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                
+                [cell.contentView addConstraints:[NSLayoutConstraint
+                                                  constraintsWithVisualFormat:@"V:|-[text(==icon)]"
+                                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                                  metrics:nil
+                                                  views:viewsDictionary]];
+
+                [cell addConstraints:[NSLayoutConstraint
+                                           constraintsWithVisualFormat:@"H:|-[description]-|"
+                                           options:NSLayoutFormatDirectionLeadingToTrailing
+                                           metrics:nil
+                                           views:viewsDictionary]];
+
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", 210-image.size.height-2*20]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+
+   
+                //Cell
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            break;
         case PARTS : {
             switch (indexPath.item) {
                 case HYPOTHESIS:
@@ -239,7 +326,7 @@ typedef NS_ENUM(NSInteger, sections) {
                     break;
                 default:
                     break;
-            }
+                }
             }
             break;
             
@@ -249,6 +336,21 @@ typedef NS_ENUM(NSInteger, sections) {
     }
 
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case HEADER:
+            return 210;
+        case PARTS:
+            return tableView.rowHeight;
+        case INVITE:
+            return tableView.rowHeight;
+    }
+    
+    // Error
+    return tableView.rowHeight;
 }
 
 #pragma mark - Table view delegate
@@ -293,22 +395,6 @@ typedef NS_ENUM(NSInteger, sections) {
                 gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
             }
             
-#warning Disabled for now...
-            
-            // Synchronize CoreData (RUNS & GAMES).
-//            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-//            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//            [synchronizer createContext:appDelegate.managedObjectContext];
-//            if (!selectedRun) {
-//                synchronizer.syncRuns = YES;
-//            }
-//            synchronizer.gameId = gameId;
-//            synchronizer.visibilityRunId = runId;
-//            synchronizer.syncGames = YES;
-//            
-//            [synchronizer sync];
-       
-            // new code.,.,,
             if (selectedRun.runId) {
                 [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
             }
@@ -334,7 +420,6 @@ typedef NS_ENUM(NSInteger, sections) {
         default: {
             NSLog(@"[%s] Unknown InquiryPart: %@",__func__, index);
         }
-            
             break;
     }
     
@@ -352,6 +437,8 @@ typedef NS_ENUM(NSInteger, sections) {
     UIViewController * newViewController;
     
     switch (indexPath.section) {
+        case HEADER:
+            break;
         case PARTS: {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
             if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {

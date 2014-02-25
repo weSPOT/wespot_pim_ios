@@ -20,6 +20,8 @@
 {
     [super viewDidLoad];
 
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
     if (!self.AllUsers) {
         [self getAllUsers];
     }

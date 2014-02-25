@@ -100,22 +100,27 @@ typedef NS_ENUM(NSInteger, tools) {
 }
 
 -(void)loginButtonButtonTap:(id)sender {
-  if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+    UIViewController *newViewController;
+    
+    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
       
         //#warning not enough to toggle isLoggedIn.
-         [self adjustLoginButton];
+        [self adjustLoginButton];
+  
+        newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
     } else {
-        UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
-        
-        if (newViewController) {
-            // Move to another UINavigationController or UITabBarController etc.
-            // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
-            [self.navigationController presentViewController:newViewController animated:YES completion:nil];
-        }
+        newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
+    }
+    
+    if (newViewController) {
+        // Move to another UINavigationController or UITabBarController etc.
+        // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
+        [self.navigationController presentViewController:newViewController animated:YES completion:nil];
     }
 }
+
 -(void)syncButtonButtonTap:(id)sender {
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
@@ -184,7 +189,6 @@ typedef NS_ENUM(NSInteger, tools) {
     // cell.backgroundColor = [UIColor clearColor];
 
     // Configure the cell...
-#warning Fill Icon too.
     switch (indexPath.section) {
         case MYINQUIRES: {
                 cell.textLabel.Text = @"My inquiries";
@@ -242,10 +246,8 @@ typedef NS_ENUM(NSInteger, tools) {
 
         case TOOLS: {
             switch (indexPath. item) {
-                case PROFILE : {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                        [alert show];
-                    }
+                case PROFILE :
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileView"];
                     break;
                 case BADGES :
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BadgesView"];

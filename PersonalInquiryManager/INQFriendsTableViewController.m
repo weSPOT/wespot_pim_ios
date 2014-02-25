@@ -38,14 +38,13 @@ typedef NS_ENUM(NSInteger, friends) {
 @implementation INQFriendsTableViewController
 
 -(NSString*) cellIdentifier {
-    return  @"friendsCell1";
+    return  @"friendsCell";
 }
 
 - (void) viewDidLoad {
     [super viewDidLoad];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    // self.navigationController.view.backgroundColor = [UIColor clearColor];
     
     [self.navigationController setToolbarHidden:YES];
     

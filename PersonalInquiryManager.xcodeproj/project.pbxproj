@@ -182,6 +182,7 @@
 		8D4DF87A18A3BEFB009CD9BA /* INQSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
+		8DAFB49218BCDBE70095DFE7 /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAFB49118BCDBE70095DFE7 /* INQProfileTableViewController.m */; };
 		8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */; };
 		8DF5525518AE560B00033677 /* INQSplashContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF5525418AE560B00033677 /* INQSplashContentViewController.m */; };
 		8DF5525A18AE603000033677 /* page1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF5525618AE603000033677 /* page1.png */; };
@@ -540,6 +541,8 @@
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
 		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
+		8DAFB49018BCDBE70095DFE7 /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQProfileTableViewController.h; sourceTree = "<group>"; };
+		8DAFB49118BCDBE70095DFE7 /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQProfileTableViewController.m; sourceTree = "<group>"; };
 		8DB0D57A18A103E8003E4623 /* INQMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMessagesViewController.h; sourceTree = "<group>"; };
 		8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMessagesViewController.m; sourceTree = "<group>"; };
 		8DF5525318AE560B00033677 /* INQSplashContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashContentViewController.h; sourceTree = "<group>"; };
@@ -783,8 +786,6 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
-				8DFE3DD818B6146900E99006 /* Images */,
-				8DF5525218AE4FA700033677 /* Parts */,
 				8D0249F518A7FCA0009D0566 /* _Obsolete */,
 				8D3F8B0D18ACE0E400B233A6 /* Analysis */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
@@ -796,6 +797,7 @@
 				8D3F8B0E18ACE0EC00B233A6 /* Discuss */,
 				8D0249F618A809C9009D0566 /* Friends */,
 				8D0249FA18A80A73009D0566 /* Hypothesis */,
+				8DFE3DD818B6146900E99006 /* Images */,
 				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
 				8D0249F718A809D4009D0566 /* Inquiries */,
 				8D0249F818A809EB009D0566 /* Inquiry */,
@@ -804,7 +806,9 @@
 				347AD0C817B3795C00B4B345 /* Network */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
+				8DF5525218AE4FA700033677 /* Parts */,
 				8D3F8B1918ACE2DC00B233A6 /* Plan */,
+				8DAFB49318BCDBEE0095DFE7 /* Profile */,
 				8D0249FD18A80B08009D0566 /* Splash */,
 				3477E68F1769C9A000F3A5F3 /* Supporting Files */,
 			);
@@ -1255,6 +1259,15 @@
 			path = Plan;
 			sourceTree = "<group>";
 		};
+		8DAFB49318BCDBEE0095DFE7 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				8DAFB49018BCDBE70095DFE7 /* INQProfileTableViewController.h */,
+				8DAFB49118BCDBE70095DFE7 /* INQProfileTableViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		8DF5525218AE4FA700033677 /* Parts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1497,6 +1510,7 @@
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
 				34D422CA17B670ED0051E84C /* Run.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,
+				8DAFB49218BCDBE70095DFE7 /* INQProfileTableViewController.m in Sources */,
 				8D3F8B1518ACE18600B233A6 /* INQDiscussViewController.m in Sources */,
 				34D422CC17B670ED0051E84C /* SynchronizationBookKeeping.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,

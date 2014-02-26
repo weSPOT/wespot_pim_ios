@@ -88,6 +88,25 @@ typedef NS_ENUM(NSInteger, inquiries) {
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
     [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
+    
+#warning Experimental code (does not seem to do what it should).
+    //    ARLCloudSynchronizer *sync = [[ARLCloudSynchronizer alloc] init];
+    //    sync.context=appDelegate.managedObjectContext;
+    //    
+    //    // Try Syncing Games.
+    //    NSEntityDescription *entityDescription = [NSEntityDescription
+    //                                              entityForName:@"Game" inManagedObjectContext:appDelegate.managedObjectContext];
+    //    NSFetchRequest *request2 = [[NSFetchRequest alloc]init];
+    //    [request2 setEntity:entityDescription];
+    //    
+    //    NSError *error;
+    //    NSArray *games =[appDelegate.managedObjectContext executeFetchRequest: request2 error:&error];
+    //    for (Game *game in games) {
+    //        NSLog(@"%@", game.description);
+    //        
+    //        sync.gameId=game.gameId;
+    //        [sync sync];
+    //
 }
 
 /*!
@@ -146,13 +165,16 @@ typedef NS_ENUM(NSInteger, inquiries) {
 {
     UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
     }
     // cell.backgroundColor = [UIColor clearColor];
     
     switch (indexPath.section) {
-        case NEW:
+        case NEW: {
             cell.textLabel.text = @"New inquiry";
+            cell.detailTextLabel.text = @"5";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+        }
             break;
         case OPEN: {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
@@ -165,6 +187,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
                 UIImage * image = [UIImage imageWithData:icon];
                 cell.imageView.image=image;
             }
+            
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", arc4random() % 10];
         }
     }
     return cell;
@@ -178,7 +202,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     switch (indexPath.section) {
         case NEW: {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -201,10 +224,5 @@ typedef NS_ENUM(NSInteger, inquiries) {
             break;
     }
 }
-
-//- (IBAction)newInquiryTap:(UIButton *)sender {
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//    [alert show];
-//}
 
 @end

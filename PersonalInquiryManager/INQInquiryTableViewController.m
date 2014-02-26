@@ -86,72 +86,10 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //See http://stackoverflow.com/questions/5825397/uitableview-background-image
-    //self.tableView.backgroundColor = [UIColor clearColor];
+
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view.backgroundColor = [UIColor clearColor];
-    //self.inqueryView.backgroundColor = [UIColor clearColor];
-    
-    // Load Icon.
-//    NSData *icon = [self.inquiry icon];
-//    if (icon) {
-//        UIImage *image = [UIImage imageWithData:icon];
-//        self.icon.image = image;
-//    }
-    
-    // Load description
-//    [self.inquiryDescription loadHTMLString:self.inquiry.desc baseURL:nil];
-    // [self.inquiryDescription loadHTMLString:@"<html><body style='background-color:red;'>test</body></html>" baseURL:nil];
-  
-    
-//    NSLog(@"[%s] desc %@", __func__, self.inquiry.desc);
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-   
-    // Disable some conflicting XCODE habits.
-//    self.icon.translatesAutoresizingMaskIntoConstraints = NO;
-//    self.inquiryDescription.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // Remove constraints.
-//    [self.view removeConstraints:[self.view constraints]];
-//
-//    NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-//        self.view, @"view",
-//        self.icon, @"icon",
-//        self.inquiryDescription, @"description",
-//        nil];
-//
-//    NSString *constraint;
-//    
-//    constraint = [NSString stringWithFormat:@"H:|-5-[icon(==%0.0f)]-[description]-5-|", self.icon.image.size.width];
-//    //NSLog(@"Constraint: %@", constraint);
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:constraint
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//
-//    constraint = [NSString stringWithFormat:@"V:|-5-[icon(==%0.0f)]-5-|", self.icon.image.size.height];
-//    //NSLog(@"Constraint: %@", constraint);
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:constraint
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
-//
-//    constraint = @"V:|-5-[description(==icon)]";
-//    //NSLog(@"Constraint: %@", constraint);
-//    [self.view addConstraints:[NSLayoutConstraint
-//                               constraintsWithVisualFormat:constraint
-//                               options:NSLayoutFormatDirectionLeadingToTrailing
-//                               metrics:nil
-//                               views:viewsDictionary]];
 }
 
 /*!
@@ -210,23 +148,30 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier]; // forIndexPath:indexPath
   
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
-    }
+    if (!cell || (indexPath.section==HEADER)) {
+        switch (indexPath.section) {
+            case HEADER:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+                break;
+            case PARTS:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case INVITE:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+                break;
+        }
+   }
     
     // cell.backgroundColor = [UIColor clearColor];
     
     // Configure the cell...
     switch (indexPath.section) {
         case HEADER:
-            //TODO
             if (cell.contentView.subviews.count==0)
             {
-                
-                // [cell.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-                
                 // Icon
                 NSData* icon = [self.inquiry icon];
                 UIImage *image;
@@ -240,7 +185,7 @@ typedef NS_ENUM(NSInteger, sections) {
           
                 [cell.contentView addSubview:imageView];
                 
-                //Tile
+                // Tile
                 UITextView *textView = [[UITextView alloc] init];
                 textView.backgroundColor = [UIColor orangeColor];
                 textView.editable = NO;
@@ -252,14 +197,13 @@ typedef NS_ENUM(NSInteger, sections) {
 
                 // Description
                 UIWebView *webView = [[UIWebView alloc] init];
-                // webView.delegate = self;
-                webView.backgroundColor = [UIColor orangeColor];
-                //webView.frame = CGRectMake(5, 110, self.navbarWidth-10, 100);
+                 webView.backgroundColor = [UIColor orangeColor];
                 [webView loadHTMLString:self.inquiry.desc baseURL:nil];
                 
                 webView.translatesAutoresizingMaskIntoConstraints = NO;
                 [cell.contentView addSubview:webView];
-         
+                
+                cell.detailTextLabel.text = @"";
                 //Remove Constraints
                 
                 //Add Constraints
@@ -308,21 +252,27 @@ typedef NS_ENUM(NSInteger, sections) {
             switch (indexPath.item) {
                 case HYPOTHESIS:
                     cell.textLabel.text = @"Hypothesis";
+                    cell.detailTextLabel.text = @"";
                     break;
                 case PLAN:
                     cell.textLabel.text = @"Plan";
+                    cell.detailTextLabel.text = @"";
                     break;
                 case DATACOLLECTION:
                     cell.textLabel.text = @"Collect Data";
+                    cell.detailTextLabel.text = @"5";
                     break;
                 case ANALYSIS:
                     cell.textLabel.text = @"Analysis";
+                    cell.detailTextLabel.text = @"";
                     break;
                 case DISCUSS:
                     cell.textLabel.text = @"Discuss";
+                    cell.detailTextLabel.text = @"";
                     break;
                 case COMMUNICATE:
                     cell.textLabel.text = @"Communicate";
+                    cell.detailTextLabel.text = @"";
                     break;
                 default:
                     break;
@@ -332,6 +282,8 @@ typedef NS_ENUM(NSInteger, sections) {
             
         case INVITE:
             cell.textLabel.text = @"Invite friends";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+            cell.detailTextLabel.text = @"2";
             break;
     }
 

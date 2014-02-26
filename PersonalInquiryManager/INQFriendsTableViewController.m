@@ -158,6 +158,7 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (indexPath.section) {
         case ADD:
             cell.textLabel.text = @"Add friend";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
             break;
         case FRIENDS:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];

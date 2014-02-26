@@ -150,7 +150,6 @@
     NSNumber * serverTime = [gisDict objectForKey:@"serverTime"];
     Game * game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
     
-    
     for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
         [GeneralItem generalItemWithDictionary:generalItemDict
                                       withGame:game

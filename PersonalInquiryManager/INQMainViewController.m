@@ -123,6 +123,7 @@ typedef NS_ENUM(NSInteger, tools) {
 
 -(void)syncButtonButtonTap:(id)sender {
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+
     
     [ARLCloudSynchronizer syncActions:appDelegate.managedObjectContext];
     [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
@@ -197,13 +198,16 @@ typedef NS_ENUM(NSInteger, tools) {
         case TOOLS:
             switch (indexPath.item) {
                 case PROFILE :
-                     cell.textLabel.Text = @"Profile";
+                    cell.textLabel.Text = @"Profile";
+                    cell.imageView.image = [UIImage imageNamed:@"profile"];
                     break;
                 case BADGES :
                     cell.textLabel.Text = @"Badges";
+                    cell.imageView.image = [UIImage imageNamed:@"badges"];
                     break;
                 case FRIENDS :
                     cell.textLabel.Text = @"Friends";
+                    cell.imageView.image = [UIImage imageNamed:@"friends"];
                     break;
             }
             break;

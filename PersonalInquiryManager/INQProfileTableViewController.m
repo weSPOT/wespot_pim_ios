@@ -100,17 +100,6 @@ typedef NS_ENUM(NSInteger, profile) {
             break;
     }
     
-//    @property (nonatomic, retain) NSNumber * accountLevel;
-//    @property (nonatomic, retain) NSNumber * accountType;
-//    @property (nonatomic, retain) NSString * email;           arlearn1@gmail.com
-//    @property (nonatomic, retain) NSString * familyName;      learn
-//    @property (nonatomic, retain) NSString * givenName;       johnny
-//    @property (nonatomic, retain) NSString * localId;
-//    @property (nonatomic, retain) NSString * name;            johnny learn
-//    @property (nonatomic, retain) NSData * picture;           url
-//    @property (nonatomic, retain) NSSet *actions;
-//    @property (nonatomic, retain) NSSet *responses;
-    
     return cell;
 }
 

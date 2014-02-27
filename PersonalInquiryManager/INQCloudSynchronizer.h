@@ -12,6 +12,8 @@
 #import "Account+Create.h"
 #import "Inquiry+Create.h"
 
+#import "TestAccount+Lazy.h"
+
 @interface INQCloudSynchronizer : NSObject
 
 @property (nonatomic, readwrite) BOOL syncUsers;

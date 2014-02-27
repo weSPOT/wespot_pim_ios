@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ARLOauthViewController.h"
+
+#import "Account.h"
+#import "ARLOauthWebViewController.h"
 
 @interface INQLoginViewController : UIViewController  <UITextFieldDelegate>
 

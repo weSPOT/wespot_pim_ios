@@ -248,6 +248,7 @@
         NSDictionary *accountDetails = [ARLNetwork accountDetails];
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
+        
         [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
         
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];

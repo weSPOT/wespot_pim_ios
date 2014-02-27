@@ -23,6 +23,7 @@
     account.givenName = [acDict objectForKey:@"givenName"];
     account.familyName = [acDict objectForKey:@"familyName"];
     account.accountLevel= [acDict objectForKey:@"accountLevel"];
+    
     NSURL  *url = [NSURL URLWithString:[acDict objectForKey:@"picture"]];
     NSData *urlData = [NSData dataWithContentsOfURL:url];
     if ( urlData ){
@@ -30,9 +31,6 @@
     }
     return account;
 }
-
-
-
 
 + (Account *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
     Account * account = nil;
@@ -47,7 +45,6 @@
         account = [accountsFromDb lastObject];
         return account;
     }
-    
 }
 
 + (Account *) retrieveFromDbWithLocalId: (NSString *) localId withManagedContext: (NSManagedObjectContext*) context{
@@ -62,7 +59,6 @@
         account = [accountsFromDb lastObject];
         return account;
     }
-    
 }
 
 + (void) deleteAll: (NSManagedObjectContext * ) context {
@@ -76,7 +72,6 @@
     for (id ac in accounts) {
         [context deleteObject:ac];
     }
-    
 }
 
 

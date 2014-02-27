@@ -1,17 +1,15 @@
 //
-//  Account.m
+//  TestAccount.m
 //  PersonalInquiryManager
 //
 //  Created by Wim van der Vegt on 2/27/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
-#import "Account.h"
-#import "Action.h"
-#import "Response.h"
+#import "TestAccount.h"
 
 
-@implementation Account
+@implementation TestAccount
 
 @dynamic accountLevel;
 @dynamic accountType;
@@ -21,7 +19,5 @@
 @dynamic localId;
 @dynamic name;
 @dynamic picture;
-@dynamic actions;
-@dynamic responses;
 
 @end

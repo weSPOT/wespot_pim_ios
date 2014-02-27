@@ -160,13 +160,32 @@
             NSNumber * oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];
             
             [Account accountWithDictionary: [[NSDictionary alloc] initWithObjectsAndKeys:
-                                             icon, @"icon",
+                                             icon, @"picture",
                                              oauthId, @"localId",
                                              oauthProviderType, @"accountType",
                                              name, @"name", nil] inManagedObjectContext:self.context];
+            
+            
+            
+            
+#warning TESTACCOUNT CODE for Lazy Load Images.
+            TestAccount *test =
+            [TestAccount accountWithDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
+                                                icon, @"picture",
+                                                oauthId, @"localId",
+                                                oauthProviderType, @"accountType",
+                                                name, @"name", nil] inManagedObjectContext:self.context];
+            
+            
+            
+            
+            UIImage *tmp = [test lazyPicture];
+            NSLog(@"%0.0f x %0.0f", tmp.size.width, tmp.size.height);
+            
+            
         }
-        
     }
+    
     self.syncUsers = NO;
 }
 

@@ -173,12 +173,16 @@ typedef NS_ENUM(NSInteger, sections) {
             if (cell.contentView.subviews.count==0)
             {
                 // Icon
-                NSData* icon = [self.inquiry icon];
-                UIImage *image;
-                if (icon) {
-                    image = [UIImage imageWithData:icon];
-                }
+                
+//                NSData* icon = [self.inquiry icon];
+                UIImage *image = [UIImage imageNamed:@"description"];
+//                if (icon) {
+//                    image = [UIImage imageWithData:icon];
+//                }
+//                UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
+                
                 UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
+                
                 imageView.backgroundColor = [UIColor orangeColor];
                 //[imageView setFrame:CGRectMake(5, 5, imageView.frame.size.width, imageView.frame.size.height)];
                 imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -253,10 +257,12 @@ typedef NS_ENUM(NSInteger, sections) {
                 case HYPOTHESIS:
                     cell.textLabel.text = @"Hypothesis";
                     cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
                 case PLAN:
                     cell.textLabel.text = @"Plan";
                     cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"plan"];
                     break;
                 case DATACOLLECTION: {
                     cell.textLabel.text = @"Collect Data";
@@ -269,19 +275,24 @@ typedef NS_ENUM(NSInteger, sections) {
                     [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
 
                     [cell.detailTextLabel setAttributedText:string];
+                    
+                    cell.imageView.image = [UIImage imageNamed:@"collect-data"];
                 }
                     break;
                 case ANALYSIS:
-                    cell.textLabel.text = @"Analysis";
+                    cell.textLabel.text = @"Analyze";
                     cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"analyze"];
                     break;
                 case DISCUSS:
                     cell.textLabel.text = @"Discuss";
                     cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"discuss"];
                     break;
                 case COMMUNICATE:
                     cell.textLabel.text = @"Communicate";
                     cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"communicate"];
                     break;
                 default:
                     break;

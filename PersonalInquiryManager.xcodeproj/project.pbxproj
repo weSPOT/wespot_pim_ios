@@ -98,7 +98,6 @@
 		347AD0CB17B3797C00B4B345 /* ARLNetwork+INQ.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AD0CA17B3797C00B4B345 /* ARLNetwork+INQ.m */; };
 		347AD0CE17B37BAF00B4B345 /* INQCloudSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AD0CD17B37BAF00B4B345 /* INQCloudSynchronizer.m */; };
 		34D422B617B670ED0051E84C /* Account+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228917B670EC0051E84C /* Account+Create.m */; };
-		34D422B717B670ED0051E84C /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228B17B670EC0051E84C /* Account.m */; };
 		34D422B817B670ED0051E84C /* Action+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228D17B670EC0051E84C /* Action+Create.m */; };
 		34D422B917B670ED0051E84C /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228F17B670EC0051E84C /* Action.m */; };
 		34D422BA17B670ED0051E84C /* ARLDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */; };
@@ -167,6 +166,8 @@
 		8D0972F118BF458C00FD8F40 /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 8D0972EC18BF458C00FD8F40 /* zbar-help.html */; };
 		8D0972F218BF458C00FD8F40 /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D0972ED18BF458C00FD8F40 /* zbar-helpicons.png */; };
 		8D0972F318BF458C00FD8F40 /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D0972EE18BF458C00FD8F40 /* zbar-samples.png */; };
+		8D0972FC18BF721A00FD8F40 /* TestAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0972FB18BF721A00FD8F40 /* TestAccount.m */; };
+		8D09730E18BF7F3800FD8F40 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D09730D18BF7F3800FD8F40 /* Account.m */; };
 		8D1ABDE618ACFA4100EA5850 /* INQPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */; };
 		8D3F8AFA18ABB96F00B233A6 /* INQAddFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AF918ABB96F00B233A6 /* INQAddFriendTableViewController.m */; };
 		8D3F8B0418ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */; };
@@ -182,6 +183,7 @@
 		8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87618A3B207009CD9BA /* INQMainCell.m */; };
 		8D4DF87A18A3BEFB009CD9BA /* INQSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
+		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DABC4AA189FCF2B00ED7CF7 /* INQDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */; };
 		8DAFB49218BCDBE70095DFE7 /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAFB49118BCDBE70095DFE7 /* INQProfileTableViewController.m */; };
 		8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0D57B18A103E8003E4623 /* INQMessagesViewController.m */; };
@@ -357,8 +359,6 @@
 		347AD0CD17B37BAF00B4B345 /* INQCloudSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQCloudSynchronizer.m; sourceTree = "<group>"; };
 		34D4228817B670EC0051E84C /* Account+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Account+Create.h"; sourceTree = "<group>"; };
 		34D4228917B670EC0051E84C /* Account+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Account+Create.m"; sourceTree = "<group>"; };
-		34D4228A17B670EC0051E84C /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		34D4228B17B670EC0051E84C /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		34D4228C17B670EC0051E84C /* Action+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Action+Create.h"; sourceTree = "<group>"; };
 		34D4228D17B670EC0051E84C /* Action+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Action+Create.m"; sourceTree = "<group>"; };
 		34D4228E17B670EC0051E84C /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
@@ -495,6 +495,10 @@
 		8D0972EC18BF458C00FD8F40 /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "zbar-help.html"; sourceTree = "<group>"; };
 		8D0972ED18BF458C00FD8F40 /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		8D0972EE18BF458C00FD8F40 /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
+		8D0972FA18BF721A00FD8F40 /* TestAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestAccount.h; path = ../iCarousel/TestAccount.h; sourceTree = "<group>"; };
+		8D0972FB18BF721A00FD8F40 /* TestAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestAccount.m; path = ../iCarousel/TestAccount.m; sourceTree = "<group>"; };
+		8D09730C18BF7F3800FD8F40 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		8D09730D18BF7F3800FD8F40 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		8D1ABDE418ACFA4100EA5850 /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
 		8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
 		8D3F8AF818ABB96F00B233A6 /* INQAddFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddFriendTableViewController.h; sourceTree = "<group>"; };
@@ -524,6 +528,8 @@
 		8D4DF87818A3BEFB009CD9BA /* INQSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQSplashViewController.h; sourceTree = "<group>"; };
 		8D4DF87918A3BEFB009CD9BA /* INQSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQSplashViewController.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
+		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
 		8DABC4A8189FCF2B00ED7CF7 /* INQDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQDetailsViewController.h; sourceTree = "<group>"; };
 		8DABC4A9189FCF2B00ED7CF7 /* INQDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQDetailsViewController.m; sourceTree = "<group>"; };
 		8DAFB49018BCDBE70095DFE7 /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQProfileTableViewController.h; sourceTree = "<group>"; };
@@ -669,7 +675,6 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
-				8D0972D118BF458B00FD8F40 /* ZBarSDK */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				347AD08417B286F200B4B345 /* ARLearnAuthentication */,
 				34539BBB17B2759A00352E9A /* ARLearnBeans */,
@@ -683,6 +688,7 @@
 				3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */,
 				3477E6861769C9A000F3A5F3 /* Products */,
 				8D3F8AFB18ACBD9100B233A6 /* TPKeyboardAvoiding */,
+				8D0972D118BF458B00FD8F40 /* ZBarSDK */,
 			);
 			sourceTree = "<group>";
 		};
@@ -826,15 +832,19 @@
 		34D4228717B670EC0051E84C /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */,
+				8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */,
+				8D0972FA18BF721A00FD8F40 /* TestAccount.h */,
+				8D0972FB18BF721A00FD8F40 /* TestAccount.m */,
 				34D4228817B670EC0051E84C /* Account+Create.h */,
 				34D4228917B670EC0051E84C /* Account+Create.m */,
-				34D4228A17B670EC0051E84C /* Account.h */,
-				34D4228B17B670EC0051E84C /* Account.m */,
 				34D4228C17B670EC0051E84C /* Action+Create.h */,
 				34D4228D17B670EC0051E84C /* Action+Create.m */,
 				34D4228E17B670EC0051E84C /* Action.h */,
 				34D4228F17B670EC0051E84C /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
+				8D09730C18BF7F3800FD8F40 /* Account.h */,
+				8D09730D18BF7F3800FD8F40 /* Account.m */,
 				34D4229217B670EC0051E84C /* CoreDataTableViewController.h */,
 				34D4229317B670EC0051E84C /* CoreDataTableViewController.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
@@ -857,10 +867,10 @@
 				34D422A517B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m */,
 				34D422A617B670EC0051E84C /* GeneralItemVisibility.h */,
 				34D422A717B670EC0051E84C /* GeneralItemVisibility.m */,
-				34D422A817B670EC0051E84C /* Inquiry.h */,
-				34D422A917B670EC0051E84C /* Inquiry.m */,
 				34D422CF17B671A60051E84C /* Inquiry+Create.h */,
 				34D422D017B671A60051E84C /* Inquiry+Create.m */,
+				34D422A817B670EC0051E84C /* Inquiry.h */,
+				34D422A917B670EC0051E84C /* Inquiry.m */,
 				34D422AA17B670EC0051E84C /* Response+Create.h */,
 				34D422AB17B670EC0051E84C /* Response+Create.m */,
 				34D422AC17B670EC0051E84C /* Response.h */,
@@ -1390,6 +1400,7 @@
 				34539BB217B274D800352E9A /* INQLoginScreenViewController.m in Sources */,
 				8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */,
 				34539BBF17B2759A00352E9A /* ARLBean.m in Sources */,
+				8D09730E18BF7F3800FD8F40 /* Account.m in Sources */,
 				347ACF2B17B27DD700B4B345 /* ARLNotificationPlayer.m in Sources */,
 				8D4DF87718A3B207009CD9BA /* INQMainCell.m in Sources */,
 				347ACF2C17B27DD700B4B345 /* ARLNotificationSubscriber.m in Sources */,
@@ -1438,6 +1449,7 @@
 				3454CD0D17B3A72E00C0DFFC /* ARLGeneralItemViewController.m in Sources */,
 				3454CD0E17B3A72E00C0DFFC /* ARLInfoViewController.m in Sources */,
 				3454CD0F17B3A72E00C0DFFC /* ARLMapTableViewController.m in Sources */,
+				8D0972FC18BF721A00FD8F40 /* TestAccount.m in Sources */,
 				3454CD1017B3A72E00C0DFFC /* ARLMapViewController.m in Sources */,
 				3454CD1117B3A72E00C0DFFC /* ARLMultipleChoiceAnswerView.m in Sources */,
 				8DB0D57C18A103E8003E4623 /* INQMessagesViewController.m in Sources */,
@@ -1456,7 +1468,6 @@
 				3454CD4717B3C80200C0DFFC /* INQGeneralItemTableViewController.m in Sources */,
 				3454CD4F17B3D0BA00C0DFFC /* INQOauthViewController.m in Sources */,
 				34D422B617B670ED0051E84C /* Account+Create.m in Sources */,
-				34D422B717B670ED0051E84C /* Account.m in Sources */,
 				34D422B817B670ED0051E84C /* Action+Create.m in Sources */,
 				34D422B917B670ED0051E84C /* Action.m in Sources */,
 				34D422BA17B670ED0051E84C /* ARLDatabase.xcdatamodeld in Sources */,
@@ -1475,6 +1486,7 @@
 				34D422C517B670ED0051E84C /* GeneralItemVisibility.m in Sources */,
 				34D422C617B670ED0051E84C /* Inquiry.m in Sources */,
 				34D422C717B670ED0051E84C /* Response+Create.m in Sources */,
+				8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */,
 				8D3F8B1218ACE16B00B233A6 /* INQAnalysisViewController.m in Sources */,
 				34D422C817B670ED0051E84C /* Response.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,

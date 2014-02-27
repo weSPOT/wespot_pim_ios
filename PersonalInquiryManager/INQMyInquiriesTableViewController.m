@@ -182,11 +182,12 @@ typedef NS_ENUM(NSInteger, inquiries) {
             Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
             
             cell.textLabel.text = generalItem.title;
-            NSData* icon = [generalItem icon];
-            if (icon) {
-                UIImage * image = [UIImage imageWithData:icon];
-                cell.imageView.image=image;
-            }
+//            NSData* icon = [generalItem icon];
+//            if (icon) {
+//                UIImage * image = [UIImage imageWithData:icon];
+//                cell.imageView.image=image;
+//            }
+            cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", arc4random() % 10];
         }

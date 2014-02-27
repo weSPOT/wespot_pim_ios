@@ -30,12 +30,18 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
-    [self dumpJsonData:jsonData url:url];
+    [self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
+/*!
+ *  Renamed to avoid linking warnings with ARLNetwork.h
+ *
+ *  @param jsonData <#jsonData description#>
+ *  @param url      <#url description#>
+ */
++(void) dumpJsonData2: (NSData *) jsonData url: (NSString *) url {
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     NSLog(@"\r\n\r\n[%s]\r\n%@\r\n%@\r\n\r\n", __func__, url, jsonString);

@@ -20,16 +20,21 @@
 {
     [super viewDidLoad];
 
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     if (!self.AllUsers) {
         [self getAllUsers];
     }
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+
     // Dispose of any resources that can be recreated.
 }
 

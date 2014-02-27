@@ -258,9 +258,18 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.textLabel.text = @"Plan";
                     cell.detailTextLabel.text = @"";
                     break;
-                case DATACOLLECTION:
+                case DATACOLLECTION: {
                     cell.textLabel.text = @"Collect Data";
-                    cell.detailTextLabel.text = @"5";
+                    
+#warning Test Code for Coloring Text.
+                    NSString *value = @"5";
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                    NSRange range=[value rangeOfString:value];
+               
+                    [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
+
+                    [cell.detailTextLabel setAttributedText:string];
+                }
                     break;
                 case ANALYSIS:
                     cell.textLabel.text = @"Analysis";
@@ -311,6 +320,8 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     UIViewController *newViewController;
     
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     switch ([index intValue]){
         case HYPOTHESIS: {
             // Create the new ViewController.
@@ -327,8 +338,8 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         case DATACOLLECTION: {
-            
             // Create the new ViewController.
+            NSLog(@"Start");
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectDataView"];
             
             // Pass the parameters to render.
@@ -350,7 +361,7 @@ typedef NS_ENUM(NSInteger, sections) {
             if (selectedRun.runId) {
                 [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
             }
-        
+            NSLog(@"End");
         }
             break;
             
@@ -374,6 +385,8 @@ typedef NS_ENUM(NSInteger, sections) {
         }
             break;
     }
+   
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     return newViewController;
 }
@@ -387,6 +400,8 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController * newViewController;
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     switch (indexPath.section) {
         case HEADER:
@@ -405,6 +420,8 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
         }
     }
+    
+     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];

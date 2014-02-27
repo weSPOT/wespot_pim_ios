@@ -18,13 +18,19 @@
 {
     [super viewDidLoad];
     
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.title = @"Collect Data";
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
 }
 
-- (void) viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+-(void)viewDidAppear:(BOOL)animated    {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 /*!

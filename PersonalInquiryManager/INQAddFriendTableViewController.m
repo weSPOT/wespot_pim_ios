@@ -24,6 +24,7 @@
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
+#warning Todo (or mark grey) Outselves and Friends.
     if (!self.AllUsers) {
         [self getAllUsers];
     }
@@ -77,18 +78,19 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-    
+
     // Configure the cell...
     
     cell.textLabel.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
     
-    NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
-    
-    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-    if (imageData) {
-        cell.imageView.image = [UIImage imageWithData:imageData];
+    @autoreleasepool {
+        NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
+        
+        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+        if (imageData) {
+            cell.imageView.image = [UIImage imageWithData:imageData];
+        }
     }
-    
     return cell;
 }
 

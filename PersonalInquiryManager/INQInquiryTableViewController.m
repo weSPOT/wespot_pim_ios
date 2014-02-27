@@ -357,6 +357,7 @@ typedef NS_ENUM(NSInteger, sections) {
             } else {
                 gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
             }
+            NSLog(@"GameId %@, RunId %@ InqueryId %@", gameId, selectedRun.runId, self.inquiry.inquiryId);
             
             if (selectedRun.runId) {
                 [newViewController performSelector:@selector(setRun:) withObject:selectedRun];

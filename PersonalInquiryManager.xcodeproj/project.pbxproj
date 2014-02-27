@@ -669,6 +669,7 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
+				8D0972D118BF458B00FD8F40 /* ZBarSDK */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				347AD08417B286F200B4B345 /* ARLearnAuthentication */,
 				34539BBB17B2759A00352E9A /* ARLearnBeans */,
@@ -1223,7 +1224,6 @@
 		8DA9643018BF3085006C736D /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8D0972D118BF458B00FD8F40 /* ZBarSDK */,
 				347ACF6C17B283FB00B4B345 /* libiconv.2.4.0.dylib */,
 			);
 			name = Libraries;
@@ -1608,8 +1608,7 @@
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/ZBarSDK\\\"",
-					/Users/veg/Developer/PersonalInquiryManager/ZBarSDK,
+					"$(SRCROOT)/ZBarSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1632,8 +1631,7 @@
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/ZBarSDK\\\"",
-					/Users/veg/Developer/PersonalInquiryManager/ZBarSDK,
+					"$(SRCROOT)/ZBarSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

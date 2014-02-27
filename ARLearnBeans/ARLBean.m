@@ -76,7 +76,7 @@
 
 @synthesize runs = _runs;
 
-- (NSMutableDictionary *) runs{
+- (NSMutableDictionary *) runs {
     if (!_runs) {
         _runs = [[NSMutableDictionary alloc] init];
     }
@@ -85,10 +85,12 @@
 
 - (id) initWithJsonDictionary:(NSDictionary *) jsonRepresentation {
     self = [super initWithJsonDictionary:jsonRepresentation];
-    NSDictionary * runsDict = [jsonRepresentation objectForKey:@"runs"];
+    NSDictionary *runsDict = [jsonRepresentation objectForKey:@"runs"];
     for (NSDictionary *run in runsDict) {
-        ARLRun * arlRun = [ARLBean createWithJsonDictionary:run];
-        [self.runs setObject:arlRun forKey:arlRun.runId];
+        ARLRun *arlRun = [ARLBean createWithJsonDictionary:run];
+        if (arlRun && arlRun.runId) {
+            [self.runs setObject:arlRun forKey:arlRun.runId];
+        }
     }
     return self;
 }

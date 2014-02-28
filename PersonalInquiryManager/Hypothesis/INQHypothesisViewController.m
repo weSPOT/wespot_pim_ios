@@ -10,6 +10,9 @@
 
 @interface INQHypothesisViewController ()
 
+@property (readonly, nonatomic) CGFloat statusbarHeight;
+@property (readonly, nonatomic) CGFloat navbarHeight;
+
 @end
 
 @implementation INQHypothesisViewController
@@ -18,12 +21,6 @@
     if (_hypothesis != hypothesis){
         _hypothesis = hypothesis;
     }
-    
-    // NSLog(@"[%s] Loading %@", __func__, self.hypothesis);
-    
-    UIWebView *web = (UIWebView*) self.view;
-    
-    [web loadHTMLString:self.hypothesis  baseURL:nil];
 }
 
 - (void)viewDidLoad
@@ -42,6 +39,26 @@
     //                                                      action:@selector(oneFingerSwipeRight:)];
     //    [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
     //    [self.view addGestureRecognizer:oneFingerSwipeRight];
+}
+
+-(void)viewWillAppear:(BOOL)animated   {
+
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    
+    // NSLog(@"[%s] Loading %@", __func__, self.hypothesis);
+
+    UIWebView *web = (UIWebView*) self.view;
+    web.scrollView.contentInset = UIEdgeInsetsMake(self.navbarHeight + self.statusbarHeight, 0.0, 0.0, 0.0);
+    
+    //web.clipsToBounds = NO;
+    web.delegate = self;
+    
+    [web loadHTMLString:self.hypothesis  baseURL:nil];
+    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:self.hypothesis delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//    [alert show];
 }
 
 /*!
@@ -96,6 +113,21 @@
 //        [stackViewControllers addObject:newViewController];
 //        [self.navigationController setViewControllers:stackViewControllers animated:NO];
 //    }
+//}
+
+-(CGFloat) navbarHeight {
+    return self.navigationController.navigationBar.bounds.size.height;
+}
+
+-(CGFloat) statusbarHeight
+{
+    // NOTE: Not always turned yet when we try to retrieve the height.
+    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
+}
+
+//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+//    // See http://stackoverflow.com/questions/4611940/uiwebview-loadhtmlstring-shows-blank-screen
+//    return YES;
 //}
 
 @end

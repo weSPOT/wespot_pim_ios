@@ -131,13 +131,13 @@
     return YES;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
-}
+//- (void)webViewDidStartLoad:(UIWebView *)webView {
+//    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
+//}
+//
+//- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
+//}
 
 -(void) close {
     self.selfRef = nil;

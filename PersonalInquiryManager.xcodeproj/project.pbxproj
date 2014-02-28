@@ -183,6 +183,7 @@
 		8D19461F18C0A5B000C32EED /* page2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19461918C0A5B000C32EED /* page2.png */; };
 		8D19462018C0A5B000C32EED /* page3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19461A18C0A5B000C32EED /* page3.png */; };
 		8D19462118C0A5B000C32EED /* page4.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19461B18C0A5B000C32EED /* page4.png */; };
+		8D19462418C0A6B800C32EED /* INQPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19462318C0A6B800C32EED /* INQPageViewController.m */; };
 		8D1ABDE618ACFA4100EA5850 /* INQPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */; };
 		8D3F8B0418ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFD18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.m */; };
 		8D3F8B0518ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8AFF18ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m */; };
@@ -525,6 +526,8 @@
 		8D19461918C0A5B000C32EED /* page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page2.png; path = Splash/page2.png; sourceTree = "<group>"; };
 		8D19461A18C0A5B000C32EED /* page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page3.png; path = Splash/page3.png; sourceTree = "<group>"; };
 		8D19461B18C0A5B000C32EED /* page4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page4.png; path = Splash/page4.png; sourceTree = "<group>"; };
+		8D19462218C0A6B800C32EED /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
+		8D19462318C0A6B800C32EED /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
 		8D1ABDE418ACFA4100EA5850 /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
 		8D1ABDE518ACFA4100EA5850 /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
 		8D3F8AFC18ACBD9100B233A6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
@@ -1073,6 +1076,8 @@
 		8D19453A18C0A0BB00C32EED /* _Obsolete */ = {
 			isa = PBXGroup;
 			children = (
+				8D19462218C0A6B800C32EED /* INQPageViewController.h */,
+				8D19462318C0A6B800C32EED /* INQPageViewController.m */,
 				8D1945D218C0A4FE00C32EED /* ARLViewController.h */,
 				8D1945D318C0A4FE00C32EED /* ARLViewController.m */,
 				8D1945D418C0A4FE00C32EED /* INQDetailsViewController.h */,
@@ -1424,6 +1429,7 @@
 				8D19461D18C0A5B000C32EED /* INQSplashViewController.m in Sources */,
 				8D3F8B0718ACBD9100B233A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				8D3F8B0618ACBD9100B233A6 /* TPKeyboardAvoidingTableView.m in Sources */,
+				8D19462418C0A6B800C32EED /* INQPageViewController.m in Sources */,
 				3454CCFD17B3A72E00C0DFFC /* ARLAnswerItemView.m in Sources */,
 				3454CCFF17B3A72E00C0DFFC /* ARLAudioObjectPlayButtons.m in Sources */,
 				3454CD0017B3A72E00C0DFFC /* ARLAudioObjectPlayer.m in Sources */,

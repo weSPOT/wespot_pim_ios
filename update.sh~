@@ -1,7 +1,0 @@
-cp -fr /Users/str/git/arlearn/iphone/ARLearnAuthentication .
-cp -fr /Users/str/git/arlearn/iphone/ARLearn .
-cp -fr /Users/str/git/arlearn/iphone/CoreData .
-cp -fr /Users/str/git/arlearn/iphone/ARLearnContextAwareNotification .
-cp -fr /Users/str/git/arlearn/iphone/ARLearnNetworkApi .
-cp -fr /Users/str/git/arlearn/iphone/images .
-

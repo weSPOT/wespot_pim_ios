@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Account+Create.h"
-#import "INQOauthViewController.h"
 #import "INQCloudSynchronizer.h"
+#import "ARLAccountDelegator.h"
 
 @interface INQMainViewController : UITableViewController
+
++ (void)sync_data;
 
 @end

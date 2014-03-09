@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ARLNotificationSubscriber.h"
+#import "INQMainViewController.h"
 
 @class ARLOauthListViewController;
 
 @interface ARLOauthWebViewController : UIViewController  <UIWebViewDelegate>
 
 @property (weak, nonatomic) NSString * domain;
-@property (strong, nonatomic) UIViewController * selfRef;
 @property (strong, nonatomic) UINavigationController *NavigationAfterClose;
 
 - (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate;

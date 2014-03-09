@@ -24,15 +24,6 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.selfRef = self;
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,6 +35,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+ 
     // Dispose of any resources that can be recreated.
 }
 
@@ -62,6 +54,10 @@
     NSString * urlAsString =request.URL.description;
   
     NSLog(@"[%s] %@",__func__, request.URL.absoluteString);
+    if (!urlAsString)
+    {
+        return YES;
+    }
     
     if (!([urlAsString rangeOfString:@"twitter?denied="].location == NSNotFound)) {
         [self close];
@@ -131,19 +127,16 @@
     return YES;
 }
 
-//- (void)webViewDidStartLoad:(UIWebView *)webView {
-//    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
-//}
-//
-//- (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    NSLog(@"[%s] %@",__func__, webView.request.URL.absoluteString);
-//}
-
 -(void) close {
-    self.selfRef = nil;
-
     if (self.NavigationAfterClose) {
-          [self.navigationController presentViewController:self.NavigationAfterClose animated:YES  completion:nil];
+        
+//        if ([self.NavigationAfterClose respondsToSelector:@selector(sync_data)]) {
+//            [self.NavigationAfterClose performSelector:@selector(sync_data)];
+//        }
+        
+        [INQMainViewController sync_data];
+        
+        [self.navigationController presentViewController:self.NavigationAfterClose animated:YES  completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
         // ß[self.navigationController popToRootViewControllerAnimated:YES];

@@ -10,7 +10,6 @@
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"
-#import "INQIconTextTableViewItemCell.h"
 #import "Inquiry+Create.h"
 #import "ARLCloudSynchronizer.h"
 

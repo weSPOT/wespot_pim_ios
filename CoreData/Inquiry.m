@@ -1,9 +1,9 @@
 //
 //  Inquiry.m
-//  ARLearn
+//  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 9/5/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 3/9/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import "Inquiry.h"
@@ -13,12 +13,12 @@
 @implementation Inquiry
 
 @dynamic desc;
+@dynamic hypothesis;
 @dynamic icon;
 @dynamic inquiryId;
+@dynamic reflection;
 @dynamic title;
 @dynamic url;
-@dynamic hypothesis;
-@dynamic reflection;
 @dynamic run;
 
 @end

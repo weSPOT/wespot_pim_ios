@@ -1,9 +1,9 @@
 //
 //  Run.h
-//  ARLearn
+//  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 8/8/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 3/9/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -21,9 +21,9 @@
 @property (nonatomic, retain) NSSet *actions;
 @property (nonatomic, retain) NSSet *currentVisibility;
 @property (nonatomic, retain) Game *game;
+@property (nonatomic, retain) Inquiry *inquiry;
 @property (nonatomic, retain) NSSet *itemVisibilityRules;
 @property (nonatomic, retain) NSSet *responses;
-@property (nonatomic, retain) Inquiry *inquiry;
 @end
 
 @interface Run (CoreDataGeneratedAccessors)

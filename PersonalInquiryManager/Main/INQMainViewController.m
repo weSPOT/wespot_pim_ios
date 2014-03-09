@@ -121,9 +121,10 @@ typedef NS_ENUM(NSInteger, tools) {
     }
 }
 
--(void)syncButtonButtonTap:(id)sender {
++ (void) sync_data {
+    NSLog(@"[%s] %s",__func__, "Syncing Data");
+    
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-
     
     [ARLCloudSynchronizer syncActions:appDelegate.managedObjectContext];
     [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
@@ -131,6 +132,10 @@ typedef NS_ENUM(NSInteger, tools) {
     
     [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
     [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
+}
+
+-(void)syncButtonButtonTap:(id)sender {
+    [INQMainViewController sync_data];
 }
 
 - (void)didReceiveMemoryWarning

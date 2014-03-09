@@ -1,9 +1,9 @@
 //
 //  Run.m
-//  ARLearn
+//  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 8/8/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 3/9/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import "Run.h"
@@ -25,8 +25,8 @@
 @dynamic actions;
 @dynamic currentVisibility;
 @dynamic game;
+@dynamic inquiry;
 @dynamic itemVisibilityRules;
 @dynamic responses;
-@dynamic inquiry;
 
 @end

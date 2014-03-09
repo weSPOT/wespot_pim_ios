@@ -1,9 +1,9 @@
 //
 //  Game.h
-//  ARLearn
+//  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 8/13/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 3/9/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -17,8 +17,8 @@
 @property (nonatomic, retain) NSNumber * gameId;
 @property (nonatomic, retain) NSNumber * hasMap;
 @property (nonatomic, retain) NSString * owner;
-@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * richTextDescription;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSSet *correspondingRuns;
 @property (nonatomic, retain) NSSet *hasItems;
 @end

@@ -183,7 +183,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 
                 UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
                 
-                imageView.backgroundColor = [UIColor orangeColor];
+                imageView.backgroundColor = [UIColor clearColor];
                 //[imageView setFrame:CGRectMake(5, 5, imageView.frame.size.width, imageView.frame.size.height)];
                 imageView.translatesAutoresizingMaskIntoConstraints = NO;
           
@@ -191,7 +191,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 
                 // Tile
                 UITextView *textView = [[UITextView alloc] init];
-                textView.backgroundColor = [UIColor orangeColor];
+                textView.backgroundColor = [UIColor clearColor];
                 textView.editable = NO;
                 textView.text = self.inquiry.title;
                 //textView.frame = CGRectMake(110, 5, self.navbarWidth-115, 100);
@@ -201,7 +201,7 @@ typedef NS_ENUM(NSInteger, sections) {
 
                 // Description
                 UIWebView *webView = [[UIWebView alloc] init];
-                 webView.backgroundColor = [UIColor orangeColor];
+                 webView.backgroundColor = [UIColor clearColor];
                 [webView loadHTMLString:self.inquiry.desc baseURL:nil];
                 
                 webView.translatesAutoresizingMaskIntoConstraints = NO;

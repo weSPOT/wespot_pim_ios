@@ -7,36 +7,9 @@
 //
 
 #import "INQLoginViewController.h"
+//#import "INQMainViewController.h"
 
 @interface INQLoginViewController ()
-
-/*!
- *  ID's and order of the cells.
- 
- *  Must match ARLNetwork oauthInfo!
- */
-typedef NS_ENUM(NSInteger, services) {
-    /*!
-     *  Facebook.
-     */
-    FACEBOOK = 1,
-    /*!
-     *  Google.
-     */
-    GOOGLE,
-    /*!
-     *  Linked-in
-     */
-    LINKEDIN,
-    /*!
-     *  Twitter.
-     */
-    TWITTER,
-    /*!
-     *  Number of oAuth Services.
-     */
-    numServices
-};
 
 @property (weak, nonatomic) IBOutlet UILabel *wespotLabel;
 @property (weak, nonatomic) IBOutlet UITextField *usernameEdit;
@@ -140,14 +113,23 @@ typedef NS_ENUM(NSInteger, services) {
     NSLog(@"[%s] IsLoggedIn: %@", __func__, self.isLoggedIn);
     
     if ([self.isLoggedIn isEqualToNumber: [NSNumber numberWithBool:YES]]) {
-        [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"] animated:YES  completion:nil];
+        UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
+        
+        if ([mvc respondsToSelector:@selector(sync_data)]) {
+            [mvc performSelector:@selector(sync_data)];
+        }
+
+        [self.navigationController presentViewController:mvc animated:YES completion:nil];
     }else {
         [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:YES  completion:nil];
     }
 }
 
 - (void)performLogin:(NSInteger)serviceId {
+    [self initOauthUrls];
+    
     ARLOauthWebViewController* svc = [self.storyboard instantiateViewControllerWithIdentifier:@"oauthWebView"];
+   
     svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
     
     [self.navigationController pushViewController:svc animated:YES];

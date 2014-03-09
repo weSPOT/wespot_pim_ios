@@ -13,4 +13,36 @@
 
 @interface INQLoginViewController : UIViewController  <UITextFieldDelegate>
 
+/*!
+ *  ID's and order of the cells.
+ 
+ *  Must match ARLNetwork oauthInfo!
+ */
+typedef NS_ENUM(NSInteger, services) {
+    /*!
+     *  Facebook.
+     */
+    FACEBOOK = 1,
+    /*!
+     *  Google.
+     */
+    GOOGLE,
+    /*!
+     *  Linked-in
+     */
+    LINKEDIN,
+    /*!
+     *  Twitter.
+     */
+    TWITTER,
+    /*!
+     *  WeSpot.
+     */
+    WESPOT,
+    /*!
+     *  Number of oAuth Services.
+     */
+    numServices
+};
+
 @end

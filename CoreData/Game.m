@@ -1,9 +1,9 @@
 //
 //  Game.m
-//  ARLearn
+//  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 8/13/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 3/9/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import "Game.h"
@@ -17,8 +17,8 @@
 @dynamic gameId;
 @dynamic hasMap;
 @dynamic owner;
-@dynamic title;
 @dynamic richTextDescription;
+@dynamic title;
 @dynamic correspondingRuns;
 @dynamic hasItems;
 

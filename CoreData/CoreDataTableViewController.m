@@ -65,16 +65,39 @@
 
 #pragma mark - UITableViewDataSource
 
+/*!
+ *  Returns the number of Sections in the Table Data.
+ *
+ *  @param tableView The UITableView.
+ *
+ *  @return The number of sections.
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[self.fetchedResultsController sections] count];
 }
 
+/*!
+ *  Returns the number of Rows in a Section of the Table Data.
+ *
+ *  @param tableView The UITableView.
+ *  @param section   The Section.
+ *
+ *  @return The number of Rows in the requested Section.
+ */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
+/*!
+ *  Get the Section Title of the Table Header.
+ *
+ *  @param tableView The UITableView.
+ *  @param section   The Section.
+ *
+ *  @return The Section Title.
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
@@ -91,10 +114,10 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
+
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView beginUpdates];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
@@ -111,7 +134,6 @@
             break;
     }
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
@@ -145,13 +167,17 @@
     }
 }
 
-
+/*!
+ *
+ *
+ *  @param controller <#controller description#>
+ */
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
+#warning The next line gives an exception on an actual device (when doing first sync after a freash run).
+    //[self.tableView endUpdates];
 }
 
 -(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-
 //    NSLog(@"cell changed %@", cell);
 }
 

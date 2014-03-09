@@ -59,14 +59,14 @@
     
     //self.headerText.title = self.generalItem.name;
     self.webView = [[UIWebView alloc] init];
-    self.webView.backgroundColor = [UIColor orangeColor];
+    self.webView.backgroundColor = [UIColor clearColor];
     
     self.dataCollectionWidget = [[ARLDataCollectionWidget alloc] init:[jsonDict objectForKey:@"openQuestion"] viewController:self];
     if (self.dataCollectionWidget.isVisible) {
         self.dataCollectionWidget.run = self.run;
         self.dataCollectionWidget.generalItem = self.generalItem;
     }
-    self.dataCollectionWidget.backgroundColor = [UIColor orangeColor];
+    self.dataCollectionWidget.backgroundColor = [UIColor clearColor];
     
     [self.view addSubview:self.webView];
     [self.view addSubview:self.dataCollectionWidget];

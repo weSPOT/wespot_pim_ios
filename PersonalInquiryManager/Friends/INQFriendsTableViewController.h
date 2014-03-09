@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Account.h"
-#import "INQIconTextTableViewItemCell.h"
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 #import "INQCloudSynchronizer.h"

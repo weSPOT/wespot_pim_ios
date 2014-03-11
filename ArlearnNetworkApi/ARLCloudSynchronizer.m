@@ -50,11 +50,13 @@
     [synchronizer sync];
 }
 
+/*!
+ *  Call asyncExecution on a background thread.
+ */
 - (void) sync {
     [self.context performBlock:^{
         [self asyncExecution];
     }];
-    
 }
 
 - (void)saveContext

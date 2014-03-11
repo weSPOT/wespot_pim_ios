@@ -30,8 +30,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
-//@property (weak, nonatomic) IBOutlet UIView *inqueriesView;
-
 @end
 
 @implementation INQMyInquiriesTableViewController
@@ -39,15 +37,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
 -(NSString*) cellIdentifier {
     return  @"inquiriesCell";
 }
-
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

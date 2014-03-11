@@ -10,6 +10,24 @@
 
 @interface INQGeneralItemTableViewController ()
 
+/*!
+ *  ID's and order of the cells.
+ */
+typedef NS_ENUM(NSInteger, groups) {
+    /*!
+     *  Collected Data.
+     */
+    DATA = 0,
+
+    /*!
+     *  Number of Groups
+     */
+    numGroups
+};
+
+@property (readonly, nonatomic) CGFloat statusbarHeight;
+@property (readonly, nonatomic) CGFloat navbarHeight;
+
 @end
 
 @implementation INQGeneralItemTableViewController
@@ -20,17 +38,51 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.title = @"Collect Data";
+//    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
+//    
+//    self.tableView.opaque = NO;
+//    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+//    self.navigationController.view.backgroundColor = [UIColor clearColor];
+//    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+//    
+//    //self.navigationController.view.backgroundColor = [UIColor clearColor];
+//    self.navigationController.title = @"Collect Data";
+//    self.navigationController.navigationBar.translucent= NO;
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
 }
 
 -(void)viewDidAppear:(BOOL)animated    {
+    [super viewDidAppear:animated];
+
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
+    
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+    
+    //self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.title = @"Collect Data";
+    self.navigationController.navigationBar.translucent= NO;
+
+    [self.navigationController setToolbarHidden:NO];
+}
+
+/*!
+ *  The number of sections in a Table.
+ *
+ *  @param tableView The Table to be served.
+ *
+ *  @return The number of sections.
+ */
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return numGroups;
 }
 
 /*!
@@ -49,17 +101,6 @@
 }
 
 /*!
- *  The number of sections in a Table.
- *
- *  @param tableView The Table to be served.
- *
- *  @return The number of sections.
- */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
-
-/*!
  *  Return the Table Data one Cell at a Time.
  *
  *  @param tableView The Table to be served.
@@ -74,56 +115,90 @@
 
     // Dequeue a TableCell and intialize if nececsary.
     // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
-    ARLGeneralItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:generalItem.type];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:generalItem.type];
     if (cell == nil) {
-        cell = [[ARLGeneralItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
     }
-    // cell.backgroundColor= [UIColor clearColor];
     
     // Set Font to Bold if unread.
-    cell.giTitleLabel.text = generalItem.name;
-    cell.giTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    
-    [self setDCIcon:cell withGi:generalItem];
+    cell.textLabel.text = generalItem.name;
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
 
     // If Read set Font to normal.
     for (Action * action in generalItem.actions) {
         if (action.run == self.run) {
             if ([action.action isEqualToString:@"read"]) {
-                cell.giTitleLabel.font = [UIFont systemFontOfSize:16.0f];
+                cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
             }
         }
     }
+    
+    NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+    
+    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
+        cell.imageView.image = [UIImage imageNamed:@"dc_voice_search_128.png"];
+    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
+        cell.imageView.image = [UIImage imageNamed:@"dc_camera_128.png"];
+    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
+        cell.imageView.image = [UIImage imageNamed:@"dc_note_128.png"];
+    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
+        cell.imageView.image = [UIImage imageNamed:@"dc_calculator_128.png"];
+    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
+        cell.imageView.image = [UIImage imageNamed:@"dc_video_128.png"];
+    }
+    
+    jsonDict = nil;
     
     return cell;
 }
 
 /*!
- *  Set the Correct Icon for the Action retrieved.
+ *  For each row in the table jump to the associated view.
  *
- *  @param cell      The TableCell to customize.
- *  @param generalItem The GeneralItem cell content.
+ *  @param tableView The UITableView
+ *  @param indexPath The NSIndexPath containing grouping/section and record index.
  */
-- (void) setDCIcon: (ARLGeneralItemTableViewCell *) cell withGi: (GeneralItem *) generalItem {
-        NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Mark TableItem as Read.
+    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
     
-    NSLog(@"[%s] log %@", __func__, [jsonDict objectForKey:@"openQuestion"]);
+    // Jump to Destination (skip prepareforSeque in base class).
+    UIViewController *newViewController;
     
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-            cell.icon.image = [UIImage imageNamed:@"dc_voice_search_128.png"];
+    // Create the new ViewController.
+    switch (indexPath.section) {
+        case DATA: {
+            GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
+            
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectedDataView"];
+            
+            if ([newViewController respondsToSelector:@selector(setGeneralItem:)]) {
+                [newViewController performSelector:@selector(setGeneralItem:) withObject:generalItem];
+            }
+            if ([newViewController respondsToSelector:@selector(setRun:)]) {
+                [newViewController performSelector:@selector(setRun:) withObject:self.run];
+            }
+            [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
+            [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
+            
+        }
+            break;
     }
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-        cell.icon.image = [UIImage imageNamed:@"dc_camera_128.png"];
+
+    if (newViewController) {
+        [self.navigationController pushViewController:newViewController animated:YES];
     }
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-        cell.icon.image = [UIImage imageNamed:@"dc_note_128.png"];
-    }
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-        cell.icon.image = [UIImage imageNamed:@"dc_calculator_128.png"];
-    }
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-        cell.icon.image = [UIImage imageNamed:@"dc_video_128.png"];
-    }
+}
+
+-(CGFloat) navbarHeight {
+    return self.navigationController.navigationBar.bounds.size.height;
+}
+
+-(CGFloat) statusbarHeight
+{
+    // NOTE: Not always turned yet when we try to retrieve the height.
+    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
 
 @end

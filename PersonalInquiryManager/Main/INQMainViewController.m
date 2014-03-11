@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     [super viewDidLoad];
 
-    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
+    // self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
   
     //See http://stackoverflow.com/questions/5825397/uitableview-background-image
     //self.tableView.backgroundColor = [UIColor clearColor];
@@ -220,16 +220,6 @@ typedef NS_ENUM(NSInteger, tools) {
     
     return cell;
 }
-
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    NSString *sectionName;
-//    switch (section)
-//    {
-//            
-//    }
-//    
-//}
 
 #pragma mark - Table view delegate
 

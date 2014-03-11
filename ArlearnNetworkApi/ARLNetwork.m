@@ -11,6 +11,8 @@
 
 @implementation ARLNetwork
 
+#pragma mark - Network Requests
+
 + (NSMutableURLRequest *) prepareRequest: (NSString *) method requestWithUrl: (NSString *) url {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -106,14 +108,16 @@
     return [NSData dataWithBytes:utf8String length:strlen(utf8String)];
 }
 
-//Authentication
+#pragma mark - Authentication
+
 + (NSString*) requestAuthToken: (NSString *) username password: (NSString *) password {
     NSData * postData = [self stringToData:[NSString stringWithFormat:@"%@\n%@", username, password]];
     return [[self executeARLearnPostWithAuthorization:@"login" postData:postData withContentType:textplain] objectForKey:@"auth"];
     
 }
 
-//Runs
+#pragma mark - Runs
+
 + (NSDictionary*) runsParticipate {
     return [self executeARLearnGetWithAuthorization:@"myRuns/participate"];
 }
@@ -134,7 +138,8 @@
     return [self executeARLearnPostWithAuthorization:@"myRuns" postData:postData withContentType:applicationjson];
 }
 
-//Users
+#pragma mark - Users
+
 + (NSDictionary*) createUser: (NSNumber*) runId
                  accountType: (NSNumber *) accountType
                  withLocalId:(NSString*) localId {
@@ -146,7 +151,9 @@
     NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:nil];
     return [self executeARLearnPostWithAuthorization:@"users" postData:postData withContentType:applicationjson];
 }
-//Games
+
+#pragma mark - Games
+
 + (NSDictionary*) gamesParticipate {
     return [self executeARLearnGetWithAuthorization:@"myGames/participate"];
 }
@@ -157,7 +164,9 @@
 + (NSDictionary*) game: (NSNumber *) gameId {
    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/gameId/%lld", [gameId longLongValue]]];
 }
-//GeneralItems
+
+#pragma mark - GeneralItems
+
 + (NSDictionary*) itemsForRun: (int64_t) runId{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItems/runId/%lld", runId ]];
 }
@@ -174,7 +183,7 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
 }
 
-//APN
+#pragma mark - APN
 
 + (void) registerDevice: (NSString *) deviceToken withUID: (NSString *) deviceUniqueIdentifier withAccount: (NSString *) account withBundleId: (NSString*) bundleIdentifier{
     if (!account) return;
@@ -190,7 +199,7 @@
     
 }
 
-//Actions
+#pragma mark - Actions
 
 + (void) publishAction: (NSDictionary *) actionDict {
     NSData *postData = [NSJSONSerialization dataWithJSONObject:actionDict options:0 error:nil];
@@ -216,7 +225,7 @@
     [self publishAction:actionDict];
 }
 
-//Response
+#pragma mark - Response
 
 + (void) publishResponse: (NSDictionary *) responseDict {
     NSData *postData = [NSJSONSerialization dataWithJSONObject:responseDict options:0 error:nil];
@@ -241,7 +250,7 @@
     
 }
 
-//File upload
+#pragma mark - File upload
 
 + (NSString*) requestUploadUrl: (NSString*) fileName withRun:(NSNumber *) runId {
     NSString * str =[NSString stringWithFormat:@"runId=%@&account=%@:%@&fileName=%@", runId,
@@ -291,7 +300,7 @@
 
 }
 
-// Account
+#pragma mark - Account
 
 + (NSDictionary*) anonymousLogin: (NSString *) account {
     return [self executeARLearnGet:[NSString stringWithFormat:@"account/anonymousLogin/%@", account]];
@@ -301,7 +310,7 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"account/accountDetails"]];
 }
 
-// oauth info
+#pragma mark - oauth info
 
 + (NSDictionary *) oauthInfo {
     return [self executeARLearnGet:@"oauth/getOauthInfo"];

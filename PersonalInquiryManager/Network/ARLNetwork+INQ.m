@@ -109,6 +109,7 @@
  */
 + (id) getNotes:  (NSNumber *) inquiryId {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.notes", apiKey, inquiryId];
+    
     return [self returnJson:url];
 }
 
@@ -133,6 +134,9 @@
             break;
         case TWITTER:
             providerString = @"Twitter";
+            break;
+        case WESPOT:
+            providerString = @"Wespot";
             break;
         default:
             break;
@@ -159,6 +163,9 @@
     }
     if ([oauthProvider isEqualToString:@"Twitter"]) {
         return [NSNumber numberWithInt:TWITTER];
+    }
+    if ([oauthProvider isEqualToString:@"Wespot"]) {
+        return [NSNumber numberWithInt:WESPOT];
     }
     
     return nil;

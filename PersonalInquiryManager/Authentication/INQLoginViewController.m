@@ -40,6 +40,11 @@
 @property (strong, nonatomic) NSString * linkedInLoginString;
 @property (strong, nonatomic) NSString * twitterLoginString;
 
+@property (retain, nonatomic) NSURLConnection *connection;
+@property (retain, nonatomic) NSMutableData *receivedData;
+@property (retain, nonatomic) NSMutableURLRequest *originalRequest;
+@property (retain, nonatomic) NSString *token;
+
 @end
 
 @implementation INQLoginViewController
@@ -72,13 +77,6 @@
     [self adjustLoginButton];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    
-//    [self adjustLoginButton];
-//}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -86,43 +84,219 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*!
+ *  Login using Facebook.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)facebookButtonAction:(UIBarButtonItem *)sender {
     [self performLogin:FACEBOOK];
 }
 
+/*!
+ *  Login using Google.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)googleButtonAction:(UIBarButtonItem *)sender {
     [self performLogin:GOOGLE];
 }
 
+/*!
+ *  Login using Linked-in.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)linkedinButtonAction:(UIBarButtonItem *)sender {
     [self performLogin:LINKEDIN];
 }
 
+/*!
+ *  Login using Twitter.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)twitterButtonAction:(UIBarButtonItem *)sender {
     [self performLogin:TWITTER];
 }
 
+/*!
+ *  Login using WeSpot.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)loginButtonAction:(UIButton *)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    // See http://kemal.co/index.php/2012/02/fetching-data-with-getpost-methods-by-using-nsurlconnection/
+    
+    //if there is a connection going on just cancel it.
+    [self.connection cancel];
+    self.token = @"";
+    
+    //initialize new mutable data
+    NSMutableData *data = [[NSMutableData alloc] init];
+    self.receivedData = data;
+    
+    //initialize url that is going to be fetched.
+    NSURL *url = [NSURL URLWithString:@"http://wespot-arlearn.appspot.com/oauth/account/authenticateFw"];
+    
+    //initialize a request from url
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    self.originalRequest = request;
+    
+    //set http method
+    [request setHTTPMethod:@"POST"];
+     
+    //initialize a post data
+    NSString *postData = [[NSString alloc] initWithString:[[NSString alloc] initWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit", self.usernameEdit.text, self.passwordEdit.text]];
+
+    //set request content type we MUST set this value.
+    [request setValue:@"text/html; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //set post data of request
+    [request setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    //initialize a connection from request
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    self.connection = connection;
+    
+    //start the connection
+    [connection start];
+}
+
+/*!
+ *  Handles Redirects of the Wespot Login and looks for the accessToken in the query string.
+ *
+ *  @param connection       <#connection description#>
+ *  @param request          <#request description#>
+ *  @param redirectResponse <#redirectResponse description#>
+ *
+ *  @return <#return value description#>
+ */
+-(NSURLRequest *)connection:(NSURLConnection *)connection
+            willSendRequest:(NSURLRequest *)request
+           redirectResponse:(NSURLResponse *)redirectResponse
+{
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) redirectResponse;
+    
+    int statusCode = [httpResponse statusCode];
+    
+    NSLog (@"HTTP status %d", statusCode);
+    
+    // http statuscodes between 300 & 400 is a redirect ...
+    if (httpResponse && statusCode >= 300 && statusCode < 400)
+    {
+        NSLog(@"willSendRequest (from %@ to %@)", redirectResponse.URL, request.URL);
+    }
+    
+    NSLog(@"HTTP request %@", self.connection.originalRequest.URL);
+    
+    if (redirectResponse)
+    {
+        NSMutableURLRequest *newRequest = [self.originalRequest mutableCopy]; // original request
+        [newRequest setURL: [request URL]];
+        
+        NSLog (@"query to %@", newRequest.URL.query);
+        NSLog (@"redirected to %@", newRequest.URL);
+        
+        
+        NSString *query = [request URL].query;
+        NSArray *array = [query componentsSeparatedByString:@"&"];
+        for (NSString *item in array) {
+            if ([item rangeOfString:@"accessToken="].location != NSNotFound) {
+               self.token = [item substringFromIndex:[@"accessToken=" length]];
+            }
+        }
+
+        return newRequest;
+    }
+    else
+    {
+        NSLog (@"original %@" , request.URL);
+        
+        return request;
+    }
+}
+
+/*!
+ *  This method might be calling more than one times according to incoming data size.
+ *
+ *  @param connection <#connection description#>
+ *  @param data       <#data description#>
+ */
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
+    [self.receivedData appendData:data];
+}
+
+/*!
+ *  If there is an error occured, this method will be called by connection.
+ *
+ *  @param connection <#connection description#>
+ *  @param error      <#error description#>
+ */
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
+    self.token = @"";
+    
+    // NSLog(@"%@" , error);
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.description delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
 
-- (IBAction)backButtonAction:(UIBarButtonItem *)sender {
+/*!
+ *  If data is successfully received, this method will be called by connection.
+ *
+ *  @param connection <#connection description#>
+ */
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    
+    // initialize convert the received data to string with UTF8 encoding
+    //    NSString *htmlSTR = [[NSString alloc] initWithData:self.receivedData
+    //                                              encoding:NSUTF8StringEncoding];
+
+    // NSLog(@"%@" , htmlSTR);
+    
+    if ([self.token length]!=0) {
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Got an accessToken" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+        //Copied from ARLOauthWebViewController.m
+        [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:@"auth"];
+        
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSDictionary *accountDetails = [ARLNetwork accountDetails];
+        
+        [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
+        [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
+        [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
+        
+        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+        
+        [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        
+        [self navigateBack];
+    }
+}
+
+- (void)navigateBack {
     [self fetchCurrentAccount];
     
     NSLog(@"[%s] IsLoggedIn: %@", __func__, self.isLoggedIn);
-    
+
     if ([self.isLoggedIn isEqualToNumber: [NSNumber numberWithBool:YES]]) {
         UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
         
         if ([mvc respondsToSelector:@selector(sync_data)]) {
             [mvc performSelector:@selector(sync_data)];
         }
-
+        
         [self.navigationController presentViewController:mvc animated:YES completion:nil];
     }else {
         [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:YES  completion:nil];
     }
+}
+
+- (IBAction)backButtonAction:(UIBarButtonItem *)sender {
+    [self navigateBack];
 }
 
 - (void)performLogin:(NSInteger)serviceId {

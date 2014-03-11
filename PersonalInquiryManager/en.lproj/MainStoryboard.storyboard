@@ -418,7 +418,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Collect data" id="ZrF-qp-4XE"/>
+                    <navigationItem key="navigationItem" title="Data" id="ZrF-qp-4XE"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -127,7 +127,7 @@
  */
 - (IBAction)loginButtonAction:(UIButton *)sender {
     // See http://kemal.co/index.php/2012/02/fetching-data-with-getpost-methods-by-using-nsurlconnection/
-    
+   
     //if there is a connection going on just cancel it.
     [self.connection cancel];
     self.token = @"";
@@ -285,11 +285,21 @@
     if ([self.isLoggedIn isEqualToNumber: [NSNumber numberWithBool:YES]]) {
         UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
         
-        if ([mvc respondsToSelector:@selector(sync_data)]) {
-            [mvc performSelector:@selector(sync_data)];
+        if (self.isLoggedIn) {
+            UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+          
+            if ([appDelegate respondsToSelector:@selector(clearDatabase)]) {
+                [appDelegate performSelector:@selector(clearDatabase)];
+                if ([appDelegate respondsToSelector:@selector(syncData)]) {
+                    [appDelegate performSelector:@selector(syncData)];
+                }
+            }
         }
+ 
         
         [self.navigationController presentViewController:mvc animated:YES completion:nil];
+        
+        
     }else {
         [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:YES  completion:nil];
     }

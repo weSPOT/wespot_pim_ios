@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INQBadgesViewController : UIViewController  <UIWebViewDelegate>
+@interface INQBadgesViewController : UITableViewController // <UIWebViewDelegate>
 
 @end

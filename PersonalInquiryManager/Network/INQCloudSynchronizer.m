@@ -101,8 +101,6 @@
  *  Runs on a separate thread in the background.
  */
 - (void) syncronizeInquiries{
-    NSLog(@"[%s]", __func__);
-
     id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
     id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     

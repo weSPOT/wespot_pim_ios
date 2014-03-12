@@ -25,6 +25,8 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     UIViewController *initialViewController = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];

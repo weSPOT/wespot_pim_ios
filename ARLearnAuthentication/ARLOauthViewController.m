@@ -75,6 +75,8 @@
 - (void) viewWillAppear:(BOOL)animated {
     NSLog(@"[%s]", __func__);
     
+    [super viewWillAppear:animated];
+    
     [self doUpdateLayout];
 }
 
@@ -85,6 +87,8 @@
  */
 - (void) viewDidAppear:(BOOL)animated {
     NSLog(@"[%s]", __func__);
+    
+    [super viewDidAppear:animated];
     
     [self doUpdateLayout];
 }

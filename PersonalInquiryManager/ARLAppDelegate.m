@@ -106,6 +106,38 @@
     return _persistentStoreCoordinator;
 }
 
+/*!
+ *  Wipe out the core data database and underlying sqlite storage.
+ */
+- (void)clearDatabase {
+    NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
+    NSError *error = nil;
+    
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
+    
+    [self.persistentStoreCoordinator removePersistentStore:store error:&error];
+    
+    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+    
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
+        abort();
+    }
+}
+
+
+- (void)syncData {
+    NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
+    
+    // syncActions is also triggered by syncResponses!
+    // [ARLCloudSynchronizer syncActions:self.managedObjectContext];
+    [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
+    [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
+    
+    [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
+    [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+}
+
 - (void)_mocDidSaveNotification:(NSNotification *)notification
 {
     NSManagedObjectContext *savedContext = [notification object];

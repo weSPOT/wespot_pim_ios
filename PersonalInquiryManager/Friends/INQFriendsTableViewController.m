@@ -56,6 +56,8 @@ typedef NS_ENUM(NSInteger, friends) {
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];

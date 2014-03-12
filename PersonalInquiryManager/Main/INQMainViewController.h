@@ -13,6 +13,6 @@
 
 @interface INQMainViewController : UITableViewController
 
-+ (void)sync_data;
+//- (void)sync_data;
 
 @end

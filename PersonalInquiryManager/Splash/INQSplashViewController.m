@@ -68,13 +68,17 @@
     
     [self.navigationController setToolbarHidden:NO];
     
-    if (!self.loginButton) {
-        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
-        
-        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
+    if (!ARLNetwork.connectedToNetwork) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Not online" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
+    } else {
+        if (!self.loginButton) {
+            self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+            
+            self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
+        }
     }
-    
     
     [self addConstraints];
 }

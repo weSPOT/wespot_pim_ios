@@ -44,11 +44,15 @@
 }
 
 - (void) viewDidLoad {
+    [super viewDidLoad];
+    
 //  [[self tabBarItem] setFinishedSelectedImage:[UIImage imageNamed:@"list_icon.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"list_icon.png"]];
 //  [[[self tabBarController] tabBar] setBackgroundImage:[UIImage imageNamed:@"list_icon.png"]];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

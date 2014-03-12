@@ -65,8 +65,6 @@
     }
     
     return run;
-    
-    
 }
 
 + (void) setGame: (Run *) run inManagedObjectContext: (NSManagedObjectContext * ) context {
@@ -84,7 +82,6 @@
         Game * game = [games lastObject];
         run.game = game;
     }
-
 }
 
 + (void) deleteAllRuns: (NSManagedObjectContext * ) context {
@@ -96,10 +93,9 @@
         NSLog(@"error %@", error);
     }
     for (id run in runs) {
-                NSLog(@"these should be gone already");
+        NSLog(@"these should be gone already");
         [context deleteObject:run];
     }
-
 }
 
 @end

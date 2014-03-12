@@ -129,12 +129,11 @@
 
 -(void) close {
     if (self.NavigationAfterClose) {
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         
-//        if ([self.NavigationAfterClose respondsToSelector:@selector(sync_data)]) {
-//            [self.NavigationAfterClose performSelector:@selector(sync_data)];
-//        }
-        
-        [INQMainViewController sync_data];
+        if ([appDelegate respondsToSelector:@selector(syncData)]) {
+            [appDelegate performSelector:@selector(syncData)];
+        }
         
         [self.navigationController presentViewController:self.NavigationAfterClose animated:YES  completion:nil];
     } else {

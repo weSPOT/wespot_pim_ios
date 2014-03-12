@@ -11,6 +11,7 @@
 
 //#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
 #define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
+//#define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
 #define apiKey @"27936b77bcb9bb67df2965c6518f37a77a7ab9f8"
 
 @interface ARLNetwork (INQ)
@@ -26,5 +27,7 @@
 
 + (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId;
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId;
+
++ (BOOL)connectedToNetwork;
 
 @end

@@ -11,6 +11,7 @@
 
 #import "Account+Create.h"
 #import "INQSplashContentViewController.h"
+#import "ARLNetwork+INQ.h"
 
 @interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource>
 
@@ -18,6 +19,7 @@
 
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;
+
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @end

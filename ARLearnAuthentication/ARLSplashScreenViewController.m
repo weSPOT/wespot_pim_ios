@@ -135,6 +135,8 @@
 - (void) viewDidAppear:(BOOL)animated {
     NSLog(@"[%s]", __func__);
     
+    [super viewDidAppear:animated];
+    
     [self doUpdateLayout];
 }
 

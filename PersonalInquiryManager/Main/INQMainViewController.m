@@ -92,7 +92,6 @@ typedef NS_ENUM(NSInteger, tools) {
     [self adjustLoginButton];
 }
 
-
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -121,21 +120,12 @@ typedef NS_ENUM(NSInteger, tools) {
     }
 }
 
-+ (void) sync_data {
-    NSLog(@"[%s] %s",__func__, "Syncing Data");
-    
+- (void)syncButtonButtonTap:(id)sender {
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    [ARLCloudSynchronizer syncActions:appDelegate.managedObjectContext];
-    [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
-    [ARLCloudSynchronizer syncResponses:appDelegate.managedObjectContext];
-    
-    [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
-    [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
-}
-
--(void)syncButtonButtonTap:(id)sender {
-    [INQMainViewController sync_data];
+   
+    if ([appDelegate respondsToSelector:@selector(syncData)]) {
+        [appDelegate performSelector:@selector(syncData)];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -157,7 +147,7 @@ typedef NS_ENUM(NSInteger, tools) {
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return numGroups;
 }
 
 /*!
@@ -198,6 +188,7 @@ typedef NS_ENUM(NSInteger, tools) {
     switch (indexPath.section) {
         case MYINQUIRES: {
                 cell.textLabel.Text = @"My inquiries";
+                cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             }
             break;
         case TOOLS:

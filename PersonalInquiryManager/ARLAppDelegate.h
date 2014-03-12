@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 #import "Account+Create.h"
+#import "INQCloudSynchronizer.h"
 
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 

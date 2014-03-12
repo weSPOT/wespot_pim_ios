@@ -136,15 +136,15 @@ typedef NS_ENUM(NSInteger, groups) {
     NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
     
     if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"dc_voice_search_128.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-record.png"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"dc_camera_128.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-photo.png"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"dc_note_128.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-text.png"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"dc_calculator_128.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-explore.png"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"dc_video_128.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-video.png"];
     }
     
     jsonDict = nil;

@@ -43,12 +43,14 @@
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-
+    [super viewDidAppear:animated];
+    
     [self setupFetchedResultsController];
 }
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     
     [self.mapView setMapType:MKMapTypeStandard];
     [self.mapView setZoomEnabled:YES];

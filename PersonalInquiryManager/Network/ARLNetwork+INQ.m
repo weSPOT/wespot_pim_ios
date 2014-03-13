@@ -7,6 +7,7 @@
 //
 
 #import "ARLNetwork+INQ.h"
+//#import <SystemConfiguration/SystemConfiguration.h>
 
 /*!
  *  Extends ARLNetwork with Inquiry specific methods.

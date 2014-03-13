@@ -10,6 +10,6 @@
 
 @interface Inquiry (Create)
 
-+ (Inquiry *) inquirytWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context ;
++ (Inquiry *) inquiryWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context ;
 + (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext*) context;
 @end

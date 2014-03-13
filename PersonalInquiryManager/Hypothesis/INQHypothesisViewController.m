@@ -33,8 +33,9 @@
     
     UIWebView *web = (UIWebView*) self.view;
     web.scrollView.contentInset = UIEdgeInsetsMake(self.navbarHeight + self.statusbarHeight, 0.0, 0.0, 0.0);
-    
     web.delegate = self;
+    
+    [web loadHTMLString:self.hypothesis baseURL:[[NSBundle mainBundle] bundleURL]];    
 }
 
 /*!

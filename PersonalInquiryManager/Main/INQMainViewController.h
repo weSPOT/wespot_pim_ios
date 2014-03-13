@@ -10,9 +10,8 @@
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
 #import "ARLAccountDelegator.h"
+#import "ARLNetwork+INQ.h"
 
 @interface INQMainViewController : UITableViewController
-
-//- (void)sync_data;
 
 @end

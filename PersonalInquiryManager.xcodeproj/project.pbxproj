@@ -177,6 +177,7 @@
 		8D40F3EA18C0AAD400F081AE /* PersonalInquiryManager-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */; };
 		8D40F3EC18C0AAE700F081AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D40F3EB18C0AAE700F081AE /* main.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
+		8D6E809718D1DCC70077D70E /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6E809618D1DCC70077D70E /* Reachability.m */; };
 		8D6F470118C0A9C700375A63 /* ARLDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F46FD18C0A9C700375A63 /* ARLDatabase.xcdatamodeld */; };
 		8D6FA74B18CCD0260020741A /* CurrentItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6FA74A18CCD0260020741A /* CurrentItemVisibility.m */; };
 		8D6FA74E18CCD0260020741A /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6FA74D18CCD0260020741A /* Game.m */; };
@@ -516,6 +517,8 @@
 		8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonalInquiryManager-Prefix.pch"; sourceTree = "<group>"; };
 		8D40F3EB18C0AAE700F081AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8D6E809518D1DCC70077D70E /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		8D6E809618D1DCC70077D70E /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		8D6F46FE18C0A9C700375A63 /* ARLDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ARLDatabase.xcdatamodel; sourceTree = "<group>"; };
 		8D6FA74918CCD0260020741A /* CurrentItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentItemVisibility.h; sourceTree = "<group>"; };
 		8D6FA74A18CCD0260020741A /* CurrentItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentItemVisibility.m; sourceTree = "<group>"; };
@@ -702,6 +705,7 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
+				8D6E809418D1DCC70077D70E /* Reachability */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				347AD08417B286F200B4B345 /* ARLearnAuthentication */,
 				34539BBB17B2759A00352E9A /* ARLearnBeans */,
@@ -851,58 +855,58 @@
 		34D4228717B670EC0051E84C /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				8D6F46FD18C0A9C700375A63 /* ARLDatabase.xcdatamodeld */,
-				8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */,
-				8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */,
 				34D4228817B670EC0051E84C /* Account+Create.h */,
 				34D4228917B670EC0051E84C /* Account+Create.m */,
-				34D4228C17B670EC0051E84C /* Action+Create.h */,
-				34D4228D17B670EC0051E84C /* Action+Create.m */,
-				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
-				8D6FA77618CCD0600020741A /* TestAccount.h */,
-				8D6FA77718CCD0600020741A /* TestAccount.m */,
-				8D6FA77C18CCD0600020741A /* Response.h */,
-				8D6FA77D18CCD0600020741A /* Response.m */,
-				8D6FA77918CCD0600020741A /* GeneralItemVisibility.h */,
-				8D6FA77A18CCD0600020741A /* GeneralItemVisibility.m */,
-				8D6FA77318CCD05F0020741A /* Inquiry.h */,
-				8D6FA77418CCD05F0020741A /* Inquiry.m */,
-				8D6FA77018CCD05F0020741A /* SynchronizationBookKeeping.h */,
-				8D6FA77118CCD05F0020741A /* SynchronizationBookKeeping.m */,
-				8D6FA76D18CCD05F0020741A /* Run.h */,
-				8D6FA76E18CCD05F0020741A /* Run.m */,
-				8D6FA75518CCD0270020741A /* Action.h */,
-				8D6FA75618CCD0270020741A /* Action.m */,
 				8D6FA75818CCD0270020741A /* Account.h */,
 				8D6FA75918CCD0270020741A /* Account.m */,
-				8D6FA75218CCD0270020741A /* GeneralItemData.h */,
-				8D6FA75318CCD0270020741A /* GeneralItemData.m */,
-				8D6FA74F18CCD0260020741A /* GeneralItem.h */,
-				8D6FA75018CCD0260020741A /* GeneralItem.m */,
-				8D6FA74C18CCD0260020741A /* Game.h */,
-				8D6FA74D18CCD0260020741A /* Game.m */,
-				8D6FA74918CCD0260020741A /* CurrentItemVisibility.h */,
-				8D6FA74A18CCD0260020741A /* CurrentItemVisibility.m */,
+				34D4228C17B670EC0051E84C /* Action+Create.h */,
+				34D4228D17B670EC0051E84C /* Action+Create.m */,
+				8D6FA75518CCD0270020741A /* Action.h */,
+				8D6FA75618CCD0270020741A /* Action.m */,
+				8D6F46FD18C0A9C700375A63 /* ARLDatabase.xcdatamodeld */,
+				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
 				34D4229217B670EC0051E84C /* CoreDataTableViewController.h */,
 				34D4229317B670EC0051E84C /* CoreDataTableViewController.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
 				34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */,
+				8D6FA74918CCD0260020741A /* CurrentItemVisibility.h */,
+				8D6FA74A18CCD0260020741A /* CurrentItemVisibility.m */,
 				34D4229817B670EC0051E84C /* Game+ARLearnBeanCreate.h */,
 				34D4229917B670EC0051E84C /* Game+ARLearnBeanCreate.m */,
+				8D6FA74C18CCD0260020741A /* Game.h */,
+				8D6FA74D18CCD0260020741A /* Game.m */,
 				34D4229C17B670EC0051E84C /* GeneralItem+ARLearnBeanCreate.h */,
 				34D4229D17B670EC0051E84C /* GeneralItem+ARLearnBeanCreate.m */,
+				8D6FA74F18CCD0260020741A /* GeneralItem.h */,
+				8D6FA75018CCD0260020741A /* GeneralItem.m */,
 				34D422A017B670EC0051E84C /* GeneralItemData+Extra.h */,
 				34D422A117B670EC0051E84C /* GeneralItemData+Extra.m */,
+				8D6FA75218CCD0270020741A /* GeneralItemData.h */,
+				8D6FA75318CCD0270020741A /* GeneralItemData.m */,
 				34D422A417B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.h */,
 				34D422A517B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m */,
+				8D6FA77918CCD0600020741A /* GeneralItemVisibility.h */,
+				8D6FA77A18CCD0600020741A /* GeneralItemVisibility.m */,
 				34D422CF17B671A60051E84C /* Inquiry+Create.h */,
 				34D422D017B671A60051E84C /* Inquiry+Create.m */,
+				8D6FA77318CCD05F0020741A /* Inquiry.h */,
+				8D6FA77418CCD05F0020741A /* Inquiry.m */,
 				34D422AA17B670EC0051E84C /* Response+Create.h */,
 				34D422AB17B670EC0051E84C /* Response+Create.m */,
+				8D6FA77C18CCD0600020741A /* Response.h */,
+				8D6FA77D18CCD0600020741A /* Response.m */,
 				34D422AE17B670EC0051E84C /* Run+ARLearnBeanCreate.h */,
 				34D422AF17B670EC0051E84C /* Run+ARLearnBeanCreate.m */,
+				8D6FA76D18CCD05F0020741A /* Run.h */,
+				8D6FA76E18CCD05F0020741A /* Run.m */,
 				34D422B217B670EC0051E84C /* SynchronizationBookKeeping+create.h */,
 				34D422B317B670EC0051E84C /* SynchronizationBookKeeping+create.m */,
+				8D6FA77018CCD05F0020741A /* SynchronizationBookKeeping.h */,
+				8D6FA77118CCD05F0020741A /* SynchronizationBookKeeping.m */,
+				8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */,
+				8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */,
+				8D6FA77618CCD0600020741A /* TestAccount.h */,
+				8D6FA77718CCD0600020741A /* TestAccount.m */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1270,6 +1274,15 @@
 			path = Plan;
 			sourceTree = "<group>";
 		};
+		8D6E809418D1DCC70077D70E /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				8D6E809518D1DCC70077D70E /* Reachability.h */,
+				8D6E809618D1DCC70077D70E /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		8DA9643018BF3085006C736D /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -1530,6 +1543,7 @@
 				8D3F8B0518ACBD9100B233A6 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				8D6FA74B18CCD0260020741A /* CurrentItemVisibility.m in Sources */,
 				3454CD0217B3A72E00C0DFFC /* ARLAudioViewController.m in Sources */,
+				8D6E809718D1DCC70077D70E /* Reachability.m in Sources */,
 				3454CD0317B3A72E00C0DFFC /* ARLCustomViewController.m in Sources */,
 				3454CD0417B3A72E00C0DFFC /* ARLDataCollectionWidget.m in Sources */,
 				3454CD0717B3A72E00C0DFFC /* ARLFileTableViewController.m in Sources */,
@@ -1708,6 +1722,9 @@
 		3477E6A91769C9A000F3A5F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_CONSTANT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
+				CLANG_WARN_ENUM_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
+				CLANG_WARN_INT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EXCLUDED_SOURCE_FILE_NAMES = (
@@ -1736,6 +1753,9 @@
 		3477E6AA1769C9A000F3A5F3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_CONSTANT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
+				CLANG_WARN_ENUM_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
+				CLANG_WARN_INT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EXCLUDED_SOURCE_FILE_NAMES = (

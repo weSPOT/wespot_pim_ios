@@ -19,6 +19,4 @@
 
 @property (strong, nonatomic)  Inquiry *inquiry;
 
-//@property (weak, nonatomic) IBOutlet UIView *inqueryView;
-
 @end

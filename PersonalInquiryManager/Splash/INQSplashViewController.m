@@ -25,11 +25,14 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
-    [self fetchCurrentAccount];
-    
-    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+    if (ARLNetwork.isLoggedIn) {
         UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
         
         if (newViewController) {
@@ -68,16 +71,11 @@
     
     [self.navigationController setToolbarHidden:NO];
     
-    if (!ARLNetwork.connectedToNetwork) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Not online" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alert show];
-    } else {
-        if (!self.loginButton) {
-            self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
-            
-            self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
-        }
+    if (!self.loginButton) {
+        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+        
+        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
     }
     
     [self addConstraints];
@@ -88,20 +86,6 @@
     [super didReceiveMemoryWarning];
     
     // Dispose of any resources that can be recreated.
-}
-
-/*!
- *  Sets the isLoggedIn property of the AppDelegate.
- */
-- (NSNumber *)isLoggedIn {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
-}
-
-- (Account *) fetchCurrentAccount {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
 }
 
 - (INQSplashContentViewController *)viewControllerAtIndex:(NSUInteger)index
@@ -161,19 +145,18 @@
     return 0;
 }
 
-//- (IBAction)StartAgainClick:(UIButton *)sender {
-//    INQSplashContentViewController *startingViewController = [self viewControllerAtIndex:0];
-//    NSArray *viewControllers = @[startingViewController];
-//    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-//}
-
 - (IBAction)loginButtonButtonTap:(UIButton *)sender {
-    UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
-    
-    if (newViewController) {
-        // Move to another UINavigationController or UITabBarController etc.
-        // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
-        [self.navigationController presentViewController:newViewController animated:YES  completion:nil];
+    if (ARLNetwork.networkAvailable) {
+        UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
+
+        if (newViewController) {
+            // Move to another UINavigationController or UITabBarController etc.
+            // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
+            [self.navigationController presentViewController:newViewController animated:YES  completion:nil];
+        }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Not online, login not possible" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
     }
 }
 
@@ -200,6 +183,18 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
+}
+
+/*!
+ *  Enable or Disable Login Button depending on Network availability.
+ *
+ *  @param note <#note description#>
+ */
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability *reach = [note object];
+    
+    self.loginButton.enabled=[reach isReachable];
 }
 
 @end

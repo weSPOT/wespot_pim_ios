@@ -67,7 +67,12 @@ typedef NS_ENUM(NSInteger, tools) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
     // self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
   
     //See http://stackoverflow.com/questions/5825397/uitableview-background-image
@@ -101,7 +106,7 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)loginButtonButtonTap:(id)sender {
     UIViewController *newViewController;
     
-    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+    if (ARLNetwork.isLoggedIn) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
       
@@ -258,28 +263,25 @@ typedef NS_ENUM(NSInteger, tools) {
     }
 }
 
-/*!
- *  Sets the isLoggedIn property of the AppDelegate.
- */
-- (NSNumber *)isLoggedIn {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
-}
-
-- (Account *) fetchCurrentAccount {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
-}
-
 - (void) adjustLoginButton  {
-    [self fetchCurrentAccount];
-    
-    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
+    if (ARLNetwork.isLoggedIn) {
         [self.loginButton setTitle:NSLocalizedString(@"Logout", nil)];
     } else {
         [self.loginButton setTitle:NSLocalizedString(@"Login", nil)];
     }
+}
+
+/*!
+ *  Enable or Disable Sync Button depending on Network availability.
+ *
+ *  @param note <#note description#>
+ */
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability *reach = [note object];
+    
+    self.syncButton.enabled=[reach isReachable];
+    self.loginButton.enabled=[reach isReachable];
 }
 
 @end

@@ -278,14 +278,10 @@
 }
 
 - (void)navigateBack {
-    [self fetchCurrentAccount];
-    
-    NSLog(@"[%s] IsLoggedIn: %@", __func__, self.isLoggedIn);
-
-    if ([self.isLoggedIn isEqualToNumber: [NSNumber numberWithBool:YES]]) {
+    if (ARLNetwork.isLoggedIn) {
         UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
         
-        if (self.isLoggedIn) {
+        if (ARLNetwork.isLoggedIn) {
             UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
           
             if ([appDelegate respondsToSelector:@selector(clearDatabase)]) {
@@ -357,28 +353,12 @@
     }
 }
 
-/*!
- *  Sets the isLoggedIn property of the AppDelegate.
- */
-- (NSNumber *)isLoggedIn {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil];
-}
-
-- (Account *) fetchCurrentAccount {
-    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
-}
-
 - (void) adjustLoginButton  {
-    [self fetchCurrentAccount];
-    
-//    if (self.isLoggedIn == [NSNumber numberWithBool:YES]) {
-//        self.navigationItem.title = NSLocalizedString(@"Logout", nil);
-//    } else {
-//        self.navigationItem.title = NSLocalizedString(@"Login", nil);orientat
-//    }
+    if (ARLNetwork.isLoggedIn) {
+        NSLog(@"Logout");
+    } else {
+        NSLog(@"Login");
+    }
 }
 
 - (void) addConstraints {

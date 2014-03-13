@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
+#import <SystemConfiguration/SystemConfiguration.h>
+
 #import "ARLNetwork.h"
 #import "INQLoginViewController.h"
 
@@ -28,6 +30,9 @@
 + (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId;
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId;
 
-+ (BOOL)connectedToNetwork;
++ (BOOL)networkAvailable;
++ (BOOL)isLoggedIn;
+
++ (Account *) CurrentAccount;
 
 @end

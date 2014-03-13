@@ -208,69 +208,57 @@
     return [[self returnJson:url] objectForKey:@"result"];
 }
 
-typedef void(^connection)(BOOL);
+/*!
+ *  Returns YES if logged-in.
+ *
+ *  @return YES if logged-in.
+ */
++ (BOOL)isLoggedIn {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    Account *account = ARLNetwork.CurrentAccount;
 
-+ (void)checkInternet:(connection)block
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    if (account && [appDelegate performSelector:@selector(isLoggedIn)]) {
+        return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil]== [NSNumber numberWithBool:YES];
+    }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com/"]];
-    request.HTTPMethod = @"HEAD";
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-    request.timeoutInterval = 10.0;
-    
-    [NSURLConnection
-        sendAsynchronousRequest:request
-        queue:[NSOperationQueue mainQueue]
-        completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-             {
-                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                 
-                 block([(NSHTTPURLResponse *)response statusCode] == 200);
-             }];
+    return NO;
 }
 
-//+ (BOOL)checkNet {
-//    
-//    [self checkInternet:^(connection internet)
-//    {
-//         
-////    Reachability *netStatus=[Reachability reachabilityWithHostname:@"www.google.com"];
-////    
-//         if (internet)
-//         {
-//             // "Internet" aka Google
-//             return YES;
-//         }
-//         else
-//         {
-//             // No "Internet" aka no Google
-//             
-//             return NO;
-//         }
-//         
-//         // ([netStatus currentReachabilityStatus] == NotReachable){
-//        return NO;
-//    }];
-//}
+/*!
+ *  Returns the current account (or nil).
+ *
+ *  @return the current account.
+ */
++ (Account *) CurrentAccount {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    if ([appDelegate performSelector:@selector(CurrentAccount)]) {
+        return [appDelegate performSelector:@selector(CurrentAccount) withObject:nil];
+    }
+    
+    return nil;
+}
 
 /*!
- *  Test if we're online by probing google.
+ *  Returns YES if a wifi connection is available.
  *
- *  NOTE this method is called to often and should do a HEAD instead of GET.
- *  NOTE Reachability related code will not compile due to syntax problems in socket.h.
- *
- *  @return <#return value description#>
+ *  @return YES if wifi is there.
  */
-+ (BOOL)connectedToNetwork
-{
-    NSError *error = nil;
++ (BOOL)networkAvailable {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    return ([NSString
-             stringWithContentsOfURL:[NSURL
-                                        URLWithString:@"http://www.google.com"]
-                                        encoding:NSUTF8StringEncoding
-                                        error:&error]!=NULL)?YES:NO;
+    NSNumber *result = nil;
+    
+    if ([appDelegate performSelector:@selector(networkAvailable)]) {
+        result = [appDelegate performSelector:@selector(networkAvailable) withObject: nil];
+    }
+   
+    if (result) {
+        return result == [NSNumber numberWithBool:YES];
+    }
+    
+    return YES;
 }
 
 @end

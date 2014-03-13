@@ -111,7 +111,7 @@
     //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
     
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
-        Inquiry* newInquiry = [Inquiry inquirytWithDictionary:inquiryDict inManagedObjectContext:self.context];
+        Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
         
         NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
         
@@ -123,7 +123,7 @@
                 //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
                 NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
                 if (hypString) {
-                    newInquiry.hypothesis = hypString;
+                     newInquiry.hypothesis = hypString;
                 }
                 
             }
@@ -179,8 +179,7 @@
             
             UIImage *tmp = [test lazyPicture];
             NSLog(@"%0.0f x %0.0f", tmp.size.width, tmp.size.height);
-            
-            
+
         }
     }
     

@@ -8,17 +8,36 @@
 
 #import "ARLAppDelegate.h"
 
+@interface ARLAppDelegate (private)
+
+-(void)reachabilityChanged:(NSNotification*)note;
+
+@end
+
 @implementation ARLAppDelegate
 
 // veg: These three need to stay as we implement the getter (so NO default _ prefixed backing field).
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+
 @synthesize isLoggedIn = _isLoggedIn;
+@synthesize networkAvailable = _networkAvailable;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    _networkAvailable = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+
+    [reach startNotifier];
+    
     return YES;
 }
 							
@@ -170,14 +189,26 @@
 }
 
 /*!
- *  Setter for isLoggedIn property.
+ *  Getter for isLoggedIn property.
  *
- *  @param b If TRUE the user is logged-in.
+ *  @return If TRUE the user is logged-in.
  */
-- (void)setIsLoggedIn:(NSNumber *)b {
-//    NSLog(@"[%s] IsLoggedIn: %@", __func__, b);
+- (NSNumber *)isLoggedIn {
+    return _isLoggedIn;
+}
+
+/*!
+ *  Getter for CurrentAccount.
+ *
+ *  @return <#return value description#>
+ */
+- (Account *) CurrentAccount {
+    Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+                                   withManagedContext:self.managedObjectContext];
+
+    _isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];
     
-    _isLoggedIn = b;
+    return account;
 }
 
 /*!
@@ -185,19 +216,24 @@
  *
  *  @return If TRUE the user is logged-in.
  */
-- (NSNumber *)isLoggedIn {
-//    NSLog(@"[%s] IsLoggedIn: %@", __func__, _isLoggedIn);
-    
-    return _isLoggedIn;
+- (NSNumber *)networkAvailable {
+    return _networkAvailable;
 }
 
-- (Account *) fetchCurrentAccount {
-    Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
-                                   withManagedContext:self.managedObjectContext];
-
-    self.isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability *reach = [note object];
+ 
+    NSLog(@"Reachability Changed");
+    NSLog(@"From: %@", _networkAvailable);
     
-    return account;
+    _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
+
+    NSLog(@"To: %@", _networkAvailable);
+    
+    NSLog(@" All:  %d", [reach isReachable]);
+    NSLog(@" Wifi: %d", [reach isReachableViaWiFi]);
+    NSLog(@" WWan: %d", [reach isReachableViaWWAN]);
 }
 
 @end

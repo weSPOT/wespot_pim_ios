@@ -111,7 +111,7 @@
 - (void) viewWillAppear:(BOOL)animated {
     NSLog(@"[%s]", __func__);
     
-    [self fetchCurrentAccount];
+    [self CurrentAccount];
     [self createViewsProgrammatically];
     
     [self.loggedInView setAccount:self.account];
@@ -374,14 +374,6 @@
     [self addGradient];
 }
 
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//    // Return YES for supported orientations
-//  
-//    
-//    // Use this to allow upside down as well
-//    //return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
-//}
-
 /*!
  *  Re-apply Constrants and Gradient.
  *
@@ -392,9 +384,9 @@
     [self doUpdateLayout];
 }
 
-- (void) fetchCurrentAccount {
+- (void) CurrentAccount {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
+    [appDelegate performSelector:@selector(CurrentAccount) withObject:nil];
 }
 
 /*!
@@ -428,7 +420,7 @@
 
 - (void) gamesClicked {
     UINavigationController * monitorMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"gameLibrary"];
-    //[monitorMenuViewController.navigationController setNavigationBarHidden:YES animated:YES];
+ 
     [self presentViewController:monitorMenuViewController animated:NO completion:nil];
 }
 

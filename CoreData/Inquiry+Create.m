@@ -11,7 +11,7 @@
 @implementation Inquiry (Create)
 
 
-+ (Inquiry *) inquirytWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context {
++ (Inquiry *) inquiryWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context {
     Inquiry * inquiry = [self retrieveFromDb:inquiryDict withManagedContext:context];
     if (!inquiry) {
         inquiry = [NSEntityDescription insertNewObjectForEntityForName:@"Inquiry" inManagedObjectContext:context];

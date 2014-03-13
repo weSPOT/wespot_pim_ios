@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self.navigationController setToolbarHidden:YES];
     
     //See http://stackoverflow.com/questions/5825397/uitableview-background-image
@@ -56,8 +56,10 @@ typedef NS_ENUM(NSInteger, inquiries) {
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
+    if (ARLNetwork.networkAvailable) {
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
+    }
 }
 
 /*!
@@ -77,27 +79,12 @@ typedef NS_ENUM(NSInteger, inquiries) {
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
-    [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
+                                                                               cacheName:nil];
+    [self.fetchedResultsController fetchRequest];
     
-#warning Experimental code (does not seem to do what it should).
-    //    ARLCloudSynchronizer *sync = [[ARLCloudSynchronizer alloc] init];
-    //    sync.context=appDelegate.managedObjectContext;
-    //    
-    //    // Try Syncing Games.
-    //    NSEntityDescription *entityDescription = [NSEntityDescription
-    //                                              entityForName:@"Game" inManagedObjectContext:appDelegate.managedObjectContext];
-    //    NSFetchRequest *request2 = [[NSFetchRequest alloc]init];
-    //    [request2 setEntity:entityDescription];
-    //    
-    //    NSError *error;
-    //    NSArray *games =[appDelegate.managedObjectContext executeFetchRequest: request2 error:&error];
-    //    for (Game *game in games) {
-    //        NSLog(@"%@", game.description);
-    //        
-    //        sync.gameId=game.gameId;
-    //        [sync sync];
-    //
+    if (ARLNetwork.networkAvailable) {
+        [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
+    }
 }
 
 /*!
@@ -173,13 +160,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
             Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
             
             cell.textLabel.text = generalItem.title;
-//            NSData* icon = [generalItem icon];
-//            if (icon) {
-//                UIImage * image = [UIImage imageWithData:icon];
-//                cell.imageView.image=image;
-//            }
-            cell.imageView.image = [UIImage imageNamed:@"inquiry"];
-            
+            cell.imageView.image = [UIImage imageNamed:@"inquiry"];            
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", arc4random() % 10];
         }
     }
@@ -202,10 +183,10 @@ typedef NS_ENUM(NSInteger, inquiries) {
             break;
         case OPEN:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+           
+            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
             
-            Inquiry * inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
-            
-            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquireyParts"];
+            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryParts"];
             
             if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
                 [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];

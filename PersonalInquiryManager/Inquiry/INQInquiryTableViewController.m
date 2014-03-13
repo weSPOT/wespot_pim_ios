@@ -173,14 +173,7 @@ typedef NS_ENUM(NSInteger, sections) {
             if (cell.contentView.subviews.count==0)
             {
                 // Icon
-                
-//                NSData* icon = [self.inquiry icon];
                 UIImage *image = [UIImage imageNamed:@"description"];
-//                if (icon) {
-//                    image = [UIImage imageWithData:icon];
-//                }
-//                UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
-                
                 UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
                 
                 imageView.backgroundColor = [UIColor clearColor];

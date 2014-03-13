@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+#import "Reachability.h"
+
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
 
@@ -19,7 +21,9 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic) NSNumber *isLoggedIn;
+
+@property (readonly, strong, nonatomic) NSNumber *isLoggedIn;
+@property (readonly, strong, nonatomic) NSNumber *networkAvailable;
 
 @end
  

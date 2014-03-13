@@ -24,15 +24,15 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self fetchCurrentAccount];
+    [self CurrentAccount];
     
     [self createLoginButton];
     [self adjustLoginButton];
 }
 
-- (Account *) fetchCurrentAccount {
+- (Account *) CurrentAccount {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-    return [appDelegate performSelector:@selector(fetchCurrentAccount) withObject:nil];
+    return [appDelegate performSelector:@selector(CurrentAccount) withObject:nil];
 }
 
 /*!

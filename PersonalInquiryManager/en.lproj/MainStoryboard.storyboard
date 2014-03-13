@@ -301,7 +301,7 @@
         <!--Inquery-->
         <scene sceneID="xaC-e9-cpe">
             <objects>
-                <viewController storyboardIdentifier="InquireyParts" title="Inquiry" id="F3y-6j-Rcd" userLabel="Inquery" customClass="INQInquiryTableViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InquiryParts" title="Inquiry" id="F3y-6j-Rcd" userLabel="Inquery" customClass="INQInquiryTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="sRu-39-AAC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

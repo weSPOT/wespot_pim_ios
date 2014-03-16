@@ -270,8 +270,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
         
         NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-#warning Removing most ARLearn code ledto errors here.
-//        [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
         
         [self navigateBack];
     }

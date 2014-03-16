@@ -32,22 +32,39 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @implementation INQGeneralItemTableViewController
 
+- (void)setupFetchedResultsController {
+    if (self.run.runId) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
+        request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                                         ascending:YES
+                                                                                          selector:@selector(localizedCaseInsensitiveCompare:)]];
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"visible = 1 and run.runId = %lld",
+                             [self.run.runId longLongValue]];
+#warning Which SortDescriptor is used?
+        NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, nil];
+        [request setSortDescriptors:sortDescriptors];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.run.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+    }
+}
+
+- (void) setRun: (Run *) run {
+    _run = run;
+    
+    // self.title = run.title;
+    
+    [self setupFetchedResultsController];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-//    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
-//    
-//    self.tableView.opaque = NO;
-//    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-//    self.navigationController.view.backgroundColor = [UIColor clearColor];
-//    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
-//    
-//    //self.navigationController.view.backgroundColor = [UIColor clearColor];
-//    self.navigationController.title = @"Collect Data";
-//    self.navigationController.navigationBar.translucent= NO;
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
@@ -55,6 +72,15 @@ typedef NS_ENUM(NSInteger, groups) {
 
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [synchronizer createContext:appDelegate.managedObjectContext];
+        synchronizer.gameId = self.run.gameId;
+        synchronizer.visibilityRunId = self.run.runId;
+        [synchronizer sync];
+    });
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     

@@ -13,5 +13,7 @@
 @interface ARLAppearDisappearDelegator : UIViewController
 
 + (ARLAppearDisappearDelegator *) sharedSingleton;
+
 - (void) setTimer: (NSDate *) fireDate ;
+
 @end

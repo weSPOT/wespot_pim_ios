@@ -85,7 +85,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
 
         NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-        
+
         [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
         
         [self close];

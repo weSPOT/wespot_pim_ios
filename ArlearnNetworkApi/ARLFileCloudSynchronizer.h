@@ -13,7 +13,6 @@
 
 @interface ARLFileCloudSynchronizer : NSObject {
     dispatch_queue_t queue;
-
 }
 
 @property (strong, nonatomic)  NSManagedObjectContext * context;

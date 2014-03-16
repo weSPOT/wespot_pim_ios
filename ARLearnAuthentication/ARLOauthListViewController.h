@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "ARLOauthWebViewController.h"
-//#import "ZXingWidgetController.h"
-//#import "MultiFormatReader.h"
-//#import "ARLNetwork.h"
-//#import "QRCodeReader.h"
 #import "ZBarSDK.h"
 
 

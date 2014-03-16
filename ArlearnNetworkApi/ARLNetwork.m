@@ -296,8 +296,6 @@
     [request setURL:[NSURL URLWithString: uploadUrl]];
     
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
-
-
 }
 
 #pragma mark - Account

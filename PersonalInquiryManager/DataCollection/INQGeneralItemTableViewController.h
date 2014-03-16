@@ -6,9 +6,14 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
-#import "ARLGeneralItemTableViewController.h"
-#import "ARLGeneralItemTableViewCell.h"
+#import "ARLNetwork.h"
+#import "ARLCloudSynchronizer.h"
 
-@interface INQGeneralItemTableViewController : ARLGeneralItemTableViewController
+#import "Run.h"
+#import "CoreDataTableViewController.h"
+
+@interface INQGeneralItemTableViewController : CoreDataTableViewController
+
+@property (nonatomic, strong) Run *run;
 
 @end

@@ -12,7 +12,6 @@
 
 @synthesize context = _context;
 
-
 - (void) createContext: (NSManagedObjectContext*) mainContext {
     self.parentContext = mainContext;
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
@@ -25,7 +24,6 @@
     }];
     
 }
-
 
 - (void) asyncExecution {
     [self downloadGeneralItems];
@@ -69,6 +67,5 @@
         [self saveContext];
     }
 }
-
 
 @end

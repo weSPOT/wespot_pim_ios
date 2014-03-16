@@ -13,7 +13,6 @@
 #import "ARLNetwork+INQ.h"
 #import "ARLCloudSynchronizer.h"
 #import "Run+ARLearnBeanCreate.h"
-#import "INQPageViewController.h"
 
 @interface INQInquiryTableViewController : UITableViewController <UIWebViewDelegate>
 

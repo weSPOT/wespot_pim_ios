@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "Run+ARLearnBeanCreate.h"
 #import "Game+ARLearnBeanCreate.h"
 #import "GeneralItem+ARLearnBeanCreate.h"
@@ -20,15 +21,17 @@
 #import "ARLFileCloudSynchronizer.h"
 
 @interface ARLCloudSynchronizer : NSObject {
+    
     BOOL syncRuns;
     BOOL syncGames;
-}
 
+}
 
 @property (nonatomic, readwrite) BOOL syncRuns;
 @property (nonatomic, readwrite) BOOL syncGames;
 @property (nonatomic, readwrite) BOOL syncResponses;
 @property (nonatomic, readwrite) BOOL syncActions;
+
 @property (strong, nonatomic)  NSNumber * gameId;
 
 @property (strong, nonatomic)  NSNumber * visibilityRunId;

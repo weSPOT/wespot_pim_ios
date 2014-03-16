@@ -12,6 +12,7 @@
 
 @synthesize syncRuns = _syncRuns;
 @synthesize syncGames = _syncGames;
+
 @synthesize syncResponses = _syncResponses;
 @synthesize syncActions = _syncActions;
 @synthesize gameId = _gameId;

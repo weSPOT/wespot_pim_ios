@@ -24,7 +24,9 @@
 
 - (id) init {
     self = [super init];
+    
     notDict = [[NSMutableDictionary alloc] init];
+    
     return self;
 }
 
@@ -76,7 +78,5 @@
     }
     [[notDict valueForKey:notificationType] addObject:notificationHandler];
 }
-
-
 
 @end

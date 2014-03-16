@@ -66,8 +66,7 @@
             double longValue =appearAt.timeStamp.longLongValue - currentTimeMillis;
             NSLog(@"***%f !< %f wait %f milliseconds", appearAt.timeStamp.doubleValue, currentTimeMillis, longValue);
             NSDate* triggerTime = [NSDate dateWithTimeIntervalSince1970:(localCurrentTimeMillis + longValue)/1000];
-            
-            [[ARLAppearDisappearDelegator sharedSingleton] setTimer:triggerTime];
+           [[ARLAppearDisappearDelegator sharedSingleton] setTimer:triggerTime];
         }
     }
     if (disAppearAt) {

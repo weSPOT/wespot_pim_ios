@@ -42,10 +42,11 @@
 + (NSDictionary*) gamesParticipateFrom: (NSNumber *) from;
 + (NSDictionary*) game: (NSNumber *) gameId;
 
+//Runs
 + (NSDictionary*) itemsForRun: (int64_t) runId;
 + (NSDictionary*) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from;
 
-
+//ItemVisibility
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId;
 + (NSDictionary*) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;
 
@@ -61,14 +62,15 @@
 + (void) perfomUpload: (NSString*) uploadUrl withFileName:(NSString*) fileName
 contentType:(NSString*) contentType withData:(NSData*) data;
 
-+ (NSDictionary*) anonymousLogin: (NSString *) account ;
++ (NSDictionary*) anonymousLogin: (NSString *) account;
 + (NSDictionary*) accountDetails;
 
-+(NSDictionary *) oauthInfo ;
++(NSDictionary *) oauthInfo;
 
-+(NSDictionary *) search: (NSString*) query ;
-+(NSDictionary *) featured ;
-+(NSDictionary *) geoSearch: (NSNumber*) distance withLat:(NSNumber *) lat withLng: (NSNumber*) lng ;
++(NSDictionary *) search: (NSString*) query;
++(NSDictionary *) featured;
++(NSDictionary *) geoSearch: (NSNumber*) distance withLat:(NSNumber *) lat withLng: (NSNumber*) lng;
+
 @end
 
 

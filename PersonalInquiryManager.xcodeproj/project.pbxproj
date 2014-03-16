@@ -99,6 +99,7 @@
 		8D19462D18C0A80100C32EED /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19462A18C0A80100C32EED /* Default-568h@2x.png */; };
 		8D19462E18C0A80100C32EED /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19462B18C0A80100C32EED /* Default.png */; };
 		8D19462F18C0A80100C32EED /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19462C18C0A80100C32EED /* Default@2x.png */; };
+		8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D36746318D5DE1D0023A263 /* INQPageViewController.m */; };
 		8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */; };
 		8D40F3EC18C0AAE700F081AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D40F3EB18C0AAE700F081AE /* main.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
@@ -266,13 +267,13 @@
 		8D19461918C0A5B000C32EED /* page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page2.png; path = Splash/page2.png; sourceTree = "<group>"; };
 		8D19461A18C0A5B000C32EED /* page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page3.png; path = Splash/page3.png; sourceTree = "<group>"; };
 		8D19461B18C0A5B000C32EED /* page4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = page4.png; path = Splash/page4.png; sourceTree = "<group>"; };
-		8D19462218C0A6B800C32EED /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQPageViewController.h; path = _Obsolete/INQPageViewController.h; sourceTree = "<group>"; };
-		8D19462318C0A6B800C32EED /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQPageViewController.m; path = _Obsolete/INQPageViewController.m; sourceTree = "<group>"; };
 		8D19462518C0A73600C32EED /* login_HD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_HD.png; sourceTree = "<group>"; };
 		8D19462618C0A73600C32EED /* mainmenu_HD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainmenu_HD.png; sourceTree = "<group>"; };
 		8D19462A18C0A80100C32EED /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8D19462B18C0A80100C32EED /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8D19462C18C0A80100C32EED /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		8D36746218D5DE1D0023A263 /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
+		8D36746318D5DE1D0023A263 /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
 		8D3F8B1A18ACE31900B233A6 /* INQPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPlanViewController.h; sourceTree = "<group>"; };
 		8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPlanViewController.m; sourceTree = "<group>"; };
 		8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PersonalInquiryManager-Info.plist"; sourceTree = "<group>"; };
@@ -460,6 +461,7 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8D36746118D5DE1D0023A263 /* Parts */,
 				8D40F3EB18C0AAE700F081AE /* main.m */,
 				8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */,
 				8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */,
@@ -483,7 +485,6 @@
 				347AD0C817B3795C00B4B345 /* Network */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
-				8DF5525218AE4FA700033677 /* Parts */,
 				8D3F8B1918ACE2DC00B233A6 /* Plan */,
 				8DAFB49318BCDBEE0095DFE7 /* Profile */,
 				8D0249FD18A80B08009D0566 /* Splash */,
@@ -737,6 +738,15 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8D36746118D5DE1D0023A263 /* Parts */ = {
+			isa = PBXGroup;
+			children = (
+				8D36746218D5DE1D0023A263 /* INQPageViewController.h */,
+				8D36746318D5DE1D0023A263 /* INQPageViewController.m */,
+			);
+			path = Parts;
+			sourceTree = "<group>";
+		};
 		8D3F8B1918ACE2DC00B233A6 /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -911,15 +921,6 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
-		8DF5525218AE4FA700033677 /* Parts */ = {
-			isa = PBXGroup;
-			children = (
-				8D19462218C0A6B800C32EED /* INQPageViewController.h */,
-				8D19462318C0A6B800C32EED /* INQPageViewController.m */,
-			);
-			name = Parts;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1066,6 +1067,7 @@
 				8D6E80B018D5B5AA0077D70E /* ARLOauthViewController.m in Sources */,
 				8D6E80AA18D5B5AA0077D70E /* ARLAccountDelegator.m in Sources */,
 				8D6FA74B18CCD0260020741A /* CurrentItemVisibility.m in Sources */,
+				8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */,
 				8D6AE1CA18D5C5FE0094D911 /* TPKeyboardAvoidingTableView.m in Sources */,
 				8D19461318C0A59F00C32EED /* INQProfileTableViewController.m in Sources */,
 				8D6FA74E18CCD0260020741A /* Game.m in Sources */,

@@ -24,18 +24,48 @@
 @synthesize imagePickerController = _imagePickerController;
 @synthesize generalItemViewController = _generalItemViewController;
 
-
 @synthesize textDescription = _textDescription;
 @synthesize valueDescription = _valueDescription;
 
-- (UIButton *)addButtonWithImage:(NSString *)imageString action:(SEL)selector {
+- (UIButton *)addButtonWithImage:(NSString *)imageString enabled:(BOOL)enabled action:(SEL)selector {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    UIImage * image = [UIImage imageNamed:imageString];
     
+    UIImage * image = [UIImage imageNamed:imageString];
+    if (!enabled) {
+        image = [self grayishImage:image];
+    }
+
     [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setEnabled:enabled];
+    
     return button;
+}
+
+// Transform the image in grayscale.
+// See http://stackoverflow.com/questions/1298867/convert-image-to-grayscale
+- (UIImage *)grayishImage:(UIImage *)inputImage {
+    UIGraphicsBeginImageContextWithOptions(inputImage.size, NO, inputImage.scale);
+    CGRect imageRect = CGRectMake(0.0f, 0.0f, inputImage.size.width, inputImage.size.height);
+
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // Draw a white background
+    CGContextSetRGBFillColor(ctx, 1.0f, 1.0f, 1.0f, 1.0f);
+    CGContextFillRect(ctx, imageRect);
+
+    // Draw the luminosity on top of the white background to get grayscale
+    [inputImage drawInRect:imageRect blendMode:kCGBlendModeLuminosity alpha:1.0f];
+
+    // Apply the source image's alpha
+    [inputImage drawInRect:imageRect blendMode:kCGBlendModeDestinationIn alpha:1.0f];
+
+    UIImage* grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return grayscaleImage;
 }
 
 - (id) init :(NSDictionary *) jsonDict viewController: (UIViewController*) viewController {
@@ -60,52 +90,13 @@
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;  //This part hung me up
         
-        NSString *audioImage;
-        if (self.withAudio) {
-            audioImage = @"dc_voice_search_128.png";
-        } else {
-            audioImage = @"dc_voice_search_128_grey.png";
-        }
-        UIButton *audioButton = [self addButtonWithImage:audioImage action:@selector(collectAudio) ];
-        audioButton.enabled=self.withAudio;
+        UIButton *audioButton = [self addButtonWithImage:@"task-record.png" enabled:self.withAudio action:@selector(collectAudio)];
+        UIButton *imageButton = [self addButtonWithImage:@"task-photo.png" enabled:self.withPicture action:@selector(collectImage)];
+        UIButton *videoButton = [self addButtonWithImage:@"task-video.png" enabled:self.withVideo action:@selector(collectVideo)];
         
-        NSString *imageImage;
-        if (self.withPicture) {
-            imageImage = @"dc_camera_128.png";
-        } else {
-            imageImage = @"dc_camera_128_grey.png";
-        }
-        UIButton *imageButton = [self addButtonWithImage:imageImage action:@selector(collectImage) ];
-        imageButton.enabled=self.withPicture;
-        
-        NSString *videoImage;
-        if (self.withVideo) {
-            videoImage = @"dc_video_128.png";
-        } else {
-            videoImage = @"dc_video_128_grey.png";
-        }
-        UIButton *videoButton = [self addButtonWithImage:videoImage action:@selector(collectVideo)];
-        videoButton.enabled=self.withVideo;
-        
-        NSString *valueImage;
-        if (self.withValue) {
-            valueImage = @"dc_calculator_128.png";
-        } else {
-            valueImage = @"dc_calculator_128_grey.png";
-        }
-        UIButton *noteButton = [self addButtonWithImage:valueImage action:@selector(collectNumber) ];
-#warning enabling the button gives an error when dismissing the popup.
-        noteButton.enabled=NO; //self.withValue;
-        
-        NSString *textImage;
-        if (self.withText) {
-            textImage = @"dc_note_128.png";
-        } else {
-            textImage = @"dc_note_128_grey.png";
-        }
-        UIButton *textButton = [self addButtonWithImage:textImage action:@selector(collectText) ];
-#warning enabling the button gives an error when dismissing the popup.
-        textButton.enabled=NO; //self.withValue;
+#warning enabling these two button gives an error when dismissing the popup.
+        UIButton *noteButton = [self addButtonWithImage:@"task-explore.png" enabled:NO action:@selector(collectNumber)];    //self.withValue
+        UIButton *textButton = [self addButtonWithImage:@"task-text.png" enabled:NO action:@selector(collectText)];         //self.withText
         
         [self addSubview:audioButton];
         [self addSubview:imageButton];
@@ -113,13 +104,13 @@
         [self addSubview:noteButton];
         [self addSubview:textButton];
         
-        NSDictionary *viewsDictionary =
-        [[NSDictionary alloc] initWithObjectsAndKeys:
-         audioButton, @"audioButton",
-         imageButton, @"imageButton",
-         videoButton, @"videoButton",
-         noteButton, @"noteButton",
-         textButton, @"textButton", nil];
+        NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+            audioButton, @"audioButton",
+            imageButton, @"imageButton",
+            videoButton, @"videoButton",
+            noteButton,  @"noteButton",
+            textButton,  @"textButton",
+            nil];
         
         [self addConstraints:[NSLayoutConstraint
                               constraintsWithVisualFormat:@"V:|-[audioButton(==50)]"

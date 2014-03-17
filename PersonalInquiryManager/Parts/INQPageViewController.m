@@ -18,6 +18,7 @@
 @implementation INQPageViewController
 
 #warning UIPageViewControl pages erratic when in scroll mode. Curl seems to be ok (but lacks the Page Control at the bottom).
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -25,7 +26,6 @@
     
     self.dataSource = self;
     
-#warning moved thois code here from viewDidAppear as it removes the delay.
     UIViewController *initialViewController = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];

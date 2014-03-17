@@ -249,8 +249,7 @@
                                    resp.height, @"height",
                                    serverUrl, contentType, nil];
                 }
-                NSString* jsonString = [NSString jsonString:myDictionary];
-                
+                NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
                 
                 [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.id timeStamp:resp.timeStamp];
                 

@@ -75,7 +75,7 @@
                                  text, @"text", nil];
 #warning Gives a runtime error when clicked and try to dismiss the 'ths gets covered' popup.
     [Response initResponse:run forGeneralItem:generalItem
-                 withValue:[NSString jsonString:myDictionary]
+                 withValue:[ARLAppDelegate jsonString:myDictionary]
     inManagedObjectContext: generalItem.managedObjectContext];
 }
 

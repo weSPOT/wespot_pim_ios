@@ -19,6 +19,10 @@ typedef NS_ENUM(NSInteger, groups) {
      */
     MYINQUIRES = 0,
     /*!
+     *  My Media.
+     */
+    MYMEDIA,
+    /*!
      *  Profiles/Badges/Friends.
      */
     TOOLS,
@@ -169,6 +173,8 @@ typedef NS_ENUM(NSInteger, tools) {
     switch (section) {
         case MYINQUIRES:
             return 1;
+        case MYMEDIA:
+            return 1;
         case TOOLS:
             return 3;
     }
@@ -195,6 +201,11 @@ typedef NS_ENUM(NSInteger, tools) {
                 cell.textLabel.Text = @"My inquiries";
                 cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             }
+            break;
+        case MYMEDIA: {
+            cell.textLabel.Text = @"My media";
+            cell.imageView.image = [UIImage imageNamed:@"collect-data"];
+        }
             break;
         case TOOLS:
             switch (indexPath.item) {
@@ -235,6 +246,18 @@ typedef NS_ENUM(NSInteger, tools) {
             switch (indexPath.item) {
                default:
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];
+                    break;
+            }
+            break;
+            
+        case MYMEDIA:
+            switch (indexPath.item) {
+                default: {
+                    //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];
+#warning To Implement with a UITableView.
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
                     break;
             }
             break;

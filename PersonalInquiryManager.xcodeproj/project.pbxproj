@@ -73,6 +73,7 @@
 		34D4231C17B677BD0051E84C /* video_48x48.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FA17B677BD0051E84C /* video_48x48.png */; };
 		34D4231D17B677BD0051E84C /* wespot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FB17B677BD0051E84C /* wespot_logo.png */; };
 		34D4231E17B677BD0051E84C /* youtube.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FC17B677BD0051E84C /* youtube.png */; };
+		8D1843B018D742CF00DF5B13 /* Profile in Resources */ = {isa = PBXBuildFile; fileRef = 8D1843AF18D742CF00DF5B13 /* Profile */; };
 		8D1945C318C0A1AD00C32EED /* INQCommunicateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */; };
 		8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C618C0A20300C32EED /* INQAnalysisViewController.m */; };
 		8D1945CB18C0A24200C32EED /* INQDiscussViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945CA18C0A24200C32EED /* INQDiscussViewController.m */; };
@@ -87,7 +88,6 @@
 		8D19460A18C0A57000C32EED /* INQMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19460918C0A57000C32EED /* INQMainViewController.m */; };
 		8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19460C18C0A58D00C32EED /* ARLNetwork+INQ.m */; };
 		8D19461018C0A58D00C32EED /* INQCloudSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19460E18C0A58D00C32EED /* INQCloudSynchronizer.m */; };
-		8D19461318C0A59F00C32EED /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19461218C0A59F00C32EED /* INQProfileTableViewController.m */; };
 		8D19461C18C0A5B000C32EED /* INQSplashContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19461518C0A5B000C32EED /* INQSplashContentViewController.m */; };
 		8D19461D18C0A5B000C32EED /* INQSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D19461718C0A5B000C32EED /* INQSplashViewController.m */; };
 		8D19461E18C0A5B000C32EED /* page1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D19461818C0A5B000C32EED /* page1.png */; };
@@ -233,6 +233,7 @@
 		34D422FA17B677BD0051E84C /* video_48x48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_48x48.png; sourceTree = "<group>"; };
 		34D422FB17B677BD0051E84C /* wespot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wespot_logo.png; sourceTree = "<group>"; };
 		34D422FC17B677BD0051E84C /* youtube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = youtube.png; sourceTree = "<group>"; };
+		8D1843AF18D742CF00DF5B13 /* Profile */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Profile; sourceTree = "<group>"; };
 		8D1945C018C0A1AD00C32EED /* INQCommunicateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQCommunicateViewController.h; sourceTree = "<group>"; };
 		8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQCommunicateViewController.m; sourceTree = "<group>"; };
 		8D1945C518C0A20200C32EED /* INQAnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAnalysisViewController.h; sourceTree = "<group>"; };
@@ -261,8 +262,6 @@
 		8D19460C18C0A58D00C32EED /* ARLNetwork+INQ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ARLNetwork+INQ.m"; path = "Network/ARLNetwork+INQ.m"; sourceTree = "<group>"; };
 		8D19460D18C0A58D00C32EED /* INQCloudSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQCloudSynchronizer.h; path = Network/INQCloudSynchronizer.h; sourceTree = "<group>"; };
 		8D19460E18C0A58D00C32EED /* INQCloudSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQCloudSynchronizer.m; path = Network/INQCloudSynchronizer.m; sourceTree = "<group>"; };
-		8D19461118C0A59F00C32EED /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQProfileTableViewController.h; path = Profile/INQProfileTableViewController.h; sourceTree = "<group>"; };
-		8D19461218C0A59F00C32EED /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQProfileTableViewController.m; path = Profile/INQProfileTableViewController.m; sourceTree = "<group>"; };
 		8D19461418C0A5B000C32EED /* INQSplashContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQSplashContentViewController.h; path = Splash/INQSplashContentViewController.h; sourceTree = "<group>"; };
 		8D19461518C0A5B000C32EED /* INQSplashContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQSplashContentViewController.m; path = Splash/INQSplashContentViewController.m; sourceTree = "<group>"; };
 		8D19461618C0A5B000C32EED /* INQSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQSplashViewController.h; path = Splash/INQSplashViewController.h; sourceTree = "<group>"; };
@@ -484,11 +483,6 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
-				8D36746118D5DE1D0023A263 /* Parts */,
-				8D40F3EB18C0AAE700F081AE /* main.m */,
-				8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */,
-				8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */,
-				3477E6911769C9A000F3A5F3 /* InfoPlist.strings */,
 				8D1945C418C0A20200C32EED /* Analysis */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
 				3477E6981769C9A000F3A5F3 /* ARLAppDelegate.m */,
@@ -501,15 +495,20 @@
 				8D1945CD18C0A28800C32EED /* Hypothesis */,
 				8D1945CE18C0A2A600C32EED /* Images */,
 				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
+				3477E6911769C9A000F3A5F3 /* InfoPlist.strings */,
 				8D1945CF18C0A2BB00C32EED /* Inquiries */,
 				8D1945D018C0A2DD00C32EED /* Inquiry */,
 				8D1945D118C0A2FD00C32EED /* Main */,
+				8D40F3EB18C0AAE700F081AE /* main.m */,
 				3477E6A01769C9A000F3A5F3 /* MainStoryboard.storyboard */,
 				347AD0C817B3795C00B4B345 /* Network */,
 				347ACF2217B27CE500B4B345 /* NSString+JSON.h */,
 				347ACF2317B27CE500B4B345 /* NSString+JSON.m */,
+				8D36746118D5DE1D0023A263 /* Parts */,
+				8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */,
+				8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */,
 				8D3F8B1918ACE2DC00B233A6 /* Plan */,
-				8DAFB49318BCDBEE0095DFE7 /* Profile */,
+				8D1843AF18D742CF00DF5B13 /* Profile */,
 				8D0249FD18A80B08009D0566 /* Splash */,
 				8D19462918C0A80100C32EED /* Supporting Files */,
 			);
@@ -934,15 +933,6 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
-		8DAFB49318BCDBEE0095DFE7 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				8D19461118C0A59F00C32EED /* INQProfileTableViewController.h */,
-				8D19461218C0A59F00C32EED /* INQProfileTableViewController.m */,
-			);
-			name = Profile;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1017,6 +1007,7 @@
 				34D4230417B677BD0051E84C /* cb_green_off@2x.png in Resources */,
 				34D4230517B677BD0051E84C /* cb_green_on.png in Resources */,
 				8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */,
+				8D1843B018D742CF00DF5B13 /* Profile in Resources */,
 				8D6E80EE18D5BAFB0077D70E /* zbar-help.html in Resources */,
 				8D6E80ED18D5BAFB0077D70E /* zbar-back.png in Resources */,
 				8D19461E18C0A5B000C32EED /* page1.png in Resources */,
@@ -1095,7 +1086,6 @@
 				8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */,
 				8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */,
 				8D6AE1CA18D5C5FE0094D911 /* TPKeyboardAvoidingTableView.m in Sources */,
-				8D19461318C0A59F00C32EED /* INQProfileTableViewController.m in Sources */,
 				8D6FA74E18CCD0260020741A /* Game.m in Sources */,
 				8D6E80C818D5B7AC0077D70E /* ARLNotificationSubscriber.m in Sources */,
 				8D1945FE18C0A54200C32EED /* INQFriendsTableViewController.m in Sources */,

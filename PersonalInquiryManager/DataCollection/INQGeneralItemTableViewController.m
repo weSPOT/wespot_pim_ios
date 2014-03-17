@@ -165,15 +165,15 @@ typedef NS_ENUM(NSInteger, groups) {
     NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
     
     if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-record.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-record"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-photo.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-photo"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-text.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-text"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-explore.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-explore"];
     } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-video.png"];
+        cell.imageView.image = [UIImage imageNamed:@"task-video"];
     }
     
     jsonDict = nil;

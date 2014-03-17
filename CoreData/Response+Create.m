@@ -10,7 +10,6 @@
 
 @implementation Response (Create)
 
-
 + (Response *) initResponse: (Run *) run
              forGeneralItem:(GeneralItem *) gi
                   withValue:(NSString *) value
@@ -68,22 +67,37 @@
     return unsyncedResponses;
 }
 
+/*!
+ *  Convert NSDictionary to a JSON NSString.
+ *
+ *  @param jsonDictionary The NSDictionary to convert.
+ *
+ *  @return The resulting JSON NSString.
+ */
++ (NSString*) jsonString:(NSDictionary *) jsonDictionary {
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
+                                                       options:0
+                                                         error:&error];
+    return [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+}
+
 + (void) createTextResponse: (NSString *) text
-                    withRun: (Run*)run
-            withGeneralItem: (GeneralItem*) generalItem {
+                    withRun: (Run *)run
+            withGeneralItem: (GeneralItem *) generalItem {
     NSDictionary *myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
                                  text, @"text", nil];
-#warning Gives a runtime error when clicked and try to dismiss the 'ths gets covered' popup.
+
     [Response initResponse:run forGeneralItem:generalItem
-                 withValue:[ARLAppDelegate jsonString:myDictionary]
+                 withValue:[Response jsonString:myDictionary]
     inManagedObjectContext: generalItem.managedObjectContext];
 }
 
 + (void) createImageResponse:(NSData *) data
-                       width: (NSNumber*) width
-                       height: (NSNumber*) height
+                       width: (NSNumber *) width
+                       height: (NSNumber *) height
                      withRun: (Run*)run
-             withGeneralItem: (GeneralItem*) generalItem {
+             withGeneralItem: (GeneralItem *) generalItem {
     
    Response * response = [Response initResponse:run
             forGeneralItem:generalItem
@@ -96,8 +110,8 @@
 }
 
 + (void) createVideoResponse:(NSData *) data
-                     withRun: (Run*)run
-             withGeneralItem: (GeneralItem*) generalItem {
+                     withRun: (Run *)run
+             withGeneralItem: (GeneralItem *) generalItem {
     
     Response * response = [Response initResponse:run
                                   forGeneralItem:generalItem
@@ -108,8 +122,8 @@
 }
 
 + (void) createAudioResponse:(NSData *) data
-                     withRun: (Run*)run
-             withGeneralItem: (GeneralItem*) generalItem {
+                     withRun: (Run *)run
+             withGeneralItem: (GeneralItem *) generalItem {
     
     Response * response = [Response initResponse:run
                                   forGeneralItem:generalItem

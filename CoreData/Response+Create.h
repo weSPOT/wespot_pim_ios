@@ -10,7 +10,6 @@
 #import "Run.h"
 #import "GeneralItem.h"
 #import "Account.h"
-#import "NSString+JSON.h"
 
 @interface Response (Create)
 
@@ -26,4 +25,5 @@
 + (void) createAudioResponse:(NSData *) data
                      withRun: (Run*)run
              withGeneralItem: (GeneralItem*) generalItem;
+
 @end

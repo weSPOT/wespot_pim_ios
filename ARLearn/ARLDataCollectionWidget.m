@@ -90,13 +90,11 @@
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;  //This part hung me up
         
-        UIButton *audioButton = [self addButtonWithImage:@"task-record.png" enabled:self.withAudio action:@selector(collectAudio)];
-        UIButton *imageButton = [self addButtonWithImage:@"task-photo.png" enabled:self.withPicture action:@selector(collectImage)];
-        UIButton *videoButton = [self addButtonWithImage:@"task-video.png" enabled:self.withVideo action:@selector(collectVideo)];
-        
-#warning enabling these two button gives an error when dismissing the popup.
-        UIButton *noteButton = [self addButtonWithImage:@"task-explore.png" enabled:NO action:@selector(collectNumber)];    //self.withValue
-        UIButton *textButton = [self addButtonWithImage:@"task-text.png" enabled:NO action:@selector(collectText)];         //self.withText
+        UIButton *audioButton = [self addButtonWithImage:@"task-record" enabled:self.withAudio action:@selector(collectAudio)];
+        UIButton *imageButton = [self addButtonWithImage:@"task-photo" enabled:self.withPicture action:@selector(collectImage)];
+        UIButton *videoButton = [self addButtonWithImage:@"task-video" enabled:self.withVideo action:@selector(collectVideo)];
+        UIButton *noteButton = [self addButtonWithImage:@"task-explore" enabled:self.withValue action:@selector(collectNumber)];
+        UIButton *textButton = [self addButtonWithImage:@"task-text" enabled:self.withText action:@selector(collectText)];
         
         [self addSubview:audioButton];
         [self addSubview:imageButton];

@@ -89,6 +89,7 @@ typedef NS_ENUM(NSInteger, sections) {
 
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
@@ -324,7 +325,7 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     UIViewController *newViewController;
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     switch ([index intValue]){
         case HYPOTHESIS: {
@@ -343,30 +344,12 @@ typedef NS_ENUM(NSInteger, sections) {
             
         case DATACOLLECTION: {
             // Create the new ViewController.
-            NSLog(@"Start");
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectDataView"];
             
             // Pass the parameters to render.
-            NSNumber * runId = [ARLNetwork getARLearnRunId:self.inquiry.inquiryId];
-            Run* selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.inquiry.managedObjectContext];
-            NSNumber * gameId;
-            
-            // if (!selectedRun.runId) {
-            //   NSLog(@"[%s] not good and load hypothesis view", __func__);
-            //}
-            
-            if (selectedRun.runId) {
-                //[newViewController performSelector:@selector(setRun:) withObject:selectedRun];
-                gameId = selectedRun.gameId;
-            } else {
-                gameId = [ARLNetwork getARLearnGameId:self.inquiry.inquiryId];
+            if (self.inquiry.run) {
+                [newViewController performSelector:@selector(setRun:) withObject:self.inquiry.run];
             }
-            NSLog(@"GameId %@, RunId %@ InqueryId %@", gameId, selectedRun.runId, self.inquiry.inquiryId);
-            
-            if (selectedRun.runId) {
-                [newViewController performSelector:@selector(setRun:) withObject:selectedRun];
-            }
-            NSLog(@"End");
         }
             break;
             

@@ -20,11 +20,12 @@
 #warning UIPageViewControl pages erratic when in scroll mode. Curl seems to be ok (but lacks the Page Control at the bottom).
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    self.view.backgroundColor=[UIColor colorWithRed:72.0F/255.0F green:125.0F/255.0F blue:185.0F/255.0F alpha:1.0F];
+    
     self.dataSource = self;
-}
-
--(void)viewDidAppear:(BOOL)animated {
+    
+#warning moved thois code here from viewDidAppear as it removes the delay.
     UIViewController *initialViewController = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
@@ -32,6 +33,10 @@
     [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [self didMoveToParentViewController:self];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)initWithInitialPage:(NSNumber *)index {
@@ -49,10 +54,7 @@
     
     // Ask the InqueryViewController to create and initialize the requested ViewController.
     if ([inquiryViewController respondsToSelector:@selector(CreateInquiryPartViewController:)]) {
-        
-        newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
-//        NSLog(@"Fetching new viewcontroller %@", [newViewController class]);
-//        NSLog(@"ViewControllers %d", self.viewControllers.count);
+          newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
     }
     
     self.currentPageIndex = [NSNumber numberWithInteger:index];

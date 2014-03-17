@@ -8,7 +8,6 @@
 
 #import "ARLNetwork.h"
 
-
 @implementation ARLNetwork
 
 #pragma mark - Network Requests
@@ -24,7 +23,10 @@
 }
 
 + (id) executeARLearnGetWithAuthorization: (NSString *) path {
-    NSString* urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
+    NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
+    
+    NSLog(@"[%s] %@",__func__, urlString);
+    
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     
     NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
@@ -33,7 +35,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    [self dumpJsonData:jsonData url:urlString];
+//  [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -53,7 +55,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
 
-    [self dumpJsonData:jsonData url:urlString];
+//  [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -64,7 +66,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
-    [self dumpJsonData:jsonData url:urlString];
+//  [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -92,7 +94,7 @@
         //return [NSString stringWithUTF8String:[jsonData bytes]];
     }
     
-    [self dumpJsonData:jsonData url:urlString];
+//  [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"returnin gsth";
 }

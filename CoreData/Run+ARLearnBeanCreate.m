@@ -10,7 +10,7 @@
 
 @implementation Run (ARLearnBeanCreate)
 
-+ (Run *) retrieveRun: (NSNumber *) runId inManagedObjectContext: (NSManagedObjectContext * ) context {
++ (Run *) retrieveRun: (NSNumber *) runId inManagedObjectContext: (NSManagedObjectContext *) context {
     Run * run = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
@@ -22,12 +22,9 @@
         run = [runs lastObject];
     }
     return run;
-
 }
 
-
-+ (Run *) runWithDictionary: (NSDictionary *) runDict inManagedObjectContext: (NSManagedObjectContext * ) context {
-    
++ (Run *) runWithDictionary: (NSDictionary *) runDict inManagedObjectContext: (NSManagedObjectContext *) context {
     Run * run = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
@@ -61,6 +58,7 @@
         run.gameId = [runDict objectForKey:@"gameId"] ;
         run.runId = [runDict objectForKey:@"runId"] ;
         run.deleted = [NSNumber numberWithBool:NO];
+        
         [self setGame:run inManagedObjectContext:context];
     }
     
@@ -68,14 +66,13 @@
 }
 
 + (void) setGame: (Run *) run inManagedObjectContext: (NSManagedObjectContext * ) context {
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     request.predicate = [NSPredicate predicateWithFormat:@"gameId = %lld", [run.gameId longLongValue]];
    
     NSError *error = nil;
     NSArray *games = [context executeFetchRequest:request error:&error];
     if (!games || ([games count] > 1)) {
-        // handle error
+      // handle error
     } else if (![games count]) {
         
     } else {
@@ -93,7 +90,7 @@
         NSLog(@"error %@", error);
     }
     for (id run in runs) {
-        NSLog(@"these should be gone already");
+        NSLog(@"this Run should be gone already");
         [context deleteObject:run];
     }
 }

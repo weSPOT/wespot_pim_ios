@@ -128,6 +128,10 @@
                 
             }
         }
+        
+        NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
+        Run *selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.context];
+        newInquiry.run=selectedRun;
     }
     self.syncInquiries = NO;
 }

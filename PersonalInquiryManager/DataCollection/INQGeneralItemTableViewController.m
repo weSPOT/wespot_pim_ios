@@ -41,10 +41,13 @@ typedef NS_ENUM(NSInteger, groups) {
         request.predicate = [NSPredicate predicateWithFormat:
                              @"visible = 1 and run.runId = %lld",
                              [self.run.runId longLongValue]];
+        
 #warning Which SortDescriptor is used?
+        
         NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
         NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, nil];
         [request setSortDescriptors:sortDescriptors];
+        
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
@@ -73,16 +76,18 @@ typedef NS_ENUM(NSInteger, groups) {
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [synchronizer createContext:appDelegate.managedObjectContext];
-        synchronizer.gameId = self.run.gameId;
-        synchronizer.visibilityRunId = self.run.runId;
-        [synchronizer sync];
-    });
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    if (ARLNetwork.networkAvailable) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            [synchronizer createContext:appDelegate.managedObjectContext];
+            synchronizer.gameId = self.run.gameId;
+            synchronizer.visibilityRunId = self.run.runId;
+            [synchronizer sync];
+        });
+    }
+    
+    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
@@ -121,8 +126,6 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"[%s] %d", __func__, [self.fetchedResultsController.fetchedObjects count]);
-    
     return [self.fetchedResultsController.fetchedObjects count];
 }
 

@@ -31,7 +31,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
-    [self dumpJsonData2:jsonData url:url];
+//  [self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -179,10 +179,11 @@
  *
  *  @return The ARLearn RunId.
  */
-+ (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId {
++ (NSNumber *) getARLearnRunId: (NSNumber *) inquiryId {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearnrun", apiKey, inquiryId];
-    NSLog(@"url %@", url);
-    NSLog(@"url %@", [self returnJson:url]);
+ 
+    NSLog(@"[%s] url %@", __func__, url);
+    NSLog(@"[%s]url %@", __func__, [self returnJson:url]);
     
     if (![[self returnJson:url] objectForKey:@"result"])
         #warning veg - 03-02-2014 Hardcoded Magic Number

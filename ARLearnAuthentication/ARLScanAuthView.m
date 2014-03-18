@@ -39,7 +39,7 @@
         self.scanImage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.scanImage.translatesAutoresizingMaskIntoConstraints = NO;
         [self.scanImage addTarget:self action:@selector(scanClick) forControlEvents:UIControlEventTouchUpInside];
-        [self.scanImage setImage:[UIImage imageNamed:@"qrscanner.png"] forState:UIControlStateNormal];
+        [self.scanImage setImage:[UIImage imageNamed:@"qrscanner"] forState:UIControlStateNormal];
         
         [self.scanImage imageView].contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.scanImage];

@@ -63,7 +63,7 @@
     switch (self.recorder.status) {
         case ReadyToRecordPlay:
             [self setButtons:@"button_rec" rightImage:@"grey_play"];
-            //            [self setButtons:@"black_play.png" stopImage:@"grey_stop.png"];
+            //[self setButtons:@"black_play" stopImage:@"grey_stop"];
             break;
         case ReadyToRecordPlayWithFile:
             [self setButtons:@"button_rec" rightImage:@"black_play"];            

@@ -12,15 +12,21 @@
 
 + (Action *) initAction: (NSString *) actionString
                 forRun :(Run *) run
-             forGeneralItem:(GeneralItem *) gi
-     inManagedObjectContext: (NSManagedObjectContext * ) context {
+         forGeneralItem:(GeneralItem *) gi
+ inManagedObjectContext: (NSManagedObjectContext * ) context {
     Action * action = [NSEntityDescription insertNewObjectForEntityForName:@"Action" inManagedObjectContext: context];
     action.run = run;
     action.action = actionString;
     action.generalItem = gi;
     action.time = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     action.synchronized = [NSNumber numberWithBool:NO];
-
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return action;
 }
 
@@ -34,6 +40,7 @@
     if (error) {
         NSLog(@"[%s] error %@", __func__, error);
     }
+    
     return unsyncedActions;
 }
 

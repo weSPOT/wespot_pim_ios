@@ -40,8 +40,6 @@ UIImage * cachedPicture;
  *  @return The Account
  */
 + (TestAccount *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
-    TestAccount * account = nil;
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TestAccount"];
     
     request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) AND (accountType = %d)", [giDict objectForKey:@"localId"], [[giDict objectForKey:@"accountType"] intValue]];
@@ -49,11 +47,9 @@ UIImage * cachedPicture;
     if (!accountsFromDb || ([accountsFromDb count] != 1)) {
         return nil;
     } else {
-        account = [accountsFromDb lastObject];
-        return account;
+        return [accountsFromDb lastObject];
     }
 }
-
 
 /*!
  *  Create or Update a Record from CoreData with a JSON Derived Dictionary.
@@ -80,6 +76,12 @@ UIImage * cachedPicture;
     account.accountLevel= [acDict objectForKey:@"accountLevel"];
     account.picture = [acDict objectForKey:@"picture"];
 
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return account;
 }
 

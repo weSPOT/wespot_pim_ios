@@ -35,7 +35,7 @@
 
 + (void) saveChanges : (NSManagedObjectContext * ) context {
     
-     NSError *error = nil;
+    NSError *error = nil;
     if (context) {
         if ([context hasChanges]){
             if (![context save:&error]) {

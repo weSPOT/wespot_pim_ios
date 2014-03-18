@@ -15,9 +15,11 @@
 + (ARLNotificationPlayer *)sharedSingleton {
     static ARLNotificationPlayer *sharedSingleton;
     static dispatch_once_t predicate;
+    
     dispatch_once(&predicate, ^{
         sharedSingleton = [[ARLNotificationPlayer alloc] init];
     });
+    
     return sharedSingleton;
 }
 

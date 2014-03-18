@@ -17,6 +17,7 @@
 @synthesize syncActions = _syncActions;
 @synthesize gameId = _gameId;
 @synthesize visibilityRunId = _visibilityRunId;
+
 @synthesize context = _context;
 
 //static NSMutableDictionary *syncDates;
@@ -71,7 +72,9 @@
             }
             [self.parentContext performBlock:^{
                 NSError *error = nil;
-                if (![self.parentContext save:&error]) {abort();}
+                if (![self.parentContext save:&error]) {
+                    abort();
+                }
                 ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
                 [fileSync createContext:self.parentContext];
                 [fileSync sync];

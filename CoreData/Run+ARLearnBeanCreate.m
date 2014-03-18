@@ -62,6 +62,12 @@
         [self setGame:run inManagedObjectContext:context];
     }
     
+    error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return run;
 }
 

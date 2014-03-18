@@ -65,7 +65,7 @@
     
     NSArray *bkItems = [context executeFetchRequest:request error:nil];
     if (!bkItems || ([bkItems count] > 1)) {
-        //        // handle error
+        // handle error
     } else if (![bkItems count]) {
         bkItem = [NSEntityDescription insertNewObjectForEntityForName:@"SynchronizationBookKeeping"
                                                inManagedObjectContext:context];
@@ -73,9 +73,19 @@
     } else {
         bkItem = [bkItems lastObject];
     }
-     if (idContext)   bkItem.context = idContext;
+    
+    if (idContext) {
+        bkItem.context = idContext;
+    }
+    
     bkItem.lastSynchronization = time;
    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return bkItem;
 }
 

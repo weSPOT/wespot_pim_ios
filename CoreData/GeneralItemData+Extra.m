@@ -36,6 +36,7 @@
         giData.name = key;
         giData.generalItem = gi;
     }
+    
     if (![url isEqual:giData.url]) {
         giData.url = url;
         giData.replicated = [NSNumber numberWithBool:NO];
@@ -46,14 +47,22 @@
             giData.error = [NSNumber numberWithBool:NO];
         }
     }
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
 }
 
 + (NSDictionary*) getDatas: (GeneralItem* ) gi withManagedContext: (NSManagedObjectContext*) context{
     NSMutableArray *objectArray = [NSMutableArray arrayWithArray:[gi.data allObjects]];
     NSMutableArray *keysArray = [NSMutableArray arrayWithCapacity:[objectArray count]];
+    
     for (GeneralItemData* data  in objectArray) {
         [keysArray addObject:data.name];
     }
+    
     return  [NSDictionary dictionaryWithObjects:objectArray forKeys:keysArray];
 }
 

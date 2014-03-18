@@ -12,9 +12,11 @@
 
 + (Account *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext * ) context {
     Account * account = [self retrieveFromDb:acDict withManagedContext:context];
+    
     if (!account) {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
     }
+    
     account.localId = [acDict objectForKey:@"localId"];
     account.accountType = [acDict objectForKey:@"accountType"];
     
@@ -26,15 +28,20 @@
     
     NSURL  *url = [NSURL URLWithString:[acDict objectForKey:@"picture"]];
     NSData *urlData = [NSData dataWithContentsOfURL:url];
-    if ( urlData ){
+    if (urlData) {
         account.picture = urlData;
     }
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return account;
 }
 
 + (Account *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
-    Account * account = nil;
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
 
     request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) AND (accountType = %d)", [giDict objectForKey:@"localId"], [[giDict objectForKey:@"accountType"] intValue]];
@@ -42,8 +49,7 @@
     if (!accountsFromDb || ([accountsFromDb count] != 1)) {
         return nil;
     } else {
-        account = [accountsFromDb lastObject];
-        return account;
+        return [accountsFromDb lastObject];
     }
 }
 
@@ -72,7 +78,12 @@
     for (id ac in accounts) {
         [context deleteObject:ac];
     }
+    
+    error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
 }
-
 
 @end

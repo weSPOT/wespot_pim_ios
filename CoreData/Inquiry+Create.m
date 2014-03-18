@@ -10,7 +10,6 @@
 
 @implementation Inquiry (Create)
 
-
 + (Inquiry *) inquiryWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context {
     Inquiry * inquiry = [self retrieveFromDb:inquiryDict withManagedContext:context];
     if (!inquiry) {
@@ -25,6 +24,13 @@
     if ( urlData ){
         inquiry.icon = urlData;
     }
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return inquiry;
 }
 

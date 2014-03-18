@@ -21,6 +21,7 @@
     if (!games || [games count] > 0) {
         game = [games lastObject];
     }
+    
     return game;
 }
 
@@ -41,8 +42,13 @@
     if (!game.hasMap) game.hasMap = NO;
     [self setCorrespondingRuns:game];
     
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return game;
-
 }
 
 + (void) setCorrespondingRuns: (Game *) game {
@@ -56,7 +62,5 @@
         [game addCorrespondingRunsObject:run];
     }
 }
-
-
 
 @end

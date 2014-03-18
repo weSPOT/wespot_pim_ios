@@ -42,6 +42,10 @@
         
     }
     giVis.email =[visDict objectForKey:@"email"];
+    
+    NSError *error = nil;
+    [run.managedObjectContext save:&error];
+    
     return giVis;
 }
 

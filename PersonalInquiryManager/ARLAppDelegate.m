@@ -16,6 +16,8 @@
 
 @implementation ARLAppDelegate
 
+// dispatch_queue_t syncqueue;
+
 // veg: These three need to stay as we implement the getter (so NO default _ prefixed backing field).
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -26,6 +28,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //#warning experimental code.
+    //    syncqueue = dispatch_queue_create("net.wespot.SyncQueue", NULL);
+    
     // Override point for customization after application launch.
     _networkAvailable = NO;
     
@@ -35,12 +40,12 @@
                                                object:nil];
     
     Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
-
+    
     [reach startNotifier];
     
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -49,7 +54,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
@@ -82,7 +87,6 @@
             [_managedObjectContext setPersistentStoreCoordinator:coordinator];
         }
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_mocDidSaveNotification:) name:NSManagedObjectContextDidSaveNotification object:nil];
-        
     }
     
     return _managedObjectContext;
@@ -99,10 +103,9 @@
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     }
-    
+ 
     return _managedObjectModel;
 }
-
 
 /*!
  *  If the coordinator doesn't already exist, it is created and the application's store added to it.
@@ -112,6 +115,8 @@
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (!_persistentStoreCoordinator) {
+        NSLog(@"[%s]\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************", __func__);
+        
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
         NSError *error = nil;
@@ -144,7 +149,6 @@
     }
 }
 
-
 - (void)syncData {
     NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
     
@@ -163,9 +167,11 @@
     if (_managedObjectContext == savedContext) {
         return;
     }
+    
     if (_managedObjectContext.persistentStoreCoordinator != savedContext.persistentStoreCoordinator){
         return;
     }
+    
     dispatch_sync(dispatch_get_main_queue(), ^{
         [_managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
     });
@@ -184,6 +190,11 @@
     }
 }
 
+/*!
+ *  Returns the Applications Document Directory.
+ *
+ *  @return <#return value description#>
+ */
 - (NSURL *)applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
@@ -204,8 +215,8 @@
  */
 - (Account *) CurrentAccount {
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
-                                   withManagedContext:self.managedObjectContext];
-
+                                       withManagedContext:self.managedObjectContext];
+    
     _isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];
     
     return account;
@@ -220,15 +231,21 @@
     return _networkAvailable;
 }
 
+/*!
+ *  Notification Handler for Reachability.
+ *  Sets the networkAvailable property.
+ *
+ *  @param note The Reachability object.
+ */
 -(void)reachabilityChanged:(NSNotification*)note
 {
     Reachability *reach = [note object];
- 
+    
     NSLog(@"Reachability Changed");
     NSLog(@"From: %@", _networkAvailable);
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
-
+    
     NSLog(@"To: %@", _networkAvailable);
     
     NSLog(@" All:  %d", [reach isReachable]);

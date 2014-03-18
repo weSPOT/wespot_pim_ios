@@ -52,17 +52,25 @@
     [self setCorrespondingVisibilityItems:gi];
 
     [self downloadCorrespondingData:giDict withGeneralItem:gi inManagedObjectContext:context];
-    return gi;
     
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
+    return gi;
    }
 
 + (void) downloadCorrespondingData: (NSDictionary *) giDict
                    withGeneralItem: (GeneralItem *) gi
             inManagedObjectContext: (NSManagedObjectContext * ) context {
     NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
+   
     if ([jsonDict objectForKey:@"iconUrl"]) {
         [GeneralItemData createDownloadTask:gi withKey:@"iconUrl" withUrl:[jsonDict objectForKey:@"iconUrl"] withManagedContext:context];
     }
+    
     if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.AudioObject"] == NSOrderedSame ){
         [GeneralItemData createDownloadTask:gi withKey:@"audio" withUrl:[jsonDict objectForKey:@"audioFeed"] withManagedContext:context];
     } else if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.VideoObject"] == NSOrderedSame ){
@@ -71,7 +79,6 @@
 //    else {
 //        NSLog(@"nothing to download for %@", gi.type);
 //    }
-    
 }
 
 + (void) setCorrespondingVisibilityItems: (GeneralItem *) gi {
@@ -84,15 +91,13 @@
     if (error) {
         NSLog(@"error %@", error);
     }
+    
     for (GeneralItemVisibility *giv in allVisibilityStatements) {
         giv.generalItem = gi;
     }
-    
 }
 
 + (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext*) context{
-    GeneralItem * gi = nil;
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
     request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [itemId longLongValue]];
     NSError *error = nil;
@@ -104,14 +109,11 @@
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
     } else {
-        gi = [generalItemsFromDb lastObject];
-        return gi;
+        return [generalItemsFromDb lastObject];
     }
 }
 
 + (GeneralItem *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
-    GeneralItem * gi = nil;
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
     request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [[giDict objectForKey:@"id"] longLongValue]];
     NSError *error = nil;
@@ -123,8 +125,7 @@
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
     } else {
-        gi = [generalItemsFromDb lastObject];
-        return gi;
+        return [generalItemsFromDb lastObject];
     }
 }
 

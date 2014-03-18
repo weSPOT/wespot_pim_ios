@@ -37,7 +37,7 @@
         self.twitterImage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.twitterImage.translatesAutoresizingMaskIntoConstraints = NO;
         [self.twitterImage addTarget:self action:@selector(twitterAuth) forControlEvents:UIControlEventTouchUpInside];
-        [self.twitterImage setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateNormal];
+        [self.twitterImage setImage:[UIImage imageNamed:@"twitter"] forState:UIControlStateNormal];
         [self.twitterImage imageView].contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.twitterImage];
         
@@ -45,21 +45,21 @@
         self.googleImage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.googleImage.translatesAutoresizingMaskIntoConstraints = NO;
         [self.googleImage addTarget:self action:@selector(googleAuth) forControlEvents:UIControlEventTouchUpInside];
-        [self.googleImage setImage:[UIImage imageNamed:@"google.png"] forState:UIControlStateNormal];
+        [self.googleImage setImage:[UIImage imageNamed:@"google"] forState:UIControlStateNormal];
         [self.googleImage imageView].contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.googleImage];
         
         self.facebookImage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.facebookImage.translatesAutoresizingMaskIntoConstraints = NO;
         [self.facebookImage addTarget:self action:@selector(facebookAuth) forControlEvents:UIControlEventTouchUpInside];
-        [self.facebookImage setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
+        [self.facebookImage setImage:[UIImage imageNamed:@"facebook"] forState:UIControlStateNormal];
         [self.facebookImage imageView].contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.facebookImage];
         
         self.linkedInImage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.linkedInImage.translatesAutoresizingMaskIntoConstraints = NO;
         [self.linkedInImage addTarget:self action:@selector(linkedInAuth) forControlEvents:UIControlEventTouchUpInside];
-        [self.linkedInImage setImage:[UIImage imageNamed:@"linkedin.png"] forState:UIControlStateNormal];
+        [self.linkedInImage setImage:[UIImage imageNamed:@"linkedin"] forState:UIControlStateNormal];
         [self.linkedInImage imageView].contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.linkedInImage];
         

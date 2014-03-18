@@ -18,6 +18,9 @@
     visibility.item = generalItem;
     visibility.run = run;
     
+    NSError *error = nil;
+    [run.managedObjectContext save:&error];
+    
     return visibility;
 }
 

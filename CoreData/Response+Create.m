@@ -17,17 +17,23 @@
     Response * response = [NSEntityDescription insertNewObjectForEntityForName:@"Response" inManagedObjectContext: context];
     response.value = value;
     response.generalItem = gi;
-
+    
     response.run = run;
     response.synchronized = [NSNumber numberWithBool:NO];
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
-
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
     return response;
 }
 
 + (Response *) initResponse: (Run *) run
              forGeneralItem:(GeneralItem *) gi
-                  withData:(NSData *) data
+                   withData:(NSData *) data
      inManagedObjectContext: (NSManagedObjectContext * ) context {
     Response * response = [NSEntityDescription insertNewObjectForEntityForName:@"Response" inManagedObjectContext: context];
     response.value = nil;
@@ -36,6 +42,12 @@
     response.run = run;
     response.synchronized = [NSNumber numberWithBool:NO];
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
+    
+    NSError *error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
     
     return response;
 }
@@ -52,6 +64,11 @@
         [context deleteObject:response];
     }
     
+    error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
 }
 
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext*) context {
@@ -61,9 +78,11 @@
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
+    
     if (error) {
         NSLog(@"error %@", error);
     }
+    
     return unsyncedResponses;
 }
 

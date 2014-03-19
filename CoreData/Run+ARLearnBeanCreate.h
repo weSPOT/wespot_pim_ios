@@ -12,5 +12,5 @@
 
 + (Run *) retrieveRun: (NSNumber *) runId inManagedObjectContext: (NSManagedObjectContext * ) context;
 + (Run *) runWithDictionary: (NSDictionary *) runDict inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (void) deleteAllRuns: (NSManagedObjectContext * ) context;
+
 @end

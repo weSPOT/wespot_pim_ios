@@ -114,18 +114,17 @@
     return [context executeFetchRequest:request error:nil];
 }
 
-+ (void) deleteAll: (NSManagedObjectContext * ) context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
-    
-    NSError *error = nil;
-    NSArray *visibilities = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
-    for (id visi in visibilities) {
-        [context deleteObject:visi];
-    }
-    
-}
+//+ (void) deleteAll: (NSManagedObjectContext * ) context {
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
+//    
+//    NSError *error = nil;
+//    NSArray *visibilities = [context executeFetchRequest:request error:&error];
+//    if (error) {
+//        NSLog(@"error %@", error);
+//    }
+//    for (id visi in visibilities) {
+//        [context deleteObject:visi];
+//    }
+//}
 
 @end

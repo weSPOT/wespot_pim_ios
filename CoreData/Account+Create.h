@@ -9,8 +9,9 @@
 #import "Account.h"
 
 @interface Account (Create)
+
 + (Account *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext * ) context;
 + (Account *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context;
 + (Account *) retrieveFromDbWithLocalId: (NSString *) localId withManagedContext: (NSManagedObjectContext*) context;
-+ (void) deleteAll: (NSManagedObjectContext * ) context ;
+
 @end

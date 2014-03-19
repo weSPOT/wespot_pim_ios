@@ -52,24 +52,24 @@
     return response;
 }
 
-+ (void) deleteAll: (NSManagedObjectContext * ) context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
-    
-    NSError *error = nil;
-    NSArray *responses = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
-    for (id response in responses) {
-        [context deleteObject:response];
-    }
-    
-    error = nil;
-    [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
-}
+//+ (void) deleteAll: (NSManagedObjectContext * ) context {
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+//    
+//    NSError *error = nil;
+//    NSArray *responses = [context executeFetchRequest:request error:&error];
+//    if (error) {
+//        NSLog(@"error %@", error);
+//    }
+//    for (id response in responses) {
+//        [context deleteObject:response];
+//    }
+//    
+//    error = nil;
+//    [context save:&error];
+//    if (error) {
+//        NSLog(@"[%s] error %@", __func__, error);
+//    }
+//}
 
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext*) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];

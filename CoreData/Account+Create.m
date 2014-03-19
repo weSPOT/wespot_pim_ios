@@ -67,23 +67,23 @@
     }
 }
 
-+ (void) deleteAll: (NSManagedObjectContext * ) context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    
-    NSError *error = nil;
-    NSArray *accounts = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
-    for (id ac in accounts) {
-        [context deleteObject:ac];
-    }
-    
-    error = nil;
-    [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
-}
+//+ (void) deleteAll: (NSManagedObjectContext * ) context {
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+//    
+//    NSError *error = nil;
+//    NSArray *accounts = [context executeFetchRequest:request error:&error];
+//    if (error) {
+//        NSLog(@"[%s] error %@", __func__, error);
+//    }
+//    for (id ac in accounts) {
+//        [context deleteObject:ac];
+//    }
+//    
+//    error = nil;
+//    [context save:&error];
+//    if (error) {
+//        NSLog(@"[%s] error %@", __func__, error);
+//    }
+//}
 
 @end

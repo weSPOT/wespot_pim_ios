@@ -19,9 +19,6 @@
     return [self generalItemWithDictionary:giDict withGame:game inManagedObjectContext:context];
 }
 
-
-
-
 + (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict
                                    withGame: (Game * ) game
                      inManagedObjectContext: (NSManagedObjectContext * ) context {

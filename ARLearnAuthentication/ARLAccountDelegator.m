@@ -14,12 +14,25 @@
 
 @implementation ARLAccountDelegator
 
+
+/*!
+ *  Remove all accounts and associated data.
+ *
+ *  @param context The NSManagedObjectContext
+ */
 + (void) deleteCurrentAccount: (NSManagedObjectContext * ) context {
-    [Account deleteAll:context];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
+
     [self resetAccount:context];
 }
 
-+ (void) resetAccount: (NSManagedObjectContext * ) context {
+/*!
+ *  Reset all data associated to an account. 
+ *  Also reset thesynchronization bookkeeping.
+ *
+ *  @param The NSManagedObjectContext
+ */
++ (void) resetAccount: (NSManagedObjectContext *) context {
     NSNumber* serverTime = [NSNumber numberWithLong:0];
     
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"SynchronizationBookKeeping"];
@@ -29,7 +42,6 @@
     [SynchronizationBookKeeping createEntry:@"generalItems" time:serverTime inManagedObjectContext:context];
     [SynchronizationBookKeeping createEntry:@"generalItemsVisibility" time:serverTime inManagedObjectContext:context];
     
-    //[Run deleteAllRuns:context];
     //[GeneralItemVisibility deleteAll:context];
     //[Response deleteAll:context];
     
@@ -43,7 +55,7 @@
     [self saveChanges:context];
 }
 
-+ (void) saveChanges : (NSManagedObjectContext * ) context {
++ (void) saveChanges : (NSManagedObjectContext *) context {
     NSError *error = nil;
     if (context) {
         if ([context hasChanges]){
@@ -55,7 +67,13 @@
     }
 }
 
-+ (void) deleteAllOfEntity: (NSManagedObjectContext * ) context enityName:(NSString *)name {
+/*!
+ *  Delete all records of the specified entity type.
+ *
+ *  @param context The NSManagedObjectContext
+ *  @param name    The entity name.
+ */
++ (void) deleteAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *)name {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
     
     NSError *error = nil;

@@ -15,10 +15,11 @@
 #import "CurrentItemVisibility+Create.h"
 
 @interface GeneralItemVisibility (ARLearnBeanCreate)
+
 + (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run withGeneralItem: (GeneralItem *) gi;
 + (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run ;
-+ (void) deleteAll: (NSManagedObjectContext * ) context;
 
 + (NSArray *) retrieve : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
 + (NSArray *) retrieve : (NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
+
 @end

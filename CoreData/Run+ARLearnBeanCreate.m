@@ -87,18 +87,18 @@
     }
 }
 
-+ (void) deleteAllRuns: (NSManagedObjectContext * ) context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
-    
-    NSError *error = nil;
-    NSArray *runs = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
-    for (id run in runs) {
-        // NSLog(@"this Run should be gone already");
-        [context deleteObject:run];
-    }
-}
+//+ (void) deleteAllRuns: (NSManagedObjectContext * ) context {
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
+//    
+//    NSError *error = nil;
+//    NSArray *runs = [context executeFetchRequest:request error:&error];
+//    if (error) {
+//        NSLog(@"error %@", error);
+//    }
+//    for (id run in runs) {
+//        // NSLog(@"this Run should be gone already");
+//        [context deleteObject:run];
+//    }
+//}
 
 @end

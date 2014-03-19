@@ -50,7 +50,7 @@
     gi.type = [giDict objectForKey:@"type"];
     gi.json = [NSKeyedArchiver archivedDataWithRootObject:giDict];
     [self setCorrespondingVisibilityItems:gi];
-
+    
     [self downloadCorrespondingData:giDict withGeneralItem:gi inManagedObjectContext:context];
     
     NSError *error = nil;
@@ -60,13 +60,13 @@
     }
     
     return gi;
-   }
+}
 
 + (void) downloadCorrespondingData: (NSDictionary *) giDict
                    withGeneralItem: (GeneralItem *) gi
             inManagedObjectContext: (NSManagedObjectContext * ) context {
     NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
-   
+    
     if ([jsonDict objectForKey:@"iconUrl"]) {
         [GeneralItemData createDownloadTask:gi withKey:@"iconUrl" withUrl:[jsonDict objectForKey:@"iconUrl"] withManagedContext:context];
     }
@@ -76,9 +76,9 @@
     } else if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.VideoObject"] == NSOrderedSame ){
         [GeneralItemData createDownloadTask:gi withKey:@"video" withUrl:[jsonDict objectForKey:@"videoFeed"] withManagedContext:context];
     }
-//    else {
-//        NSLog(@"nothing to download for %@", gi.type);
-//    }
+    //    else {
+    //        NSLog(@"nothing to download for %@", gi.type);
+    //    }
 }
 
 + (void) setCorrespondingVisibilityItems: (GeneralItem *) gi {
@@ -95,13 +95,19 @@
     for (GeneralItemVisibility *giv in allVisibilityStatements) {
         giv.generalItem = gi;
     }
+    
+    error = nil;
+    [context save:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
 }
 
 + (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext*) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
     request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [itemId longLongValue]];
     NSError *error = nil;
-
+    
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
     if (error) {
         NSLog(@"error %@", error);
@@ -117,7 +123,7 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
     request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [[giDict objectForKey:@"id"] longLongValue]];
     NSError *error = nil;
-
+    
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
     if (error) {
         NSLog(@"error %@", error);
@@ -146,8 +152,8 @@
     if (error) {
         NSLog(@"error %@", error);
     }
-    return unsyncedData;
     
+    return unsyncedData;
 }
 
 + (NSArray *) retrieve :(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
@@ -156,21 +162,19 @@
     request.predicate = [NSPredicate predicateWithFormat:@"gameId =%lld ",
                          [gameId longLongValue]
                          ];
-
-
+    
     return [context executeFetchRequest:request error:nil];
 }
 
 - (NSData *) customIconData {
     for (GeneralItemData* data in self.data) {
-                NSLog(@"data %@", data.name);
+        NSLog(@"data %@", data.name);
         if ([data.name isEqualToString:@"iconUrl"]) {
             return data.data;
         }
     }
-    return nil;
     
+    return nil;
 }
-
 
 @end

@@ -37,7 +37,7 @@
     if (!enabled) {
         image = [self grayishImage:image];
     }
-
+    
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button setEnabled:enabled];
     
@@ -49,22 +49,22 @@
 - (UIImage *)grayishImage:(UIImage *)inputImage {
     UIGraphicsBeginImageContextWithOptions(inputImage.size, NO, inputImage.scale);
     CGRect imageRect = CGRectMake(0.0f, 0.0f, inputImage.size.width, inputImage.size.height);
-
+    
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-
+    
     // Draw a white background
     CGContextSetRGBFillColor(ctx, 1.0f, 1.0f, 1.0f, 1.0f);
     CGContextFillRect(ctx, imageRect);
-
+    
     // Draw the luminosity on top of the white background to get grayscale
     [inputImage drawInRect:imageRect blendMode:kCGBlendModeLuminosity alpha:1.0f];
-
+    
     // Apply the source image's alpha
     [inputImage drawInRect:imageRect blendMode:kCGBlendModeDestinationIn alpha:1.0f];
-
+    
     UIImage* grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return grayscaleImage;
 }
 
@@ -83,7 +83,7 @@
         self.withText = [(NSNumber*)[jsonDict objectForKey:@"withText"] intValue] ==1;
         self.withValue = [(NSNumber*)[jsonDict objectForKey:@"withValue"] intValue] ==1;
         self.withVideo = [(NSNumber*)[jsonDict objectForKey:@"withVideo"] intValue] ==1;
-         
+        
         self.textDescription = [jsonDict objectForKey:@"textDescription"];
         self.valueDescription = [jsonDict objectForKey:@"valueDescription"];
         
@@ -103,12 +103,12 @@
         [self addSubview:textButton];
         
         NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-            audioButton, @"audioButton",
-            imageButton, @"imageButton",
-            videoButton, @"videoButton",
-            noteButton,  @"noteButton",
-            textButton,  @"textButton",
-            nil];
+                                         audioButton, @"audioButton",
+                                         imageButton, @"imageButton",
+                                         videoButton, @"videoButton",
+                                         noteButton,  @"noteButton",
+                                         textButton,  @"textButton",
+                                         nil];
         
         [self addConstraints:[NSLayoutConstraint
                               constraintsWithVisualFormat:@"V:|-[audioButton(==50)]"
@@ -162,7 +162,7 @@
     controller.generalItem = self.generalItem;
     
     [[self.generalItemViewController navigationController] pushViewController:controller animated:TRUE];
-//  [self.generalItemViewController presentViewController:controller animated:TRUE completion:nil];
+    //  [self.generalItemViewController presentViewController:controller animated:TRUE completion:nil];
 }
 
 - (void) collectNumber{
@@ -271,7 +271,7 @@
         NSData* videoData = [NSData dataWithContentsOfURL:object];
         [Response createVideoResponse:videoData withRun:self.run withGeneralItem:self.generalItem];
         
-//      [picker dismissViewControllerAnimated:YES completion:NULL];
+        //      [picker dismissViewControllerAnimated:YES completion:NULL];
     }
     
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];

@@ -83,6 +83,7 @@
     if (!_managedObjectContext) {
         NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
         if (coordinator != nil) {
+            //See http://www.cocoanetics.com/2012/07/multi-context-coredata/
             _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
             [_managedObjectContext setPersistentStoreCoordinator:coordinator];
         }

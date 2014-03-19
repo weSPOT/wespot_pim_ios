@@ -16,10 +16,14 @@
  *  @param context The Core Data Context.
  */
 + (void) syncUsers: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
     INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
   
     [synchronizer createContext:context];
+    
     synchronizer.syncUsers = YES;
+    
     [synchronizer sync];
 }
 
@@ -29,10 +33,14 @@
  *  @param context The Core Data Context.
  */
 + (void) syncInquiries: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
     INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
+    
     synchronizer.syncInquiries = YES;
+    
     [synchronizer sync];
 }
 
@@ -43,6 +51,7 @@
  */
 - (void) createContext: (NSManagedObjectContext*) mainContext {
     self.parentContext = mainContext;
+    
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.context.parentContext = mainContext;
 }
@@ -59,6 +68,8 @@
 /*!
  *  Save the Core Data Context.
  *
+ *  See http://www.cocoanetics.com/2012/07/multi-context-coredata/
+ *
  *  Runs on a separate thread in the background.
  */
 - (void)saveContext{
@@ -70,6 +81,7 @@
                 NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
                 abort();
             }
+            
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {abort();}
@@ -84,15 +96,18 @@
  *  Runs on a separate thread in the background.
  */
 - (void) asyncExecution {
-    if (self.syncUsers) {
-        [self syncAllUsers];
-        [self asyncExecution];
-    } else if (self.syncInquiries) {
-        [self syncronizeInquiries];
-        [self asyncExecution];
-    } else {
-        [self saveContext];
+    NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
+    while (YES) {
+        if (self.syncUsers) {
+            [self syncAllUsers];
+        } else if (self.syncInquiries) {
+            [self syncronizeInquiries];
+        } else {
+            [self saveContext];
+            break;
+        }
     }
+    NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************", __func__);
 }
 
 /*!
@@ -129,6 +144,7 @@
             }
         }
         
+        // Get the correct Run for this Inquiry.
         NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
         Run *selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.context];
         newInquiry.run=selectedRun;

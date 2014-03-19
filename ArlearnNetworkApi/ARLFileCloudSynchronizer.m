@@ -14,6 +14,7 @@
 
 - (void) createContext: (NSManagedObjectContext*) mainContext {
     self.parentContext = mainContext;
+    
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.context.parentContext = mainContext;
 }
@@ -26,9 +27,25 @@
 }
 
 - (void) asyncExecution {
-    [self downloadGeneralItems];
+    NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
+    while (YES) {
+        [self downloadGeneralItems];
+        
+        // Already done in downloadGeneralItems, but added dor symmetry with other asyncExecution methods.
+        [self saveContext];
+        
+        break;
+    }
+    NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************\r\n", __func__);
 }
 
+/*!
+ *  Save the Core Data Context.
+ *
+ *  See http://www.cocoanetics.com/2012/07/multi-context-coredata/
+ *
+ *  Runs on a separate thread in the background.
+ */
 - (void)saveContext
 {
     NSError *error = nil;
@@ -39,6 +56,7 @@
                 NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
                 abort();
             }
+            
             NSLog(@"[%s] save completed", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;

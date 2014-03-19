@@ -315,16 +315,16 @@
     
     switch (serviceId) {
         case FACEBOOK:
-            [svc loadAuthenticateUrl: self.facebookLoginString delegate:svc];
+            [svc loadAuthenticateUrl: self.facebookLoginString name:@"Facebook" delegate:svc];
             break;
         case GOOGLE:
-            [svc loadAuthenticateUrl: self.googleLoginString delegate:svc];
+            [svc loadAuthenticateUrl: self.googleLoginString name:@"Google" delegate:svc];
             break;
         case LINKEDIN:
-            [svc loadAuthenticateUrl: self.linkedInLoginString delegate:svc];
+            [svc loadAuthenticateUrl: self.linkedInLoginString name:@"Linked-in" delegate:svc];
             break;
         case TWITTER:
-            [svc loadAuthenticateUrl: self.twitterLoginString delegate:svc];
+            [svc loadAuthenticateUrl: self.twitterLoginString name:@"Twitter" delegate:svc];
             break;
     }
 }

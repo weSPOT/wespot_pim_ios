@@ -8,7 +8,9 @@
 #import "CoreDataTableViewController.h"
 
 @interface CoreDataTableViewController()
+
 @property (nonatomic) BOOL beganUpdates;
+
 @end
 
 @implementation CoreDataTableViewController
@@ -19,6 +21,17 @@
 @synthesize suspendAutomaticTrackingOfChangesInManagedObjectContext = _suspendAutomaticTrackingOfChangesInManagedObjectContext;
 @synthesize debug = _debug;
 @synthesize beganUpdates = _beganUpdates;
+@synthesize sectionOffset = _sectionOffset;
+
+//- (id)init {
+//    if (self = [super init] ){
+//        _sectionOffset = 0;
+//        
+//        return self;
+//    }
+//    
+//    return nil;
+//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -30,17 +43,24 @@
 - (void)performFetch
 {
     if (self.fetchedResultsController) {
-        if (self.fetchedResultsController.fetchRequest.predicate) {
-            if (self.debug) NSLog(@"[%@ %@] fetching %@ with predicate: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName, self.fetchedResultsController.fetchRequest.predicate);
+        if (self.debug) {
+            if (self.fetchedResultsController.fetchRequest.predicate) {
+                NSLog(@"[%@ %@] fetching %@ with predicate: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName, self.fetchedResultsController.fetchRequest.predicate);
+            }
         } else {
-            if (self.debug) NSLog(@"[%@ %@] fetching all %@ (i.e., no predicate)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName);
+            NSLog(@"[%@ %@] fetching all %@ (i.e., no predicate)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName);
         }
         NSError *error;
         [self.fetchedResultsController performFetch:&error];
-        if (error) NSLog(@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]);
+        if (error) {
+            NSLog(@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]);
+        }
     } else {
-        if (self.debug) NSLog(@"[%@ %@] no NSFetchedResultsController (yet?)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+        if (self.debug) {
+            NSLog(@"[%@ %@] no NSFetchedResultsController (yet?)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+        }
     }
+    
     [self.tableView reloadData];
 }
 
@@ -50,14 +70,20 @@
     if (newfrc != oldfrc) {
         _fetchedResultsController = newfrc;
         newfrc.delegate = self;
+        
         if ((!self.title || [self.title isEqualToString:oldfrc.fetchRequest.entity.name]) && (!self.navigationController || !self.navigationItem.title)) {
-//            self.title = newfrc.fetchRequest.entity.name;
+            //            self.title = newfrc.fetchRequest.entity.name;
         }
+        
         if (newfrc) {
-            if (self.debug) NSLog(@"[%@ %@] %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), oldfrc ? @"updated" : @"set");
-            [self performFetch]; 
+            if (self.debug) {
+                NSLog(@"[%@ %@] %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), oldfrc ? @"updated" : @"set");
+            }
+            [self performFetch];
         } else {
-            if (self.debug) NSLog(@"[%@ %@] reset to nil", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+            if (self.debug) {
+                NSLog(@"[%@ %@] reset to nil", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+            }
             [self.tableView reloadData];
         }
     }
@@ -87,7 +113,7 @@
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [[[self.fetchedResultsController sections] objectAtIndex:section+self.sectionOffset] numberOfObjects];
 }
 
 /*!
@@ -116,7 +142,9 @@
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
+    if ([self.tableView respondsToSelector:@selector(beginUpdates)]) {
+        [self.tableView beginUpdates];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
@@ -124,12 +152,12 @@
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex+self.sectionOffset]
                           withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex+self.sectionOffset]
                           withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
@@ -141,44 +169,64 @@
     
     UITableView *tableView = self.tableView;
     
+    NSIndexPath *oip = [self coreDataIndexPathToTableIndexPath:indexPath];
+    NSIndexPath *nip = [self coreDataIndexPathToTableIndexPath:newIndexPath];
+    
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:nip]
                              withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:oip]
                              withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath]
+            [self configureCell:[tableView cellForRowAtIndexPath:oip]
                     atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:oip]
                              withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:nip]
                              withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
 
 /*!
- *
+ *  Notifies the UITableView a model update has ended.
  *
  *  @param controller <#controller description#>
  */
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-#warning The next line gives an exception on an actual device (when doing first sync after a freash run).
-    //[self.tableView endUpdates];
+    NSLog(@"[%s]", __func__);
+    if ([self.tableView respondsToSelector:@selector(endUpdates)]) {
+        [self.tableView endUpdates];
+    }
 }
 
+/*!
+ *  Override this method to beb notified of any changes.
+ *
+ *  @param cell      The cell changed.
+ *  @param indexPath The indexPath of the change.
+ */
 -(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"cell changed %@", cell);
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+self.sectionOffset];
+    NSLog(@"cell changed %@ at %@", cell, ip);
+}
+
+-(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
+}
+
+-(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
 }
 
 @end

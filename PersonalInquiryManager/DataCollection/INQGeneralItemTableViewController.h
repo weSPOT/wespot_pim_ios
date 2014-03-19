@@ -13,7 +13,7 @@
 #import "CoreDataTableViewController.h"
 
 @interface INQGeneralItemTableViewController : CoreDataTableViewController
-
+    
 @property (nonatomic, strong) Run *run;
 
 @end

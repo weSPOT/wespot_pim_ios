@@ -39,12 +39,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate {
+- (void)loadAuthenticateUrl:(NSString *)authenticateUrl name:(NSString *) name delegate:(id) aDelegate {
     [self deleteARLearnCookie];
 
     self.domain = [[NSURL URLWithString:authenticateUrl] host];
     
     UIWebView *web = (UIWebView *)self.view;
+    
+    [web loadHTMLString:[NSString stringWithFormat:@"<h1>Connecting to %@.</h1>", name] baseURL:nil];
+    
+    [CATransaction flush];
     
     [web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
 }
@@ -53,7 +57,7 @@
    
     NSString * urlAsString =request.URL.description;
   
-    NSLog(@"[%s] %@",__func__, request.URL.absoluteString);
+    // NSLog(@"[%s] %@",__func__, request.URL.absoluteString);
     if (!urlAsString)
     {
         return YES;

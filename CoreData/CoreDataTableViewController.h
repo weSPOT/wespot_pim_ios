@@ -47,4 +47,9 @@
 // Set to YES to get some debugging output in the console.
 @property BOOL debug;
 
+@property NSInteger *sectionOffset;
+
+-(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath;
+-(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath;
+    
 @end

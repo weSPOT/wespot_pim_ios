@@ -46,7 +46,7 @@
 }
 
 -(NSString*) cellIdentifier {
-    return  @"userCell";
+    return  @"addfriendsCell";
 }
 
 #pragma mark - Table view data source

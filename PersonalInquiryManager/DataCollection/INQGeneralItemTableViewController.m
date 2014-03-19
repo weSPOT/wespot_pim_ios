@@ -28,9 +28,15 @@ typedef NS_ENUM(NSInteger, groups) {
 @property (readonly, nonatomic) CGFloat statusbarHeight;
 @property (readonly, nonatomic) CGFloat navbarHeight;
 
+@property (readonly, nonatomic) NSString *cellIdentifier;
+
 @end
 
 @implementation INQGeneralItemTableViewController
+
+-(NSString*) cellIdentifier {
+    return  @"generalitemCell";
+}
 
 - (void)setupFetchedResultsController {
     if (self.run.runId) {
@@ -52,6 +58,17 @@ typedef NS_ENUM(NSInteger, groups) {
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
+
+        if (ARLNetwork.networkAvailable) {
+            //dispatch_async(dispatch_get_main_queue(), ^{
+                ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                [synchronizer createContext:appDelegate.managedObjectContext];
+                synchronizer.gameId = self.run.gameId;
+                synchronizer.visibilityRunId = self.run.runId;
+                [synchronizer sync];
+            //});
+        }
     }
 }
 
@@ -63,29 +80,41 @@ typedef NS_ENUM(NSInteger, groups) {
     [self setupFetchedResultsController];
 }
 
+- (void)refreshTable {
+    [self.tableView reloadData];
+    
+    [self.refreshControl endRefreshing];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
+    self.sectionOffset = 0;
+    
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
+    
+    self.refreshControl.tintColor = [UIColor orangeColor];
+    
+    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
 }
 
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
 
-    if (ARLNetwork.networkAvailable) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            [synchronizer createContext:appDelegate.managedObjectContext];
-            synchronizer.gameId = self.run.gameId;
-            synchronizer.visibilityRunId = self.run.runId;
-            [synchronizer sync];
-        });
-    }
+    //    if (ARLNetwork.networkAvailable) {
+    //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    //            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    //            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    //            [synchronizer createContext:appDelegate.managedObjectContext];
+    //            synchronizer.gameId = self.run.gameId;
+    //            synchronizer.visibilityRunId = self.run.runId;
+    //            [synchronizer sync];
+    //        });
+    //    }
     
     // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
@@ -126,7 +155,11 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.fetchedResultsController.fetchedObjects count];
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    NSUInteger *count =[self.fetchedResultsController.fetchedObjects count];
+
+    return count;
 }
 
 /*!
@@ -139,46 +172,55 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Fetch Data from CoreData
-    GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
-
-    // Dequeue a TableCell and intialize if nececsary.
-    // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:generalItem.type];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:generalItem.type];
-    }
-    
-    // Set Font to Bold if unread.
-    cell.textLabel.text = generalItem.name;
-    cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-
-    // If Read set Font to normal.
-    for (Action * action in generalItem.actions) {
-        if (action.run == self.run) {
-            if ([action.action isEqualToString:@"read"]) {
-                cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+    // Create the new ViewController.
+    switch (indexPath.section) {
+        case DATA: {
+            // Fetch Data from CoreData
+            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+            
+            NSLog(@"[%s] Cell '%@' created at index %@", __func__, generalItem.name, indexPath);
+            
+            // Dequeue a TableCell and intialize if nececsary.
+            // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
             }
+            
+            // Set Font to Bold if unread.
+            cell.textLabel.text = generalItem.name;
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+            
+            // If Read set Font to normal.
+            for (Action * action in generalItem.actions) {
+                if (action.run == self.run) {
+                    if ([action.action isEqualToString:@"read"]) {
+                        cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+                    }
+                }
+            }
+            
+            NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+            
+            if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"task-record"];
+            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"task-photo"];
+            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"task-text"];
+            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"task-explore"];
+            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"task-video"];
+            }
+            
+            jsonDict = nil;
+            return cell;
         }
+            break;
     }
     
-    NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
-    
-    if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-record"];
-    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-photo"];
-    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-text"];
-    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-explore"];
-    } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-        cell.imageView.image = [UIImage imageNamed:@"task-video"];
-    }
-    
-    jsonDict = nil;
-    
-    return cell;
+    return nil;
 }
 
 /*!
@@ -198,7 +240,7 @@ typedef NS_ENUM(NSInteger, groups) {
     // Create the new ViewController.
     switch (indexPath.section) {
         case DATA: {
-            GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:indexPath]).item;
+            GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
             
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectedDataView"];
             
@@ -208,9 +250,9 @@ typedef NS_ENUM(NSInteger, groups) {
             if ([newViewController respondsToSelector:@selector(setRun:)]) {
                 [newViewController performSelector:@selector(setRun:) withObject:self.run];
             }
+            
             [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
             [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
-            
         }
             break;
     }
@@ -218,6 +260,44 @@ typedef NS_ENUM(NSInteger, groups) {
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
+}
+
+-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case DATA: {
+            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+
+            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, generalItem.name, indexPath);
+
+            
+//            ((UITableViewCell *)cell).textLabel.text=generalItem.name;
+//            
+//            NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+//            
+//            if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
+//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-record"];
+//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
+//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-photo"];
+//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
+//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-text"];
+//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
+//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-explore"];
+//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
+//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-video"];
+//            }
+//            
+//            jsonDict = nil;
+        }
+            break;
+    }
+    
+//    if (!cell) {
+//        cell = [self.tableView cellForRowAtIndexPath:indexPath];
+//    }
+//    NSError * error = nil;
+//    [self.fetchedResultsController performFetch:&error];
+//
+//    [self .tableView reloadData];
 }
 
 -(CGFloat) navbarHeight {

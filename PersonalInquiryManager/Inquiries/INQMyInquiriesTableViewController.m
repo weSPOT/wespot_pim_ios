@@ -44,11 +44,9 @@ typedef NS_ENUM(NSInteger, inquiries) {
     [self.navigationController setToolbarHidden:YES];
     
     //See http://stackoverflow.com/questions/5825397/uitableview-background-image
-    //self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view .backgroundColor = [UIColor clearColor];
-    // self.inqueriesView.backgroundColor = [UIColor clearColor];
     
     [self setupFetchedResultsController];
 }
@@ -74,12 +72,15 @@ typedef NS_ENUM(NSInteger, inquiries) {
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
                                                                                      ascending:YES
                                                                                       selector:@selector(localizedCaseInsensitiveCompare:)]];
+    self.sectionOffset = 1;
     
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
                                                                                cacheName:nil];
+
+    
     [self.fetchedResultsController fetchRequest];
     
     if (ARLNetwork.networkAvailable) {
@@ -124,7 +125,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
         case NEW:
             return @"";
         case OPEN:
-            return @"";
+            return @"My Inquiries";
     }
     
     // Error
@@ -155,11 +156,9 @@ typedef NS_ENUM(NSInteger, inquiries) {
         }
             break;
         case OPEN: {
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
-            Inquiry *generalItem = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
-            
-            cell.textLabel.text = generalItem.title;
+            cell.textLabel.text = inquiry.title;
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];            
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", arc4random() % 10];
         }
@@ -182,9 +181,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
         }
             break;
         case OPEN:{
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-           
-            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
             UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryParts"];
             
@@ -196,6 +193,34 @@ typedef NS_ENUM(NSInteger, inquiries) {
         }
             break;
     }
+}
+
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+//    [super controllerDidChangeContent:controller];
+//    
+//    // [self.fetchedResultsController fetchRequest];
+//    
+////    [self.tableView reloadData];
+//}
+
+-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case OPEN: {
+            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
+            
+            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, inquiry.title, indexPath);
+        }
+            break;
+    }
+    
+//            NSLog(@"[%s] Cell changed '%@' at %@", __func__, ((UITableViewCell *)cell).textLabel.text, indexPath);
+    //    NSLog(@"[%s] Cell changed %@ at %@ %@", __func__, cell, indexPath, ((UITableViewCell *)cell).textLabel.text);
+    //
+    ////    NSError * error = nil;
+    ////    [self.fetchedResultsController performFetch:&error];
+    ////    NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+    ////    cell = [self.tableView cellForRowAtIndexPath:ip];
+    ////    [self.tableView reloadData];
 }
 
 @end

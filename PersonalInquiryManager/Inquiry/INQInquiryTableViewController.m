@@ -83,6 +83,12 @@ typedef NS_ENUM(NSInteger, sections) {
     return  @"inquiryPartCell";
 }
 
+- (void)refreshTable {
+    [self.tableView reloadData];
+    
+    [self.refreshControl endRefreshing];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

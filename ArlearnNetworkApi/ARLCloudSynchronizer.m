@@ -30,25 +30,39 @@
 //}
 
 + (void) syncGamesAndRuns: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    
     [synchronizer createContext:context];
+    
     synchronizer.syncGames = YES;
     synchronizer.syncRuns = YES;
+    
     [synchronizer sync];
 }
 
 + (void) syncResponses: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    
     [synchronizer createContext:context];
+    
     synchronizer.syncResponses = YES;
     synchronizer.syncActions = YES;
+    
     [synchronizer sync];
 }
 
 + (void) syncActions: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    
     [synchronizer createContext:context];
     synchronizer.syncActions = YES;
+    
     [synchronizer sync];
 }
 
@@ -61,6 +75,13 @@
     }];
 }
 
+/*!
+ *  Save the Core Data Context.
+ *
+ *  See http://www.cocoanetics.com/2012/07/multi-context-coredata/
+ *
+ *  Runs on a separate thread in the background.
+ */
 - (void)saveContext
 {
     NSError *error = nil;
@@ -70,11 +91,15 @@
             if (![self.context save:&error]) {
                 abort();
             }
+            
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {
                     abort();
                 }
+                
+#warning is this the correct spot to sync files?
+                
                 ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
                 [fileSync createContext:self.parentContext];
                 [fileSync sync];
@@ -85,33 +110,32 @@
 
 - (void) createContext: (NSManagedObjectContext*) mainContext {
     self.parentContext = mainContext;
+    
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.context.parentContext = mainContext;
 }
 
 - (void) asyncExecution {
-    if (self.syncRuns) {
-        [self syncronizeRuns];
-        [self asyncExecution];
-    } else if (self.syncGames) {
-        [self syncronizeGames];
-        [self asyncExecution];
-    } else if (self.gameId) {
-        [self synchronizeGeneralItemsWithGame];
-        [self asyncExecution];
-    } else if (self.visibilityRunId) {
-        [self synchronizeGeneralItemsAndVisibilityStatements];
-        [self asyncExecution];
-    } else if (self.syncResponses){
-        [self synchronizeResponses];
-        [self asyncExecution];
-    } else if (self.syncActions){
-        [self synchronizeActions];
-        [self asyncExecution];
-    } else {
-        [self saveContext];
+    NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
+    while (YES) {
+        if (self.syncRuns) {
+            [self syncronizeRuns];
+        } else if (self.syncGames) {
+            [self syncronizeGames];
+        } else if (self.gameId) {
+            [self synchronizeGeneralItemsWithGame];
+        } else if (self.visibilityRunId) {
+            [self synchronizeGeneralItemsAndVisibilityStatements];
+        } else if (self.syncResponses){
+            [self synchronizeResponses];
+        } else if (self.syncActions){
+            [self synchronizeActions];
+        } else {
+            [self saveContext];
+            break;
+        }
     }
-    
+    NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************", __func__);
 }
 
 - (void) syncronizeRuns{ //: (NSManagedObjectContext *) context
@@ -126,6 +150,7 @@
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"myRuns" time:serverTime inManagedObjectContext:self.context];
     }
+    
     self.syncRuns = NO;
 }
 
@@ -142,7 +167,6 @@
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"myGames" time:serverTime inManagedObjectContext:self.context];
     }
-    //    [self saveContext];
     
     self.syncGames = NO;
 }
@@ -167,8 +191,7 @@
                                       idContext:self.gameId
                          inManagedObjectContext:self.context];
     }
-    //    [self saveContext];
-    
+
     self.gameId = nil;
 }
 
@@ -182,7 +205,7 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
-    NSLog(@"[%s]", __func__);
+    NSLog(@"[%s] run:%@", __func__, run.runId);
 
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
 
@@ -216,9 +239,10 @@
         [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.id time:action.time itemType:action.generalItem.type];
         action.synchronized = [NSNumber numberWithBool:YES];
     }
-    self.syncActions = NO;
     
+    self.syncActions = NO;
 }
+
 - (void) synchronizeResponses {
     NSLog(@"[%s]", __func__);
 
@@ -262,10 +286,8 @@
         }
         
     }
+    
     self.syncResponses = NO;
 }
-
-//private methods
-
 
 @end

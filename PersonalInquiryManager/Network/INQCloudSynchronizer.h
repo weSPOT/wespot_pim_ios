@@ -11,7 +11,7 @@
 #import "ARLNetwork+INQ.h"
 #import "Account+Create.h"
 #import "Inquiry+Create.h"
-#import "ARLCloudSynchronizer.h"
+//#import "ARLCloudSynchronizer.h"
 #import "TestAccount+Lazy.h"
 
 @interface INQCloudSynchronizer : NSObject

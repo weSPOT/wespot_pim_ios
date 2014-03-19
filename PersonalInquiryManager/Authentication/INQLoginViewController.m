@@ -282,12 +282,8 @@
         
         if (ARLNetwork.isLoggedIn) {
             UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-          
-            if ([appDelegate respondsToSelector:@selector(clearDatabase)]) {
-                [appDelegate performSelector:@selector(clearDatabase)];
-                if ([appDelegate respondsToSelector:@selector(syncData)]) {
-                    [appDelegate performSelector:@selector(syncData)];
-                }
+            if ([appDelegate respondsToSelector:@selector(syncData)]) {
+                [appDelegate performSelector:@selector(syncData)];
             }
         }
  

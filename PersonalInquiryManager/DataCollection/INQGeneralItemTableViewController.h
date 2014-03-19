@@ -8,11 +8,9 @@
 
 #import "ARLNetwork.h"
 #import "ARLCloudSynchronizer.h"
-
 #import "Run.h"
-#import "CoreDataTableViewController.h"
 
-@interface INQGeneralItemTableViewController : CoreDataTableViewController
+@interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>//CoreDataTableViewController
     
 @property (nonatomic, strong) Run *run;
 

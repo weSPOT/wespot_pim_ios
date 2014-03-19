@@ -31,13 +31,17 @@
     NSArray *result = [managedContext executeFetchRequest:fetch error:&error];
     if (!result) {
         NSLog(@"%@", [error localizedDescription]);
-        
     }
+    
     if ([result count] == 0) {
         return [NSNumber numberWithInt:0];
     } else {
         SynchronizationBookKeeping * bookKeeping = [result lastObject];
 //        [[ARLCloudSynchronizer syncDates] setObject:bookKeeping forKey:key];
+        [managedContext save:&error];
+        if (error) {
+            NSLog(@"[%s] error %@", __func__, error);
+        } 
         return bookKeeping.lastSynchronization;
     }
 }

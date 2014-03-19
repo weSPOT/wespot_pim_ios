@@ -81,7 +81,10 @@
                 NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
                 abort();
             }
-            
+        }
+        
+        if ([self.parentContext hasChanges]){
+            NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {abort();}

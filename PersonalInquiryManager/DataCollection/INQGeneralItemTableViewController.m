@@ -30,6 +30,10 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
+@property NSInteger *sectionOffset;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
 @end
 
 @implementation INQGeneralItemTableViewController
@@ -39,6 +43,8 @@ typedef NS_ENUM(NSInteger, groups) {
 }
 
 - (void)setupFetchedResultsController {
+    self.sectionOffset = 0;
+    
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
         request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
@@ -58,16 +64,24 @@ typedef NS_ENUM(NSInteger, groups) {
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
+        self.sectionOffset = 0;
+        self.fetchedResultsController.delegate = self;
+        
+        NSError *error = nil;
+        [self.fetchedResultsController performFetch:&error];
 
         if (ARLNetwork.networkAvailable) {
-            //dispatch_async(dispatch_get_main_queue(), ^{
+ //           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+           dispatch_async(dispatch_get_main_queue(), ^{
                 ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
                 ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
                 [synchronizer createContext:appDelegate.managedObjectContext];
+                
                 synchronizer.gameId = self.run.gameId;
                 synchronizer.visibilityRunId = self.run.runId;
+                
                 [synchronizer sync];
-            //});
+            });
         }
     }
 }
@@ -90,12 +104,7 @@ typedef NS_ENUM(NSInteger, groups) {
 {
     [super viewDidLoad];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    self.sectionOffset = 0;
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     self.refreshControl.tintColor = [UIColor orangeColor];
     
@@ -155,8 +164,6 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
     NSUInteger *count =[self.fetchedResultsController.fetchedObjects count];
 
     return count;
@@ -308,6 +315,24 @@ typedef NS_ENUM(NSInteger, groups) {
 {
     // NOTE: Not always turned yet when we try to retrieve the height.
     return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
+}
+
+-(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
+}
+
+-(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
+}
+
+/*!
+ *  Notifies the UITableView a model update has ended.
+ *
+ *  @param controller <#controller description#>
+ */
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    NSLog(@"[%s]", __func__);
+    [self.tableView reloadData];
 }
 
 @end

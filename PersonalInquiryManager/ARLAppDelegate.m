@@ -135,19 +135,35 @@
  *  Wipe out the core data database and underlying sqlite storage.
  */
 - (void)clearDatabase {
-    NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
+//    NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
+//    NSError *error = nil;
+//    
+//    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
+//    
+//    [self.persistentStoreCoordinator removePersistentStore:store error:&error];
+//    
+//    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+//    
+//    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+//        NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
+//        abort();
+//    }
+}
+
+- (void) deleteAllOfEntity: (NSManagedObjectContext * ) context enityName:(NSString *)name{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
+    
     NSError *error = nil;
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
-    
-    [self.persistentStoreCoordinator removePersistentStore:store error:&error];
-    
-    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
-    
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
+    NSArray *entities = [context executeFetchRequest:request error:&error];
+    if (error) {
+        NSLog(@"error %@", error);
         abort();
     }
+    for (id entity in entities) {
+        [context deleteObject:entity];
+    }
+    
+    [context save:&error];
 }
 
 - (void)syncData {

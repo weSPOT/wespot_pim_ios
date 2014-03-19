@@ -10,6 +10,7 @@
 
 #import "Account.h"
 #import "ARLOauthWebViewController.h"
+#import "ARLAccountDelegator.h"
 
 @interface INQLoginViewController : UIViewController  <UITextFieldDelegate, NSURLConnectionDataDelegate>
 

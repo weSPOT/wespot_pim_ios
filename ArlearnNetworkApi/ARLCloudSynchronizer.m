@@ -91,8 +91,11 @@
             if (![self.context save:&error]) {
                 abort();
             }
-            
+        }
+        
+        if ([self.parentContext hasChanges]) {
             [self.parentContext performBlock:^{
+                NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {
                     abort();

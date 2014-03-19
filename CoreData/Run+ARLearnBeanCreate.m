@@ -96,7 +96,7 @@
         NSLog(@"error %@", error);
     }
     for (id run in runs) {
-        NSLog(@"this Run should be gone already");
+        // NSLog(@"this Run should be gone already");
         [context deleteObject:run];
     }
 }

@@ -104,8 +104,6 @@ typedef NS_ENUM(NSInteger, groups) {
 {
     [super viewDidLoad];
     
-    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
     self.refreshControl.tintColor = [UIColor orangeColor];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
@@ -124,9 +122,7 @@ typedef NS_ENUM(NSInteger, groups) {
     //            [synchronizer sync];
     //        });
     //    }
-    
-    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    
+
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
     self.tableView.opaque = NO;

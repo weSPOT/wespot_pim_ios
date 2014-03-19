@@ -121,6 +121,7 @@
 - (void) asyncExecution {
     NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
     while (YES) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         if (self.syncRuns) {
             [self syncronizeRuns];
         } else if (self.syncGames) {
@@ -135,6 +136,7 @@
             [self synchronizeActions];
         } else {
             [self saveContext];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             break;
         }
     }

@@ -331,8 +331,6 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     UIViewController *newViewController;
     
-//  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
     switch ([index intValue]){
         case HYPOTHESIS: {
             // Create the new ViewController.
@@ -379,9 +377,7 @@ typedef NS_ENUM(NSInteger, sections) {
         }
             break;
     }
-   
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    
+
     return newViewController;
 }
 
@@ -394,9 +390,7 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController * newViewController;
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
+
     switch (indexPath.section) {
         case HEADER:
             break;
@@ -414,9 +408,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
         }
     }
-    
-     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    
+
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }

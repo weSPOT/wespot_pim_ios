@@ -101,12 +101,14 @@
 - (void) asyncExecution {
     NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
     while (YES) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         if (self.syncUsers) {
             [self syncAllUsers];
         } else if (self.syncInquiries) {
             [self syncronizeInquiries];
         } else {
             [self saveContext];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             break;
         }
     }

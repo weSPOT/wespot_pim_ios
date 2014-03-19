@@ -29,7 +29,11 @@
 - (void) asyncExecution {
     NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
     while (YES) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
         [self downloadGeneralItems];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         // Already done in downloadGeneralItems, but added dor symmetry with other asyncExecution methods.
         [self saveContext];

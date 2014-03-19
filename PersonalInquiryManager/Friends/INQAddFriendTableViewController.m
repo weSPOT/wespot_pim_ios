@@ -19,17 +19,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
 #warning Todo (or mark grey) Outselves and Friends.
     if (!self.AllUsers) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
         [self getAllUsers];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void)didReceiveMemoryWarning

@@ -30,6 +30,10 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
+@property (readonly, nonatomic) NSInteger *sectionOffset;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
 @end
 
 @implementation INQMyInquiriesTableViewController
@@ -38,9 +42,41 @@ typedef NS_ENUM(NSInteger, inquiries) {
     return  @"inquiriesCell";
 }
 
+-(NSInteger*) sectionOffset {
+    return  1;
+}
+
+- (void)setupFetchedResultsController {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
+                                                                                     ascending:YES
+                                                                                      selector:@selector(localizedCaseInsensitiveCompare:)]];
+    
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                        managedObjectContext:appDelegate.managedObjectContext
+                                                                          sectionNameKeyPath:nil
+                                                                                   cacheName:nil];
+    
+    
+    self.fetchedResultsController.delegate = self;
+    
+    [self.fetchedResultsController fetchRequest];
+    
+    if (ARLNetwork.networkAvailable) {
+        [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
+    }
+}
+
+- (void)refreshTable {
+    [self.tableView reloadData];
+    
+    [self.refreshControl endRefreshing];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     [self.navigationController setToolbarHidden:YES];
     
     //See http://stackoverflow.com/questions/5825397/uitableview-background-image
@@ -49,6 +85,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
     self.navigationController.view .backgroundColor = [UIColor clearColor];
     
     [self setupFetchedResultsController];
+    
+    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -58,6 +96,8 @@ typedef NS_ENUM(NSInteger, inquiries) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
     }
+    
+    [self.navigationController setToolbarHidden:YES];
 }
 
 /*!
@@ -65,27 +105,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)setupFetchedResultsController {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
-                                                                                     ascending:YES
-                                                                                      selector:@selector(localizedCaseInsensitiveCompare:)]];
-    self.sectionOffset = 1;
-    
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                        managedObjectContext:appDelegate.managedObjectContext
-                                                                          sectionNameKeyPath:nil
-                                                                               cacheName:nil];
-
-    
-    [self.fetchedResultsController fetchRequest];
-    
-    if (ARLNetwork.networkAvailable) {
-        [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
-    }
 }
 
 /*!
@@ -195,32 +214,23 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
-//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-//    [super controllerDidChangeContent:controller];
-//    
-//    // [self.fetchedResultsController fetchRequest];
-//    
-////    [self.tableView reloadData];
+//-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
+//    switch (indexPath.section) {
+//        case OPEN: {
+//            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
+//            
+//            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, inquiry.title, indexPath);
+//        }
+//            break;
+//    }
 //}
 
--(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-        case OPEN: {
-            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
-            
-            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, inquiry.title, indexPath);
-        }
-            break;
-    }
-    
-//            NSLog(@"[%s] Cell changed '%@' at %@", __func__, ((UITableViewCell *)cell).textLabel.text, indexPath);
-    //    NSLog(@"[%s] Cell changed %@ at %@ %@", __func__, cell, indexPath, ((UITableViewCell *)cell).textLabel.text);
-    //
-    ////    NSError * error = nil;
-    ////    [self.fetchedResultsController performFetch:&error];
-    ////    NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-    ////    cell = [self.tableView cellForRowAtIndexPath:ip];
-    ////    [self.tableView reloadData];
+-(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
+}
+
+-(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath {
+    return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
 }
 
 @end

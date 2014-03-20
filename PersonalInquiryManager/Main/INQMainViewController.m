@@ -123,7 +123,12 @@ typedef NS_ENUM(NSInteger, tools) {
             //#warning not enough to toggle isLoggedIn.
             [self adjustLoginButton];
             
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
+            if (ARLNetwork.isLoggedIn) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Cound not log-out" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            } else {
+                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
+            }
         } else {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
         }

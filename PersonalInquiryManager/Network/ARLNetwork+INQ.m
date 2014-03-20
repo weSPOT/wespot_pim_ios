@@ -115,6 +115,18 @@
 }
 
 /*!
+ *  Return the Files of an Inquiry.
+ *
+ *  @param inquiryId The Inquiry Id.
+ *
+ *  @return The Files of the Inquiry as JSON.
+ */
++ (id) getFiles:  (NSNumber *) inquiryId {
+    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.files", apiKey, inquiryId];
+    
+    return [self returnJson:url];
+}
+/*!
  *  Convert oauth provider id to a NSString.
  *
  *  @param oauthProvider the oauth provider id.

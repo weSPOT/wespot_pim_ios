@@ -14,16 +14,27 @@
 
 @implementation ARLAccountDelegator
 
-
 /*!
  *  Remove all accounts and associated data.
  *
  *  @param context The NSManagedObjectContext
  */
 + (void) deleteCurrentAccount: (NSManagedObjectContext * ) context {
-    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
-
+    // Delete only the current account.
+    Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+                                       withManagedContext:context];
+    
+    NSError *error = nil;
+    [context deleteObject:account];
+    [context save:&error];
+    
+    
+    //Clear the rest of the tables.
     [self resetAccount:context];
+    
+    if (ARLNetwork.CurrentAccount) {
+        NSLog(@"Not logged out yet");
+    }
 }
 
 /*!
@@ -34,7 +45,8 @@
  */
 + (void) resetAccount: (NSManagedObjectContext *) context {
     NSNumber* serverTime = [NSNumber numberWithLong:0];
-    
+  
+    // Update Synchronization Bookkeeping
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"SynchronizationBookKeeping"];
     
     [SynchronizationBookKeeping createEntry:@"myRuns" time:serverTime inManagedObjectContext:context];
@@ -42,9 +54,9 @@
     [SynchronizationBookKeeping createEntry:@"generalItems" time:serverTime inManagedObjectContext:context];
     [SynchronizationBookKeeping createEntry:@"generalItemsVisibility" time:serverTime inManagedObjectContext:context];
     
-    //[GeneralItemVisibility deleteAll:context];
-    //[Response deleteAll:context];
-    
+    //Clear all tables.
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Account"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Game"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"GeneralItemVisibility"];

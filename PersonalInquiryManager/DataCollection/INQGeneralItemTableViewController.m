@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
-@property NSInteger *sectionOffset;
+@property (readonly, nonatomic) NSInteger *sectionOffset;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
@@ -38,13 +38,25 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @implementation INQGeneralItemTableViewController
 
+-(CGFloat) navbarHeight {
+    return self.navigationController.navigationBar.bounds.size.height;
+}
+
+-(CGFloat) statusbarHeight
+{
+    // NOTE: Not always turned yet when we try to retrieve the height.
+    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
+}
+
 -(NSString*) cellIdentifier {
     return  @"generalitemCell";
 }
 
+-(NSInteger*) sectionOffset {
+    return  0;
+}
+
 - (void)setupFetchedResultsController {
-    self.sectionOffset = 0;
-    
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
         request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
@@ -64,7 +76,7 @@ typedef NS_ENUM(NSInteger, groups) {
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
-        self.sectionOffset = 0;
+        
         self.fetchedResultsController.delegate = self;
         
         NSError *error = nil;
@@ -135,6 +147,13 @@ typedef NS_ENUM(NSInteger, groups) {
     self.navigationController.navigationBar.translucent= NO;
 
     [self.navigationController setToolbarHidden:NO];
+}
+
+/*!
+ *  Low Memory Warning.
+ */
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 /*!
@@ -265,53 +284,43 @@ typedef NS_ENUM(NSInteger, groups) {
     }
 }
 
--(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-        case DATA: {
-            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
-
-            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, generalItem.name, indexPath);
-
-            
-//            ((UITableViewCell *)cell).textLabel.text=generalItem.name;
-//            
-//            NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
-//            
-//            if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-record"];
-//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-photo"];
-//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-text"];
-//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-explore"];
-//            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-//                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-video"];
-//            }
-//            
-//            jsonDict = nil;
-        }
-            break;
-    }
-    
-//    if (!cell) {
-//        cell = [self.tableView cellForRowAtIndexPath:indexPath];
-//    }
-//    NSError * error = nil;
-//    [self.fetchedResultsController performFetch:&error];
+//-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
+//    switch (indexPath.section) {
+//        case DATA: {
+//            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
 //
-//    [self .tableView reloadData];
-}
-
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
+//            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, generalItem.name, indexPath);
+//
+//            
+////            ((UITableViewCell *)cell).textLabel.text=generalItem.name;
+////            
+////            NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+////            
+////            if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
+////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-record"];
+////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
+////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-photo"];
+////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
+////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-text"];
+////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
+////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-explore"];
+////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
+////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-video"];
+////            }
+////            
+////            jsonDict = nil;
+//        }
+//            break;
+//    }
+//    
+////    if (!cell) {
+////        cell = [self.tableView cellForRowAtIndexPath:indexPath];
+////    }
+////    NSError * error = nil;
+////    [self.fetchedResultsController performFetch:&error];
+////
+////    [self .tableView reloadData];
+//}
 
 -(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
@@ -321,14 +330,14 @@ typedef NS_ENUM(NSInteger, groups) {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
 }
 
-/*!
- *  Notifies the UITableView a model update has ended.
- *
- *  @param controller <#controller description#>
- */
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"[%s]", __func__);
-    [self.tableView reloadData];
-}
+///*!
+// *  Notifies the UITableView a model update has ended.
+// *
+// *  @param controller <#controller description#>
+// */
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+//    NSLog(@"[%s]", __func__);
+//    [self.tableView reloadData];
+//}
 
 @end

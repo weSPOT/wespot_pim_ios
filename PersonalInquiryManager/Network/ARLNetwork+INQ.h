@@ -18,14 +18,15 @@
 
 @interface ARLNetwork (INQ)
 
-+ (id) getFriends : (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
++ (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
 + (id) getUsers;
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
-+ (id) getHypothesis:  (NSNumber *) inquiryId ;
-+ (id) getNotes:  (NSNumber *) inquiryId ;
++ (id) getHypothesis: (NSNumber *) inquiryId ;
++ (id) getNotes: (NSNumber *) inquiryId ;
++ (id) getFiles: (NSNumber *) inquiryId;
 
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider;
-+ (NSNumber*) elggProviderByName: (NSString  *) oauthProvider;
++ (NSNumber *) elggProviderByName: (NSString  *) oauthProvider;
 
 + (NSNumber *) getARLearnRunId: (NSNumber* ) inquiryId;
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId;

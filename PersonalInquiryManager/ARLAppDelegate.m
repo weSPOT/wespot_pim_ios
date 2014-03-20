@@ -228,7 +228,7 @@
 /*!
  *  Getter for CurrentAccount.
  *
- *  @return <#return value description#>
+ *  @return The Current Account.
  */
 - (Account *) CurrentAccount {
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]

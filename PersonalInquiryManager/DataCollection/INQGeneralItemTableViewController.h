@@ -10,7 +10,8 @@
 #import "ARLCloudSynchronizer.h"
 #import "Run.h"
 
-@interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>    
+@interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+
 @property (nonatomic, strong) Run *run;
 
 @end

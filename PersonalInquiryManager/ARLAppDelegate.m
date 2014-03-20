@@ -285,4 +285,26 @@
     return [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
 }
 
+- (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate {
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc]  init];
+    
+    [request setEntity:[NSEntityDescription  entityForName:entityName inManagedObjectContext:self.managedObjectContext]];
+    [request setIncludesSubentities:NO];
+
+    request.predicate = predicate;
+
+    NSError * error = nil;
+    NSInteger count =[self.managedObjectContext countForFetchRequest:request error:&error];
+    
+    return count;
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/1134289/cocoa-core-data-efficient-way-to-count-entities
+ */
+- (NSInteger *) entityCount:(NSString *) entityName {
+    return [self entityCount:entityName predicate:nil];
+}
+
 @end

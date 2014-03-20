@@ -148,15 +148,16 @@
             }
         }
         
-        id fileDict =[[ARLNetwork getFiles:newInquiry.inquiryId] objectForKey:@"result"];
-        if (fileDict) {
-            {
-//description = "<p>[Deze bron heb ik online gevonden bij het voedingscentrum]</p>\n<p>Dit is de schijf van vijf die veel gebruikt wordt, maar zijn er nog andere hulpmiddelen die je helpen nadenken over wat gezonde voeding is en hoe je gezond kan eten?</p>";
-//title = "De schijf van vijf";
-//url = "http://inquiry.wespot.net/file/view/27983/de-schijf-van-vijf";
-            }
-            NSLog(@"[%s] %@", __func__, fileDict);
-        }
+//        id fileDict =[[ARLNetwork getFiles:newInquiry.inquiryId] objectForKey:@"result"];
+//        if (fileDict) {
+//            {
+////description = "<p>[Deze bron heb ik online gevonden bij het voedingscentrum]</p>\n<p>Dit is de schijf van vijf die veel gebruikt wordt, maar zijn er nog andere hulpmiddelen die je helpen nadenken over wat gezonde voeding is en hoe je gezond kan eten?</p>";
+////title = "De schijf van vijf";
+////url = "http://inquiry.wespot.net/file/view/27983/de-schijf-van-vijf";
+//            }
+//            NSLog(@"[%s] %@", __func__, fileDict);
+//        }
+        
         // Get the correct Run for this Inquiry.
         NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
         Run *selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.context];

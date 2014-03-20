@@ -17,6 +17,8 @@
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 
 + (NSString*) jsonString:(NSDictionary *) jsonDictionary;
+- (NSInteger *) entityCount:(NSString *) entityName;
+- (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate;
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -61,7 +61,10 @@ typedef NS_ENUM(NSInteger, inquiries) {
     
     self.fetchedResultsController.delegate = self;
     
-    [self.fetchedResultsController fetchRequest];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
     
     if (ARLNetwork.networkAvailable) {
         [ARLCloudSynchronizer syncGamesAndRuns:appDelegate.managedObjectContext];
@@ -69,9 +72,43 @@ typedef NS_ENUM(NSInteger, inquiries) {
 }
 
 - (void)refreshTable {
-    [self.tableView reloadData];
+    
+  
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+
+     [self.tableView reloadData];
     
     [self.refreshControl endRefreshing];
+}
+
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
+    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+        [self.tableView reloadData];
+    }
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -87,6 +124,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     [self setupFetchedResultsController];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:(@"Update...")];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -128,15 +166,18 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSInteger *count = 0;
     switch (section){
         case NEW:
-            return 1;
+            count = 1;
+            break;
         case OPEN:
-            return [self.fetchedResultsController.fetchedObjects count];
+            count = [self.fetchedResultsController.fetchedObjects count];
+            break;
     }
     
     // Error
-    return 0;
+    return count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -170,16 +211,18 @@ typedef NS_ENUM(NSInteger, inquiries) {
     switch (indexPath.section) {
         case NEW: {
             cell.textLabel.text = @"New inquiry";
-            cell.detailTextLabel.text = @"5";
+            cell.detailTextLabel.text = @"";
             cell.imageView.image = [UIImage imageNamed:@"add-friend"];
         }
             break;
         case OPEN: {
             Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
+            // NSLog(@"[%s] Cell '%@' created at index %@", __func__,inquiry.title, indexPath);
+            
             cell.textLabel.text = inquiry.title;
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];            
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", arc4random() % 10];
+            cell.detailTextLabel.text = @""; //[NSString stringWithFormat:@"%d", arc4random() % 10];
         }
     }
     return cell;
@@ -213,17 +256,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
             break;
     }
 }
-
-//-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-//    switch (indexPath.section) {
-//        case OPEN: {
-//            Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
-//            
-//            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, inquiry.title, indexPath);
-//        }
-//            break;
-//    }
-//}
 
 -(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];

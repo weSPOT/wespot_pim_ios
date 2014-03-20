@@ -79,11 +79,13 @@ typedef NS_ENUM(NSInteger, groups) {
         
         self.fetchedResultsController.delegate = self;
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
 
         if (ARLNetwork.networkAvailable) {
- //           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+ //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
            dispatch_async(dispatch_get_main_queue(), ^{
                 ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
                 ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -101,8 +103,6 @@ typedef NS_ENUM(NSInteger, groups) {
 - (void) setRun: (Run *) run {
     _run = run;
     
-    // self.title = run.title;
-    
     [self setupFetchedResultsController];
 }
 
@@ -112,13 +112,45 @@ typedef NS_ENUM(NSInteger, groups) {
     [self.refreshControl endRefreshing];
 }
 
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
+    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+        [self.tableView reloadData];
+    }
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.refreshControl.tintColor = [UIColor orangeColor];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:(@"Update...")];
+    
+    [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated    {
@@ -142,11 +174,12 @@ typedef NS_ENUM(NSInteger, groups) {
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
     
-    //self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.title = @"Collect Data";
     self.navigationController.navigationBar.translucent= NO;
 
     [self.navigationController setToolbarHidden:NO];
+    
+    [self.tableView reloadData];
 }
 
 /*!
@@ -179,8 +212,14 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSUInteger *count =[self.fetchedResultsController.fetchedObjects count];
-
+    NSUInteger *count = 0;
+    switch (section) {
+        case DATA: {
+            count = [self.fetchedResultsController.fetchedObjects count];
+        }
+            break;
+    }
+    
     return count;
 }
 
@@ -200,7 +239,7 @@ typedef NS_ENUM(NSInteger, groups) {
             // Fetch Data from CoreData
             GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
             
-            NSLog(@"[%s] Cell '%@' created at index %@", __func__, generalItem.name, indexPath);
+            // NSLog(@"[%s] Cell '%@' created at index %@", __func__, generalItem.name, indexPath);
             
             // Dequeue a TableCell and intialize if nececsary.
             // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
@@ -284,44 +323,6 @@ typedef NS_ENUM(NSInteger, groups) {
     }
 }
 
-//-(void) configureCell: (id) cell atIndexPath:(NSIndexPath *)indexPath {
-//    switch (indexPath.section) {
-//        case DATA: {
-//            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
-//
-//            NSLog(@"[%s] Cell '%@' changed to '%@' at index %@", __func__, ((UITableViewCell *)cell).textLabel.text, generalItem.name, indexPath);
-//
-//            
-////            ((UITableViewCell *)cell).textLabel.text=generalItem.name;
-////            
-////            NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
-////            
-////            if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withAudio"] intValue] == 1) {
-////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-record"];
-////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withPicture"] intValue] == 1) {
-////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-photo"];
-////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withText"]intValue] == 1) {
-////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-text"];
-////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withValue"]intValue] == 1) {
-////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-explore"];
-////            } else if ([[[jsonDict objectForKey:@"openQuestion"] objectForKey:@"withVideo"]intValue] == 1) {
-////                ((UITableViewCell *)cell).imageView.image = [UIImage imageNamed:@"task-video"];
-////            }
-////            
-////            jsonDict = nil;
-//        }
-//            break;
-//    }
-//    
-////    if (!cell) {
-////        cell = [self.tableView cellForRowAtIndexPath:indexPath];
-////    }
-////    NSError * error = nil;
-////    [self.fetchedResultsController performFetch:&error];
-////
-////    [self .tableView reloadData];
-//}
-
 -(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
 }
@@ -329,15 +330,5 @@ typedef NS_ENUM(NSInteger, groups) {
 -(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
 }
-
-///*!
-// *  Notifies the UITableView a model update has ended.
-// *
-// *  @param controller <#controller description#>
-// */
-//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-//    NSLog(@"[%s]", __func__);
-//    [self.tableView reloadData];
-//}
 
 @end

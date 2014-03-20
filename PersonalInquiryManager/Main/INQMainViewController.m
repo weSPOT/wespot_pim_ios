@@ -206,13 +206,30 @@ typedef NS_ENUM(NSInteger, tools) {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
     // cell.backgroundColor = [UIColor clearColor];
-
+    
+    [cell.detailTextLabel setAttributedText:[[NSMutableAttributedString alloc]initWithString:@""]];
+    
+    
+ 
     // Configure the cell...
     switch (indexPath.section) {
         case MYINQUIRES: {
-                cell.textLabel.Text = @"My inquiries";
-                cell.imageView.image = [UIImage imageNamed:@"inquiry"];
+            cell.textLabel.Text = @"My inquiries";
+            cell.imageView.image = [UIImage imageNamed:@"inquiry"];
+            
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            NSInteger count = [appDelegate entityCount:@"Inquiry"];
+            
+            if (count!=0) {
+                NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
+                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                NSRange range=[value rangeOfString:value];
+                
+                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                
+                [cell.detailTextLabel setAttributedText:string];
             }
+        }
             break;
         case MYMEDIA: {
             cell.textLabel.Text = @"My media";
@@ -232,6 +249,20 @@ typedef NS_ENUM(NSInteger, tools) {
                 case FRIENDS :
                     cell.textLabel.Text = @"Friends";
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
+                    
+                    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                    NSInteger count = [appDelegate entityCount:@"Account"];
+                    
+                    if (count > 1) {
+                        NSString *value = [[NSString alloc] initWithFormat:@"%d", count - 1];
+                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                        NSRange range=[value rangeOfString:value];
+                        
+                        [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                        
+                        [cell.detailTextLabel setAttributedText:string];
+
+                    }
                     break;
             }
             break;
@@ -266,7 +297,6 @@ typedef NS_ENUM(NSInteger, tools) {
             switch (indexPath.item) {
                 default: {
                     //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];
-#warning To Implement with a UITableView.
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
                 }

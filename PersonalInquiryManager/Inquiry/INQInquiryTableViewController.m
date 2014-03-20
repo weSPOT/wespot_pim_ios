@@ -99,6 +99,10 @@ typedef NS_ENUM(NSInteger, sections) {
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
+- (void)viewDidAppear:(BOOL)animated  {
+    [self.tableView reloadData];
+}
+
 /*!
  *  Low Memory Warning.
  */
@@ -267,14 +271,21 @@ typedef NS_ENUM(NSInteger, sections) {
                 case DATACOLLECTION: {
                     cell.textLabel.text = @"Collect Data";
                     
-#warning Test Code for Coloring Text.
-                    NSString *value = @"5";
-                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
-                    NSRange range=[value rangeOfString:value];
-               
-                    [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
-
-                    [cell.detailTextLabel setAttributedText:string];
+                    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                    NSInteger count = [appDelegate entityCount:@"CurrentItemVisibility"
+                                                     predicate:[NSPredicate predicateWithFormat:@"visible = 1 and run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
+                    
+                    if (count!=0) {
+                        NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
+                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                        NSRange range=[value rangeOfString:value];
+                        
+                        [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                        
+                        [cell.detailTextLabel setAttributedText:string];
+                    } else {
+                        cell.detailTextLabel.text = @"";
+                    }
                     
                     cell.imageView.image = [UIImage imageNamed:@"collect-data"];
                 }

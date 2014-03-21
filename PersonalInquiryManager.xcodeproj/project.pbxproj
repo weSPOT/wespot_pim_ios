@@ -102,7 +102,6 @@
 		8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */; };
 		8D40F3EC18C0AAE700F081AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D40F3EB18C0AAE700F081AE /* main.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
-		8D5C667618D6F504003B79E5 /* ARLDataCollectionWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667518D6F504003B79E5 /* ARLDataCollectionWidget.m */; };
 		8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */; };
 		8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667D18D6F5B0003B79E5 /* ARLAudioRecorder.m */; };
 		8D5C668118D6F5B9003B79E5 /* ARLAudioRecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C668018D6F5B9003B79E5 /* ARLAudioRecorderViewController.m */; };
@@ -274,8 +273,6 @@
 		8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonalInquiryManager-Prefix.pch"; sourceTree = "<group>"; };
 		8D40F3EB18C0AAE700F081AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		8D5C667418D6F504003B79E5 /* ARLDataCollectionWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLDataCollectionWidget.h; sourceTree = "<group>"; };
-		8D5C667518D6F504003B79E5 /* ARLDataCollectionWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLDataCollectionWidget.m; sourceTree = "<group>"; };
 		8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemViewController.m; sourceTree = "<group>"; };
 		8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARLNarratorItemViewController.h; sourceTree = "<group>"; };
 		8D5C667C18D6F5B0003B79E5 /* ARLAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLAudioRecorder.h; sourceTree = "<group>"; };
@@ -405,8 +402,6 @@
 				8D5C667D18D6F5B0003B79E5 /* ARLAudioRecorder.m */,
 				8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */,
 				8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */,
-				8D5C667418D6F504003B79E5 /* ARLDataCollectionWidget.h */,
-				8D5C667518D6F504003B79E5 /* ARLDataCollectionWidget.m */,
 				3454CCD817B3A72E00C0DFFC /* InfoPlist.strings */,
 				3454CCDA17B3A72E00C0DFFC /* Localizable.strings */,
 			);
@@ -1042,7 +1037,6 @@
 				8D6FA75418CCD0270020741A /* GeneralItemData.m in Sources */,
 				8D1945CB18C0A24200C32EED /* INQDiscussViewController.m in Sources */,
 				8D6FA77B18CCD0600020741A /* GeneralItemVisibility.m in Sources */,
-				8D5C667618D6F504003B79E5 /* ARLDataCollectionWidget.m in Sources */,
 				8D5C668418D6F5CA003B79E5 /* ARLAudioRecordButtons.m in Sources */,
 				8D6E80BC18D5B5DB0077D70E /* ARLFileCloudSynchronizer.m in Sources */,
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,

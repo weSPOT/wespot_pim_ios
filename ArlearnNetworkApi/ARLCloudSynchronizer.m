@@ -234,7 +234,6 @@
                                            time:serverTime
                                       idContext:run.runId
                          inManagedObjectContext:self.context];
-        
     }
 }
 
@@ -260,7 +259,7 @@
             resp.synchronized = [NSNumber numberWithBool:YES];
         } else {
             u_int32_t random = arc4random();
-            NSString* imageName = [NSString stringWithFormat:@"%d.%@", random, resp.fileName];
+            NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
             if (resp.run.runId) {
                 NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
                 [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
@@ -289,9 +288,7 @@
                 
                 resp.synchronized = [NSNumber numberWithBool:YES];
             }
-            
         }
-        
     }
     
     self.syncResponses = NO;

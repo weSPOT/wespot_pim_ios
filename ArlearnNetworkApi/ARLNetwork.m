@@ -254,6 +254,14 @@
 
 #pragma mark - File upload
 
+/*!
+ *  Generate the upload Url.
+ *
+ *  @param fileName <#fileName description#>
+ *  @param runId    <#runId description#>
+ *
+ *  @return <#return value description#>
+ */
 + (NSString*) requestUploadUrl: (NSString*) fileName withRun:(NSNumber *) runId {
     NSString * str =[NSString stringWithFormat:@"runId=%@&account=%@:%@&fileName=%@", runId,
                      [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
@@ -264,8 +272,21 @@
              withContentType:xwwformurlencode];
     return (NSString*) response;
 }
+
+/*!
+ *  Perform an upload of a File.
+ *
+ *  @param uploadUrl     <#uploadUrl description#>
+ *  @param fileName      <#fileName description#>
+ *  @param contentTypeIn <#contentTypeIn description#>
+ *  @param data          <#data description#>
+ */
 + (void) perfomUpload: (NSString*) uploadUrl withFileName:(NSString*) fileName
           contentType:(NSString*) contentTypeIn withData:(NSData*) data {
+    NSLog(@"[%s] Uploading %@ - %@", __func__, contentTypeIn, fileName);
+    
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     NSString *boundary = @"0xKhTmLbOuNdArY";
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -298,6 +319,8 @@
     [request setURL:[NSURL URLWithString: uploadUrl]];
     
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 #pragma mark - Account

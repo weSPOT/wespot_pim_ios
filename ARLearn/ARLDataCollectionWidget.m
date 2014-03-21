@@ -284,9 +284,16 @@
                 NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
                 abort();
             }
-            [ ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
         }
-        
+        if (self.generalItem.managedObjectContext.parentContext) {
+            if ([self.generalItem.managedObjectContext.parentContext hasChanges]){
+                if (![self.generalItem.managedObjectContext.parentContext save:&error]) {
+                    NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
+                    abort();
+                }
+            }
+        }
+        [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
     }
 }
 

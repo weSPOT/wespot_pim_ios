@@ -71,13 +71,12 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
-- (void)refreshTable {
-    
-  
+- (void)refreshTable
+{
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
 
-     [self.tableView reloadData];
+    [self.tableView reloadData];
     
     [self.refreshControl endRefreshing];
 }
@@ -124,7 +123,9 @@ typedef NS_ENUM(NSInteger, inquiries) {
     [self setupFetchedResultsController];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:(@"Update...")];
+    
+    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

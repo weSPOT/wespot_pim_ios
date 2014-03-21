@@ -68,6 +68,25 @@ typedef NS_ENUM(NSInteger, tools) {
     return  @"mainPartCell";
 }
 
+/*!
+ *  See http://stackoverflow.com/questions/13387378/uirefreshcontrol-uitableview-stuck-while-refreshing
+ *
+ *  @param refresh <#refresh description#>
+ */
+- (void)refreshTable:(UIRefreshControl *)refresh  {
+    [self.tableView reloadData];
+    
+    [self.refreshControl endRefreshing];
+    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [self.tableView reloadData];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [refresh endRefreshing];
+//            [self.refreshControl endRefreshing];
+//        });
+//    });
+}
+                   
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,14 +96,12 @@ typedef NS_ENUM(NSInteger, tools) {
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    // self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
-  
-    //See http://stackoverflow.com/questions/5825397/uitableview-background-image
-    //self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.opaque = NO;
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+    //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
+    
+    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
+    
+    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -98,13 +115,22 @@ typedef NS_ENUM(NSInteger, tools) {
         self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.loginButton,nil];
     }
 
+    [self.navigationController setToolbarHidden:NO];
+    
     [self adjustLoginButton];
+    
+    [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.navigationController setToolbarHidden:NO];
+    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
+    
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
 }
 
 -(void)loginButtonButtonTap:(id)sender {
@@ -169,6 +195,20 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     // Return the number of sections.
     return numGroups;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch (section){
+        case MYINQUIRES:
+            return @"";
+        case MYMEDIA:
+            return @"";
+        case TOOLS:
+            return @"";
+    }
+    
+    // Error
+    return @"";
 }
 
 /*!

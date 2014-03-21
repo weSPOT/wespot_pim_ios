@@ -144,13 +144,11 @@ typedef NS_ENUM(NSInteger, groups) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.refreshControl.tintColor = [UIColor orangeColor];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:(@"Update...")];
     
-    [self.tableView reloadData];
+    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 -(void)viewDidAppear:(BOOL)animated    {

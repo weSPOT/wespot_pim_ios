@@ -10,9 +10,23 @@
 
 @interface ARLNarratorItemViewController ()
 
+@property (nonatomic, readwrite) BOOL withAudio;
+@property (nonatomic, readwrite) BOOL withPicture;
+@property (nonatomic, readwrite) BOOL withText;
+@property (nonatomic, readwrite) BOOL withValue;
+@property (nonatomic, readwrite) BOOL withVideo;
+@property (nonatomic, readwrite) BOOL isVisible;
+
+@property (nonatomic, strong) UITextField *valueTextField;
+@property (strong, nonatomic) UIImagePickerController * imagePickerController;
+
+@property (nonatomic, strong) NSString *textDescription;
+@property (nonatomic, strong) NSString *valueDescription;
+
 @property (readonly, nonatomic) CGFloat statusbarHeight;
 @property (readonly, nonatomic) CGFloat navbarHeight;
 @property (readonly, nonatomic) CGFloat tabbarHeight;
+
 @property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
 
 //@property (strong, nonatomic)  UIWebView *webView;
@@ -41,11 +55,11 @@
  *
  *  See http://stackoverflow.com/questions/7101608/setting-image-for-uibarbuttonitem-image-stretched
  *
- *  @param imageString <#imageString description#>
- *  @param enabled     <#enabled description#>
- *  @param selector    <#selector description#>
+ *  @param imageString The name of the Image.
+ *  @param enabled     If YES the button is enabled else disabled (and having a grayed image).
+ *  @param selector    The selector to use when the button is tapped.
  *
- *  @return <#return value description#>
+ *  @return The created UIBarButtonItem.
  */
 - (UIBarButtonItem *)addUIBarButtonWithImage:(NSString *)imageString enabled:(BOOL)enabled action:(SEL)selector {
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -65,13 +79,13 @@
 }
 
 /*!
- *  Transform the image in grayscale.
+ *  Transform the image in grayscale, while keeping its transparency.
  *
  *  See http://stackoverflow.com/questions/1298867/convert-image-to-grayscale
  *
- *  @param inputImage <#inputImage description#>
+ *  @param inputImage The Image to be grayed.
  *
- *  @return <#return value description#>
+ *  @return The GrayScale Image.
  */
 - (UIImage *)grayishImage:(UIImage *)inputImage {
     UIGraphicsBeginImageContextWithOptions(inputImage.size, NO, inputImage.scale);
@@ -97,17 +111,6 @@
 
 -(UIInterfaceOrientation) interfaceOrientation {
     return [[UIApplication sharedApplication] statusBarOrientation];
-}
-
-/*!
- *  Low Memory Warning.
- */
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) processJsonSetup:(NSDictionary *) jsonDict {
@@ -143,17 +146,27 @@
     //    }
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
     
-#warning Replace the the TableView top Section.
-    // self.headerText.title = self.generalItem.name;
+    self.navigationItem.title = self.generalItem.name;
     
     [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.generalItem.managedObjectContext];
+}
+
+/*!
+ *  Low Memory Warning.
+ */
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 - (void)handleDataModelChange:(NSNotification *)note

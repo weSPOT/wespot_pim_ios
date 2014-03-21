@@ -371,7 +371,7 @@
             </objects>
             <point key="canvasLocation" x="3011" y="-734"/>
         </scene>
-        <!--Narrator Item View Controller - Collection Task #1-->
+        <!--Narrator Item View Controller-->
         <scene sceneID="kaR-sw-Udn">
             <objects>
                 <viewController storyboardIdentifier="CollectedDataView" id="QXf-FC-4Co" customClass="ARLNarratorItemViewController" sceneMemberID="viewController">
@@ -381,10 +381,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Collection Task #1" id="Nrp-le-gb4"/>
-                    <connections>
-                        <outlet property="headerText" destination="Nrp-le-gb4" id="r0z-h2-112"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TUk-gi-42g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

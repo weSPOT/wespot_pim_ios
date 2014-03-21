@@ -320,6 +320,7 @@
     
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 
+    NSLog(@"[%s] Uploaded %@ - %@", __func__, contentTypeIn, fileName);
 //    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 

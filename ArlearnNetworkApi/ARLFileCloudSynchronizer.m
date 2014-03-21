@@ -61,14 +61,14 @@
                 abort();
             }
             
-            NSLog(@"[%s] save completed", __func__);
+            NSLog(@"[%s] save context completed", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {abort();}
             }];
             
         }
-        NSLog(@"[%s] save completed", __func__);
+        NSLog(@"[%s] save perent context completed", __func__);
         
     }
     NSLog(@"[%s] save completed", __func__);

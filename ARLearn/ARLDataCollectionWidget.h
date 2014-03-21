@@ -18,12 +18,7 @@
 #import "ARLAudioRecorderViewController.h"
 
 @interface ARLDataCollectionWidget : UIView<UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
-//    BOOL withAudio;
-//    BOOL withPicture;
-//    BOOL withText;
-//    BOOL withValue;
-//    BOOL withVideo;
-//    BOOL isVisible;
+
 }
 
 @property (nonatomic, readwrite) BOOL withAudio;
@@ -46,4 +41,5 @@
 - (id) init : (NSDictionary *) jsonDict viewController: (UIViewController*) viewController;
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+
 @end

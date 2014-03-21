@@ -169,20 +169,26 @@
 
 #pragma mark - GeneralItems
 
-+ (NSDictionary*) itemsForRun: (int64_t) runId{
++ (NSDictionary*) itemsForRun: (int64_t) runId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItems/runId/%lld", runId ]];
 }
 
-+ (NSDictionary*) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from{
++ (NSDictionary*) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItems/gameId/%lld?from=%lld", [gameId longLongValue],[from longLongValue] ]];
 }
 
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId{
++ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld", [runId longLongValue]]];
 }
 
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from{
++ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
+}
+
+#pragma mark - Responses
+
++ (NSDictionary*) responsesForRun: (NSNumber *) runId {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"response/runId/%lld", [runId longLongValue]]];
 }
 
 #pragma mark - APN

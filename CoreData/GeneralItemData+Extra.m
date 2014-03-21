@@ -11,7 +11,6 @@
 
 @implementation GeneralItemData (Extra)
 
-
 + (NSArray *) getUnsyncedData: (NSManagedObjectContext*) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemData"];
 
@@ -55,7 +54,7 @@
     }
 }
 
-+ (NSDictionary*) getDatas: (GeneralItem* ) gi withManagedContext: (NSManagedObjectContext*) context{
++ (NSDictionary *) getDatas: (GeneralItem *) gi withManagedContext: (NSManagedObjectContext*) context{
     NSMutableArray *objectArray = [NSMutableArray arrayWithArray:[gi.data allObjects]];
     NSMutableArray *keysArray = [NSMutableArray arrayWithCapacity:[objectArray count]];
     

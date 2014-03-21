@@ -83,24 +83,24 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
-        return;
-    }
-    
-    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
-    
-    if (count != [self.fetchedResultsController.fetchedObjects count]) {
-        [self.tableView reloadData];
-    }
+//    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    if ([notification object] == appDelegate.managedObjectContext) {
+//        return ;
+//    }
+//    
+//    if (![NSThread isMainThread]) {
+//        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+//        return;
+//    }
+//    
+//    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+//    
+//    NSError *error = nil;
+//    [self.fetchedResultsController performFetch:&error];
+//    
+//    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+//        [self.tableView reloadData];
+//    }
 }
 
 /*!

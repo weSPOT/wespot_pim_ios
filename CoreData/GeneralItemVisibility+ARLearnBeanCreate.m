@@ -69,8 +69,6 @@
     
 }
 
-
-
 + (GeneralItemVisibility *) retrieveFromDb: (NSDictionary *) visDict withManagedContext: (NSManagedObjectContext*) context{
     GeneralItemVisibility * giVis = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];

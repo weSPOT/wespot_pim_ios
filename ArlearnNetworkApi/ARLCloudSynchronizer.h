@@ -21,10 +21,8 @@
 #import "ARLFileCloudSynchronizer.h"
 
 @interface ARLCloudSynchronizer : NSObject {
-    
     BOOL syncRuns;
     BOOL syncGames;
-
 }
 
 @property (nonatomic, readwrite) BOOL syncRuns;

@@ -277,7 +277,7 @@
  *
  *  @return The resulting JSON NSString.
  */
-+ (NSString*) jsonString:(NSDictionary *) jsonDictionary {
++ (NSString *) jsonString:(NSDictionary *) jsonDictionary {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                        options:0

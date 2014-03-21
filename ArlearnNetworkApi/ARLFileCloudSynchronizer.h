@@ -12,10 +12,6 @@
 #import "GeneralItemData+Extra.h"
 
 @interface ARLFileCloudSynchronizer : NSObject
-#warning removed the unused queue here!
-//: NSObject {
-//    dispatch_queue_t queue;
-//}
 
 @property (strong, nonatomic)  NSManagedObjectContext * context;
 @property (strong, nonatomic)  NSManagedObjectContext * parentContext;

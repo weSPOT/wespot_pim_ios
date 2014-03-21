@@ -46,6 +46,9 @@
 + (NSDictionary*) itemsForRun: (int64_t) runId;
 + (NSDictionary*) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from;
 
+//Responses
++ (NSDictionary*) responsesForRun: (NSNumber *) runId;
+
 //ItemVisibility
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId;
 + (NSDictionary*) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;

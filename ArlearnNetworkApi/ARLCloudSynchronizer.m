@@ -171,6 +171,7 @@
     for (NSDictionary *game in [gdict objectForKey:@"games"]) {
         [Game gameWithDictionary:game inManagedObjectContext:self.context];
     }
+    
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"myGames" time:serverTime inManagedObjectContext:self.context];
     }
@@ -191,6 +192,8 @@
         [GeneralItem generalItemWithDictionary:generalItemDict
                                       withGame:game
                         inManagedObjectContext:self.context];
+        
+
     }
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"generalItems"
@@ -207,28 +210,49 @@
 
     Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
     [self synchronizeGeneralItemsAndVisibilityStatements:run];
-   
+    
     self.visibilityRunId = nil;
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
     NSLog(@"[%s] run:%@", __func__, run.runId);
 
-    NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
+    NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
 
-    NSDictionary * visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
+    NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
     
-    NSNumber * serverTime = [visDict objectForKey:@"serverTime"];
-    NSNumber * currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
-    NSNumber* delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
+    NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
+    NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
+    NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
     
     [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
     
     if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
-        for (NSDictionary * viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
+        for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
             [GeneralItemVisibility visibilityWithDictionary: viStatement withRun: run];
         }
     }
+    
+    //    {
+    //        deleted = 0;
+    //        responses =     (
+    //                         {
+    //                             deleted = 0;
+    //                             generalItemId = 4596856252268544;
+    //                             responseId = 4524418407596032;
+    //                             responseValue = "{\"text\":\"\"}";
+    //                             runId = 5117857260109824;
+    //                             timestamp = 1395396382116;
+    //                             type = "org.celstec.arlearn2.beans.run.Response";
+    //                             userEmail = "2:101754523769925754305";
+    //                         },
+        
+     NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
+    
+    for (NSDictionary *response in [respDict objectForKey:@"responses"] ) {
+        [Response responseWithDictionary:response inManagedObjectContext:self.context];
+    }
+    
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
                                            time:serverTime
@@ -273,11 +297,11 @@
                 if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
                 if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
                 if ([resp.width intValue] ==0 ) {
-                    myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
+                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    serverUrl, contentType, nil];
                     
                 } else {
-                    myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
+                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    resp.width, @"width",
                                    resp.height, @"height",
                                    serverUrl, contentType, nil];

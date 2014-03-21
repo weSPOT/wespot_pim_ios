@@ -10,6 +10,20 @@
 
 @interface ARLNarratorItemViewController ()
 
+/*!
+ *  ID's and order of the cells sections.
+ */
+typedef NS_ENUM(NSInteger, responses) {
+    /*!
+     * Uploaded Responses.
+     */
+    RESPONSES = 0,
+    /*!
+     *  Number of Responses
+     */
+    numResponses
+};
+
 @property (nonatomic, readwrite) BOOL withAudio;
 @property (nonatomic, readwrite) BOOL withPicture;
 @property (nonatomic, readwrite) BOOL withText;
@@ -28,13 +42,16 @@
 @property (readonly, nonatomic) CGFloat tabbarHeight;
 
 @property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
+@property (readonly, nonatomic) NSString *cellIdentifier;
 
-//@property (strong, nonatomic)  UIWebView *webView;
-//@property (strong, nonatomic)  ARLDataCollectionWidget* dataCollectionWidget;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
 @implementation ARLNarratorItemViewController
+
+@synthesize run = _run;
+@synthesize generalItem = _generalItem;
 
 -(CGFloat) statusbarHeight
 {
@@ -48,6 +65,10 @@
 
 -(CGFloat) tabbarHeight {
     return self.tabBarController.tabBar.bounds.size.height;
+}
+
+-(NSString*) cellIdentifier {
+    return  @"responseItemCell2";
 }
 
 /*!
@@ -114,10 +135,6 @@
 }
 
 - (void) processJsonSetup:(NSDictionary *) jsonDict {
-    //        if (!jsonDict) {
-    //            self.isVisible = NO;
-    //            return self;
-    //        }
     self.isVisible = YES;
     
     self.withAudio = [(NSNumber*)[jsonDict objectForKey:@"withAudio"] intValue] ==1;
@@ -128,9 +145,6 @@
     
     self.textDescription = [jsonDict objectForKey:@"textDescription"];
     self.valueDescription = [jsonDict objectForKey:@"valueDescription"];
-    
-    //      self.backgroundColor = [UIColor clearColor];
-    //      self.translatesAutoresizingMaskIntoConstraints = NO;  //This part hung me up
     
     UIBarButtonItem *audioButton = [self addUIBarButtonWithImage:@"task-record" enabled:self.withAudio action:@selector(collectAudio)];
     UIBarButtonItem *imageButton = [self addUIBarButtonWithImage:@"task-photo" enabled:self.withPicture action:@selector(collectImage)];
@@ -143,15 +157,91 @@
     NSArray *buttons = [[NSArray alloc] initWithObjects:audioButton, flexButton, imageButton, flexButton, videoButton, flexButton, noteButton, flexButton, textButton, nil];
     
     [self setToolbarItems:buttons];
-    //    }
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
+- (void)setupFetchedResultsController {
+    if (self.run.runId) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+        request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
+                                                                                         ascending:YES]];
+ 
+        NSString *contentType = @"";
+        //for (Response *response in self.fetchedResultsController.fetchedObjects) {
+            if (self.withPicture) {
+                contentType = @"application/jpg";
+            } else if (self.withVideo) {
+                contentType = @"video/quicktime";
+            } else if (self.withAudio) {
+                contentType = @"audio/aac";
+            }
+        //}
+        
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"run.runId = %lld AND contentType = %@",
+                             [self.run.runId longLongValue], contentType];
+        
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.run.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+        
+        self.fetchedResultsController.delegate = self;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        
+        NSError *error = nil;
+        [self.fetchedResultsController performFetch:&error];
+        
+//        if (ARLNetwork.networkAvailable) {
+//            //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+//                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//                [synchronizer createContext:appDelegate.managedObjectContext];
+//                
+//                synchronizer.gameId = self.run.gameId;
+//                synchronizer.visibilityRunId = self.run.runId;
+//                
+//                [synchronizer sync];
+//            });
+//        }
+    }
+}
+
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
+    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+        [self.collectionView reloadData];
+    }
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.collectionView.opaque = NO;
+    self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
     
@@ -160,6 +250,13 @@
     [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.generalItem.managedObjectContext];
+    
+    [self setupFetchedResultsController];
+  // xxxxxxß
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /*!
@@ -169,6 +266,195 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - UICollectionView Datasource
+
+/*!
+ *  The number of sections in a Collection.
+ *
+ *  see http://www.raywenderlich.com/22324/beginning-uicollectionview-in-ios-6-part-12
+ *
+ *  @param view The Table to be served.
+ *
+ *  @return The number of sections.
+ */
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)view
+{
+    return numResponses;
+}
+
+/*!
+ *  Return the number of Rows in a Section of the Collection.
+ *
+ *  @param view The Collection to be served.
+ *  @param section   The section of the data.
+ *
+ *  @return The number of Rows in the requested section.
+ */
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
+{
+    NSInteger *count = 0;
+    
+    switch (section){
+        case RESPONSES:
+            count = [self.fetchedResultsController.fetchedObjects count];
+            break;
+    }
+    
+    // Error
+    return count;
+}
+
+// 4
+/*- (UICollectionReusableView *)collectionView:
+ (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+ {
+ return [[UICollectionReusableView alloc] init];
+ }*/
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//    switch (section){
+//        case RESPONSES:
+//            return @"";
+//    }
+//    
+//    // Error
+//    return @"";
+//}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    
+    cell.backgroundColor = [UIColor colorWithRed:(float)0xE6
+                                           green:(float)0xE6
+                                            blue:(float)0xFA
+                                           alpha:1.0F];
+    
+    switch (indexPath.section) {
+        case RESPONSES:{
+            Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            if (response.fileName) {
+                if (self.withPicture && [response.contentType isEqualToString:@"application/jpg"]) {
+                    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
+                    // webView.scalesPageToFit = YES;
+                    //webView.contentMode = UIViewContentModeScaleToFill;
+                    
+                    [cell addSubview:webView];
+                    
+                    NSString *html = [[NSString alloc] initWithFormat:@"<html><body bgcolor='#E6E6FA'><img src='%@' width='100%%' border='0'></body></html>", response.fileName];
+                    // , (response.width>response.height)?@"width":@"height"]
+                    // , (int)cell.frame.size.width is not in pixels.
+                    
+                    [webView loadHTMLString:html baseURL:nil];
+                } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
+                    UIImage *icon =[UIImage imageNamed:@"task-video"];
+                    CGRect rect = CGRectMake(
+                                             (cell.frame.size.width - icon.size.width)/2,
+                                             (cell.frame.size.height - icon.size.height)/2,
+                                             icon.size.width,
+                                             icon.size.height);
+                    
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+                    imageView.image = icon;
+                    
+                    [cell addSubview:imageView];
+                } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
+                    UIImage *icon =[UIImage imageNamed:@"task-record"];
+                    CGRect rect = CGRectMake(
+                                             (cell.frame.size.width - icon.size.width)/2,
+                                             (cell.frame.size.height - icon.size.height)/2,
+                                             icon.size.width,
+                                             icon.size.height);
+                    
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+                    imageView.image = icon;
+                    
+                    [cell addSubview:imageView];
+                }
+            }
+        }
+            break;
+    }
+    
+    return cell;
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    //    NSString *searchTerm = self.searches[indexPath.section];
+    //
+    //    FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
+    
+    // 2
+    CGSize retval = /*photo.thumbnail.size.width > 0 ? photo.thumbnail.size :*/CGSizeMake(100, 100);
+    retval.height += 35;
+    retval.width += 35;
+    
+    return retval;
+}
+
+// 3
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(50, 20, 50, 20);
+}
+
+// 4
+/*- (UICollectionReusableView *)collectionView:
+ (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+ {
+ return [[UICollectionReusableView alloc] init];
+ }*/
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO: Select Item
+}
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // TODO: Deselect item
+}
+
+#pragma mark old code.
+///*!
+// *  Return the Table Data one Cell at a Time.
+// *
+// *  @param tableView The Table to be served.
+// *  @param indexPath The IndexPath of the TableCell.
+// *
+// *  @return The Cell Content.
+// */
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
+//    }
+//    // cell.backgroundColor = [UIColor clearColor];
+//    
+//    switch (indexPath.section) {
+//        case RESPONSES: {
+//            //  Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
+//            
+//            // NSLog(@"[%s] Cell '%@' created at index %@", __func__,inquiry.title, indexPath);
+//            
+//            cell.textLabel.text = @"Response";
+//            
+//            //cell.imageView.image = [UIImage imageNamed:@"inquiry"];
+//            cell.detailTextLabel.text = @""; //[NSString stringWithFormat:@"%d", arc4random() % 10];
+//        }
+//    }
+//    
+//    return cell;
+//}
+
+/*!
+ *  BESTAANDE CODE!!
+ *
+ *  @param note <#note description#>
+ */
 - (void)handleDataModelChange:(NSNotification *)note
 {
     NSSet *updatedObjects = [[note userInfo] objectForKey:NSUpdatedObjectsKey];
@@ -200,6 +486,8 @@
         }
     }
 }
+
+#pragma mark Collect Methods.
 
 /*!
  *  Record Audio.

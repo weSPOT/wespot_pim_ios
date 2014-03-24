@@ -10,6 +10,7 @@
 #import "Run+ARLearnBeanCreate.h"
 #import "Account+Create.h"
 #import "GeneralItem+ARLearnBeanCreate.h"
+#import "ARLFileCloudSynchronizer.h"
 
 @interface Response (Create)
 
@@ -19,6 +20,7 @@
 + (Response *) initResponse: (Run *) run forGeneralItem:(GeneralItem *) gi withData:(NSData *) data inManagedObjectContext:(NSManagedObjectContext * ) context;
 
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext*) context;
++ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext*) context;
 
 + (void) createTextResponse: (NSString *) text withRun: (Run*)run withGeneralItem: (GeneralItem*) generalItem ;
 + (void) createImageResponse:(NSData *) imageUrl width: (NSNumber*) width height: (NSNumber*) height withRun: (Run*)run withGeneralItem: (GeneralItem*) generalItem;

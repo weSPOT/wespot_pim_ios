@@ -16,8 +16,14 @@
 @property (strong, nonatomic)  NSManagedObjectContext * context;
 @property (strong, nonatomic)  NSManagedObjectContext * parentContext;
 
+@property (nonatomic, readwrite) BOOL syncGeneralItems;
+@property (nonatomic, readwrite) BOOL syncResponses;
+
 - (void) createContext: (NSManagedObjectContext*) mainContext;
 
 - (void) sync;
+
++ (void) syncGeneralItems: (NSManagedObjectContext*) context;
++ (void) syncResponseData: (NSManagedObjectContext*) context;
 
 @end

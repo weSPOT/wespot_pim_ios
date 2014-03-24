@@ -12,6 +12,33 @@
 
 @synthesize context = _context;
 
+@synthesize syncGeneralItems = _syncGeneralItems;
+@synthesize syncResponses = _syncResponses;
+
++ (void) syncGeneralItems: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
+    ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.syncGeneralItems = YES;
+    
+    [synchronizer sync];
+}
+
++ (void) syncResponseData: (NSManagedObjectContext*) context {
+    NSLog(@"[%s]", __func__);
+    
+    ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.syncResponses = YES;
+    
+    [synchronizer sync];
+}
+
 - (void) createContext: (NSManagedObjectContext*) mainContext {
     self.parentContext = mainContext;
     
@@ -23,7 +50,6 @@
     [self.context performBlock:^{
         [self asyncExecution];
     }];
-    
 }
 
 - (void) asyncExecution {
@@ -31,14 +57,16 @@
     while (YES) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
-        [self downloadGeneralItems];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        // Already done in downloadGeneralItems, but added dor symmetry with other asyncExecution methods.
-        [self saveContext];
-        
-        break;
+        if (self.syncGeneralItems) {
+            [self downloadGeneralItems];
+        } else if (self.syncResponses) {
+            [self downloadResponses];
+        } else {
+            // Already done in downloadGeneralItems, but added dor symmetry with other asyncExecution methods.
+            [self saveContext];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            break;
+        }
     }
     NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************\r\n", __func__);
 }
@@ -68,7 +96,7 @@
             }];
             
         }
-        NSLog(@"[%s] save perent context completed", __func__);
+        NSLog(@"[%s] save parent context completed", __func__);
         
     }
     NSLog(@"[%s] save completed", __func__);
@@ -76,18 +104,38 @@
 
 - (void) downloadGeneralItems {
     for (GeneralItemData* giData in [GeneralItemData getUnsyncedData:self.context]) {
-        NSLog(@"[%s] gidata url = %@ replicated = %@ error = %@ ", __func__, giData.url, giData.replicated, giData.error);
+        NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
         NSURL  *url = [NSURL URLWithString:giData.url];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
-        if ( urlData ){
+        if (urlData){
             giData.data = urlData;
             giData.replicated = [NSNumber numberWithBool:YES];
         } else {
-            NSLog(@"[%s] sth went wrong", __func__);
+            NSLog(@"[%s] Could not fetch url", __func__);
         }
         
         [self saveContext];
     }
+    
+    self.syncGeneralItems=NO;
+}
+
+- (void) downloadResponses {
+    for (Response* response in [Response getReponsesWithoutMedia:self.context]) {
+        NSLog(@"[%s] response url=%@", __func__, response.fileName);
+        NSURL  *url = [NSURL URLWithString:response.fileName];
+        NSData *urlData = [NSData dataWithContentsOfURL:url];
+        if (urlData){
+            response.data = urlData;
+            // giData.replicated = [NSNumber numberWithBool:YES];
+        } else {
+            NSLog(@"[%s] Could not fetch url", __func__);
+        }
+        
+        [self saveContext];
+    }
+    
+    self.syncResponses=NO;
 }
 
 @end

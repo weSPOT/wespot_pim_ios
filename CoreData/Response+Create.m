@@ -56,24 +56,31 @@
 
 /*!
  *  Updated or inserts a Response found on the Server.
- *  As the ResponseId is not stored, the timestamp is used to identify the record.
+ *  Only for new records the responsId is savedß.
  *  For existing records, the synchronized is not touched.
  *
  *  @param respDict The Dictionary
- *  @param context  <#context description#>
+ *  @param context  The NSManagedObjectContext
  *
- *  @return <#return value description#>
+ *  @return The existing or newly created Response.
  */
 + (Response *) responseWithDictionary: (NSDictionary *) respDict inManagedObjectContext: (NSManagedObjectContext * ) context {
     Response *response = [self retrieveFromDb:respDict withManagedContext:context];
+
     if (!response) {
         response = [NSEntityDescription insertNewObjectForEntityForName:@"Response" inManagedObjectContext:context];
         
         // NOTE: Only newly downloaded responses are automatically marked as synced.
         //       The existing once do not have the synchronized field updated.
         response.synchronized = [NSNumber numberWithBool:YES];
+        response.responseId = [NSNumber numberWithLongLong:[[respDict objectForKey:@"responseId"] longLongValue]];
     }
     
+    NSError *e = nil;
+    NSData *data = [[respDict objectForKey:@"responseValue"] dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *valueDict = [NSJSONSerialization JSONObjectWithData:data
+                                                              options: NSJSONReadingMutableContainers
+                                                                error: &e];
 #warning Deleted Response are not handled yet!
     
     //                             deleted = 0;
@@ -81,14 +88,10 @@
     //                             responseId = 4524418407596032;
     //                             responseValue = "{\"text\":\"\"}";
     //                             runId = 5117857260109824;
-    //                         --> timestamp = 1395396382116;
+    //                             timestamp = 1395396382116;
     //                             type = "org.celstec.arlearn2.beans.run.Response";
     //                             userEmail = "2:101754523769925754305";
-    NSError *e = nil;
-    NSData *data = [[respDict objectForKey:@"responseValue"] dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *valueDict = [NSJSONSerialization JSONObjectWithData:data
-                                    options: NSJSONReadingMutableContainers
-                                      error: &e];
+
     
     // Set responseValue specific fields.
     if (valueDict) {
@@ -103,6 +106,7 @@
         } else if ([valueDict objectForKey:@"audioUrl"]) {
             response.fileName = [valueDict objectForKey:@"audioUrl"];
             response.contentType = @"audio/aac";
+#warning schedule sync for file/url
         } else if ([valueDict objectForKey:@"text"]) {
 #warning Implement Text
         } else if ([valueDict objectForKey:@"number"]) {
@@ -129,10 +133,14 @@
     if (error) {
         NSLog(@"[%s] error %@", __func__, error);
     }
-    
+//    
+//    if (!response.data && response.fileName) {
+// #warning schedule sync for file/url
+//        [ARLFileCloudSynchronizer syncResponses:context];
+//    }
+//    
     return response;
 }
-
 
 /*!
  *  Retrieve a Response from Core Data (and use the timestamp 
@@ -158,7 +166,7 @@
     //                             userEmail = "2:101754523769925754305";
     //                         },
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
-   request.predicate = [NSPredicate predicateWithFormat:@"timeStamp = %lld", [[giDict objectForKey:@"timestamp"] longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"responseId = %lld", [[giDict objectForKey:@"responseId"] longLongValue]];
     NSError *error = nil;
     
     NSArray *responsesFromDb = [context executeFetchRequest:request error:&error];
@@ -182,6 +190,23 @@
     
     if (error) {
         NSLog(@"error %@", error);
+    }
+    
+    return unsyncedResponses;
+}
+
++ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext*) context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"data = %@ AND fileName != %@", NULL, NULL];
+    
+    NSError *error = nil;
+    NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
+    
+    if (error) {
+        NSLog(@"error %@", error);
+    } else {
+        NSLog(@"[%s] Found %d Responses without Media", __func__, unsyncedResponses.count);
     }
     
     return unsyncedResponses;

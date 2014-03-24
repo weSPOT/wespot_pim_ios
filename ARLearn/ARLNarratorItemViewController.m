@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, responses) {
         
         self.fetchedResultsController.delegate = self;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
         
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
@@ -252,7 +252,6 @@ typedef NS_ENUM(NSInteger, responses) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.generalItem.managedObjectContext];
     
     [self setupFetchedResultsController];
-  // xxxxxxß
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -332,20 +331,32 @@ typedef NS_ENUM(NSInteger, responses) {
     switch (indexPath.section) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+            CGRect frame = CGRectMake(0, 0, cell.contentView.frame.size.width, cell.contentView.frame.size.height);
             
             if (response.fileName) {
                 if (self.withPicture && [response.contentType isEqualToString:@"application/jpg"]) {
-                    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
-                    // webView.scalesPageToFit = YES;
-                    //webView.contentMode = UIViewContentModeScaleToFill;
-                    
-                    [cell addSubview:webView];
-                    
-                    NSString *html = [[NSString alloc] initWithFormat:@"<html><body bgcolor='#E6E6FA'><img src='%@' width='100%%' border='0'></body></html>", response.fileName];
-                    // , (response.width>response.height)?@"width":@"height"]
-                    // , (int)cell.frame.size.width is not in pixels.
-                    
-                    [webView loadHTMLString:html baseURL:nil];
+                    if (response.data) {
+                        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:response.data]];
+                        imgView.frame = frame;
+                        [cell addSubview:imgView];
+                    } else {
+                        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"task-photo"]];
+                        imgView.frame = frame;
+                        [cell addSubview:imgView];
+                        
+//                        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
+//                        // webView.scalesPageToFit = YES;
+//                        //webView.contentMode = UIViewContentModeScaleToFill;
+//                        
+//                        [cell addSubview:webView];
+//                        
+//                        NSString *html = [[NSString alloc] initWithFormat:@"<html><body bgcolor='#E6E6FA'><img src='%@' width='100%%' border='0'></body></html>", response.fileName];
+//                        // , (response.width>response.height)?@"width":@"height"]
+//                        // , (int)cell.frame.size.width is not in pixels.
+//                        
+//                        [webView loadHTMLString:html baseURL:nil];
+                    }
+
                 } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
                     UIImage *icon =[UIImage imageNamed:@"task-video"];
                     CGRect rect = CGRectMake(
@@ -418,37 +429,6 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 #pragma mark old code.
-///*!
-// *  Return the Table Data one Cell at a Time.
-// *
-// *  @param tableView The Table to be served.
-// *  @param indexPath The IndexPath of the TableCell.
-// *
-// *  @return The Cell Content.
-// */
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
-//    }
-//    // cell.backgroundColor = [UIColor clearColor];
-//    
-//    switch (indexPath.section) {
-//        case RESPONSES: {
-//            //  Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
-//            
-//            // NSLog(@"[%s] Cell '%@' created at index %@", __func__,inquiry.title, indexPath);
-//            
-//            cell.textLabel.text = @"Response";
-//            
-//            //cell.imageView.image = [UIImage imageNamed:@"inquiry"];
-//            cell.detailTextLabel.text = @""; //[NSString stringWithFormat:@"%d", arc4random() % 10];
-//        }
-//    }
-//    
-//    return cell;
-//}
 
 /*!
  *  BESTAANDE CODE!!
@@ -484,6 +464,16 @@ typedef NS_ENUM(NSInteger, responses) {
                 [self dismissViewControllerAnimated:TRUE completion:nil];
             }
         }
+    }
+    
+    // Update View too.
+    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
+    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+        [self.collectionView reloadData];
     }
 }
 

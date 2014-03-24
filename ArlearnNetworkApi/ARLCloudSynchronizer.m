@@ -104,9 +104,11 @@
 #warning is this the correct spot to sync files?
                 
                 if (ARLNetwork.networkAvailable) {
-                    ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
-                    [fileSync createContext:self.parentContext];
-                    [fileSync sync];
+                    [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
+                    [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
+//                    ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
+//                    [fileSync createContext:self.parentContext];
+//                    [fileSync sync];
                 }
             }];
         }

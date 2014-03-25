@@ -118,7 +118,7 @@
 
 - (void) downloadGeneralItems {
     for (GeneralItemData* giData in [GeneralItemData getUnsyncedData:self.context]) {
-//        NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
+//      NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
         NSURL  *url = [NSURL URLWithString:giData.url];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
         if (urlData){
@@ -136,14 +136,14 @@
 
 - (void) downloadResponses {
     for (Response* response in [Response getReponsesWithoutMedia:self.context]) {
-//        NSLog(@"[%s] response url=%@", __func__, response.fileName);
         NSURL  *url = [NSURL URLWithString:response.fileName];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
         if (urlData){
+            NSLog(@"[%s] Downloaded url=%@", __func__, response.fileName);
             response.data = urlData;
             // giData.replicated = [NSNumber numberWithBool:YES];
         } else {
-            NSLog(@"[%s] Could not fetch url", __func__);
+            NSLog(@"[%s] Could not fetch url=%@", __func__, response.fileName);
         }
         
         [self saveContext];

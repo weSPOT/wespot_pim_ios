@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, responses) {
         
         self.fetchedResultsController.delegate = self;
         
-        //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
         
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
@@ -225,9 +225,9 @@ typedef NS_ENUM(NSInteger, responses) {
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
     
-    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+    // if (count != [self.fetchedResultsController.fetchedObjects count]) {
         [self.collectionView reloadData];
-    }
+    // }
 }
 
 /*!

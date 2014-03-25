@@ -8,6 +8,7 @@
 
 #import "ARLNetwork.h"
 #import "ARLCloudSynchronizer.h"
+#import "ARLAppDelegate.h"
 #import "Run.h"
 
 @interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>

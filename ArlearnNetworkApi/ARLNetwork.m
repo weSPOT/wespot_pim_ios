@@ -25,7 +25,7 @@
 + (id) executeARLearnGetWithAuthorization: (NSString *) path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     
-    NSLog(@"[%s] %@",__func__, urlString);
+//    NSLog(@"[%s] %@",__func__, urlString);
     
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     

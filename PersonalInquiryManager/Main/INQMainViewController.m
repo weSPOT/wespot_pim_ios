@@ -136,9 +136,9 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)loginButtonButtonTap:(id)sender {
     UIViewController *newViewController;
     
-#warning this can be better now the sync/asyncExecution have a clear start and end.
+    NSLog(@"[%s] %@",__func__, ARLAppDelegate.theLock);
     
-    if ([[UIApplication sharedApplication] isNetworkActivityIndicatorVisible]) {
+    if (![ARLAppDelegate.theLock tryLock]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Synchronization in progress, logout not possible" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alert show];
     } else {
@@ -164,6 +164,8 @@ typedef NS_ENUM(NSInteger, tools) {
             // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
             [self.navigationController presentViewController:newViewController animated:YES completion:nil];
         }
+
+        [ARLAppDelegate.theLock unlock];
     }
 }
 

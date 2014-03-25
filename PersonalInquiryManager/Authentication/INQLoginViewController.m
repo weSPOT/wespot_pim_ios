@@ -236,7 +236,7 @@
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     self.token = @"";
     
-    // NSLog(@"%@" , error);
+    // NSLog(@"[%s] %@" , __func__, error);
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.description delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
@@ -253,7 +253,7 @@
     //    NSString *htmlSTR = [[NSString alloc] initWithData:self.receivedData
     //                                              encoding:NSUTF8StringEncoding];
 
-    // NSLog(@"%@" , htmlSTR);
+    // NSLog(@"[%s] %@" ,__func__, htmlSTR);
     
     if ([self.token length]!=0) {
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Got an accessToken" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -329,7 +329,7 @@
     NSDictionary* network = [ARLNetwork oauthInfo];
     
     for (NSDictionary* dict in [network objectForKey:@"oauthInfoList"]) {
-        NSLog(@"[%s] %@", __func__, [dict objectForKey:@"providerId"]);
+//        NSLog(@"[%s] %@", __func__, [dict objectForKey:@"providerId"]);
         switch ([(NSNumber*)[dict objectForKey:@"providerId"] intValue]) {
             case FACEBOOK:
                 self.facebookLoginString = [NSString stringWithFormat:@"https://graph.facebook.com/oauth/authorize?client_id=%@&display=page&redirect_uri=%@&scope=publish_stream,email", [dict objectForKey:@"clientId"], [dict objectForKey:@"redirectUri"]];
@@ -350,9 +350,9 @@
 
 - (void) adjustLoginButton  {
     if (ARLNetwork.isLoggedIn) {
-        NSLog(@"Logout");
+//     NSLog(@"[%s] Logout", __func__);
     } else {
-        NSLog(@"Login");
+//     NSLog(@"[%c] Login", __func__);
     }
 }
 

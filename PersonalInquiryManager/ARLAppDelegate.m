@@ -12,11 +12,12 @@
 
 -(void)reachabilityChanged:(NSNotification*)note;
 
+//+(NSRecursiveLock *) theLock;
+
 @end
 
-@implementation ARLAppDelegate
 
-// dispatch_queue_t syncqueue;
+@implementation ARLAppDelegate
 
 // veg: These three need to stay as we implement the getter (so NO default _ prefixed backing field).
 @synthesize managedObjectContext = _managedObjectContext;
@@ -26,11 +27,17 @@
 @synthesize isLoggedIn = _isLoggedIn;
 @synthesize networkAvailable = _networkAvailable;
 
+static NSRecursiveLock *_theLock;
+
++(NSRecursiveLock *) theLock {
+    if(!_theLock){
+        _theLock = [[NSRecursiveLock alloc] init];
+    }
+    return _theLock;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //#warning experimental code.
-    //    syncqueue = dispatch_queue_create("net.wespot.SyncQueue", NULL);
-    
     // Override point for customization after application launch.
     _networkAvailable = NO;
     
@@ -258,16 +265,16 @@
 {
     Reachability *reach = [note object];
     
-    NSLog(@"Reachability Changed");
-    NSLog(@"From: %@", _networkAvailable);
+//    NSLog(@"Reachability Changed");
+//    NSLog(@"From: %@", _networkAvailable);
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
-    
-    NSLog(@"To: %@", _networkAvailable);
-    
-    NSLog(@" All:  %d", [reach isReachable]);
-    NSLog(@" Wifi: %d", [reach isReachableViaWiFi]);
-    NSLog(@" WWan: %d", [reach isReachableViaWWAN]);
+
+//    NSLog(@"To: %@", _networkAvailable);
+//    
+//    NSLog(@" All:  %d", [reach isReachable]);
+//    NSLog(@" Wifi: %d", [reach isReachableViaWiFi]);
+//    NSLog(@" WWan: %d", [reach isReachableViaWWAN]);
 }
 
 /*!

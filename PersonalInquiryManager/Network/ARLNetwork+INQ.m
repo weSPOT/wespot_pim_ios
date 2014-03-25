@@ -194,8 +194,8 @@
 + (NSNumber *) getARLearnRunId: (NSNumber *) inquiryId {
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearnrun", apiKey, inquiryId];
  
-    NSLog(@"[%s] url %@", __func__, url);
-    NSLog(@"[%s]url %@", __func__, [self returnJson:url]);
+//    NSLog(@"[%s] url %@", __func__, url);
+//    NSLog(@"[%s]url %@", __func__, [self returnJson:url]);
     
     if (![[self returnJson:url] objectForKey:@"result"])
         #warning veg - 03-02-2014 Hardcoded Magic Number

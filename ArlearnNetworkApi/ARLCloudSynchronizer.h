@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <pthread.h>
 
 #import "Run+ARLearnBeanCreate.h"
 #import "Game+ARLearnBeanCreate.h"

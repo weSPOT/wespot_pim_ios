@@ -37,7 +37,9 @@
     game.creator = [gameDict objectForKey:@"creator"];
     game.gameId = [gameDict objectForKey:@"gameId"];
     game.hasMap = [[gameDict objectForKey:@"config"] objectForKey:@"mapAvailable"];
-    NSLog(@"[%s] exists %@", __func__, [gameDict objectForKey:@"description"]);
+    
+    //NSLog(@"[%s] exists %@", __func__, [gameDict objectForKey:@"description"]);
+    
     if ([gameDict objectForKey:@"description"] )game.richTextDescription = [gameDict objectForKey:@"description"];
     if (!game.hasMap) game.hasMap = NO;
     [self setCorrespondingRuns:game];

@@ -30,7 +30,7 @@
     NSError *error;
     NSArray *result = [managedContext executeFetchRequest:fetch error:&error];
     if (!result) {
-        NSLog(@"%@", [error localizedDescription]);
+        NSLog(@"[%s] %@", __func__, [error localizedDescription]);
     }
     
     if ([result count] == 0) {

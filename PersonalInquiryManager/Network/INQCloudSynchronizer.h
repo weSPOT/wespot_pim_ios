@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <pthread.h>
+
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 #import "Account+Create.h"
 #import "Inquiry+Create.h"
-//#import "ARLCloudSynchronizer.h"
 #import "TestAccount+Lazy.h"
 
 @interface INQCloudSynchronizer : NSObject

@@ -84,7 +84,7 @@
         }
         
         if ([self.parentContext hasChanges]){
-            NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
+//          NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {abort();}
@@ -99,20 +99,36 @@
  *  Runs on a separate thread in the background.
  */
 - (void) asyncExecution {
-    NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
+    mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    
+    [ARLAppDelegate.theLock lock];
+    
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    
+    NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of INQ Synchronisation", __func__, machTID);
+
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     while (YES) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
         if (self.syncUsers) {
             [self syncAllUsers];
         } else if (self.syncInquiries) {
             [self syncronizeInquiries];
         } else {
             [self saveContext];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             break;
         }
     }
-    NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************", __func__);
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    [ARLAppDelegate.theLock unlock];
+    
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    
+    NSLog(@"\r\n[%s 0x%x] End of INQ Synchronisation\r\n*******************************************", __func__, machTID);
 }
 
 /*!
@@ -163,6 +179,7 @@
         Run *selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.context];
         newInquiry.run=selectedRun;
     }
+    
     self.syncInquiries = NO;
 }
 
@@ -201,19 +218,18 @@
             
             
 #warning TESTACCOUNT CODE for Lazy Load Images.
-            TestAccount *test =
-            [TestAccount accountWithDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-                                                icon, @"picture",
-                                                oauthId, @"localId",
-                                                oauthProviderType, @"accountType",
-                                                name, @"name", nil] inManagedObjectContext:self.context];
+//            TestAccount *test =
+//            [TestAccount accountWithDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
+//                                                icon, @"picture",
+//                                                oauthId, @"localId",
+//                                                oauthProviderType, @"accountType",
+//                                                name, @"name", nil] inManagedObjectContext:self.context];
             
             
             
             
-            UIImage *tmp = [test lazyPicture];
-            NSLog(@"%0.0f x %0.0f", tmp.size.width, tmp.size.height);
-
+//            UIImage *tmp = [test lazyPicture];
+            // NSLog(@"%0.0f x %0.0f", tmp.size.width, tmp.size.height);
         }
     }
     

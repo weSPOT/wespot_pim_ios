@@ -53,22 +53,36 @@
 }
 
 - (void) asyncExecution {
-    NSLog(@"\r\n[%s]\r\n*******************************************\r\nStart of synchronisation", __func__);
+    mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    
+    [ARLAppDelegate.theLock lock];
+    
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    
+    NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of File Synchronisation", __func__, machTID);
+
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
     while (YES) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         if (self.syncGeneralItems) {
             [self downloadGeneralItems];
         } else if (self.syncResponses) {
             [self downloadResponses];
         } else {
-            // Already done in downloadGeneralItems, but added dor symmetry with other asyncExecution methods.
             [self saveContext];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             break;
         }
     }
-    NSLog(@"\r\n[%s] End of synchronisation\r\n*******************************************\r\n", __func__);
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    [ARLAppDelegate.theLock unlock];
+    
+    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    
+    NSLog(@"\r\n[%s 0x%x] End of File Synchronisation\r\n*******************************************", __func__, machTID);
 }
 
 /*!
@@ -89,22 +103,22 @@
                 abort();
             }
             
-            NSLog(@"[%s] save context completed", __func__);
+//          NSLog(@"[%s] save context completed", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {abort();}
             }];
             
         }
-        NSLog(@"[%s] save parent context completed", __func__);
+//      NSLog(@"[%s] save parent context completed", __func__);
         
     }
-    NSLog(@"[%s] save completed", __func__);
+//  NSLog(@"[%s] save completed", __func__);
 }
 
 - (void) downloadGeneralItems {
     for (GeneralItemData* giData in [GeneralItemData getUnsyncedData:self.context]) {
-        NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
+//        NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
         NSURL  *url = [NSURL URLWithString:giData.url];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
         if (urlData){
@@ -122,7 +136,7 @@
 
 - (void) downloadResponses {
     for (Response* response in [Response getReponsesWithoutMedia:self.context]) {
-        NSLog(@"[%s] response url=%@", __func__, response.fileName);
+//        NSLog(@"[%s] response url=%@", __func__, response.fileName);
         NSURL  *url = [NSURL URLWithString:response.fileName];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
         if (urlData){

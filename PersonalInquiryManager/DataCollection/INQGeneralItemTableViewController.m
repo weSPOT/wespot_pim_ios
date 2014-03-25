@@ -86,8 +86,8 @@ typedef NS_ENUM(NSInteger, groups) {
 
         if (ARLNetwork.networkAvailable) {
  //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-           dispatch_async(dispatch_get_main_queue(), ^{
-                ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            dispatch_async(dispatch_get_main_queue(), ^{
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
                 ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
                 [synchronizer createContext:appDelegate.managedObjectContext];
                 

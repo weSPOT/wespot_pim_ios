@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <pthread.h>
+
 #import "ARLNetwork.h"
 #import "ARLAppDelegate.h"
 #import "GeneralItemData+Extra.h"

@@ -16,6 +16,8 @@
 
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 
++ (NSRecursiveLock *) theLock;
+
 + (NSString *) jsonString:(NSDictionary *) jsonDictionary;
 - (NSInteger *) entityCount:(NSString *) entityName;
 - (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate;

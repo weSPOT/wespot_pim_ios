@@ -59,17 +59,17 @@ typedef NS_ENUM(NSInteger, groups) {
 - (void)setupFetchedResultsController {
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
-        request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
-                                                                                         ascending:YES
-                                                                                          selector:@selector(localizedCaseInsensitiveCompare:)]];
+
         request.predicate = [NSPredicate predicateWithFormat:
                              @"visible = 1 and run.runId = %lld",
                              [self.run.runId longLongValue]];
         
-#warning Which SortDescriptor is used?
-        
+        // As sortKey seems to be 0, we need to keep the order stable.
         NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, nil];
+        NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"item.name" ascending:YES];
+        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.id" ascending:YES];
+        
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, namekey, idkey, nil];
         [request setSortDescriptors:sortDescriptors];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request

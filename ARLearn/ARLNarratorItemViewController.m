@@ -449,21 +449,11 @@ typedef NS_ENUM(NSInteger, responses) {
                     }
                 } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
                     UIImage *icon =[UIImage imageNamed:@"task-video"];
-                    CGRect rect = CGRectMake(
-                                             (cell.frame.size.width - icon.size.width)/2,
-                                             (cell.frame.size.height - icon.size.height)/2,
-                                             icon.size.width,
-                                             icon.size.height);
-                    
+
                     cell.imgView.image = icon;
                 } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
                     UIImage *icon =[UIImage imageNamed:@"task-record"];
-                    CGRect rect = CGRectMake(
-                                             (cell.frame.size.width - icon.size.width)/2,
-                                             (cell.frame.size.height - icon.size.height)/2,
-                                             icon.size.width,
-                                             icon.size.height);
-                    
+ 
                     cell.imgView.image = icon;
                 }
             }

@@ -291,7 +291,7 @@
           contentType:(NSString*) contentTypeIn withData:(NSData*) data {
     NSLog(@"[%s] Uploading %@ - %@", __func__, contentTypeIn, fileName);
     
-//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
     

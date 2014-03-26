@@ -124,7 +124,7 @@
         return YES;
         
     }else {
-        NSLog(@"not found %@", urlAsString);
+        // NSLog(@"not found %@", urlAsString);
         return YES;
     }
     

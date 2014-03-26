@@ -18,6 +18,8 @@
 #import "Run+ARLearnBeanCreate.h"
 #import "ARLAudioRecorder.h"
 #import "ARLAudioRecorderViewController.h"
+#import "ARLAppDelegate.h"
+#import "ARLNarratorItemView.h"
 
 @interface ARLNarratorItemViewController : UICollectionViewController
 <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate>

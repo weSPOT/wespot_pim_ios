@@ -112,7 +112,8 @@
 		8D4511F218E04F3C0012DEDF /* SynchronizationBookKeeping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511F118E04F3C0012DEDF /* SynchronizationBookKeeping.m */; };
 		8D4511F518E04F3C0012DEDF /* CurrentItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511F418E04F3C0012DEDF /* CurrentItemVisibility.m */; };
 		8D4511F818E04F3C0012DEDF /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511F718E04F3C0012DEDF /* GeneralItem.m */; };
-		8D4511FE18E074A30012DEDF /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511FD18E074A30012DEDF /* Response.m */; };
+		8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36BD18E1C32E000FCEA6 /* Response.m */; };
+		8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */; };
 		8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667D18D6F5B0003B79E5 /* ARLAudioRecorder.m */; };
@@ -294,8 +295,10 @@
 		8D4511F418E04F3C0012DEDF /* CurrentItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentItemVisibility.m; sourceTree = "<group>"; };
 		8D4511F618E04F3C0012DEDF /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
 		8D4511F718E04F3C0012DEDF /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
-		8D4511FC18E074A30012DEDF /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
-		8D4511FD18E074A30012DEDF /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
+		8D4C36BC18E1C32E000FCEA6 /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
+		8D4C36BD18E1C32E000FCEA6 /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
+		8D4C36BF18E2D2A9000FCEA6 /* ARLNarratorItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLNarratorItemView.h; sourceTree = "<group>"; };
+		8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemView.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemViewController.m; sourceTree = "<group>"; };
 		8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARLNarratorItemViewController.h; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 				8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */,
 				3454CCD817B3A72E00C0DFFC /* InfoPlist.strings */,
 				3454CCDA17B3A72E00C0DFFC /* Localizable.strings */,
+				8D4C36BF18E2D2A9000FCEA6 /* ARLNarratorItemView.h */,
+				8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */,
 			);
 			path = ARLearn;
 			sourceTree = "<group>";
@@ -511,8 +516,8 @@
 				8D4511DB18E04F3B0012DEDF /* Action.h */,
 				8D4511DC18E04F3B0012DEDF /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
-				8D4511FC18E074A30012DEDF /* Response.h */,
-				8D4511FD18E074A30012DEDF /* Response.m */,
+				8D4C36BC18E1C32E000FCEA6 /* Response.h */,
+				8D4C36BD18E1C32E000FCEA6 /* Response.m */,
 				34D4229217B670EC0051E84C /* CoreDataTableViewController.h */,
 				34D4229317B670EC0051E84C /* CoreDataTableViewController.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
@@ -1062,6 +1067,7 @@
 				8D6AE1C918D5C5FE0094D911 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				8D6AE1CB18D5C5FE0094D911 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				8D1945F818C0A53100C32EED /* INQGeneralItemTableViewController.m in Sources */,
+				8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */,
 				34D422BB17B670ED0051E84C /* CoreDataTableViewController.m in Sources */,
 				34D422BC17B670ED0051E84C /* CurrentItemVisibility+Create.m in Sources */,
 				34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */,
@@ -1073,7 +1079,7 @@
 				8D4511E918E04F3B0012DEDF /* GeneralItemData.m in Sources */,
 				34D422C417B670ED0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m in Sources */,
 				8D4511E618E04F3B0012DEDF /* Run.m in Sources */,
-				8D4511FE18E074A30012DEDF /* Response.m in Sources */,
+				8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */,
 				8D4511F818E04F3C0012DEDF /* GeneralItem.m in Sources */,
 				8D19461018C0A58D00C32EED /* INQCloudSynchronizer.m in Sources */,
 				34D422C717B670ED0051E84C /* Response+Create.m in Sources */,

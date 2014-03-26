@@ -59,13 +59,12 @@
     [ARLAppDelegate.theLock lock];
     
     NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
-    
+
     NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of File Synchronisation", __func__, machTID);
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
     while (YES) {
-        
         if (self.syncGeneralItems) {
             [self downloadGeneralItems];
         } else if (self.syncResponses) {
@@ -117,7 +116,7 @@
 }
 
 - (void) downloadGeneralItems {
-    for (GeneralItemData* giData in [GeneralItemData getUnsyncedData:self.context]) {
+    for (GeneralItemData *giData in [GeneralItemData getUnsyncedData:self.context]) {
 //      NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
         NSURL  *url = [NSURL URLWithString:giData.url];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
@@ -128,27 +127,91 @@
             NSLog(@"[%s] Could not fetch url", __func__);
         }
         
-        [self saveContext];
+        //[self saveContext];
+        NSError *error = nil;
+        [self.context save:&error];
     }
     
     self.syncGeneralItems=NO;
 }
 
+// See http://natashatherobot.com/ios-how-to-download-images-asynchronously-make-uitableview-scroll-fast/
+// Fails when retrieving response.data and converting it to an image in the gui.
+//+ (void)downloadImageWithURL:(Response *)resp completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock
+//{
+//    NSURL *url = [[NSURL alloc] initWithString:resp.fileName];
+//    
+//    NSLog(@"[%s] Downloading url=%@", __func__, resp.fileName);
+//    
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+//    
+//    [NSURLConnection sendAsynchronousRequest:request
+//                                       queue:[NSOperationQueue mainQueue]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                               NSLog(@"[%s] [%d] Downloaded url=%@", __func__, [(NSHTTPURLResponse *)response statusCode], resp.fileName);
+//                               if (!error && [(NSHTTPURLResponse *)response statusCode]==200)
+//                               {
+//                                   UIImage *image = [[UIImage alloc] initWithData:data];
+//                                   if (image) {
+//                                       resp.data = UIImageJPEGRepresentation(image, 1.0);
+//                                       
+//                                       completionBlock(YES, image);
+//                                   } else {
+//                                       completionBlock(NO, nil);}
+//                               } else{
+//                                   completionBlock(NO, nil);
+//                               }
+//                           }];
+//}
+
 - (void) downloadResponses {
-    for (Response* response in [Response getReponsesWithoutMedia:self.context]) {
+    for (Response *response in [Response getReponsesWithoutMedia:self.context]) {
         NSURL  *url = [NSURL URLWithString:response.fileName];
         NSData *urlData = [NSData dataWithContentsOfURL:url];
-        if (urlData){
+        if (urlData) {
             NSLog(@"[%s] Downloaded url=%@", __func__, response.fileName);
-            response.data = urlData;
+
+            if ([response.contentType isEqualToString:@"application/jpg"])
+            {
+                // Create Thumbnails from Images to lower memory load.
+                UIImage *img = [UIImage imageWithData:urlData];
+                
+                UIImage *thumbImage = nil;
+                CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
+                UIGraphicsBeginImageContext(targetSize);
+                
+                CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
+                thumbnailRect.origin = CGPointMake(0.0,0.0);
+                thumbnailRect.size.width  = targetSize.width;
+                thumbnailRect.size.height = targetSize.height;
+                
+                [img drawInRect:thumbnailRect];
+                
+                thumbImage = UIGraphicsGetImageFromCurrentImageContext();
+                
+                UIGraphicsEndImageContext();
+                
+                response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
+                response.data = UIImageJPEGRepresentation(img, 0.75);
+                
+                img = nil;
+                thumbImage = nil;
+                
+                NSLog(@"[%s] Image:%d Thumb:%d", __func__, [response.data length], [response.thumb length]);
+            } else {
+                 response.data = urlData;
+            }
             // giData.replicated = [NSNumber numberWithBool:YES];
+            
+            urlData = nil;
+            
+            NSError *error = nil;
+            [self.context save:&error];
         } else {
             NSLog(@"[%s] Could not fetch url=%@", __func__, response.fileName);
         }
-        
-        [self saveContext];
     }
-    
+
     self.syncResponses=NO;
 }
 

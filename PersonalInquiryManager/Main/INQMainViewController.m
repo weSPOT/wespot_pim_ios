@@ -86,7 +86,23 @@ typedef NS_ENUM(NSInteger, tools) {
 //        });
 //    });
 }
-                   
+
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+   
+    NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:0 inSection:MYINQUIRES], nil];
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -95,6 +111,7 @@ typedef NS_ENUM(NSInteger, tools) {
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
     
@@ -129,6 +146,7 @@ typedef NS_ENUM(NSInteger, tools) {
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
 }

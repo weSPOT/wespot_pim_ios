@@ -89,18 +89,59 @@ typedef NS_ENUM(NSInteger, sections) {
     [self.refreshControl endRefreshing];
 }
 
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:DATACOLLECTION inSection:PARTS], nil];
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
+    
+    
+    if (ARLNetwork.networkAvailable && self.inquiry.run) {
+        //was dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            [synchronizer createContext:appDelegate.managedObjectContext];
+            
+            synchronizer.gameId = self.inquiry.run.gameId;
+            synchronizer.visibilityRunId = self.inquiry.run.runId;
+            
+            [synchronizer sync];
+        });
+    }
+
 }
 
 - (void)viewDidAppear:(BOOL)animated  {
     [self.tableView reloadData];
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /*!
@@ -160,7 +201,7 @@ typedef NS_ENUM(NSInteger, sections) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier]; // forIndexPath:indexPath
-  
+    
     if (!cell || (indexPath.section==HEADER)) {
         switch (indexPath.section) {
             case HEADER:
@@ -174,9 +215,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
                 break;
         }
-   }
-    
-    // cell.backgroundColor = [UIColor clearColor];
+    }
     
     // Configure the cell...
     switch (indexPath.section) {
@@ -190,7 +229,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 imageView.backgroundColor = [UIColor clearColor];
                 //[imageView setFrame:CGRectMake(5, 5, imageView.frame.size.width, imageView.frame.size.height)];
                 imageView.translatesAutoresizingMaskIntoConstraints = NO;
-          
+                
                 [cell.contentView addSubview:imageView];
                 
                 // Tile
@@ -202,10 +241,10 @@ typedef NS_ENUM(NSInteger, sections) {
                 
                 textView.translatesAutoresizingMaskIntoConstraints = NO;
                 [cell.contentView addSubview:textView];
-
+                
                 // Description
                 UIWebView *webView = [[UIWebView alloc] init];
-                 webView.backgroundColor = [UIColor clearColor];
+                webView.backgroundColor = [UIColor clearColor];
                 [webView loadHTMLString:self.inquiry.desc baseURL:nil];
                 
                 webView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -222,11 +261,11 @@ typedef NS_ENUM(NSInteger, sections) {
                                                  nil];
                 
                 [cell.contentView addConstraints:[NSLayoutConstraint
-                                           constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
-                                           options:NSLayoutFormatDirectionLeadingToTrailing
-                                           metrics:nil
-                                           views:viewsDictionary]];
-
+                                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
+                                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                                  metrics:nil
+                                                  views:viewsDictionary]];
+                
                 [cell addConstraints:[NSLayoutConstraint
                                       constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
@@ -238,20 +277,20 @@ typedef NS_ENUM(NSInteger, sections) {
                                                   options:NSLayoutFormatDirectionLeadingToTrailing
                                                   metrics:nil
                                                   views:viewsDictionary]];
-
+                
                 [cell addConstraints:[NSLayoutConstraint
-                                           constraintsWithVisualFormat:@"H:|-[description]-|"
-                                           options:NSLayoutFormatDirectionLeadingToTrailing
-                                           metrics:nil
-                                           views:viewsDictionary]];
-
+                                      constraintsWithVisualFormat:@"H:|-[description]-|"
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                
                 [cell addConstraints:[NSLayoutConstraint
                                       constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", 210-image.size.height-2*20]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
-
-   
+                
+                
                 //Cell
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
@@ -307,8 +346,8 @@ typedef NS_ENUM(NSInteger, sections) {
                     break;
                 default:
                     break;
-                }
             }
+        }
             break;
             
         case INVITE:
@@ -317,7 +356,7 @@ typedef NS_ENUM(NSInteger, sections) {
             cell.detailTextLabel.text = @"2";
             break;
     }
-
+    
     return cell;
 }
 

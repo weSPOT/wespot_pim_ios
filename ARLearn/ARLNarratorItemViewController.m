@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 -(NSString*) cellIdentifier {
-    return  @"responseItemCell2";
+    return  @"responseItemCell";
 }
 
 /*!
@@ -84,7 +84,10 @@ typedef NS_ENUM(NSInteger, responses) {
  */
 - (UIBarButtonItem *)addUIBarButtonWithImage:(NSString *)imageString enabled:(BOOL)enabled action:(SEL)selector {
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    
+    if (enabled) {
+        [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    }
     
     // button.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -162,24 +165,26 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void)setupFetchedResultsController {
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
-        request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
-                                                                                         ascending:YES]];
  
         NSString *contentType = @"";
-        //for (Response *response in self.fetchedResultsController.fetchedObjects) {
-            if (self.withPicture) {
-                contentType = @"application/jpg";
-            } else if (self.withVideo) {
-                contentType = @"video/quicktime";
-            } else if (self.withAudio) {
-                contentType = @"audio/aac";
-            }
-        //}
+        if (self.withPicture) {
+            contentType = @"application/jpg";
+        } else if (self.withVideo) {
+            contentType = @"video/quicktime";
+        } else if (self.withAudio) {
+            contentType = @"audio/aac";
+        }
         
         request.predicate = [NSPredicate predicateWithFormat:
                              @"run.runId = %lld AND contentType = %@",
                              [self.run.runId longLongValue], contentType];
         
+        request.sortDescriptors = [NSArray arrayWithObjects:
+                                   [NSSortDescriptor sortDescriptorWithKey:@"contentType"
+                                                                 ascending:YES],
+                                   [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
+                                                                 ascending:YES],
+                                   nil];
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
@@ -220,14 +225,82 @@ typedef NS_ENUM(NSInteger, responses) {
         return;
     }
     
-    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    // Existing Code...
+    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
     
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+    for(NSManagedObject *obj in updatedObjects){
+        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
+            GeneralItem* changedObject = (GeneralItem*) obj;
+            if (self.generalItem == changedObject) {
+                self.navigationItem.title = self.generalItem.name;
+                
+                NSLog(@"[%s] TEXT='%@'",__func__, self.generalItem.richText);
+                
+#warning Replace the the TableView top Section.
+                // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
+            }
+        }
+    }
     
-    // if (count != [self.fetchedResultsController.fetchedObjects count]) {
-        [self.collectionView reloadData];
-    // }
+    // Existing Code...
+    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+    
+    for (NSManagedObject *obj in deletedObjects){
+        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
+            GeneralItem* changedObject = (GeneralItem*) obj;
+            if (self.generalItem == changedObject) {
+                NSLog(@"little less easy... I was deleted");
+                
+                [self.navigationController popViewControllerAnimated:NO];
+                [self dismissViewControllerAnimated:TRUE completion:nil];
+            }
+        }
+    }
+    
+    // New Code.
+    //    if ([ARLAppDelegate.theLock tryLock]) {
+    //        [ARLAppDelegate.theLock unlock];
+    
+    // See if there are any Inquiry objects added and if so, reload the collectionView.
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+    for(NSManagedObject *obj in insertedObjects){
+        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            [self.collectionView reloadData];
+            return;
+        }
+    }
+    
+    [self.fetchedResultsController fetchRequest];
+    
+    NSArray *indexPaths = [[NSArray alloc] init];
+    BOOL fetched = NO;
+
+    for(NSManagedObject *obj in updatedObjects){
+        if ([[obj entity].name isEqualToString:@"Response"]) {
+            if (!fetched) {
+                NSError *error = nil;
+                [self.fetchedResultsController performFetch:&error];
+                fetched=YES;
+            }
+            
+            Response *updated = (Response *)obj;
+            
+            //workaround for indexPathForObject:obj not working.
+            for (Response *response in self.fetchedResultsController.fetchedObjects) {
+                if ([response.objectID isEqual:updated.objectID]) {
+                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
+                    if (indexPath) {
+                        indexPaths = [indexPaths arrayByAddingObject:indexPath];
+                    }
+                    break;
+                }
+                
+            }
+        }
+    }
+    [self.collectionView reloadItemsAtIndexPaths:indexPaths];
 }
 
 /*!
@@ -248,10 +321,16 @@ typedef NS_ENUM(NSInteger, responses) {
     self.navigationItem.title = self.generalItem.name;
     
     [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
-   
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.generalItem.managedObjectContext];
-    
+
     [self setupFetchedResultsController];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (ARLNetwork.networkAvailable) {
+        [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -321,7 +400,7 @@ typedef NS_ENUM(NSInteger, responses) {
 //}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    ARLNarratorItemView *cell = (ARLNarratorItemView *)[cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
     cell.backgroundColor = [UIColor colorWithRed:(float)0xE6
                                            green:(float)0xE6
@@ -332,31 +411,16 @@ typedef NS_ENUM(NSInteger, responses) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
             CGRect frame = CGRectMake(0, 0, cell.contentView.frame.size.width, cell.contentView.frame.size.height);
-            
+            //            NSLog(@"[%s] Updating %@", __func__, indexPath);
             if (response.fileName) {
                 if (self.withPicture && [response.contentType isEqualToString:@"application/jpg"]) {
-                    if (response.data) {
-                        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:response.data]];
-                        imgView.frame = frame;
-                        [cell addSubview:imgView];
+                    if (response.thumb) {
+                        cell.imgView.image = [UIImage imageWithData:response.thumb];
+                    } else if (response.data) {
+                        cell.imgView.image = [UIImage imageWithData:response.data];
                     } else {
-                        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"task-photo"]];
-                        imgView.frame = frame;
-                        [cell addSubview:imgView];
-                        
-//                        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-//                        // webView.scalesPageToFit = YES;
-//                        //webView.contentMode = UIViewContentModeScaleToFill;
-//                        
-//                        [cell addSubview:webView];
-//                        
-//                        NSString *html = [[NSString alloc] initWithFormat:@"<html><body bgcolor='#E6E6FA'><img src='%@' width='100%%' border='0'></body></html>", response.fileName];
-//                        // , (response.width>response.height)?@"width":@"height"]
-//                        // , (int)cell.frame.size.width is not in pixels.
-//                        
-//                        [webView loadHTMLString:html baseURL:nil];
+                        cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
                     }
-
                 } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
                     UIImage *icon =[UIImage imageNamed:@"task-video"];
                     CGRect rect = CGRectMake(
@@ -426,55 +490,6 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item
-}
-
-#pragma mark old code.
-
-/*!
- *  BESTAANDE CODE!!
- *
- *  @param note <#note description#>
- */
-- (void)handleDataModelChange:(NSNotification *)note
-{
-    NSSet *updatedObjects = [[note userInfo] objectForKey:NSUpdatedObjectsKey];
-    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
-    
-    for(NSManagedObject *obj in updatedObjects){
-        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-            GeneralItem* changedObject = (GeneralItem*) obj;
-            if (self.generalItem == changedObject) {
-                self.navigationItem.title = self.generalItem.name;
-                
-                NSLog(@"[%s] TEXT='%@'",__func__, self.generalItem.richText);
-                
-#warning Replace the the TableView top Section.
-                // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
-            }
-        }
-    }
-
-    for(NSManagedObject *obj in deletedObjects){
-        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-            GeneralItem* changedObject = (GeneralItem*) obj;
-            if (self.generalItem == changedObject) {
-                NSLog(@"little less easy... I was deleted");
-
-                [self.navigationController popViewControllerAnimated:NO];
-                [self dismissViewControllerAnimated:TRUE completion:nil];
-            }
-        }
-    }
-    
-    // Update View too.
-    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
-    
-    if (count != [self.fetchedResultsController.fetchedObjects count]) {
-        [self.collectionView reloadData];
-    }
 }
 
 #pragma mark Collect Methods.

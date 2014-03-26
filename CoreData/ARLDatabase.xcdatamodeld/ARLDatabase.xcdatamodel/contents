@@ -82,11 +82,12 @@
     </entity>
     <entity name="Response" representedClassName="Response" syncable="YES">
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="responseId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="thumb" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -131,7 +132,7 @@
         <element name="GeneralItemData" positionX="-234" positionY="279" width="128" height="135"/>
         <element name="GeneralItemVisibility" positionX="-603" positionY="102" width="128" height="150"/>
         <element name="Inquiry" positionX="603" positionY="366" width="128" height="163"/>
-        <element name="Response" positionX="259" positionY="285" width="128" height="223"/>
+        <element name="Response" positionX="259" positionY="285" width="128" height="240"/>
         <element name="Run" positionX="628" positionY="45" width="128" height="210"/>
         <element name="SynchronizationBookKeeping" positionX="-432" positionY="-90" width="128" height="90"/>
         <element name="TestAccount" positionX="9" positionY="135" width="128" height="44"/>

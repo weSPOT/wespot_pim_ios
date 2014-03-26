@@ -93,13 +93,62 @@ typedef NS_ENUM(NSInteger, inquiries) {
         return;
     }
     
-    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+//    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+//    
+//    NSError *error = nil;
+//    [self.fetchedResultsController performFetch:&error];
+//    
+//    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+//        [self.tableView reloadData];
+//    }
+
     
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+    // See if there are any Inquiry objects added and if so, reload the tableView.
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     
-    if (count != [self.fetchedResultsController.fetchedObjects count]) {
-        [self.tableView reloadData];
+    for(NSManagedObject *obj in insertedObjects){
+        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            [self.tableView reloadData];
+            return;
+        }
+    }
+
+    // If no Inqury objecst are added, look for updates and refresh them.
+    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+                             
+    BOOL fetched = NO;
+    NSArray *indexPaths = [[NSArray alloc] init];
+                             
+    for(NSManagedObject *obj in updatedObjects){
+        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+            if (!fetched) {
+                NSError *error = nil;
+                [self.fetchedResultsController performFetch:&error];
+                fetched=YES;
+            }
+            
+            Inquiry *updated = (Inquiry *)obj;
+            
+            //workaround for indexPathForObject:obj not working.
+            for (Inquiry *inquiry in self.fetchedResultsController.fetchedObjects) {
+                if ([inquiry.objectID isEqual:updated.objectID]) {
+                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:inquiry];
+                    if (indexPath) {
+                        indexPaths = [indexPaths arrayByAddingObject:[self coreDataIndexPathToTableIndexPath:indexPath]];
+                    }
+                    break;
+                }
+                
+            }
+        }
+    }
+    
+    if (indexPaths.count != 0 )
+    {
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 

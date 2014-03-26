@@ -105,7 +105,8 @@
                 
                 if (ARLNetwork.networkAvailable) {
                     [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
-                    [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
+//                  [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
+                    
 //                    ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
 //                    [fileSync createContext:self.parentContext];
 //                    [fileSync sync];
@@ -246,7 +247,7 @@
     
     if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
         for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
-            [GeneralItemVisibility visibilityWithDictionary: viStatement withRun: run];
+            [GeneralItemVisibility visibilityWithDictionary:viStatement withRun:run];
         }
     }
     
@@ -293,6 +294,8 @@
 - (void) synchronizeResponses {
     NSLog(@"[%s]", __func__);
 
+    BOOL uploads = NO;
+    
     NSArray* responses =  [Response getUnsyncedReponses:self.context];
     for (Response* resp in responses) {
         if (resp.value) {
@@ -301,6 +304,7 @@
         } else {
             u_int32_t random = arc4random();
             NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
+            
             if (resp.run.runId) {
                 NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
                 [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
@@ -309,10 +313,12 @@
                                         [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                         [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
                 NSDictionary *myDictionary;
+                
                 NSString * contentType;
                 if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
                 if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
                 if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
+                
                 if ([resp.width intValue] ==0 ) {
                     myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    serverUrl, contentType, nil];
@@ -323,14 +329,21 @@
                                    resp.height, @"height",
                                    serverUrl, contentType, nil];
                 }
+                
                 NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
                 
                 [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.id timeStamp:resp.timeStamp];
                 
                 resp.synchronized = [NSNumber numberWithBool:YES];
+                
+                uploads=YES;
             }
         }
     }
+    
+//    if (uploads) {
+//        [ARLFileCloudSynchronizer syncResponseData:self.context];
+//    }
     
     self.syncResponses = NO;
 }

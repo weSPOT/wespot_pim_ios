@@ -28,4 +28,6 @@
 + (void) syncGeneralItems: (NSManagedObjectContext*) context;
 + (void) syncResponseData: (NSManagedObjectContext*) context;
 
+//+ (void)downloadImageWithURL:(Response *)resp completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock;
+
 @end

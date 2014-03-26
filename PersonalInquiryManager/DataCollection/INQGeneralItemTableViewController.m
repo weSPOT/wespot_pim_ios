@@ -65,11 +65,12 @@ typedef NS_ENUM(NSInteger, groups) {
                              [self.run.runId longLongValue]];
         
         // As sortKey seems to be 0, we need to keep the order stable.
+        NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
         NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
         NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"item.name" ascending:YES];
         NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.id" ascending:YES];
         
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, namekey, idkey, nil];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sectionkey, sortkey, namekey, idkey, nil];
         [request setSortDescriptors:sortDescriptors];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
@@ -83,20 +84,6 @@ typedef NS_ENUM(NSInteger, groups) {
         
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
-
-        if (ARLNetwork.networkAvailable) {
- //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-                [synchronizer createContext:appDelegate.managedObjectContext];
-                
-                synchronizer.gameId = self.run.gameId;
-                synchronizer.visibilityRunId = self.run.runId;
-                
-                [synchronizer sync];
-            });
-        }
     }
 }
 
@@ -131,7 +118,57 @@ typedef NS_ENUM(NSInteger, groups) {
     
     if (count != [self.fetchedResultsController.fetchedObjects count]) {
         [self.tableView reloadData];
+        return;
     }
+    
+//    // See if there are any Inquiry objects added and if so, reload the tableView.
+//    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+//    
+//    for(NSManagedObject *obj in insertedObjects){
+//        if ([[obj entity].name isEqualToString:@"CurrentItemVisibility"]) {
+//            NSError *error = nil;
+//            [self.fetchedResultsController performFetch:&error];
+//            
+//            [self.tableView reloadData];
+//            return;
+//        }
+//    }
+//    
+//    // If no Inqury objecst are added, look for updates and refresh them.
+//    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+//    
+//    BOOL fetched = NO;
+//    NSArray *indexPaths = [[NSArray alloc] init];
+//    
+//    for(NSManagedObject *obj in updatedObjects){
+//        if ([[obj entity].name isEqualToString:@"CurrentItemVisibility"]) {
+//            if (!fetched) {
+//                NSError *error = nil;
+//                [self.fetchedResultsController performFetch:&error];
+//                fetched=YES;
+//            }
+//            
+//            CurrentItemVisibility *updated = (CurrentItemVisibility *)obj;
+//            
+//            //workaround for indexPathForObject:obj not working.
+//            for (CurrentItemVisibility *civ in self.fetchedResultsController.fetchedObjects) {
+//                if ([civ.objectID isEqual:updated.objectID]) {
+//                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:civ];
+//                    if (indexPath) {
+//                        indexPaths = [indexPaths arrayByAddingObject:indexPath];
+//                    }
+//                    break;
+//                }
+//                
+//            }
+//        }
+//    }
+//    
+//    if (indexPaths.count != 0 )
+//    {// Fails
+//        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+//    }
+
 }
 
 /*!
@@ -164,7 +201,9 @@ typedef NS_ENUM(NSInteger, groups) {
     //            [synchronizer sync];
     //        });
     //    }
-
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
     self.tableView.opaque = NO;
@@ -235,7 +274,9 @@ typedef NS_ENUM(NSInteger, groups) {
     switch (indexPath.section) {
         case DATA: {
             // Fetch Data from CoreData
-            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+            CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
+            
+            GeneralItem *generalItem = civ.item;
             
             // NSLog(@"[%s] Cell '%@' created at index %@", __func__, generalItem.name, indexPath);
             

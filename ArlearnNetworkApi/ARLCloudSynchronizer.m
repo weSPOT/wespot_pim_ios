@@ -294,7 +294,7 @@
 - (void) synchronizeResponses {
     NSLog(@"[%s]", __func__);
 
-    BOOL uploads = NO;
+//  BOOL uploads = NO;
     
     NSArray* responses =  [Response getUnsyncedReponses:self.context];
     for (Response* resp in responses) {
@@ -336,7 +336,7 @@
                 
                 resp.synchronized = [NSNumber numberWithBool:YES];
                 
-                uploads=YES;
+//              uploads=YES;
             }
         }
     }

@@ -24,7 +24,9 @@
 @interface ARLNarratorItemViewController : UICollectionViewController
 <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate>
 
-@property (strong, nonatomic) GeneralItem * generalItem;
-@property (strong, nonatomic) Run * run;
+@property (strong, nonatomic) GeneralItem *generalItem;
+@property (strong, nonatomic) Run *run;
+
+@property (strong, nonatomic) Account *account;
 
 @end

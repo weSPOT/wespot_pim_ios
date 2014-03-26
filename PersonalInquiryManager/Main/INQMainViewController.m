@@ -268,9 +268,7 @@ typedef NS_ENUM(NSInteger, tools) {
     // cell.backgroundColor = [UIColor clearColor];
     
     [cell.detailTextLabel setAttributedText:[[NSMutableAttributedString alloc]initWithString:@""]];
-    
-    
- 
+
     // Configure the cell...
     switch (indexPath.section) {
         case MYINQUIRES: {
@@ -356,9 +354,14 @@ typedef NS_ENUM(NSInteger, tools) {
         case MYMEDIA:
             switch (indexPath.item) {
                 default: {
-                    //newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                    [alert show];
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectedDataView"];
+                    
+                    if ([newViewController respondsToSelector:@selector(setAccount:)]) {
+                        [newViewController performSelector:@selector(setAccount:) withObject:[ARLNetwork CurrentAccount]];
+                    }
+                    
+//                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                  [alert show];
                 }
                     break;
             }

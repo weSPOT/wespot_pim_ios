@@ -53,6 +53,8 @@ typedef NS_ENUM(NSInteger, responses) {
 @synthesize run = _run;
 @synthesize generalItem = _generalItem;
 
+@synthesize account = _account;
+
 -(CGFloat) statusbarHeight
 {
     // NOTE: Not always turned yet when we try to retrieve the height.
@@ -163,9 +165,9 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 - (void)setupFetchedResultsController {
-    if (self.run.runId) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
- 
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+    
+    if (self.run && self.run.runId) {
         NSString *contentType = @"";
         if (self.withPicture) {
             contentType = @"application/jpg";
@@ -178,6 +180,7 @@ typedef NS_ENUM(NSInteger, responses) {
         request.predicate = [NSPredicate predicateWithFormat:
                              @"run.runId = %lld AND contentType = %@",
                              [self.run.runId longLongValue], contentType];
+
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"contentType"
@@ -185,32 +188,38 @@ typedef NS_ENUM(NSInteger, responses) {
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
                                                                  ascending:YES],
                                    nil];
+    } else if (self.account) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"account.localId = %@  AND contentType !=nil AND contentType!=''",
+                             self.account.localId];
+        
+        request.sortDescriptors = [NSArray arrayWithObjects:
+                                   [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
+                                                                 ascending:YES],
+                                   nil];
+    }
+
+    
+    if (self.run) {
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                             managedObjectContext:self.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
-        
-        self.fetchedResultsController.delegate = self;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-        
-        NSError *error = nil;
-        [self.fetchedResultsController performFetch:&error];
-        
-//        if (ARLNetwork.networkAvailable) {
-//            //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-//                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//                [synchronizer createContext:appDelegate.managedObjectContext];
-//                
-//                synchronizer.gameId = self.run.gameId;
-//                synchronizer.visibilityRunId = self.run.runId;
-//                
-//                [synchronizer sync];
-//            });
-//        }
+    } else if (self.account){
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.account.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+    } else {
+        NSLog(@"[%s] Error, netither account nor run is set.", __func__);
     }
+    
+    self.fetchedResultsController.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
 }
 
 - (void)contextChanged:(NSNotification*)notification
@@ -296,7 +305,6 @@ typedef NS_ENUM(NSInteger, responses) {
                     }
                     break;
                 }
-                
             }
         }
     }
@@ -315,21 +323,40 @@ typedef NS_ENUM(NSInteger, responses) {
     
     self.collectionView.opaque = NO;
     self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    
-    NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
-    
-    self.navigationItem.title = self.generalItem.name;
-    
-    [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
+}
 
+- (void) viewWillAppear:(BOOL)animated {
+       [super viewWillAppear:animated];
+    
+    if (self.run) {
+        NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
+        
+        self.navigationItem.title = self.generalItem.name;
+        
+        [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
+        
+        self.navigationController.toolbarHidden = NO;
+    } else {
+        self.navigationController.toolbarHidden = YES;
+        self.withAudio = YES;
+        self.withPicture = YES;
+        self.withVideo = YES;
+        //      self.withText = YES;
+        //      self.withValue = YES;
+    }
+    
     [self setupFetchedResultsController];
-
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (ARLNetwork.networkAvailable) {
-        [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext];
+    
+        if (ARLNetwork.networkAvailable) {
+        if (self.run) {
+            [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext];
+        } else if (self.account) {
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext];
+        }
     }
 }
 
@@ -406,12 +433,11 @@ typedef NS_ENUM(NSInteger, responses) {
                                            green:(float)0xE6
                                             blue:(float)0xFA
                                            alpha:1.0F];
-    
+
     switch (indexPath.section) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-            CGRect frame = CGRectMake(0, 0, cell.contentView.frame.size.width, cell.contentView.frame.size.height);
-            //            NSLog(@"[%s] Updating %@", __func__, indexPath);
+
             if (response.fileName) {
                 if (self.withPicture && [response.contentType isEqualToString:@"application/jpg"]) {
                     if (response.thumb) {
@@ -429,10 +455,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                              icon.size.width,
                                              icon.size.height);
                     
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
-                    imageView.image = icon;
-                    
-                    [cell addSubview:imageView];
+                    cell.imgView.image = icon;
                 } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
                     UIImage *icon =[UIImage imageNamed:@"task-record"];
                     CGRect rect = CGRectMake(
@@ -441,10 +464,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                              icon.size.width,
                                              icon.size.height);
                     
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
-                    imageView.image = icon;
-                    
-                    [cell addSubview:imageView];
+                    cell.imgView.image = icon;
                 }
             }
         }

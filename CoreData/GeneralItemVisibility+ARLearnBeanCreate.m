@@ -62,7 +62,7 @@
                                                      withGeneralItem:generalItem];
         
         [generalItem addVisibilityObject:vis];
-        [CurrentItemVisibility updateVisibility:generalItem.id runId:run.runId withManagedContext:run.managedObjectContext];
+        [CurrentItemVisibility updateVisibility:generalItem.generalItemId runId:run.runId withManagedContext:run.managedObjectContext];
         
         NSError *error = nil;
         [run.managedObjectContext save:&error];

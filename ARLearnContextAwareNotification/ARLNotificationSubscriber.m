@@ -34,35 +34,50 @@
     NSString * deviceUniqueIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"];
     NSString * deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    
     [ARLNetwork registerDevice:deviceToken withUID:deviceUniqueIdentifier withAccount:fullId withBundleId:bundleIdentifier];
 }
 
 - (void) dispatchMessage: (NSDictionary *) message {
     message = [message objectForKey:@"aps"];
+    
     if ([@"org.celstec.arlearn2.beans.run.User" isEqualToString:[message objectForKey:@"type"]]) {
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+        
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [synchronizer createContext:appDelegate.managedObjectContext];
+        
         synchronizer.syncRuns = YES;
         synchronizer.syncGames = YES;
+        
         [synchronizer sync];
     }
+    
     if ([@"org.celstec.arlearn2.beans.notification.RunModification" isEqualToString:[message objectForKey:@"type"]]) {
         NSLog(@"about to update runs %@", [[message objectForKey:@"run"] objectForKey:@"runId"]);
+        
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+        
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [synchronizer createContext:appDelegate.managedObjectContext];
+        
         synchronizer.syncRuns = YES;
+        
         [synchronizer sync];
         
     }
+    
     if ([@"org.celstec.arlearn2.beans.notification.GeneralItemModification" isEqualToString:[message objectForKey:@"type"]]) {
         NSLog(@"about to update gi %@", [message objectForKey:@"itemId"] );
         
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+        
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [synchronizer createContext:appDelegate.managedObjectContext];
         
         synchronizer.gameId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"gameId"]];
         synchronizer.visibilityRunId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"runId"]];
+        
         [synchronizer sync];
     }
     
@@ -76,6 +91,7 @@
     if (![notDict valueForKey:notificationType]) {
         [notDict setObject:[[NSMutableSet alloc] init] forKey:notificationType];
     }
+    
     [[notDict valueForKey:notificationType] addObject:notificationHandler];
 }
 

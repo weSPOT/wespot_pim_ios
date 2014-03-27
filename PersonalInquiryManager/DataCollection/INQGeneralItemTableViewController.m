@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, groups) {
         NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
         NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
         NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"item.name" ascending:YES];
-        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.id" ascending:YES];
+        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.generalItemId" ascending:YES];
         
         NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sectionkey, sortkey, namekey, idkey, nil];
         [request setSortDescriptors:sortDescriptors];
@@ -191,16 +191,8 @@ typedef NS_ENUM(NSInteger, groups) {
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
 
-    //    if (ARLNetwork.networkAvailable) {
-    //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    //            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-    //            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    //            [synchronizer createContext:appDelegate.managedObjectContext];
-    //            synchronizer.gameId = self.run.gameId;
-    //            synchronizer.visibilityRunId = self.run.runId;
-    //            [synchronizer sync];
-    //        });
-    //    }
+#warning call syncVisibilityForInquiry here?
+    
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
     
@@ -270,6 +262,13 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Id was org.celstec.arlearn2.beans.generalItem.NarratorItem
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
+    }
+    
     // Create the new ViewController.
     switch (indexPath.section) {
         case DATA: {
@@ -277,15 +276,6 @@ typedef NS_ENUM(NSInteger, groups) {
             CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
             GeneralItem *generalItem = civ.item;
-            
-            // NSLog(@"[%s] Cell '%@' created at index %@", __func__, generalItem.name, indexPath);
-            
-            // Dequeue a TableCell and intialize if nececsary.
-            // Id = org.celstec.arlearn2.beans.generalItem.NarratorItem
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
-            }
             
             // Set Font to Bold if unread.
             cell.textLabel.text = generalItem.name;
@@ -330,11 +320,6 @@ typedef NS_ENUM(NSInteger, groups) {
  *  @param indexPath The NSIndexPath containing grouping/section and record index.
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Mark TableItem as Read.
-    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
-    
-    // Jump to Destination (skip prepareforSeque in base class).
     UIViewController *newViewController;
     
     // Create the new ViewController.
@@ -351,8 +336,20 @@ typedef NS_ENUM(NSInteger, groups) {
                 [newViewController performSelector:@selector(setRun:) withObject:self.run];
             }
             
-            [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
-            [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
+            // Mark TableItem as Read.
+            UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+            cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+            
+            if (![Action checkAction:@"read"
+                      forGeneralItem:generalItem
+                              forRun:self.run
+              inManagedObjectContext:generalItem.managedObjectContext]) {
+                [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+                    [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
+                });
+            }
         }
             break;
     }

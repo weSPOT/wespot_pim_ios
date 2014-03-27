@@ -15,6 +15,7 @@
 
 @synthesize syncResponses = _syncResponses;
 @synthesize syncActions = _syncActions;
+
 @synthesize gameId = _gameId;
 @synthesize visibilityRunId = _visibilityRunId;
 
@@ -29,7 +30,8 @@
 //    return syncDates;
 //}
 
-+ (void) syncGamesAndRuns: (NSManagedObjectContext*) context {
++ (void) syncGamesAndRuns:(NSManagedObjectContext*)context
+{
     NSLog(@"[%s]", __func__);
     
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
@@ -42,7 +44,8 @@
     [synchronizer sync];
 }
 
-+ (void) syncResponses: (NSManagedObjectContext*) context {
++ (void) syncResponses:(NSManagedObjectContext*)context
+{
     NSLog(@"[%s]", __func__);
 
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
@@ -55,13 +58,36 @@
     [synchronizer sync];
 }
 
-+ (void) syncActions: (NSManagedObjectContext*) context {
++ (void) syncActions:(NSManagedObjectContext*)context
+{
     NSLog(@"[%s]", __func__);
     
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
+    
     synchronizer.syncActions = YES;
+    
+    [synchronizer sync];
+}
+
+/*!
+ *  Synchronizes Visibility for a Run
+ *
+ *  @param context The Core Data Context
+ *  @param run The Run to sync for
+ */
++ (void) syncVisibilityForInquiry:(NSManagedObjectContext*)context
+                              run:(Run *)run
+{
+    NSLog(@"[%s]", __func__);
+    
+    ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.gameId = run.gameId;
+    synchronizer.visibilityRunId = run.runId;
     
     [synchronizer sync];
 }
@@ -95,21 +121,18 @@
         
         if ([self.parentContext hasChanges]) {
             [self.parentContext performBlock:^{
-//                NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
+//              NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {
                     abort();
                 }
                 
-#warning is this the correct spot to sync files?
+#warning is this the correct spot to sync/responses files?
                 
                 if (ARLNetwork.networkAvailable) {
                     [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
-//                  [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
                     
-//                    ARLFileCloudSynchronizer* fileSync = [[ARLFileCloudSynchronizer alloc] init];
-//                    [fileSync createContext:self.parentContext];
-//                    [fileSync sync];
+//                  [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
                 }
             }];
         }
@@ -284,7 +307,7 @@
 
     NSArray* actions =  [Action getUnsyncedActions:self.context];
     for (Action* action in actions) {
-        [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.id time:action.time itemType:action.generalItem.type];
+        [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
         action.synchronized = [NSNumber numberWithBool:YES];
     }
     
@@ -299,7 +322,7 @@
     NSArray* responses =  [Response getUnsyncedReponses:self.context];
     for (Response* resp in responses) {
         if (resp.value) {
-            [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.id timeStamp:resp.timeStamp];
+            [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
             resp.synchronized = [NSNumber numberWithBool:YES];
         } else {
             u_int32_t random = arc4random();
@@ -332,7 +355,7 @@
                 
                 NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
                 
-                [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.id timeStamp:resp.timeStamp];
+                [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
                 
                 resp.synchronized = [NSNumber numberWithBool:YES];
                 

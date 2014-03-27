@@ -118,19 +118,20 @@ typedef NS_ENUM(NSInteger, sections) {
     
     
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
-        //was dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            [synchronizer createContext:appDelegate.managedObjectContext];
-            
-            synchronizer.gameId = self.inquiry.run.gameId;
-            synchronizer.visibilityRunId = self.inquiry.run.runId;
-            
-            [synchronizer sync];
-        });
+        //        //was dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+        //            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        //            [synchronizer createContext:appDelegate.managedObjectContext];
+        //
+        //            synchronizer.gameId = self.inquiry.run.gameId;
+        //            synchronizer.visibilityRunId = self.inquiry.run.runId;
+        //
+        //            [synchronizer sync];
+        //        });
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [ARLCloudSynchronizer syncVisibilityForInquiry:appDelegate.managedObjectContext run:self.inquiry.run];
     }
-
 }
 
 - (void)viewDidAppear:(BOOL)animated  {

@@ -26,7 +26,7 @@
 
 + (void) updateVisibility : (NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
     for (GeneralItem* gi in [GeneralItem retrieve:runId withManagedContext:context]) {
-        [self updateVisibility:gi.id runId:runId withManagedContext:context];
+        [self updateVisibility:gi.generalItemId runId:runId withManagedContext:context];
     }
 }
 
@@ -76,7 +76,7 @@
 + (CurrentItemVisibility *) retrieve: (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
 
-    request.predicate = [NSPredicate predicateWithFormat:@"item.id = %lld and run.runId = %lld", [itemId longLongValue], [runId longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"item.generalItemId = %lld and run.runId = %lld", [itemId longLongValue], [runId longLongValue]];
     NSError *error = nil;
     
     NSArray *currentItemVisibility = [context executeFetchRequest:request error:&error];

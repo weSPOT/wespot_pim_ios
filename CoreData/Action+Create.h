@@ -7,11 +7,20 @@
 //
 
 #import "Action.h"
+#import "GeneralItem.h"
+#import "Run.h"
 
 @interface Action (Create)
+
 + (Action *) initAction: (NSString *) actionString
                 forRun :(Run *) run
          forGeneralItem:(GeneralItem *) gi
- inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (NSArray *) getUnsyncedActions: (NSManagedObjectContext*) context ;
+ inManagedObjectContext: (NSManagedObjectContext *) context;
+
++ (NSArray *) getUnsyncedActions: (NSManagedObjectContext *) context;
+
++ (BOOL) checkAction:(NSString *) action
+      forGeneralItem: (GeneralItem *) gi
+              forRun: (Run *) run
+inManagedObjectContext:(NSManagedObjectContext*) context;
 @end

@@ -2,7 +2,7 @@
 //  GeneralItem.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/24/14.
+//  Created by Wim van der Vegt on 3/27/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSString * descriptionText;
 @property (nonatomic, retain) NSNumber * gameId;
-@property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSNumber * generalItemId;
 @property (nonatomic, retain) NSData * json;
 @property (nonatomic, retain) NSNumber * lat;
 @property (nonatomic, retain) NSNumber * lng;

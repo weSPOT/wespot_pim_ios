@@ -15,6 +15,7 @@
          forGeneralItem:(GeneralItem *) gi
  inManagedObjectContext: (NSManagedObjectContext * ) context {
     Action * action = [NSEntityDescription insertNewObjectForEntityForName:@"Action" inManagedObjectContext: context];
+    
     action.run = run;
     action.action = actionString;
     action.generalItem = gi;
@@ -42,6 +43,24 @@
     }
     
     return unsyncedActions;
+}
+
++ (BOOL) checkAction:(NSString *) action
+      forGeneralItem: (GeneralItem *) gi
+              forRun: (Run *) run
+inManagedObjectContext:(NSManagedObjectContext*) context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Action"];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"generalitem.generalItemId = %@ AND run.runId = %@ AND action = %@", gi.generalItemId, run.runId, action];
+    
+    NSError *error = nil;
+    NSUInteger * count = [context countForFetchRequest:request error:&error];
+    if (error) {
+        NSLog(@"[%s] error %@", __func__, error);
+    }
+    
+    return count!=0;
 }
 
 @end

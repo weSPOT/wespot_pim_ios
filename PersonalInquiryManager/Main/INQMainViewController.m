@@ -359,9 +359,6 @@ typedef NS_ENUM(NSInteger, tools) {
                     if ([newViewController respondsToSelector:@selector(setAccount:)]) {
                         [newViewController performSelector:@selector(setAccount:) withObject:[ARLNetwork CurrentAccount]];
                     }
-                    
-//                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//                  [alert show];
                 }
                     break;
             }

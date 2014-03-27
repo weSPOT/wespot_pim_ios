@@ -10,6 +10,7 @@
 #import "ARLCloudSynchronizer.h"
 #import "ARLAppDelegate.h"
 #import "Run.h"
+#import "Action+Create.h"
 
 @interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 

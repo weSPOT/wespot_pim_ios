@@ -64,7 +64,8 @@
  *
  *  @return The existing or newly created Response.
  */
-+ (Response *) responseWithDictionary: (NSDictionary *) respDict inManagedObjectContext: (NSManagedObjectContext * ) context {
++ (Response *) responseWithDictionary: (NSDictionary *) respDict
+               inManagedObjectContext: (NSManagedObjectContext * ) context {
     Response *response = [self retrieveFromDb:respDict withManagedContext:context];
     
     // deleted = 0;
@@ -112,7 +113,6 @@
         } else if ([valueDict objectForKey:@"audioUrl"]) {
             response.fileName = [valueDict objectForKey:@"audioUrl"];
             response.contentType = @"audio/aac";
-#warning schedule sync for file/url
         } else if ([valueDict objectForKey:@"text"]) {
 #warning Implement Text
         } else if ([valueDict objectForKey:@"number"]) {
@@ -140,8 +140,9 @@
         NSLog(@"[%s] error %@", __func__, error);
     }
   
+#warning schedule sync for file/url here?
+    
 //    if (!response.data && response.fileName) {
-// #warning schedule sync for file/url
 //        [ARLFileCloudSynchronizer syncResponses:context];
 //    }
  
@@ -149,8 +150,7 @@
 }
 
 /*!
- *  Retrieve a Response from Core Data (and use the timestamp 
- *  as key as responseId is not part of the Response object.
+ *  Retrieve a Response from Core Data.
  *
  *  @param giDict  <#giDict description#>
  *  @param context <#context description#>
@@ -158,24 +158,12 @@
  *  @return <#return value description#>
  */
 + (Response *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
-    //    {
-    //        deleted = 0;
-    //        responses =     (
-    //                         {
-    //                             deleted = 0;
-    //                             generalItemId = 4596856252268544;
-    //                             responseId = 4524418407596032;
-    //                             responseValue = "{\"text\":\"\"}";
-    //                             runId = 5117857260109824;
-    //                         --> timestamp = 1395396382116;
-    //                             type = "org.celstec.arlearn2.beans.run.Response";
-    //                             userEmail = "2:101754523769925754305";
-    //                         },
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     request.predicate = [NSPredicate predicateWithFormat:@"responseId = %lld", [[giDict objectForKey:@"responseId"] longLongValue]];
+
     NSError *error = nil;
-    
     NSArray *responsesFromDb = [context executeFetchRequest:request error:&error];
+    
     if (error) {
         NSLog(@"error %@", error);
     }

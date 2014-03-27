@@ -36,7 +36,7 @@
                                            inManagedObjectContext:context];
     }
     
-    gi.id = [giDict objectForKey:@"id"] ;
+    gi.generalItemId = [giDict objectForKey:@"id"] ;
     gi.ownerGame = game;
     gi.gameId = [giDict objectForKey:@"gameId"];
     gi.lat = [giDict objectForKey:@"lat"];
@@ -81,7 +81,7 @@
 + (void) setCorrespondingVisibilityItems: (GeneralItem *) gi {
     NSManagedObjectContext * context = gi.managedObjectContext;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
-    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId == %lld", [gi.id longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId == %lld", [gi.generalItemId longLongValue]];
     
     NSError *error = nil;
     NSArray *allVisibilityStatements = [context executeFetchRequest:request error:&error];

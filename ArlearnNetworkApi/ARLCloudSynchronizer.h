@@ -39,8 +39,10 @@
 @property (strong, nonatomic)  NSManagedObjectContext * parentContext;
 
 + (void) syncGamesAndRuns: (NSManagedObjectContext*) context;
-+ (void) syncResponses:  (NSManagedObjectContext*) context;
++ (void) syncResponses: (NSManagedObjectContext*) context;
 + (void) syncActions: (NSManagedObjectContext*) context ;
++ (void) syncVisibilityForInquiry: (NSManagedObjectContext*) context
+                              run: (Run *) run;
 
 - (void) sync;
 - (void) createContext: (NSManagedObjectContext*) mainContext;

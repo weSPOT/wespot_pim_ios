@@ -224,7 +224,7 @@
     NSLog(@"[%s]", __func__);
 
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
-//    lastDate = [NSNumber numberWithInt:0];
+//  lastDate = [NSNumber numberWithInt:0];
     NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId from:lastDate];
     NSNumber * serverTime = [gisDict objectForKey:@"serverTime"];
     Game * game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];

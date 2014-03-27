@@ -52,7 +52,7 @@ inManagedObjectContext:(NSManagedObjectContext*) context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Action"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"generalitem.generalItemId = %@ AND run.runId = %@ AND action = %@", gi.generalItemId, run.runId, action];
+    request.predicate = [NSPredicate predicateWithFormat:@"generalItem = %@ AND run = %@ AND action = %@", gi, run, action];
     
     NSError *error = nil;
     NSUInteger * count = [context countForFetchRequest:request error:&error];
@@ -60,7 +60,7 @@ inManagedObjectContext:(NSManagedObjectContext*) context
         NSLog(@"[%s] error %@", __func__, error);
     }
     
-    return count!=0;
+    return count && count!=0;
 }
 
 @end

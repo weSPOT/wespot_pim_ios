@@ -102,7 +102,7 @@
 
 + (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext*) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
-    request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [itemId longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [itemId longLongValue]];
     NSError *error = nil;
     
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
@@ -118,7 +118,7 @@
 
 + (GeneralItem *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
-    request.predicate = [NSPredicate predicateWithFormat:@"id = %lld", [[giDict objectForKey:@"id"] longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [[giDict objectForKey:@"id"] longLongValue]];
     NSError *error = nil;
     
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];

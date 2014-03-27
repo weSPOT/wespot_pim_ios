@@ -66,7 +66,24 @@
  */
 + (Response *) responseWithDictionary: (NSDictionary *) respDict inManagedObjectContext: (NSManagedObjectContext * ) context {
     Response *response = [self retrieveFromDb:respDict withManagedContext:context];
+    
+    // deleted = 0;
+    // generalItemId = 4596856252268544;
+    // responseId = 4524418407596032;
+    // responseValue = "{\"text\":\"\"}";
+    // runId = 5117857260109824;
+    // timestamp = 1395396382116;
+    // type = "org.celstec.arlearn2.beans.run.Response";
+    // userEmail = "2:101754523769925754305";
 
+    if ([[respDict objectForKey:@"deleted"] boolValue]) {
+        if (response) {
+            //item is deleted
+            [context deleteObject:response];
+        }
+        return nil;
+    }
+    
     if (!response) {
         response = [NSEntityDescription insertNewObjectForEntityForName:@"Response" inManagedObjectContext:context];
         
@@ -81,18 +98,7 @@
     NSDictionary *valueDict = [NSJSONSerialization JSONObjectWithData:data
                                                               options: NSJSONReadingMutableContainers
                                                                 error: &e];
-#warning Deleted Response are not handled yet!
-    
-    //                             deleted = 0;
-    //                             generalItemId = 4596856252268544;
-    //                             responseId = 4524418407596032;
-    //                             responseValue = "{\"text\":\"\"}";
-    //                             runId = 5117857260109824;
-    //                             timestamp = 1395396382116;
-    //                             type = "org.celstec.arlearn2.beans.run.Response";
-    //                             userEmail = "2:101754523769925754305";
 
-    
     // Set responseValue specific fields.
     if (valueDict) {
         if ([valueDict objectForKey:@"imageUrl"]) {

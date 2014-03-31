@@ -48,6 +48,9 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 - (void)setupFetchedResultsController {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
+    
+    [request setFetchBatchSize:8];
+    
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
                                                                                      ascending:YES
                                                                                       selector:@selector(localizedCaseInsensitiveCompare:)]];
@@ -57,7 +60,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
-    
     
     self.fetchedResultsController.delegate = self;
     

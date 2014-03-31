@@ -38,7 +38,7 @@
         if (newViewController) {
             // Move to another UINavigationController or UITabBarController etc.
             // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
-            [self.navigationController presentViewController:newViewController animated:YES  completion:nil];
+            [self.navigationController presentViewController:newViewController animated:NO completion:nil];
         }
 
         return;

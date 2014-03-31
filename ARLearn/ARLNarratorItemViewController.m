@@ -167,6 +167,8 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void)setupFetchedResultsController {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
+    [request setFetchBatchSize:8];
+    
     if (self.run && self.run.runId) {
         NSString *contentType = @"";
         if (self.withPicture) {
@@ -190,8 +192,8 @@ typedef NS_ENUM(NSInteger, responses) {
                                    nil];
     } else if (self.account) {
         request.predicate = [NSPredicate predicateWithFormat:
-                             @"account.localId = %@  AND contentType !=nil AND contentType!=''",
-                             self.account.localId];
+                             @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
+                             self.account.localId, self.account.accountType];
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"

@@ -130,19 +130,18 @@ typedef NS_ENUM(NSInteger, tools) {
         self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
 
         self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.loginButton,nil];
-    }
 
-    [self.navigationController setToolbarHidden:NO];
+        
+        [self adjustLoginButton];
+    }
     
-    [self adjustLoginButton];
+    [self.navigationController setToolbarHidden:NO];
     
     [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -292,6 +291,26 @@ typedef NS_ENUM(NSInteger, tools) {
         case MYMEDIA: {
             cell.textLabel.Text = @"My media";
             cell.imageView.image = [UIImage imageNamed:@"collect-data"];
+            
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            
+            Account *account = ARLNetwork.CurrentAccount;
+            
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:
+                                      @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
+                                      account.localId, account.accountType];
+            
+            NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
+            
+            if (count!=0) {
+                NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
+                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                NSRange range=[value rangeOfString:value];
+                
+                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                
+                [cell.detailTextLabel setAttributedText:string];
+            }
         }
             break;
         case TOOLS:

@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, profile) {
      */
     EMAIL,
     /*!
+     *  Account Type.
+     */
+    TYPE,
+    /*!
      *  Picture
      */
 //    PICTURE,
@@ -98,6 +102,10 @@ typedef NS_ENUM(NSInteger, profile) {
         case EMAIL:
             cell.textLabel.text = account.email;
             break;
+            
+        case TYPE:
+            cell.textLabel.text = [ARLNetwork elggProviderId:account.accountType];
+            break;
     }
     
     return cell;
@@ -110,6 +118,8 @@ typedef NS_ENUM(NSInteger, profile) {
             return @"Name";
         case EMAIL:
             return @"Email";
+        case TYPE:
+            return @"Type of account";
     }
     
     // Error

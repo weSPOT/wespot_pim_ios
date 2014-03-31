@@ -57,10 +57,13 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
+
+    if (ARLNetwork.networkAvailable) {
+        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
+        });
+    }
 }
 
 - (void)getAllUsers {
@@ -71,6 +74,8 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)setupFetchedResultsController {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    
+    [request setFetchBatchSize:8];
     
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     

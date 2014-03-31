@@ -450,13 +450,16 @@ typedef NS_ENUM(NSInteger, responses) {
                         cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
                     }
                 } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
-                    UIImage *icon =[UIImage imageNamed:@"task-video"];
-
-                    cell.imgView.image = icon;
+                    if (response.thumb) {
+                        cell.imgView.image = [UIImage imageWithData:response.thumb];
+//                  } else if (response.data) {
+//                      cell.imgView.image = [UIImage imageWithData:response.data];
+                    } else {
+                        cell.imgView.Image = [UIImage imageNamed:@"task-video"];
+                    }
+//                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
                 } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
-                    UIImage *icon =[UIImage imageNamed:@"task-record"];
- 
-                    cell.imgView.image = icon;
+                    cell.imgView.image = [UIImage imageNamed:@"task-record"];
                 }
             }
         }

@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #include <pthread.h>
 
 #import "ARLNetwork.h"

@@ -198,8 +198,54 @@
                 thumbImage = nil;
                 
                 NSLog(@"[%s] Image:%d Thumb:%d", __func__, [response.data length], [response.thumb length]);
+            } else if ([response.contentType isEqualToString:@"video/quicktime"]) {
+                
+                //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
+                
+                
+                // 1) Save NSData to File in temp Directory.
+                // See http://stackoverflow.com/questions/1489522/stringbyappendingpathcomponent-hows-it-work
+                NSString *tmp = NSTemporaryDirectory();
+                NSString *url = [tmp stringByAppendingPathComponent:@"temp.mov"];
+            
+                // Make sure there is no other file with the same name first
+                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
+                }
+                
+                [urlData writeToFile:url atomically:NO];
+            
+                // 2) Create an AVAsset from it.
+                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
+                
+                // 3) Set max ThumbNail size,
+                //See http://stackoverflow.com/questions/19368513/generating-thumbnail-from-video-ios7
+                AVAssetImageGenerator *generateImg = [[AVAssetImageGenerator alloc] initWithAsset:urlAsset];
+                generateImg.maximumSize = CGSizeMake(256, 256);
+                
+                // 4) Set the time of the ThumbNail.
+                CMTime time = CMTimeMake(1, 65); // @ 1/65 sec.
+                
+                // 5) Create the ThumbNail.
+                NSError *error = NULL;
+                CGImageRef refImg = [generateImg copyCGImageAtTime:time actualTime:NULL error:&error];
+                
+                if (error) {
+                    NSLog(@"[%s] Error==%@, Refimage==%@",__func__, error, refImg);
+                }
+                //
+                UIImage *thumbImage= [[UIImage alloc] initWithCGImage:refImg];
+
+                // 6) Save both original and thumbnail.
+                response.data = urlData;
+                response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
+                
+                //7) Remove temporary file.
+                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
+                }
             } else {
-                 response.data = urlData;
+                response.data = urlData;
             }
             // giData.replicated = [NSNumber numberWithBool:YES];
             
@@ -211,7 +257,7 @@
             NSLog(@"[%s] Could not fetch url=%@", __func__, response.fileName);
         }
     }
-
+    
     self.syncResponses=NO;
 }
 

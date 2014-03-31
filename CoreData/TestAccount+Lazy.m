@@ -39,7 +39,7 @@ UIImage * cachedPicture;
  *
  *  @return The Account
  */
-+ (TestAccount *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
++ (TestAccount *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TestAccount"];
     
     request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) AND (accountType = %d)", [giDict objectForKey:@"localId"], [[giDict objectForKey:@"accountType"] intValue]];
@@ -54,13 +54,13 @@ UIImage * cachedPicture;
 /*!
  *  Create or Update a Record from CoreData with a JSON Derived Dictionary.
  *
- *  @param acDict  <#acDict description#>
- *  @param context <#context description#>
+ *  @param acDict  Should at least contain localId, accountType, email, name, givenName, familyName, accountLevel and picture.
+ *  @param context The NSManagedObjectContext.
  *
- *  @return <#return value description#>
+ *  @return The Account.
  */
-+ (TestAccount *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext * ) context {
-    TestAccount * account = [self retrieveFromDb:acDict withManagedContext:context];
++ (TestAccount *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext *) context {
+    TestAccount *account = [self retrieveFromDb:acDict withManagedContext:context];
     
     if (!account) {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"TestAccount" inManagedObjectContext:context];

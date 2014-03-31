@@ -10,8 +10,8 @@
 
 @interface Account (Create)
 
-+ (Account *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (Account *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context;
++ (Account *) accountWithDictionary: (NSDictionary *) dict inManagedObjectContext: (NSManagedObjectContext * ) context;
++ (Account *) retrieveFromDb: (NSDictionary *) dict withManagedContext: (NSManagedObjectContext*) context;
 + (Account *) retrieveFromDbWithLocalId: (NSString *) localId withManagedContext: (NSManagedObjectContext*) context;
 
 @end

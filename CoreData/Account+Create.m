@@ -10,23 +10,31 @@
 
 @implementation Account (Create)
 
-+ (Account *) accountWithDictionary: (NSDictionary *) acDict inManagedObjectContext: (NSManagedObjectContext * ) context {
-    Account * account = [self retrieveFromDb:acDict withManagedContext:context];
+/*!
+ *  Retrieve or create an account using a NSDictionary.
+ *
+ *  @param dict    Should at least contain localId, accountType, email, name, givenName, familyName, accountLevel. Optional is picture.
+ *  @param context <#context description#>
+ *
+ *  @return <#return value description#>
+ */
++ (Account *) accountWithDictionary: (NSDictionary *) dict inManagedObjectContext: (NSManagedObjectContext * ) context {
+    Account * account = [self retrieveFromDb:dict withManagedContext:context];
     
     if (!account) {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
     }
     
-    account.localId = [acDict objectForKey:@"localId"];
-    account.accountType = [acDict objectForKey:@"accountType"];
+    account.localId = [dict objectForKey:@"localId"];
+    account.accountType = [dict objectForKey:@"accountType"];
     
-    account.email = [acDict objectForKey:@"email"];
-    account.name= [acDict objectForKey:@"name"];
-    account.givenName = [acDict objectForKey:@"givenName"];
-    account.familyName = [acDict objectForKey:@"familyName"];
-    account.accountLevel= [acDict objectForKey:@"accountLevel"];
+    account.email = [dict objectForKey:@"email"];
+    account.name= [dict objectForKey:@"name"];
+    account.givenName = [dict objectForKey:@"givenName"];
+    account.familyName = [dict objectForKey:@"familyName"];
+    account.accountLevel= [dict objectForKey:@"accountLevel"];
     
-    NSURL  *url = [NSURL URLWithString:[acDict objectForKey:@"picture"]];
+    NSURL  *url = [NSURL URLWithString:[dict objectForKey:@"picture"]];
     NSData *urlData = [NSData dataWithContentsOfURL:url];
     if (urlData) {
         account.picture = urlData;
@@ -41,11 +49,21 @@
     return account;
 }
 
-+ (Account *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve from Database using a NSDictionary.
+ *
+ *  @param dict    Should at least contain localId and accountType.
+ *  @param context <#context description#>
+ *
+ *  @return <#return value description#>
+ */
++ (Account *) retrieveFromDb: (NSDictionary *) dict withManagedContext: (NSManagedObjectContext*) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
 
-    request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) AND (accountType = %d)", [giDict objectForKey:@"localId"], [[giDict objectForKey:@"accountType"] intValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) AND (accountType = %d)", [dict objectForKey:@"localId"], [[dict objectForKey:@"accountType"] intValue]];
+    
     NSArray *accountsFromDb = [context executeFetchRequest:request error:nil];
+    
     if (!accountsFromDb || ([accountsFromDb count] != 1)) {
         return nil;
     } else {
@@ -53,12 +71,23 @@
     }
 }
 
-+ (Account *) retrieveFromDbWithLocalId: (NSString *) localId withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve from Database using the localId.
+ *
+ *  @param localId The localId of the user account to retrieve.
+ *  @param context <#context description#>
+ *
+ *  @return <#return value description#>
+ */
++ (Account *) retrieveFromDbWithLocalId: (NSString *)localId withManagedContext: (NSManagedObjectContext*) context{
     Account * account = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"(localId = %@) ", localId];
+    
     NSArray *accountsFromDb = [context executeFetchRequest:request error:nil];
+    
     if (!accountsFromDb || ([accountsFromDb count] != 1)) {
         return nil;
     } else {
@@ -66,24 +95,5 @@
         return account;
     }
 }
-
-//+ (void) deleteAll: (NSManagedObjectContext * ) context {
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-//    
-//    NSError *error = nil;
-//    NSArray *accounts = [context executeFetchRequest:request error:&error];
-//    if (error) {
-//        NSLog(@"[%s] error %@", __func__, error);
-//    }
-//    for (id ac in accounts) {
-//        [context deleteObject:ac];
-//    }
-//    
-//    error = nil;
-//    [context save:&error];
-//    if (error) {
-//        NSLog(@"[%s] error %@", __func__, error);
-//    }
-//}
 
 @end

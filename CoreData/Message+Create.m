@@ -11,21 +11,22 @@
 @implementation Message (Create)
 
 /*!
- *  Updated or inserts a Message found on the Server.
+ *  Updated or inserts a Message found on the Server given a dictionary.
  *
- *  @param mDict The Dictionary
- *  @param context  The NSManagedObjectContext
+ *  @param mDict Should at least contain messageId, threadId, subject, body, runId and timestamp.
+ *  @param context The NSManagedObjectContext.
  *
  *  @return The existing or newly created Message.
  */
-+ (Message *) messageWithDictionary:(NSDictionary *)mDict
-             inManagedObjectContext:(NSManagedObjectContext *)context
++ (Message *) messageWithDictionary:(NSDictionary *) dict
+             inManagedObjectContext:(NSManagedObjectContext *) context
 {
-    Message * message = [self retrieveFromDb:mDict withManagedContext:context];
-    if ([[mDict objectForKey:@"deleted"] boolValue]) {
+    Message * message = [self retrieveFromDb:dict withManagedContext:context];
+    if ([[dict objectForKey:@"deleted"] boolValue]) {
         if (message) {
             //item is deleted
             [context deleteObject:message];
+            message = nil;
         }
         return nil;
     }
@@ -33,19 +34,19 @@
     if (!message) {
         message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
         
-        message.messageId = [NSNumber numberWithLongLong:[[mDict objectForKey:@"messageId"] longLongValue]];
-        message.threadId = [NSNumber numberWithLongLong:[[mDict objectForKey:@"threadId"] longLongValue]];
+        message.messageId = [NSNumber numberWithLongLong:[[dict objectForKey:@"messageId"] longLongValue]];
+        message.threadId = [NSNumber numberWithLongLong:[[dict objectForKey:@"threadId"] longLongValue]];
     }
 
-    message.subject = [mDict objectForKey:@"subject"];
-    message.body = [mDict objectForKey:@"body"];
+    message.subject = [dict objectForKey:@"subject"];
+    message.body = [dict objectForKey:@"body"];
     
     // Set Linked Objects
-    message.run = [Run retrieveRun:[NSNumber numberWithLongLong:[[mDict objectForKey:@"runId"] longLongValue]]
+    message.run = [Run retrieveRun:[NSNumber numberWithLongLong:[[dict objectForKey:@"runId"] longLongValue]]
              inManagedObjectContext:context];
     
     // Set TimeStamp.
-    message.date = [NSNumber numberWithLongLong:[[mDict objectForKey:@"timestamp"] longLongValue]];
+    message.date = [NSNumber numberWithLongLong:[[dict objectForKey:@"timestamp"] longLongValue]];
     
     NSError *error = nil;
     [context save:&error];
@@ -57,17 +58,17 @@
 }
 
 /*!
- *  Retrieve a Message from Core Data.
+ *  Retrieve a Message from Core Data given a dictionary.
  *
- *  @param mDict The Dictionary
- *  @param context The NSManagedObjectContext
+ *  @param mDict Should at least contain messageId.
+ *  @param context The NSManagedObjectContext.
  *
- *  @return The existing Message or nil
+ *  @return The requested Message or nil.
  */
-+ (Message *) retrieveFromDb:(NSDictionary *)mDict
-          withManagedContext:(NSManagedObjectContext*)context
++ (Message *) retrieveFromDb:(NSDictionary *) dict
+          withManagedContext:(NSManagedObjectContext*) context
 {
-    return [Message retrieveFromDbWithId:[NSNumber numberWithLongLong:[[mDict objectForKey:@"messageId"] longLongValue]]
+    return [Message retrieveFromDbWithId:[NSNumber numberWithLongLong:[[dict objectForKey:@"messageId"] longLongValue]]
                       withManagedContext:context];
 }
 /*!
@@ -78,8 +79,8 @@
  *
  *  @return The existing Message or nil
  */
-+ (Message *) retrieveFromDbWithId:(NSNumber *)messageId
-                withManagedContext:(NSManagedObjectContext*)context
++ (Message *) retrieveFromDbWithId:(NSNumber *) messageId
+                withManagedContext:(NSManagedObjectContext*) context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
     request.predicate = [NSPredicate predicateWithFormat:@"messageId = %lld", [messageId longLongValue]];

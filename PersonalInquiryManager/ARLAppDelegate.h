@@ -22,6 +22,10 @@
 - (NSInteger *) entityCount:(NSString *) entityName;
 - (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate;
 
++ (void) deleteAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
++ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
+
+
 @property (strong, nonatomic) UIWindow *window;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

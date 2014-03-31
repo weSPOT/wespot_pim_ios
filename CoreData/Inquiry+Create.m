@@ -10,7 +10,15 @@
 
 @implementation Inquiry (Create)
 
-+ (Inquiry *) inquiryWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext * ) context {
+/*!
+ *  Retrieve or creates an Inquiry given a dictionary.
+ *
+ *  @param inquiryDict Should at least contain description, inquiryId and title. Optional is icon.
+ *  @param context     The NSManagedObjectContext.
+ *
+ *  @return The requested Inquiry.
+ */
++ (Inquiry *) inquiryWithDictionary: (NSDictionary *) inquiryDict inManagedObjectContext: (NSManagedObjectContext *) context {
     Inquiry * inquiry = [self retrieveFromDb:inquiryDict withManagedContext:context];
     if (!inquiry) {
         inquiry = [NSEntityDescription insertNewObjectForEntityForName:@"Inquiry" inManagedObjectContext:context];
@@ -34,7 +42,15 @@
     return inquiry;
 }
 
-+ (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieves an Inquiry from the database given a dictionary.
+ *
+ *  @param inqDict Should at least contain InquiryId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested Inquiry.
+ */
++ (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
     request.predicate = [NSPredicate predicateWithFormat:@"inquiryId = %@", [inqDict objectForKey:@"inquiryId"]];
     NSArray *inquiryFromDb = [context executeFetchRequest:request error:nil];

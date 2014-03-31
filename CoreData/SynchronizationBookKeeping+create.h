@@ -15,10 +15,10 @@
 
 + (SynchronizationBookKeeping *) createEntry: (NSString *) type
                                         time:(NSNumber *) time
-                      inManagedObjectContext: (NSManagedObjectContext * ) context ;
+                      inManagedObjectContext: (NSManagedObjectContext *) context ;
 
 + (SynchronizationBookKeeping *) createEntry: (NSString *) type
                                         time: (NSNumber *) time
                                    idContext: (NSNumber *) idContext
-                      inManagedObjectContext: (NSManagedObjectContext * ) context;
+                      inManagedObjectContext: (NSManagedObjectContext *) context;
 @end

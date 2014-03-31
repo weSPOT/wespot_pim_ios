@@ -10,9 +10,11 @@
 
 @interface GeneralItemData (Extra)
 
-+ (NSArray *) getUnsyncedData: (NSManagedObjectContext*) context;
-+ (void) createDownloadTask: (GeneralItem* ) gi
-                    withKey: (NSString*) key
-                    withUrl: (NSString*) url
-         withManagedContext: (NSManagedObjectContext*) context;
++ (NSArray *) getUnsyncedData: (NSManagedObjectContext *) context;
+
++ (void) createDownloadTask: (GeneralItem *) gi
+                    withKey: (NSString *) key
+                    withUrl: (NSString *) url
+         withManagedContext: (NSManagedObjectContext *) context;
+
 @end

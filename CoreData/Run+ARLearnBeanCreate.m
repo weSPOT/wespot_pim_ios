@@ -10,8 +10,16 @@
 
 @implementation Run (ARLearnBeanCreate)
 
+/*!
+ *  Retrieve a Run given a RunId.
+ *
+ *  @param runId   The RunId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested Run.
+ */
 + (Run *) retrieveRun: (NSNumber *) runId inManagedObjectContext: (NSManagedObjectContext *) context {
-    Run * run = nil;
+    Run *run = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
     request.predicate = [NSPredicate predicateWithFormat:@"runId = %lld", [runId longLongValue]];
@@ -23,12 +31,21 @@
     }
     return run;
 }
-
+/*!
+ *  Retrieve a Run given a dictionary.
+ *
+ *  @param runDict Should at least contain runId, title, owner, gameId and runId. May contain deleted.
+ *  @param context <#context description#>
+ *
+ *  @return <#return value description#>
+ */
 + (Run *) runWithDictionary: (NSDictionary *) runDict inManagedObjectContext: (NSManagedObjectContext *) context {
-    Run * run = nil;
+    Run *run = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"runId = %lld", [[runDict objectForKey:@"runId"] longLongValue]];
+    
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
@@ -71,8 +88,15 @@
     return run;
 }
 
-+ (void) setGame: (Run *) run inManagedObjectContext: (NSManagedObjectContext * ) context {
+/*!
+ *  Set the Games of a Run.
+ *
+ *  @param run     The Run.
+ *  @param context The NSManagedObjectContext.
+ */
++ (void) setGame: (Run *) run inManagedObjectContext: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"gameId = %lld", [run.gameId longLongValue]];
    
     NSError *error = nil;
@@ -82,23 +106,9 @@
     } else if (![games count]) {
         
     } else {
-        Game * game = [games lastObject];
+        Game *game = [games lastObject];
         run.game = game;
     }
 }
-
-//+ (void) deleteAllRuns: (NSManagedObjectContext * ) context {
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
-//    
-//    NSError *error = nil;
-//    NSArray *runs = [context executeFetchRequest:request error:&error];
-//    if (error) {
-//        NSLog(@"error %@", error);
-//    }
-//    for (id run in runs) {
-//        // NSLog(@"this Run should be gone already");
-//        [context deleteObject:run];
-//    }
-//}
 
 @end

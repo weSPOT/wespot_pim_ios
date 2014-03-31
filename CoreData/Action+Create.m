@@ -10,6 +10,16 @@
 
 @implementation Action (Create)
 
+/*!
+ *  Create an action record in Core Data.
+ *
+ *  @param actionString The Action Name
+ *  @param run          The Run
+ *  @param gi           The GeneralItem
+ *  @param context      the NSManagedObjectContext
+ *
+ *  @return The newly created action.
+ */
 + (Action *) initAction: (NSString *) actionString
                 forRun :(Run *) run
          forGeneralItem:(GeneralItem *) gi
@@ -31,6 +41,13 @@
     return action;
 }
 
+/*!
+ *  Fetch Actions for which the synchronized is NO.
+ *
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of Actions
+ */
 + (NSArray *) getUnsyncedActions: (NSManagedObjectContext*) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Action"];
     
@@ -45,9 +62,19 @@
     return unsyncedActions;
 }
 
+/*!
+ *  Check if an Action is present.
+ *
+ *  @param action  The Action Name
+ *  @param gi      The GeneralItem
+ *  @param run     The Run
+ *  @param context The NSManagedObjectContext
+ *
+ *  @return YES if the action if present else NO.
+ */
 + (BOOL) checkAction:(NSString *) action
-      forGeneralItem: (GeneralItem *) gi
               forRun: (Run *) run
+      forGeneralItem: (GeneralItem *) gi
 inManagedObjectContext:(NSManagedObjectContext*) context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Action"];

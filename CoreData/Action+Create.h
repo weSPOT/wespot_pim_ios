@@ -20,7 +20,7 @@
 + (NSArray *) getUnsyncedActions: (NSManagedObjectContext *) context;
 
 + (BOOL) checkAction:(NSString *) action
-      forGeneralItem: (GeneralItem *) gi
               forRun: (Run *) run
+      forGeneralItem: (GeneralItem *) gi
 inManagedObjectContext:(NSManagedObjectContext*) context;
 @end

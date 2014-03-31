@@ -11,13 +11,23 @@
 
 @implementation GeneralItemVisibility (ARLearnBeanCreate)
 
-
-+ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run withGeneralItem: (GeneralItem *) generalItem {
+/*!
+ *  Retrieve GeneralItemVisibility record given a Dictionary, Run and GeneralItem?.
+ *
+ *  @param visDict     Should at least contain title, generalItemId, runId, status, timeStamp and email. May contain deleted.
+ *  @param run         The RunId.
+ *  @param generalItem The GeneralItem.
+ *
+ *  @return The requsted GeneralItemVisibility.
+ */
++ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run withGeneralItem: (GeneralItem *) generalItem {
     GeneralItemVisibility * giVis = [self retrieveFromDb:visDict withManagedContext:run.managedObjectContext];
+#warning since generalItem parameter is unused this method is identical to the one below. Seems a private method.
     BOOL newItemCreated = false;
     if ([[visDict objectForKey:@"deleted"] boolValue]) {
         //item is deleted
         [giVis.managedObjectContext deleteObject:giVis];
+        giVis = nil;
         return nil;
     }
     if (!giVis) {
@@ -49,9 +59,19 @@
     return giVis;
 }
 
-+ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run {
-    GeneralItem * generalItem = [GeneralItem retrieveFromDbWithId:[visDict objectForKey:@"generalItemId"] withManagedContext:run.managedObjectContext];
-    CurrentItemVisibility * currentVisibility = [CurrentItemVisibility retrieve:[visDict objectForKey:@"generalItemId"] runId:run.runId withManagedContext:run.managedObjectContext];
+/*!
+ *  Retrieve GeneralItemVisibility record given a Dictionary, Run.
+ *
+ *  @param visDict     Should at least contain title, generalItemId, runId, status, timeStamp and email. May contain deleted.
+ *  @param run         The RunId.
+ *  @param generalItem The GeneralItem.
+ *
+ *  @return The requsted GeneralItemVisibility.
+ */
++ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run {
+    GeneralItem *generalItem = [GeneralItem retrieveFromDbWithId:[visDict objectForKey:@"generalItemId"] withManagedContext:run.managedObjectContext];
+    
+    CurrentItemVisibility *currentVisibility = [CurrentItemVisibility retrieve:[visDict objectForKey:@"generalItemId"] runId:run.runId withManagedContext:run.managedObjectContext];
     
     if (generalItem) {
         if (!currentVisibility) {
@@ -73,9 +93,19 @@
     
 }
 
-+ (GeneralItemVisibility *) retrieveFromDb: (NSDictionary *) visDict withManagedContext: (NSManagedObjectContext*) context{
-    GeneralItemVisibility * giVis = nil;
+/*!
+ *  Retrieve a GeneralItemVisibility from Core Data given a dictionary.
+ *
+ *  @param visDict Should at least contain generalItemId, email, runId and status.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested record.
+ */
++ (GeneralItemVisibility *) retrieveFromDb: (NSDictionary *) visDict withManagedContext: (NSManagedObjectContext *) context{
+    GeneralItemVisibility *giVis = nil;
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld and email = %@ and runId =%lld and status = %ld",
                          [[visDict objectForKey:@"generalItemId"] longLongValue],
                          [visDict objectForKey:@"email"] ,
@@ -96,37 +126,48 @@
     }
 }
 
-+ (NSArray *) retrieve : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve all GeneralItemVisibility's given a GeneralItem and a Run.
+ *
+ *  @param itemId  The GeneralItemId
+ *  @param runId   The RunId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of GeneralItemVisibility records.
+ */
++ (NSArray *) retrieve: (NSNumber *) itemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld and runId =%lld ",
                          [itemId longLongValue],
                          [runId longLongValue]
                          ];
+    
     return [context executeFetchRequest:request error:nil];
 }
 
-+ (NSArray *) retrieve :(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve all GeneralItemVisibility's given a Run.
+ *
+ *  @param itemId  The GeneralItemId
+ *  @param runId   The RunId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of GeneralItemVisibility records.
+ */
++ (NSArray *) retrieve :(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"runId =%lld ",
                          [runId longLongValue]
                          ];
+    
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
                                         initWithKey:@"generalItemId" ascending:YES];
+    
     [request setSortDescriptors:@[sortDescriptor]];
+    
     return [context executeFetchRequest:request error:nil];
 }
-
-//+ (void) deleteAll: (NSManagedObjectContext * ) context {
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
-//    
-//    NSError *error = nil;
-//    NSArray *visibilities = [context executeFetchRequest:request error:&error];
-//    if (error) {
-//        NSLog(@"error %@", error);
-//    }
-//    for (id visi in visibilities) {
-//        [context deleteObject:visi];
-//    }
-//}
 
 @end

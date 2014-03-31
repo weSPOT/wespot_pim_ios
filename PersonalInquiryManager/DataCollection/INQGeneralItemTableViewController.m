@@ -343,8 +343,8 @@ typedef NS_ENUM(NSInteger, groups) {
             cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
             
             if (![Action checkAction:@"read"
-                      forGeneralItem:generalItem
                               forRun:self.run
+                      forGeneralItem:generalItem
               inManagedObjectContext:generalItem.managedObjectContext]) {
                 [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
                 

@@ -220,7 +220,7 @@
     self.syncGames = NO;
 }
 
-- (void) synchronizeGeneralItemsWithGame {//: (Game *) game {
+- (void) synchronizeGeneralItemsWithGame {
     NSLog(@"[%s]", __func__);
 
     NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];

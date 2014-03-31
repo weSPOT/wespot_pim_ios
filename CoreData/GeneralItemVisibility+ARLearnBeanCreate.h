@@ -16,10 +16,10 @@
 
 @interface GeneralItemVisibility (ARLearnBeanCreate)
 
-+ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run withGeneralItem: (GeneralItem *) gi;
-+ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run * ) run ;
++ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run withGeneralItem: (GeneralItem *) gi;
++ (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run ;
 
-+ (NSArray *) retrieve : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
-+ (NSArray *) retrieve : (NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
++ (NSArray *) retrieve : (NSNumber *) itemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
++ (NSArray *) retrieve : (NSNumber *) runId withManagedContext: (NSManagedObjectContext*) context;
 
 @end

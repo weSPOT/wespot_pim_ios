@@ -10,11 +10,27 @@
 
 @implementation SynchronizationBookKeeping (create)
 
-
-+ (NSNumber*) getLastSynchronizationDate : (NSManagedObjectContext *) context type:(NSString *) type{
+/*!
+ *  Get the Last Synchronization Date with nil Context Identifier.
+ *
+ *  @param context The NSManagedObjectContext.
+ *  @param type    The type to retrieve the Synchronization Date for.
+ *
+ *  @return The Last Synchronization Date.
+ */
++ (NSNumber *) getLastSynchronizationDate : (NSManagedObjectContext *) context type:(NSString *) type{
     return [self getLastSynchronizationDate:context type:type context:nil];
 }
 
+/*!
+ *  Get the Last Synchronization Date.
+ *
+ *  @param context The NSManagedObjectContext.
+ *  @param type    The type to retrieve the Synchronization Date for.
+ *  @param context The Synchronization Context Identifier.
+ *
+ *  @return The Last Synchronization Date.
+ */
 + (NSNumber*) getLastSynchronizationDate : (NSManagedObjectContext *) managedContext type:(NSString *) type context:(NSNumber *) identifierContext {
 //    NSString * key = [NSString stringWithFormat:@"%@+%@", type, identifierContext];
 //    SynchronizationBookKeeping * objectFromCache = [[ARLCloudSynchronizer syncDates] objectForKey:key];
@@ -46,6 +62,15 @@
     }
 }
 
+/*!
+ *  Create a SynchronizationBookKeeping record with a nil Synchronization Context Identifier.
+ *
+ *  @param type    The Synchronization Type.
+ *  @param time    The Synchronization Time/Data
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The SynchronizationBookKeeping record.
+ */
 + (SynchronizationBookKeeping *) createEntry: (NSString *) type
                                         time: (NSNumber *) time
                       inManagedObjectContext: (NSManagedObjectContext * ) context {
@@ -53,10 +78,20 @@
     return [self createEntry:type time:time idContext:nil inManagedObjectContext:context];
 }
 
+/*!
+ *  Create a SynchronizationBookKeeping record.
+ *
+ *  @param type    The Synchronization Type.
+ *  @param time    The Synchronization Time/Data
+ *  @param idContext The Synchronization Context Identifier.
+ *  @param context   The NSManagedObjectContext.
+ *
+ *  @return The SynchronizationBookKeeping record.
+ */
 + (SynchronizationBookKeeping *) createEntry: (NSString *) type
                                         time: (NSNumber *) time
                                    idContext: (NSNumber *) idContext
-                      inManagedObjectContext: (NSManagedObjectContext * ) context {
+                      inManagedObjectContext: (NSManagedObjectContext *) context {
     
     SynchronizationBookKeeping * bkItem = nil;
     

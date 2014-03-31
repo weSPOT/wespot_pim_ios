@@ -140,6 +140,8 @@ static NSRecursiveLock *_theLock;
 
 /*!
  *  Wipe out the core data database and underlying sqlite storage.
+ *
+ *  NOTE: Core Data does not like this method, so we use deleteAllOfEntity instead.
  */
 - (void)clearDatabase {
 //    NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
@@ -157,7 +159,13 @@ static NSRecursiveLock *_theLock;
 //    }
 }
 
-- (void) deleteAllOfEntity: (NSManagedObjectContext * ) context enityName:(NSString *)name{
+/*!
+ *  Deleted all records of a specified Entity.
+ *
+ *  @param context The NSManagedObjectContext.
+ *  @param name    The Name of the Entity.
+ */
++ (void) deleteAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
     
     NSError *error = nil;
@@ -166,11 +174,32 @@ static NSRecursiveLock *_theLock;
         NSLog(@"error %@", error);
         abort();
     }
+    
     for (id entity in entities) {
         [context deleteObject:entity];
     }
     
     [context save:&error];
+}
+
+/*!
+ *  Get all records of a specified Entity.
+ *
+ *  @param context The NSManagedObjectContext.
+ *  @param name    The Name of the Entity.
+ *
+ *  @return An Array with all GeneralItems.
+ */
++ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
+    
+    NSError *error = nil;
+    NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
+    if (error) {
+        NSLog(@"error %@", error);
+    }
+    
+    return unsyncedData;
 }
 
 - (void)syncData {

@@ -13,9 +13,14 @@
 #import "ARLAppearDisappearDelegator.h"
 
 @interface CurrentItemVisibility (Create)
-+ (CurrentItemVisibility *) create: (GeneralItem *) generalItem withRun: (Run * ) run  ;
-+ (void) updateVisibility : (NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
-+ (void) updateVisibility : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
-+ (CurrentItemVisibility *) retrieve: (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
-+ (NSArray *) retrieveVisibleFor: (NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
+
++ (CurrentItemVisibility *) create: (GeneralItem *) generalItem withRun: (Run *) run;
+
++ (void) updateVisibility : (NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
++ (void) updateVisibility : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext *) context;
+
++ (CurrentItemVisibility *) retrieve: (NSNumber *) itemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
+
++ (NSArray *) retrieveVisibleFor: (NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
+
 @end

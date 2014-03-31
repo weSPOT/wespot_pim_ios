@@ -24,10 +24,10 @@
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
                                        withManagedContext:context];
     
-    NSError *error = nil;
     [context deleteObject:account];
-    [context save:&error];
+    account = nil;
     
+    NSError *error = nil; [context save:&error];
     
     //Clear the rest of the tables.
     [self resetAccount:context];
@@ -94,6 +94,7 @@
         NSLog(@"error %@", error);
         abort();
     }
+    
     for (id entity in entities) {
         [context deleteObject:entity];
     }

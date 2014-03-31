@@ -213,7 +213,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
     } else {
-        NSLog(@"[%s] Error, netither account nor run is set.", __func__);
+        NSLog(@"[%s] Error, neither account nor run is set.", __func__);
     }
     
     self.fetchedResultsController.delegate = self;

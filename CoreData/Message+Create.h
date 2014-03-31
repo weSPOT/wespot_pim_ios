@@ -11,12 +11,12 @@
 
 @interface Message (Create)
 
-+ (Message *) messageWithDictionary:(NSDictionary *)mDict
-             inManagedObjectContext:(NSManagedObjectContext * )context;
++ (Message *) messageWithDictionary:(NSDictionary *) dict
+             inManagedObjectContext:(NSManagedObjectContext *) context;
 
-+ (Message *) retrieveFromDb:(NSDictionary *)mDict
-                withManagedContext:(NSManagedObjectContext*)context;
-+ (Message *) retrieveFromDbWithId:(NSNumber *)itemId
-                withManagedContext:(NSManagedObjectContext*)context;
++ (Message *) retrieveFromDb:(NSDictionary *) dict
+                withManagedContext:(NSManagedObjectContext *) context;
++ (Message *) retrieveFromDbWithId:(NSNumber *) itemId
+                withManagedContext:(NSManagedObjectContext *) context;
 
 @end

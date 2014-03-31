@@ -11,6 +11,7 @@
 
 @interface Game (ARLearnBeanCreate)
 
-+ (Game *) gameWithDictionary: (NSDictionary *) gameDict inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (Game *) retrieveGame: (NSNumber *) gameId inManagedObjectContext: (NSManagedObjectContext * ) context;
++ (Game *) gameWithDictionary: (NSDictionary *) gameDict inManagedObjectContext: (NSManagedObjectContext *) context;
++ (Game *) retrieveGame: (NSNumber *) gameId inManagedObjectContext: (NSManagedObjectContext *) context;
+
 @end

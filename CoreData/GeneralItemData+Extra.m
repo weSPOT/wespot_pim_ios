@@ -11,7 +11,14 @@
 
 @implementation GeneralItemData (Extra)
 
-+ (NSArray *) getUnsyncedData: (NSManagedObjectContext*) context {
+/*!
+ *  Get all GeneralItemData records that have set replicated and error to NO.
+ *
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of unsynced GeneralItemData records.
+ */
++ (NSArray *) getUnsyncedData: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemData"];
 
     request.predicate = [NSPredicate predicateWithFormat:@"replicated = %d and error = %d", NO, NO];
@@ -24,12 +31,22 @@
     return unsyncedData;
 }
 
-+ (void) createDownloadTask: (GeneralItem* ) gi
-                    withKey: (NSString*) key
-                    withUrl: (NSString*) url
-         withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Create a Download Task (a GeneralItemData record).
+ *
+ *  @param gi      The GeneralItemId
+ *  @param key     The Name of the GeneralItemData.
+ *  @param url     The Url of the GeneralItemData.
+ *  @param context The NSManagedObjectContext.
+ */
++ (void) createDownloadTask: (GeneralItem *) gi
+                    withKey: (NSString *) key
+                    withUrl: (NSString *) url
+         withManagedContext: (NSManagedObjectContext *) context{
     NSDictionary* dataMap = [self getDatas:gi withManagedContext:context];
+    
     GeneralItemData * giData = [dataMap objectForKey:key];
+    
     if (!giData) {
         giData = [NSEntityDescription insertNewObjectForEntityForName:@"GeneralItemData" inManagedObjectContext:context];
         giData.name = key;
@@ -54,11 +71,19 @@
     }
 }
 
-+ (NSDictionary *) getDatas: (GeneralItem *) gi withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Fetch all GeneralItemData records belonging to a GeneralItem.
+ *
+ *  @param gi      The GeneralItem.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An NSDictionary of GeneralItemData names and thier content.
+ */
++ (NSDictionary *) getDatas: (GeneralItem *) gi withManagedContext: (NSManagedObjectContext *) context{
     NSMutableArray *objectArray = [NSMutableArray arrayWithArray:[gi.data allObjects]];
     NSMutableArray *keysArray = [NSMutableArray arrayWithCapacity:[objectArray count]];
     
-    for (GeneralItemData* data  in objectArray) {
+    for (GeneralItemData *data  in objectArray) {
         [keysArray addObject:data.name];
     }
     

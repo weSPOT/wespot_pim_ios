@@ -15,11 +15,12 @@
 
 @interface GeneralItem (ARLearnBeanCreate)
 
-+ (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict withGameId: (NSNumber * ) gameId inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict withGame: (Game * ) game inManagedObjectContext: (NSManagedObjectContext * ) context;
-+ (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext*) context;
++ (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict withGameId: (NSNumber *) gameId inManagedObjectContext: (NSManagedObjectContext *) context;
++ (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict withGame: (Game *) game inManagedObjectContext: (NSManagedObjectContext *) context;
++ (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext *) context;
 
-+ (NSArray *) getAll: (NSManagedObjectContext*) context;
-+ (NSArray *) retrieve :(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context;
--  (NSData *) customIconData;
++ (NSArray *) getAll: (NSManagedObjectContext *) context;
++ (NSArray *) retrieve :(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
+- (NSData *) customIconData;
+
 @end

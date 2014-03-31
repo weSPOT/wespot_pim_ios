@@ -29,7 +29,6 @@
 		34D422B617B670ED0051E84C /* Account+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228917B670EC0051E84C /* Account+Create.m */; };
 		34D422B817B670ED0051E84C /* Action+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4228D17B670EC0051E84C /* Action+Create.m */; };
 		34D422BA17B670ED0051E84C /* ARLDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */; };
-		34D422BB17B670ED0051E84C /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229317B670EC0051E84C /* CoreDataTableViewController.m */; };
 		34D422BC17B670ED0051E84C /* CurrentItemVisibility+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */; };
 		34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229917B670EC0051E84C /* Game+ARLearnBeanCreate.m */; };
 		34D422C017B670ED0051E84C /* GeneralItem+ARLearnBeanCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4229D17B670EC0051E84C /* GeneralItem+ARLearnBeanCreate.m */; };
@@ -173,8 +172,6 @@
 		34D4228C17B670EC0051E84C /* Action+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Action+Create.h"; sourceTree = "<group>"; };
 		34D4228D17B670EC0051E84C /* Action+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Action+Create.m"; sourceTree = "<group>"; };
 		34D4229117B670EC0051E84C /* ARLDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ARLDatabase.xcdatamodel; sourceTree = "<group>"; };
-		34D4229217B670EC0051E84C /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
-		34D4229317B670EC0051E84C /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrentItemVisibility+Create.h"; sourceTree = "<group>"; };
 		34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrentItemVisibility+Create.m"; sourceTree = "<group>"; };
 		34D4229817B670EC0051E84C /* Game+ARLearnBeanCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Game+ARLearnBeanCreate.h"; sourceTree = "<group>"; };
@@ -522,8 +519,6 @@
 				8D4511DB18E04F3B0012DEDF /* Action.h */,
 				8D4511DC18E04F3B0012DEDF /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
-				34D4229217B670EC0051E84C /* CoreDataTableViewController.h */,
-				34D4229317B670EC0051E84C /* CoreDataTableViewController.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
 				34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */,
 				8D4511F318E04F3C0012DEDF /* CurrentItemVisibility.h */,
@@ -1081,7 +1076,6 @@
 				8D6AE1CB18D5C5FE0094D911 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				8D1945F818C0A53100C32EED /* INQGeneralItemTableViewController.m in Sources */,
 				8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */,
-				34D422BB17B670ED0051E84C /* CoreDataTableViewController.m in Sources */,
 				34D422BC17B670ED0051E84C /* CurrentItemVisibility+Create.m in Sources */,
 				34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */,
 				8D6E80C718D5B7AC0077D70E /* ARLNotificationPlayer.m in Sources */,

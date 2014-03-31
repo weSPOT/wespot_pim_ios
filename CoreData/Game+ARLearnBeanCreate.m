@@ -10,8 +10,16 @@
 
 @implementation Game (ARLearnBeanCreate)
 
-+ (Game *) retrieveGame: (NSNumber *) gameId inManagedObjectContext: (NSManagedObjectContext * ) context {
-    Game * game = nil;
+/*!
+ *  Retrieve a Game.
+ *
+ *  @param gameId  The GameId
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested Game.
+ */
++ (Game *) retrieveGame: (NSNumber *) gameId inManagedObjectContext: (NSManagedObjectContext *) context {
+    Game *game = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     request.predicate = [NSPredicate predicateWithFormat:@"gameId = %lld", [gameId longLongValue]];    
@@ -25,8 +33,16 @@
     return game;
 }
 
-+ (Game *) gameWithDictionary: (NSDictionary *) gameDict inManagedObjectContext: (NSManagedObjectContext * ) context {
-    Game * game = [self retrieveGame:[gameDict objectForKey:@"gameId"] inManagedObjectContext:context];
+/*!
+ *  Retrieve or Create a Game given a NSDictionary
+ *
+ *  @param gameDict Should at least contain gameId, title, owner, creator, config, mapAvailable and description.
+ *  @param context  Tjhe NSManagedObjectContext.
+ *
+ *  @return The requested or newly created Game.
+ */
++ (Game *) gameWithDictionary: (NSDictionary *) gameDict inManagedObjectContext: (NSManagedObjectContext *) context {
+    Game *game = [self retrieveGame:[gameDict objectForKey:@"gameId"] inManagedObjectContext:context];
 
     if (!game) {
         game = [NSEntityDescription insertNewObjectForEntityForName:@"Game"
@@ -53,9 +69,16 @@
     return game;
 }
 
+/*!
+ *  Set the Set of Runs that belong to a Game.
+ *
+ *  @param game The Game to update.
+ */
 + (void) setCorrespondingRuns: (Game *) game {
     NSManagedObjectContext * context = game.managedObjectContext;
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Run"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"gameId == %lld", [game.gameId longLongValue]];
     
     NSError *error = nil;

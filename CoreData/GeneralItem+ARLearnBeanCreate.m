@@ -11,23 +11,44 @@
 
 @implementation GeneralItem (ARLearnBeanCreate)
 
+
+/*!
+ *  Create or Retrieve a GeneralItem given a NSDictionay.
+ *
+ *  @param giDict  The Dictionary.
+ *  @param gameId  The GameId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested GeneralItem.
+ */
 + (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict
-                                 withGameId: (NSNumber * ) gameId
-                     inManagedObjectContext: (NSManagedObjectContext * ) context {
+                                 withGameId: (NSNumber *) gameId
+                     inManagedObjectContext: (NSManagedObjectContext *) context {
     
     Game * game = [Game retrieveGame:gameId inManagedObjectContext:context];
+    
     return [self generalItemWithDictionary:giDict withGame:game inManagedObjectContext:context];
 }
 
+/*!
+ *  Create or Retrieve a GeneralItem given a NSDictionay.
+ *
+ *  @param giDict  Should at least contain id, latm lng, name, richText, sortKey, type. Optional is deleted.
+ *  @param gameId  The Game.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested GeneralItem.
+ */
 + (GeneralItem *) generalItemWithDictionary: (NSDictionary *) giDict
-                                   withGame: (Game * ) game
-                     inManagedObjectContext: (NSManagedObjectContext * ) context {
+                                   withGame: (Game *) game
+                     inManagedObjectContext: (NSManagedObjectContext *) context {
     
-    GeneralItem * gi = [self retrieveFromDb:giDict withManagedContext:context];
+    GeneralItem *gi = [self retrieveFromDb:giDict withManagedContext:context];
     if ([[giDict objectForKey:@"deleted"] boolValue]) {
         if (gi) {
             //item is deleted
             [context deleteObject:gi];
+            gi=nil;
         }
         return nil;
     }
@@ -59,25 +80,32 @@
     return gi;
 }
 
+/*!
+ *  Create a download task to download the iconUrl of a GeneralItem.
+ *
+ *  @param giDict  Should at least contain iconUrl.
+ *  @param gi      The GeneralItem to download for.
+ *  @param context The NSManagedObjectContext.
+ */
 + (void) downloadCorrespondingData: (NSDictionary *) giDict
                    withGeneralItem: (GeneralItem *) gi
-            inManagedObjectContext: (NSManagedObjectContext * ) context {
-    NSDictionary * jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
+            inManagedObjectContext: (NSManagedObjectContext *) context {
+    NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
     
     if ([jsonDict objectForKey:@"iconUrl"]) {
         [GeneralItemData createDownloadTask:gi withKey:@"iconUrl" withUrl:[jsonDict objectForKey:@"iconUrl"] withManagedContext:context];
-    }
-    
-    if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.AudioObject"] == NSOrderedSame ){
+    } else if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.AudioObject"] == NSOrderedSame ){
         [GeneralItemData createDownloadTask:gi withKey:@"audio" withUrl:[jsonDict objectForKey:@"audioFeed"] withManagedContext:context];
     } else if ([gi.type caseInsensitiveCompare:@"org.celstec.arlearn2.beans.generalItem.VideoObject"] == NSOrderedSame ){
         [GeneralItemData createDownloadTask:gi withKey:@"video" withUrl:[jsonDict objectForKey:@"videoFeed"] withManagedContext:context];
     }
-    //    else {
-    //        NSLog(@"nothing to download for %@", gi.type);
-    //    }
 }
 
+/*!
+ *  Set the GeneralItem of the Set of GeneralItemVisibility.
+ *
+ *  @param gi The GeneralItem.
+ */
 + (void) setCorrespondingVisibilityItems: (GeneralItem *) gi {
     NSManagedObjectContext * context = gi.managedObjectContext;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
@@ -100,15 +128,25 @@
     }
 }
 
-+ (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve a GneralItem given its Id.
+ *
+ *  @param itemId  The GeneralItemId
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested GeneralItem.
+ */
++ (GeneralItem *) retrieveFromDbWithId: (NSNumber *) itemId withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [itemId longLongValue]];
-    NSError *error = nil;
     
+    NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
     if (error) {
         NSLog(@"error %@", error);
     }
+    
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
     } else {
@@ -116,15 +154,25 @@
     }
 }
 
-+ (GeneralItem *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve a GneralItem given a Dictionary.
+ *
+ *  @param giDict  Should at least contain id.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested GeneralItem.
+ */
++ (GeneralItem *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
+    
     request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [[giDict objectForKey:@"id"] longLongValue]];
-    NSError *error = nil;
     
+    NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
     if (error) {
         NSLog(@"error %@", error);
     }
+    
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
     } else {
@@ -132,18 +180,16 @@
     }
 }
 
-//+ (NSDictionary*) getDatas: (GeneralItem* ) gi withManagedContext: (NSManagedObjectContext*) context{
-//    NSMutableArray *objectArray = [NSMutableArray arrayWithArray:[gi.data allObjects]];
-//    NSMutableArray *keysArray = [NSMutableArray arrayWithCapacity:[objectArray count]];
-//    for (GeneralItemData* data  in objectArray) {
-//        [keysArray addObject:data.name];
-//    }
-//    return  [NSDictionary dictionaryWithObjects:objectArray forKeys:keysArray];
-//}
-
-+ (NSArray *) getAll: (NSManagedObjectContext*) context {
+/*!
+ *  Get All GeneralItems.
+ *
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An Array with all GeneralItems.
+ */
++ (NSArray *) getAll: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
-    
+
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
     if (error) {
@@ -153,9 +199,19 @@
     return unsyncedData;
 }
 
-+ (NSArray *) retrieve :(NSNumber*) runId withManagedContext: (NSManagedObjectContext*) context{
+/*!
+ *  Retrieve all GeneralItems of a Run.
+ *
+ *  @param runId   The RunId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An Array containing all GeneralItems of a Run.
+ */
++ (NSArray *) retrieve: (NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
-    NSNumber * gameId = [Run retrieveRun:runId inManagedObjectContext:context].gameId;
+    
+    NSNumber *gameId = [Run retrieveRun:runId inManagedObjectContext:context].gameId;
+    
     request.predicate = [NSPredicate predicateWithFormat:@"gameId =%lld ",
                          [gameId longLongValue]
                          ];
@@ -163,8 +219,13 @@
     return [context executeFetchRequest:request error:nil];
 }
 
+/*!
+ *  Search for GeneralItemData of this GeneralItem containing iconUrl in its data.
+ *
+ *  @return An array of iconUrl Urls.
+ */
 - (NSData *) customIconData {
-    for (GeneralItemData* data in self.data) {
+    for (GeneralItemData *data in self.data) {
         NSLog(@"data %@", data.name);
         if ([data.name isEqualToString:@"iconUrl"]) {
             return data.data;

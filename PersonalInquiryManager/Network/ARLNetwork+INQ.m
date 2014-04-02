@@ -15,7 +15,7 @@
 @implementation ARLNetwork (INQ)
 
 /*!
- *  Fetch the JSON response of a REST service.
+ *  Fetch the JSON response of a REST service using GET.
  *
  *  @param url The REST Service URL
  *
@@ -32,6 +32,30 @@
     NSError *error = nil;
   
 //  [self dumpJsonData2:jsonData url:url];
+    
+    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+}
+
+/*!
+ *  Fetch the JSON response of a REST service using POST.
+ *
+ *  @param url The REST Service URL
+ *  @parm body The REST Body.
+ 
+ *  @return The JSON Response.
+ */
++ (id) returnJsonPOST: (NSString *) url body:(NSString *) body {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:60.0];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:applicationjson forHTTPHeaderField:accept];
+    [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSError *error = nil;
+    
+    //  [self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -112,6 +136,72 @@
     NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.notes", apiKey, inquiryId];
     
     return [self returnJson:url];
+}
+
+/*!
+ *  See http://trac.wespot.net/wiki/API%20ELGG
+ *
+ *  @return <#return value description#>
+ */
++ (id) createInquiry: (NSString *)title description: (NSString *)description {
+    Account *account = [ARLNetwork CurrentAccount];
+    
+    NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
+    NSString *provider = [ARLNetwork elggProviderId:account.accountType];
+    NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
+//  NSString *title = [[NSString alloc] initWithFormat:@"VEG_TEST_%@", [NSString stringWithFormat:@"%d", arc4random() % 10]];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.create",        @"method",                
+                          key,                      @"api_key",
+                          
+                          title,                    @"name",
+                          description,              @"description",
+                          @"Interests",             @"interests",                               //(Tags, comma separated)
+                          @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
+                          @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
+                          @"ye",                    @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
+                          @"no",                    @"group_multiple_admin_allow_enable",       //(Allow multiple admins: Yes/No)
+                          
+                          provider,                 @"provider",                                //@"Google"
+                          user_uid,                 @"user_uid",                                //@"Google_localId",
+                          
+                          nil];
+
+    NSString *body = [ARLNetwork dictionaryToParmeters:dict];
+    
+    NSString *url = elgBaseUrl;
+    
+    return [self returnJsonPOST:url body:body];
+}
+
+/*!
+ *  Create a URL encoded list based on the dictionary.
+ *
+ *  @param dict The dictionairy.
+ *
+ *  @return The encoded string.
+ */
++ (NSString *) dictionaryToParmeters:(NSDictionary *)dict {
+    NSMutableString *url = [[NSMutableString alloc] init];
+    
+    for (NSString * key in dict) {
+        url = [[NSMutableString alloc ] initWithString:[url stringByAppendingFormat:@"%@%@=%@", ([url length] == 0)?@"":@"&", key, [dict objectForKey: key]]];
+    }
+    
+    return url;
+}
+
+
+/*!
+ *  Create a URL with a URL encoded list pf parameters based on the dictionary.
+ *
+ *  @param dict The dictionairy.
+ *
+ *  @return The Url with its parameters.
+ */
++ (NSString *) dictionaryToUrl:(NSDictionary *)dict {
+    return [[NSMutableString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
 }
 
 /*!

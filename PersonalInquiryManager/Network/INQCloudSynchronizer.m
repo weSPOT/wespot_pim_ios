@@ -141,7 +141,7 @@
     id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
     id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     
-    NSLog(@"[%s] %@ %@", __func__, localId, providerId);
+    NSLog(@"[%s] userId=%@ providerId=%@", __func__, localId, providerId);
     
     NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
     

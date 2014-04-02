@@ -134,19 +134,19 @@
         <attribute name="picture" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="0" positionY="0" width="128" height="28"/>
-        <element name="Action" positionX="268" positionY="36" width="128" height="135"/>
-        <element name="CurrentItemVisibility" positionX="412" positionY="-63" width="128" height="90"/>
-        <element name="Game" positionX="808" positionY="441" width="128" height="165"/>
-        <element name="GeneralItem" positionX="-54" positionY="351" width="128" height="283"/>
-        <element name="GeneralItemData" positionX="-234" positionY="279" width="128" height="135"/>
-        <element name="GeneralItemVisibility" positionX="-603" positionY="102" width="128" height="150"/>
-        <element name="Inquiry" positionX="603" positionY="366" width="128" height="163"/>
-        <element name="Response" positionX="259" positionY="285" width="128" height="240"/>
-        <element name="Run" positionX="628" positionY="45" width="128" height="223"/>
-        <element name="SynchronizationBookKeeping" positionX="-432" positionY="-90" width="128" height="90"/>
-        <element name="TestAccount" positionX="9" positionY="135" width="128" height="44"/>
-        <element name="Message" positionX="-396" positionY="63" width="128" height="133"/>
-        <element name="Entity" positionX="-387" positionY="72" width="128" height="45"/>
+        <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Action" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CurrentItemVisibility" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Entity" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Game" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GeneralItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GeneralItemData" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GeneralItemVisibility" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Inquiry" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Message" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Response" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Run" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SynchronizationBookKeeping" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TestAccount" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

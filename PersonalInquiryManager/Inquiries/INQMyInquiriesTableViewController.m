@@ -288,24 +288,28 @@ typedef NS_ENUM(NSInteger, inquiries) {
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIViewController *newViewController = nil;
+    
     switch (indexPath.section) {
         case NEW: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewInquiryController"];
         }
             break;
         case OPEN:{
             Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
-            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryParts"];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryParts"];
             
             if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
                 [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];
             }
             
-            [self.navigationController pushViewController:newViewController animated:YES];
-        }
+                   }
             break;
+    }
+    
+    if (newViewController) {
+        [self.navigationController pushViewController:newViewController animated:YES];
     }
 }
 

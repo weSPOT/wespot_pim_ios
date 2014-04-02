@@ -115,6 +115,7 @@
 		8D4C36CD18E462FC000FCEA6 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36CC18E462FC000FCEA6 /* Message.m */; };
 		8D4C36D018E47C51000FCEA6 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36CF18E47C51000FCEA6 /* Account.m */; };
 		8D4C36D618E47E3B000FCEA6 /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */; };
+		8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */; };
 		8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667D18D6F5B0003B79E5 /* ARLAudioRecorder.m */; };
@@ -302,6 +303,8 @@
 		8D4C36CF18E47C51000FCEA6 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		8D4C36D418E47E3B000FCEA6 /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
 		8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
+		8D4C36D718EC3F19000FCEA6 /* INQNewInquiryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewInquiryViewController.h; sourceTree = "<group>"; };
+		8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNewInquiryViewController.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemViewController.m; sourceTree = "<group>"; };
 		8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARLNarratorItemViewController.h; sourceTree = "<group>"; };
@@ -710,6 +713,8 @@
 			children = (
 				8D19460218C0A55800C32EED /* INQMyInquiriesTableViewController.h */,
 				8D19460318C0A55800C32EED /* INQMyInquiriesTableViewController.m */,
+				8D4C36D718EC3F19000FCEA6 /* INQNewInquiryViewController.h */,
+				8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */,
 			);
 			path = Inquiries;
 			sourceTree = "<group>";
@@ -1093,6 +1098,7 @@
 				8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */,
 				8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
+				8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */,
 				8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,

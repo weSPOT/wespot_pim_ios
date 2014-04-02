@@ -12,11 +12,17 @@
 #import "INQLoginViewController.h"
 
 //#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
-#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
-//#define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
+
+#define elgBaseUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/"
+
+#define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
+
+//#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
 #define apiKey @"27936b77bcb9bb67df2965c6518f37a77a7ab9f8"
 
 @interface ARLNetwork (INQ)
+
++ (id) createInquiry: (NSString *)title description: (NSString *)description;
 
 + (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
 + (id) getUsers;

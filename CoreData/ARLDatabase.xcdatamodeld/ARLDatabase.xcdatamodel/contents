@@ -25,7 +25,6 @@
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GeneralItem" inverseName="currentVisibility" inverseEntity="GeneralItem" syncable="YES"/>
         <relationship name="run" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Run" inverseName="currentVisibility" inverseEntity="Run" syncable="YES"/>
     </entity>
-    <entity name="Entity" syncable="YES"/>
     <entity name="Game" representedClassName="Game" syncable="YES">
         <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gameId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -134,19 +133,18 @@
         <attribute name="picture" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Action" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="CurrentItemVisibility" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Entity" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Game" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GeneralItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GeneralItemData" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GeneralItemVisibility" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Inquiry" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Message" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Response" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Run" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SynchronizationBookKeeping" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="TestAccount" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Account" positionX="-2736" positionY="-1323" width="128" height="195"/>
+        <element name="Action" positionX="-2943" positionY="-1152" width="128" height="135"/>
+        <element name="CurrentItemVisibility" positionX="-2927" positionY="-972" width="128" height="90"/>
+        <element name="Game" positionX="-3332" positionY="-687" width="128" height="165"/>
+        <element name="GeneralItem" positionX="-2736" positionY="-1122" width="128" height="285"/>
+        <element name="GeneralItemData" positionX="-2538" positionY="-1017" width="128" height="135"/>
+        <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="150"/>
+        <element name="Inquiry" positionX="-3314" positionY="-958" width="128" height="163"/>
+        <element name="Message" positionX="-2934" positionY="-738" width="128" height="135"/>
+        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="240"/>
+        <element name="Run" positionX="-3116" positionY="-1008" width="128" height="223"/>
+        <element name="SynchronizationBookKeeping" positionX="-3116" positionY="-1134" width="128" height="90"/>
+        <element name="TestAccount" positionX="-2583" positionY="-441" width="128" height="165"/>
     </elements>
 </model>

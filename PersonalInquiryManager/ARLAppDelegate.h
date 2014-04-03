@@ -19,12 +19,14 @@
 + (NSRecursiveLock *) theLock;
 
 + (NSString *) jsonString:(NSDictionary *) jsonDictionary;
+
 - (NSInteger *) entityCount:(NSString *) entityName;
 - (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate;
 
 + (void) deleteAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
-+ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
 
++ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
++ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate;
 
 @property (strong, nonatomic) UIWindow *window;
 

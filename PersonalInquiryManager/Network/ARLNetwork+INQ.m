@@ -37,6 +37,31 @@
 }
 
 /*!
+ *  Fetch the JSON response of a REST service using GET.
+ *
+ *  @param url The Base REST Service URL
+ *  @param query The Query part of the REST Service URL
+ 
+ *  @return The JSON Response.
+ */
++ (id) returnJsonGET: (NSString *) url query:(NSString *) query {
+    NSString *urlandquery = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, query];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: urlandquery]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:60.0];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:applicationjson forHTTPHeaderField:accept];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSError *error = nil;
+    
+    //  [self dumpJsonData2:jsonData url:url];
+    
+    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+}
+
+/*!
  *  Fetch the JSON response of a REST service using POST.
  *
  *  @param url The REST Service URL
@@ -55,7 +80,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    //  [self dumpJsonData2:jsonData url:url];
+    // [self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -81,9 +106,18 @@
  *  @return The Friends as JSON.
  */
 + (id) getFriends : (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
+//    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
 
-    return [self returnJson:url];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"user.friends",                      @"method",
+                          apiKey,                               @"api_key",
+                          
+                          localId,                              @"oauthId",
+                          [self elggProviderId:oauthProvider],  @"oauthProvider",
+                          
+                          nil];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -93,9 +127,19 @@
  */
 + (id) getUsers {
     // veg - 31-01-2014 Used elgUrl and apiKey constants.
-    NSString * url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
+    // NSString *url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
 
-    return [self returnJson:url];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"site.users",                        @"method",
+                          apiKey,                               @"api_key",
+                          
+                          44480,                                @"minutes",
+                          
+                          nil];
+    
+//  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -107,9 +151,22 @@
  *  @return The Inquiries as JSON.
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId,[self elggProviderId:oauthProvider]];
-
-    return [self returnJson:url];
+    //NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId, [self elggProviderId:oauthProvider]];
+    
+    // NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"user.inquiries",                    @"method",
+                          apiKey,                                  @"api_key",
+                          
+                          localId,                              @"oauthId",
+                          [self elggProviderId:oauthProvider],  @"oauthProvider",
+                          
+                          nil];
+    
+//  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -120,9 +177,19 @@
  *  @return The Hypothesis of the Inquiry as JSON.
  */
 + (id) getHypothesis:  (NSNumber *) inquiryId {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
-
-    return [self returnJson:url];
+    //NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.hypothesis",                @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
+//    NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -133,9 +200,17 @@
  *  @return The Notes of the Inquiry as JSON.
  */
 + (id) getNotes:  (NSNumber *) inquiryId {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.notes", apiKey, inquiryId];
+//  NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.notes", apiKey, inquiryId];
     
-    return [self returnJson:url];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.notes",                     @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -148,15 +223,16 @@
     
     NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
     NSString *provider = [ARLNetwork elggProviderId:account.accountType];
-    NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
-//  NSString *title = [[NSString alloc] initWithFormat:@"VEG_TEST_%@", [NSString stringWithFormat:@"%d", arc4random() % 10]];
+//  NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
+  
+    NSString *encoded = [ARLNetwork htmlEncode:description];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"inquiry.create",        @"method",                
-                          key,                      @"api_key",
+                          apiKey,                   @"api_key",
                           
                           title,                    @"name",
-                          description,              @"description",
+                          encoded,                  @"description",
                           @"Interests",             @"interests",                               //(Tags, comma separated)
                           @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
                           @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
@@ -175,6 +251,10 @@
     return [self returnJsonPOST:url body:body];
 }
 
++ (NSString *) htmlEncode:(NSString *)html {
+    NSString *encoded = [[NSString alloc] initWithFormat:@"%@",CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)html, NULL, CFSTR("!$&'()*+,-./:;=?@_~<>"), kCFStringEncodingUTF8)];
+   return encoded;
+}
 /*!
  *  Create a URL encoded list based on the dictionary.
  *

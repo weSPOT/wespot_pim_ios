@@ -56,13 +56,16 @@
     
     //Clear all tables.
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Account"];
-    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
-    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Action"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"CurrentItemVisibility"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Game"];
-    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"GeneralItemVisibility"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"GeneralItem"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"GeneralItemData"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"GeneralItemVisibility"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Inquiry"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Message"];
     [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Response"];
+    [ARLAccountDelegator deleteAllOfEntity:context enityName:@"Run"];
     
     [self saveChanges:context];
 }

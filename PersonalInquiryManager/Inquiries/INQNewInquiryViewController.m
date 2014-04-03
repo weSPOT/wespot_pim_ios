@@ -58,10 +58,16 @@
 }
 
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
-    NSDictionary *dict = [ARLNetwork createInquiry:title description:description];
+    NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
+//    NSString *encodedString = [html
+//                                stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+//    
+//    NSLog(@"[%s] %@", __func__, encodedString);
+    
+    NSDictionary *dict = [ARLNetwork createInquiry:title description:html];
     
     if (dict) {
-        NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"result"], [dict objectForKey:@"status"]);
+        NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
         
         if ([[dict objectForKey:@"status"] intValue] == 0) {
             //{
@@ -237,7 +243,8 @@
     if ([self.titleEdit.text length]>0 && [self.descriptionEdit.text length]>0) {
         [self createInquiry:self.titleEdit.text description:self.descriptionEdit.text];
         
-        [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"] animated:YES  completion:nil];    }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(CGFloat) statusbarHeight

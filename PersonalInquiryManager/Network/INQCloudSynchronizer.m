@@ -147,9 +147,67 @@
     
     //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
     
+    //******************************
+    // Wipe records that no longer exist.
+    //******************************
+
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry"];
+  
+    NSMutableSet *dbIds = [[NSMutableSet alloc] init];
+    NSMutableSet *jsIds = [[NSMutableSet alloc] init];
+    
+    for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
+        [jsIds addObject:[inquiryDict objectForKey:@"inquiryId"]];
+    }
+    
+    for (Inquiry *inquiry in inquiries) {
+        [dbIds addObject:inquiry.inquiryId];
+    }
+    
+    [dbIds minusSet:jsIds];
+    
+    for (NSNumber *inquiryId in dbIds) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:
+                                  @"inquiryId = %@",
+                                  inquiryId];
+        Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry" predicate:predicate] lastObject];
+        
+#warning Also Remove all associated stuff.
+        // Inquiry
+        //      Run
+        //          Action
+        //          CurrentItemVisibility / GeneralItem / GeneralItemData / GeneralItemVisibility
+        //          Message
+        //          Response
+        
+        if (inquiry) {
+            Run *run = inquiry.run;
+            if (run) {
+                [appDelegate.managedObjectContext deleteObject:run];
+            }
+            [appDelegate.managedObjectContext deleteObject:inquiry];
+        }
+    }
+    
+    if (dbIds.count>0) {
+        [appDelegate.managedObjectContext save:nil];
+    }
+    
+    //******************************
+    // Update the remaining records.
+    //******************************
+    
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
         Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
-        
+        //{
+        //    description = "<p>demo inquiry for connect college</p>";
+        //    icon = "http://dev.inquiry.wespot.net/mod/groups/graphics/defaultmedium.gif";
+        //    inquiryId = 7765;
+        //    title = "Connect college inquiry";
+        //    url = "http://dev.inquiry.wespot.net/groups/profile/7765/connect-college-inquiry";
+        //}
         NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
         
         // REST CALL (costs time)!
@@ -215,10 +273,7 @@
                                              oauthProviderType, @"accountType",
                                              name, @"name", nil] inManagedObjectContext:self.context];
             
-            
-            
-            
-#warning TESTACCOUNT CODE for Lazy Load Images.
+// #warning TESTACCOUNT CODE for Lazy Load Images.
 //            TestAccount *test =
 //            [TestAccount accountWithDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
 //                                                icon, @"picture",

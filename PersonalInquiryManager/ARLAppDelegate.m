@@ -191,7 +191,21 @@ static NSRecursiveLock *_theLock;
  *  @return An Array with all GeneralItems.
  */
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name {
+    return [ARLAppDelegate retrievAllOfEntity:context enityName:name predicate:nil];
+}
+
+/*!
+ *  Get all records of a specified Entity.
+ *
+ *  @param context The NSManagedObjectContext.
+ *  @param name    The Name of the Entity.
+ *
+ *  @return An Array with all GeneralItems.
+ */
++ (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
+    
+    request.predicate = predicate;
     
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
@@ -202,7 +216,7 @@ static NSRecursiveLock *_theLock;
     return unsyncedData;
 }
 
-- (void)syncData {
+- (void) syncData {
     NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
     
     // syncActions is also triggered by syncResponses!
@@ -214,7 +228,7 @@ static NSRecursiveLock *_theLock;
     [INQCloudSynchronizer syncUsers:self.managedObjectContext];
 }
 
-- (void)_mocDidSaveNotification:(NSNotification *)notification
+- (void) _mocDidSaveNotification:(NSNotification *)notification
 {
     NSManagedObjectContext *savedContext = [notification object];
     if (_managedObjectContext == savedContext) {
@@ -230,7 +244,7 @@ static NSRecursiveLock *_theLock;
     });
 }
 
-- (void)saveContext {
+- (void) saveContext {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
@@ -248,7 +262,7 @@ static NSRecursiveLock *_theLock;
  *
  *  @return <#return value description#>
  */
-- (NSURL *)applicationDocumentsDirectory {
+- (NSURL *) applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
@@ -257,7 +271,7 @@ static NSRecursiveLock *_theLock;
  *
  *  @return If TRUE the user is logged-in.
  */
-- (NSNumber *)isLoggedIn {
+- (NSNumber *) isLoggedIn {
     return _isLoggedIn;
 }
 
@@ -318,6 +332,7 @@ static NSRecursiveLock *_theLock;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                        options:0
                                                          error:&error];
+    
     return [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
 }
 

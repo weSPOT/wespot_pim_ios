@@ -52,7 +52,7 @@
 
 //ItemVisibility
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId;
-+ (NSDictionary*) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;
++ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;
 
 + (void) registerDevice: (NSString *) deviceToken withUID: (NSString *) deviceUniqueIdentifier withAccount: (NSString *) account withBundleId: (NSString*) bundleIdentifier;
 
@@ -74,6 +74,8 @@ contentType:(NSString*) contentType withData:(NSData*) data;
 +(NSDictionary *) search: (NSString*) query;
 +(NSDictionary *) featured;
 +(NSDictionary *) geoSearch: (NSNumber*) distance withLat:(NSNumber *) lat withLng: (NSNumber*) lng;
+
++ (id) executeARLearnGetWithAuthorization: (NSString *) path;
 
 @end
 

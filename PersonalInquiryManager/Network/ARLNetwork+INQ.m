@@ -28,6 +28,9 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     
+    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
@@ -151,7 +154,7 @@
  *  @return The Inquiries as JSON.
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-    //NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId, [self elggProviderId:oauthProvider]];
+    // NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId, [self elggProviderId:oauthProvider]];
     
     // NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
     
@@ -164,7 +167,8 @@
                           
                           nil];
     
-//  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    // NSString *tmp = [self dictionaryToUrl:dict];
     
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
@@ -177,7 +181,7 @@
  *  @return The Hypothesis of the Inquiry as JSON.
  */
 + (id) getHypothesis:  (NSNumber *) inquiryId {
-    //NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
+    // NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"inquiry.hypothesis",                @"method",
@@ -187,7 +191,7 @@
                           
                           nil];
     
-//    NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
     
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
@@ -256,6 +260,7 @@
     NSString *encoded = [[NSString alloc] initWithFormat:@"%@",CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)html, NULL, CFSTR("!$&'()*+,-./:;=?@_~<>"), kCFStringEncodingUTF8)];
    return encoded;
 }
+
 /*!
  *  Create a URL encoded list based on the dictionary.
  *
@@ -272,7 +277,6 @@
     
     return url;
 }
-
 
 /*!
  *  Create a URL with a URL encoded list pf parameters based on the dictionary.
@@ -297,6 +301,7 @@
     
     return [self returnJson:url];
 }
+
 /*!
  *  Convert oauth provider id to a NSString.
  *

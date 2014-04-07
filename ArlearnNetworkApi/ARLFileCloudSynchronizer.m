@@ -170,7 +170,7 @@
         
 #warning swap fetching urlData with respons types (so we do not have to download/store the complete videos). Store only thumbs.
         
-        if (! (response.data || response.thumb) ) {
+        if (response.data == nil && response.thumb == nil) {
             if ([response.contentType isEqualToString:@"application/jpg"])
             {
                 NSLog(@"[%s] Downloading url=%@", __func__, response.fileName);

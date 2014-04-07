@@ -25,7 +25,7 @@
 + (id) executeARLearnGetWithAuthorization: (NSString *) path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     
-//    NSLog(@"[%s] %@",__func__, urlString);
+    // NSLog(@"[%s] %@",__func__, urlString);
     
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     
@@ -35,14 +35,14 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-//  [self dumpJsonData:jsonData url:urlString];
+    // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
 + (id) executeARLearnPostWithAuthorization: (NSString *) path
                                   postData:(NSData *) data
-                           withContentType: (NSString *) ctValue{
+                           withContentType: (NSString *) ctValue {
     NSString* urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     NSMutableURLRequest *request = [self prepareRequest:@"POST" requestWithUrl:urlString];
     
@@ -55,7 +55,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
 
-//  [self dumpJsonData:jsonData url:urlString];
+    // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -66,7 +66,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
   
-//  [self dumpJsonData:jsonData url:urlString];
+    // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -91,10 +91,10 @@
     NSError *error = nil;
     if ([acceptValue isEqualToString:textplain]) {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        //return [NSString stringWithUTF8String:[jsonData bytes]];
+        // return [NSString stringWithUTF8String:[jsonData bytes]];
     }
     
-//  [self dumpJsonData:jsonData url:urlString];
+    // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"returnin gsth";
 }
@@ -342,7 +342,8 @@
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 
     NSLog(@"[%s] Uploaded %@ - %@", __func__, contentTypeIn, fileName);
-//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 #pragma mark - Account

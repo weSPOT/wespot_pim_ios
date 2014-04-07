@@ -151,9 +151,9 @@
     // Wipe records that no longer exist.
     //******************************
     
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    // ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry"];
+    NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context/*appDelegate.managedObjectContext*/ enityName:@"Inquiry"];
     
     NSMutableSet *dbIds = [[NSMutableSet alloc] init];
     NSMutableSet *jsIds = [[NSMutableSet alloc] init];
@@ -174,7 +174,7 @@
         NSPredicate *predicate = [NSPredicate predicateWithFormat:
                                   @"inquiryId = %@",
                                   inquiryId];
-        Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry" predicate:predicate] lastObject];
+        Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context/*appDelegate.managedObjectContext*/ enityName:@"Inquiry" predicate:predicate] lastObject];
         
         NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
         
@@ -192,12 +192,12 @@
             //            if (run) {
             //                [appDelegate.managedObjectContext deleteObject:run];
             //            }
-            [appDelegate.managedObjectContext deleteObject:inquiry];
+            [self.context/*appDelegate.managedObjectContext*/ deleteObject:inquiry];
         }
     }
     
     if (dbIds.count>0) {
-        [appDelegate.managedObjectContext save:nil];
+        [self.context/*appDelegate.managedObjectContext*/ save:nil];
     }
     
     //******************************
@@ -221,16 +221,6 @@
                 }
             }
         }
-        
-//        id fileDict =[[ARLNetwork getFiles:newInquiry.inquiryId] objectForKey:@"result"];
-//        if (fileDict) {
-//            {
-////description = "<p>[Deze bron heb ik online gevonden bij het voedingscentrum]</p>\n<p>Dit is de schijf van vijf die veel gebruikt wordt, maar zijn er nog andere hulpmiddelen die je helpen nadenken over wat gezonde voeding is en hoe je gezond kan eten?</p>";
-////title = "De schijf van vijf";
-////url = "http://inquiry.wespot.net/file/view/27983/de-schijf-van-vijf";
-//            }
-//            NSLog(@"[%s] %@", __func__, fileDict);
-//        }
         
         // Get the correct Run for this Inquiry.
         if (!newInquiry.run) {

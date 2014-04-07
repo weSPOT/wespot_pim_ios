@@ -236,7 +236,8 @@
                           @"Interests",             @"interests",                               //(Tags, comma separated)
                           @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
                           @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
-                          @"yes",                   @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
+                          @"yes",                   @"arlearn_enable",                          //(Enable ARLearn for Data Collection: Yes/No)
+                          @"yes",                   @"wespot_arlearn_enable",                   //(Duplicate?)
                           @"no",                    @"group_multiple_admin_allow_enable",       //(Allow multiple admins: Yes/No)
                           
                           provider,                 @"provider",                                //@"Google"

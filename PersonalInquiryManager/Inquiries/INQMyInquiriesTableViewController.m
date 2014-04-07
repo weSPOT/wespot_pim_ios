@@ -159,7 +159,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
     
     // This fails when a record is deleted....
-    if (indexPaths.count != 0 )
+    if (indexPaths.count != 0)
     {
         // [self.tableView reloadData];
         // [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];

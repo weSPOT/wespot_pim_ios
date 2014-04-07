@@ -310,7 +310,10 @@ typedef NS_ENUM(NSInteger, responses) {
             }
         }
     }
-    [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+    
+    if (indexPaths.count != 0) {
+        [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
+    }
 }
 
 /*!

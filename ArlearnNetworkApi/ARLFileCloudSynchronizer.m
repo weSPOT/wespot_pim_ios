@@ -167,37 +167,49 @@
 - (void) downloadResponses {
     for (Response *response in [Response getReponsesWithoutMedia:self.context]) {
         NSURL  *url = [NSURL URLWithString:response.fileName];
-        NSData *urlData = [NSData dataWithContentsOfURL:url];
-        if (urlData) {
-            NSLog(@"[%s] Downloaded url=%@", __func__, response.fileName);
-
+        
+#warning swap fetching urlData with respons types (so we do not have to download/store the complete videos). Store only thumbs.
+        
+        if (! (response.data || response.thumb) ) {
             if ([response.contentType isEqualToString:@"application/jpg"])
             {
-                // Create Thumbnails from Images to lower memory load.
-                UIImage *img = [UIImage imageWithData:urlData];
+                NSLog(@"[%s] Downloading url=%@", __func__, response.fileName);
                 
-                UIImage *thumbImage = nil;
-                CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
-                UIGraphicsBeginImageContext(targetSize);
+                NSData *urlData = [NSData dataWithContentsOfURL:url];
                 
-                CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
-                thumbnailRect.origin = CGPointMake(0.0,0.0);
-                thumbnailRect.size.width  = targetSize.width;
-                thumbnailRect.size.height = targetSize.height;
-                
-                [img drawInRect:thumbnailRect];
-                
-                thumbImage = UIGraphicsGetImageFromCurrentImageContext();
-                
-                UIGraphicsEndImageContext();
-                
-                response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
-                response.data = UIImageJPEGRepresentation(img, 0.75);
-                
-                img = nil;
-                thumbImage = nil;
-                
-                NSLog(@"[%s] Image:%d Thumb:%d", __func__, [response.data length], [response.thumb length]);
+                if (urlData) {
+                    NSLog(@"[%s] Downloaded url=%@", __func__, response.fileName);
+                    
+                    // Create Thumbnails from Images to lower memory load.
+                    UIImage *img = [UIImage imageWithData:urlData];
+                    
+                    UIImage *thumbImage = nil;
+                    CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
+                    UIGraphicsBeginImageContext(targetSize);
+                    
+                    CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
+                    thumbnailRect.origin = CGPointMake(0.0,0.0);
+                    thumbnailRect.size.width  = targetSize.width;
+                    thumbnailRect.size.height = targetSize.height;
+                    
+                    [img drawInRect:thumbnailRect];
+                    
+                    thumbImage = UIGraphicsGetImageFromCurrentImageContext();
+                    
+                    UIGraphicsEndImageContext();
+                    
+                    response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
+                    // response.data = UIImageJPEGRepresentation(img, 0.75);
+                    
+                    img = nil;
+                    thumbImage = nil;
+                    
+                    urlData = nil;
+                    
+                    NSLog(@"[%s] Image:%d Thumb:%d", __func__, [response.data length], [response.thumb length]);
+                } else {
+                    NSLog(@"[%s] Could not fetch url=%@", __func__, response.fileName);
+                }
             } else if ([response.contentType isEqualToString:@"video/quicktime"]) {
                 
                 //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
@@ -212,9 +224,11 @@
                 //                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
                 //                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
                 //                }
-                //                
+                //
                 //                [urlData writeToFile:url atomically:NO];
-          
+                
+                NSLog(@"[%s] Thumbnailing url=%@", __func__, response.fileName);
+                
                 NSString *url = response.fileName;
                 
                 // 2) Create an AVAsset from it.
@@ -238,26 +252,23 @@
                 }
                 //
                 UIImage *thumbImage= [[UIImage alloc] initWithCGImage:refImg];
-
+                
                 // 6) Save both original and thumbnail.
-                response.data = urlData;
+                // response.data = urlData;
                 response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
                 
                 //7) Remove temporary file.
-                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
-                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
-                }
+                //            if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
+                //                [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
+                //            }
+            } else if ([response.contentType isEqualToString:@"audio/aac"]) {
+                //response.data = [NSData dataWithContentsOfURL:url];
             } else {
-                response.data = urlData;
+                response.data = [NSData dataWithContentsOfURL:url];
             }
-            // giData.replicated = [NSNumber numberWithBool:YES];
-            
-            urlData = nil;
             
             NSError *error = nil;
             [self.context save:&error];
-        } else {
-            NSLog(@"[%s] Could not fetch url=%@", __func__, response.fileName);
         }
     }
     

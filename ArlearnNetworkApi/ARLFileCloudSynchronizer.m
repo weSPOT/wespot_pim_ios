@@ -205,18 +205,21 @@
                 
                 // 1) Save NSData to File in temp Directory.
                 // See http://stackoverflow.com/questions/1489522/stringbyappendingpathcomponent-hows-it-work
-                NSString *tmp = NSTemporaryDirectory();
-                NSString *url = [tmp stringByAppendingPathComponent:@"temp.mov"];
-            
-                // Make sure there is no other file with the same name first
-                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
-                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
-                }
+                //                NSString *tmp = NSTemporaryDirectory();
+                //                NSString *url = [tmp stringByAppendingPathComponent:@"temp.mov"];
+                //
+                //                // Make sure there is no other file with the same name first
+                //                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
+                //                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
+                //                }
+                //                
+                //                [urlData writeToFile:url atomically:NO];
+          
+                NSString *url = response.fileName;
                 
-                [urlData writeToFile:url atomically:NO];
-            
                 // 2) Create an AVAsset from it.
-                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
+                //                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
+                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:url] options:nil];
                 
                 // 3) Set max ThumbNail size,
                 //See http://stackoverflow.com/questions/19368513/generating-thumbnail-from-video-ios7

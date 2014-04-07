@@ -146,15 +146,15 @@
     NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
     
     //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
-    
+
     //******************************
     // Wipe records that no longer exist.
     //******************************
-
+    
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry"];
-  
+    
     NSMutableSet *dbIds = [[NSMutableSet alloc] init];
     NSMutableSet *jsIds = [[NSMutableSet alloc] init];
     
@@ -163,7 +163,9 @@
     }
     
     for (Inquiry *inquiry in inquiries) {
-        [dbIds addObject:inquiry.inquiryId];
+        if (inquiry.inquiryId) {
+            [dbIds addObject:inquiry.inquiryId];
+        }
     }
     
     [dbIds minusSet:jsIds];
@@ -174,7 +176,10 @@
                                   inquiryId];
         Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:appDelegate.managedObjectContext enityName:@"Inquiry" predicate:predicate] lastObject];
         
-#warning Also Remove all associated stuff.
+        NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
+        
+#warning Also Remove all associated stuff?
+        
         // Inquiry
         //      Run
         //          Action
@@ -183,10 +188,10 @@
         //          Response
         
         if (inquiry) {
-            Run *run = inquiry.run;
-            if (run) {
-                [appDelegate.managedObjectContext deleteObject:run];
-            }
+            //            Run *run = inquiry.run;
+            //            if (run) {
+            //                [appDelegate.managedObjectContext deleteObject:run];
+            //            }
             [appDelegate.managedObjectContext deleteObject:inquiry];
         }
     }
@@ -201,15 +206,9 @@
     
     for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
         Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
-        //{
-        //    description = "<p>demo inquiry for connect college</p>";
-        //    icon = "http://dev.inquiry.wespot.net/mod/groups/graphics/defaultmedium.gif";
-        //    inquiryId = 7765;
-        //    title = "Connect college inquiry";
-        //    url = "http://dev.inquiry.wespot.net/groups/profile/7765/connect-college-inquiry";
-        //}
-        NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
-        
+
+        // NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
+   
         // REST CALL (costs time)!
         id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
         if (hypDict) {
@@ -234,9 +233,21 @@
 //        }
         
         // Get the correct Run for this Inquiry.
-        NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
-        Run *selectedRun =[Run retrieveRun:runId inManagedObjectContext:self.context];
-        newInquiry.run=selectedRun;
+        if (!newInquiry.run) {
+            NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
+            Run *selectedRun = [Run retrieveRun:runId inManagedObjectContext:self.context];
+            
+            if (!selectedRun) {
+                //3639020 get run from server
+                NSDictionary *rDict = [ARLNetwork runsWithId:runId];
+                
+              selectedRun = [Run runWithDictionary:rDict inManagedObjectContext:self.context];
+            }
+            
+            if (selectedRun) {
+                newInquiry.run = selectedRun;
+            }
+        }
     }
     
     self.syncInquiries = NO;

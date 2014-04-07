@@ -59,23 +59,78 @@
 
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
     NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
-//    NSString *encodedString = [html
-//                                stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-//    
-//    NSLog(@"[%s] %@", __func__, encodedString);
     
+    //    NSString *encodedString = [html
+    //                                stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    //
+    //    NSLog(@"[%s] %@", __func__, encodedString);
+    
+    // Create game, POST /rest/myGames
+    //    {
+    //        "type": "org.celstec.arlearn2.beans.game.Game",
+    //        "title": "test",
+    //        "config": {
+    //            "type": "org.celstec.arlearn2.beans.game.Config",
+    //            "mapAvailable": false,
+    //            "manualItems": [],
+    //            "locationUpdates": []
+    //        }
+    //    }
+    
+//    NSDictionary *gdict = [ARLNetwork createGame:title];
+    
+    // returns:
+    //    {
+    //        config =     {
+    //            locationUpdates =         (
+    //            );
+    //            manualItems =         (
+    //            );
+    //            mapAvailable = 0;
+    //            type = "org.celstec.arlearn2.beans.game.Config";
+    //        };
+    //        gameId = 4979573540257792;
+    //        title = "game creation test";
+    //        type = "org.celstec.arlearn2.beans.game.Game";
+    //    }
+    //
+    //NSLog(@"[%s] %@", __func__, gdict);
+    
+//    NSDictionary *rdict = [ARLNetwork createRun:[gdict objectForKey:@"gameId"] withTitle:title];
+//    
+//    NSLog(@"[%s] %@", __func__, rdict);
+    
+    // returns:
+//    {
+//        deleted = 0;
+//        gameId = 1342177280;
+//        runId = 4999734116745216;
+//        serverCreationTime = 1396860191783;
+//        startTime = 1396860191783;
+//        title = test;
+//        type = "org.celstec.arlearn2.beans.run.Run";
+//    }
+//
+//    NSNumber *gameId = [gdict objectForKey:@"gameId"];
+//    NSNumber *runId = [rdict objectForKey:@"runId"];
+    
+    // Create run /reset/myRuns
+    //    {
+    //        "type": "org.celstec.arlearn2.beans.run.Run",
+    //        "gameId": 1,
+    //        "title": "my run"
+    //    }
+  
     NSDictionary *dict = [ARLNetwork createInquiry:title description:html];
     
     if (dict) {
         NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
         
         if ([[dict objectForKey:@"status"] intValue] == 0) {
-            //{
-            //    result = 30563;
-            //    status = 0;
-            //}
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            
+            // Sync will return our new Inquiry and it's Run.
             if (ARLNetwork.networkAvailable) {
-                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
                 [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
             }
         } else {

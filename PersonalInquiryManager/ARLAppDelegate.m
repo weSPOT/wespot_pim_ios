@@ -131,6 +131,10 @@ static NSRecursiveLock *_theLock;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
             NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
+            
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"The database has been changed. Please re-install the application" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+            
             abort();
         }
     }

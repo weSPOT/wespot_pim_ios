@@ -157,7 +157,7 @@
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"user.inquiries",                    @"method",
-                          apiKey,                                  @"api_key",
+                          apiKey,                               @"api_key",
                           
                           localId,                              @"oauthId",
                           [self elggProviderId:oauthProvider],  @"oauthProvider",
@@ -218,7 +218,7 @@
  *
  *  @return <#return value description#>
  */
-+ (id) createInquiry: (NSString *)title description: (NSString *)description {
++ (id) createInquiry: (NSString *)title description: (NSString *)description { // forGame: (NSNumber *)gameId forRun: (NSNumber *)runId{
     Account *account = [ARLNetwork CurrentAccount];
     
     NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
@@ -236,7 +236,7 @@
                           @"Interests",             @"interests",                               //(Tags, comma separated)
                           @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
                           @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
-                          @"ye",                    @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
+                          @"yes",                   @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
                           @"no",                    @"group_multiple_admin_allow_enable",       //(Allow multiple admins: Yes/No)
                           
                           provider,                 @"provider",                                //@"Google"

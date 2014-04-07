@@ -12,7 +12,7 @@
 #import "INQLoginViewController.h"
 
 //#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
-
+//dev.
 #define elgBaseUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/"
 
 #define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
@@ -27,8 +27,9 @@
 + (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
 + (id) getUsers;
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
-+ (id) getHypothesis: (NSNumber *) inquiryId ;
-+ (id) getNotes: (NSNumber *) inquiryId ;
+
++ (id) getHypothesis: (NSNumber *) inquiryId;
++ (id) getNotes: (NSNumber *) inquiryId;
 + (id) getFiles: (NSNumber *) inquiryId;
 
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider;

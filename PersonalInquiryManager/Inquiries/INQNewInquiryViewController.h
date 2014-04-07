@@ -13,6 +13,9 @@
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 
+#import "Inquiry+Create.h"
+#import "run+ARLearnBeanCreate.h"
+
 @interface INQNewInquiryViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
 
 @end

@@ -41,6 +41,7 @@
 + (NSDictionary*) gamesParticipate;
 + (NSDictionary*) gamesParticipateFrom: (NSNumber *) from;
 + (NSDictionary*) game: (NSNumber *) gameId;
++ (NSDictionary*) createGame: (NSString *) gameTitle;
 
 //Runs
 + (NSDictionary*) itemsForRun: (int64_t) runId;

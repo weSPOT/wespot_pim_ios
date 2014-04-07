@@ -114,8 +114,8 @@
 
 + (NSString*) requestAuthToken: (NSString *) username password: (NSString *) password {
     NSData * postData = [self stringToData:[NSString stringWithFormat:@"%@\n%@", username, password]];
-    return [[self executeARLearnPostWithAuthorization:@"login" postData:postData withContentType:textplain] objectForKey:@"auth"];
     
+    return [[self executeARLearnPostWithAuthorization:@"login" postData:postData withContentType:textplain] objectForKey:@"auth"];
 }
 
 #pragma mark - Runs
@@ -131,6 +131,7 @@
 + (NSDictionary*) runsWithId: (NSNumber *) id{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/runId/%lld", [id longLongValue]]];
 }
+
 + (NSDictionary*) createRun: (NSNumber*) gameId withTitle: (NSString *) runTitle {
     NSDictionary *runDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 gameId, @"gameId",
@@ -145,12 +146,15 @@
 + (NSDictionary*) createUser: (NSNumber*) runId
                  accountType: (NSNumber *) accountType
                  withLocalId:(NSString*) localId {
+    
     NSDictionary *userDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                              runId, @"runId",
                              accountType, @"accountType",
                              localId, @"localId",
                              nil];
+    
     NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:nil];
+    
     return [self executeARLearnPostWithAuthorization:@"users" postData:postData withContentType:applicationjson];
 }
 
@@ -163,8 +167,19 @@
 + (NSDictionary*) gamesParticipateFrom: (NSNumber *) from{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/participate?from=%lld", [from longLongValue]]];
 }
+
 + (NSDictionary*) game: (NSNumber *) gameId {
    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/gameId/%lld", [gameId longLongValue]]];
+}
+
++ (NSDictionary*) createGame: (NSString *) gameTitle {
+    NSDictionary *runDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             gameTitle, @"title",
+                             nil];
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:runDict options:0 error:nil];
+    
+    return [self executeARLearnPostWithAuthorization:@"myGames" postData:postData withContentType:applicationjson];
 }
 
 #pragma mark - GeneralItems

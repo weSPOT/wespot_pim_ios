@@ -103,12 +103,22 @@ typedef NS_ENUM(NSInteger, inquiries) {
 //    if (count != [self.fetchedResultsController.fetchedObjects count]) {
 //        [self.tableView reloadData];
 //    }
-
+    
+    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+    for (NSManagedObject *obj in deletedObjects) {
+        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            // [self.tableView reloadData];
+            return;
+        }
+    }
     
     // See if there are any Inquiry objects added and if so, reload the tableView.
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     
-    for(NSManagedObject *obj in insertedObjects){
+    for (NSManagedObject *obj in insertedObjects) {
         if ([[obj entity].name isEqualToString:@"Inquiry"]) {
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];
@@ -118,13 +128,13 @@ typedef NS_ENUM(NSInteger, inquiries) {
         }
     }
 
-    // If no Inqury objecst are added, look for updates and refresh them.
+    // If no Inquiry objecst are added, look for updates and refresh them.
     NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
                              
     BOOL fetched = NO;
     NSArray *indexPaths = [[NSArray alloc] init];
                              
-    for(NSManagedObject *obj in updatedObjects){
+    for (NSManagedObject *obj in updatedObjects) {
         if ([[obj entity].name isEqualToString:@"Inquiry"]) {
             if (!fetched) {
                 NSError *error = nil;
@@ -148,9 +158,11 @@ typedef NS_ENUM(NSInteger, inquiries) {
         }
     }
     
+    // This fails when a record is deleted....
     if (indexPaths.count != 0 )
     {
-        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        // [self.tableView reloadData];
+        // [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -304,7 +316,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
                 [newViewController performSelector:@selector(setInquiry:) withObject:inquiry];
             }
             
-                   }
+        }
             break;
     }
     

@@ -196,6 +196,25 @@
 }
 
 /*!
+ *  Return the Reflection of an Inquiry.
+ *
+ *  @param inquiryId The Inquiry Id.
+ *
+ *  @return The Reflection of the Inquiry as JSON.
+ */
++ (id) getReflection:  (NSNumber *) inquiryId {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.reflection",                @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
+}
+
+/*!
  *  Return the Notes of an Inquiry.
  *
  *  @param inquiryId The Inquiry Id.
@@ -346,7 +365,7 @@
  *
  *  @return the id of the oauth provider.
  */
-+ (NSNumber*) elggProviderByName: (NSString  *) oauthProvider {
++ (NSNumber *) elggProviderByName: (NSString  *) oauthProvider {
     if ([oauthProvider isEqualToString:@"Facebook"]) {
         return [NSNumber numberWithInt:FACEBOOK];
     }
@@ -457,7 +476,7 @@
  *
  *  @return YES if wifi is there.
  */
-+ (BOOL)networkAvailable {
++ (BOOL) networkAvailable {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     
     NSNumber *result = nil;

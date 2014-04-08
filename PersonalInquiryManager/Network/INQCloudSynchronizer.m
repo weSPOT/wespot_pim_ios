@@ -221,6 +221,18 @@
                 }
             }
         }
+    
+        //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
+        //        if (refDict) {
+        //
+        //            if ([refDict count] != 0) {
+        //                //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+        //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+        //                if (refString) {
+        //                    newInquiry.reflection = refString;
+        //                }
+        //            }
+        //        }
         
         // Get the correct Run for this Inquiry.
         if (!newInquiry.run) {

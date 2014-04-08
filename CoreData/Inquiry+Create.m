@@ -52,8 +52,11 @@
  */
 + (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
+  
     request.predicate = [NSPredicate predicateWithFormat:@"inquiryId = %@", [inqDict objectForKey:@"inquiryId"]];
+    
     NSArray *inquiryFromDb = [context executeFetchRequest:request error:nil];
+    
     if (!inquiryFromDb) {
         return nil;
     } else {

@@ -238,6 +238,9 @@
                 newInquiry.run = selectedRun;
             }
         }
+        
+        NSError *error = nil;
+        [self.context save:&error];
     }
     
     self.syncInquiries = NO;

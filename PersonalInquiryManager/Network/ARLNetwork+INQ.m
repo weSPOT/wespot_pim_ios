@@ -7,7 +7,6 @@
 //
 
 #import "ARLNetwork+INQ.h"
-//#import <SystemConfiguration/SystemConfiguration.h>
 
 /*!
  *  Extends ARLNetwork with Inquiry specific methods.
@@ -28,8 +27,8 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     
-    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
-    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+//    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+//    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
@@ -239,9 +238,8 @@
                           encoded,                  @"description",
                           @"Interests",             @"interests",                               //(Tags, comma separated)
                           @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
-                          @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
-                          @"yes",                   @"arlearn_enable",                          //(Enable ARLearn for Data Collection: Yes/No)
-                          @"yes",                   @"wespot_arlearn_enable",                   //(Duplicate?)
+                          @"2",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
+                          @"yes",                   @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
                           @"no",                    @"group_multiple_admin_allow_enable",       //(Allow multiple admins: Yes/No)
                           
                           provider,                 @"provider",                                //@"Google"
@@ -285,7 +283,7 @@
  *
  *  @return The Url with its parameters.
  */
-+ (NSString *) dictionaryToUrl:(NSDictionary *)dict {
++ (NSString *) dictionaryToUrl: (NSDictionary *)dict {
     return [[NSMutableString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
 }
 
@@ -296,10 +294,18 @@
  *
  *  @return The Files of the Inquiry as JSON.
  */
-+ (id) getFiles:  (NSNumber *) inquiryId {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.files", apiKey, inquiryId];
++ (id) getFiles: (NSNumber *) inquiryId {
+    // NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.files", apiKey, inquiryId];
     
-    return [self returnJson:url];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.files",                     @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
 /*!
@@ -368,16 +374,23 @@
  *  @return The ARLearn RunId.
  */
 + (NSNumber *) getARLearnRunId: (NSNumber *) inquiryId {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearnrun", apiKey, inquiryId];
+    // NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearnrun", apiKey, inquiryId];
  
-//    NSLog(@"[%s] url %@", __func__, url);
-//    NSLog(@"[%s]url %@", __func__, [self returnJson:url]);
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.arlearnrun",                @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
     
-    if (![[self returnJson:url] objectForKey:@"result"])
-        #warning veg - 03-02-2014 Hardcoded Magic Number
-        return [NSNumber numberWithInt:3639020];
+    NSDictionary *result = [self returnJson:[self dictionaryToUrl:dict]];
     
-    return [[self returnJson:url] objectForKey:@"result"];
+    if (![result objectForKey:@"result"]) {
+        return [NSNumber numberWithInt:MISSING_ID];
+    }
+    
+    return [result objectForKey:@"result"];
 }
 
 /*!
@@ -388,13 +401,23 @@
  *  @return The ARLearn GameId.
  */
 + (NSNumber *) getARLearnGameId: (NSNumber* ) inquiryId {
-    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearngame", apiKey, inquiryId];
+    // NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.arlearngame", apiKey, inquiryId];
    
-    if (![[self returnJson:url] objectForKey:@"result"])
-        #warning veg - 03-02-2014 Hardcoded Magic Number
-        return [NSNumber numberWithInt:3639020];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.arlearngame",               @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
     
-    return [[self returnJson:url] objectForKey:@"result"];
+    NSDictionary *result = [self returnJson:[self dictionaryToUrl:dict]];
+
+    if (![result objectForKey:@"result"]) {
+        return [NSNumber numberWithInt:MISSING_ID];
+    }
+    
+    return [result objectForKey:@"result"];
 }
 
 /*!

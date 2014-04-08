@@ -20,6 +20,8 @@
 //#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
 #define apiKey @"27936b77bcb9bb67df2965c6518f37a77a7ab9f8"
 
+#define MISSING_ID 3639020
+
 @interface ARLNetwork (INQ)
 
 + (id) createInquiry: (NSString *)title description: (NSString *)description;

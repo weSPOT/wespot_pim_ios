@@ -130,12 +130,12 @@
 + (id) getUsers {
     // veg - 31-01-2014 Used elgUrl and apiKey constants.
     // NSString *url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
-
+    NSNumber *minutes =[[NSNumber alloc] initWithInt:44480];
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"site.users",                        @"method",
                           apiKey,                               @"api_key",
                           
-                          44480,                                @"minutes",
+                          minutes,                              @"minutes",
                           
                           nil];
     

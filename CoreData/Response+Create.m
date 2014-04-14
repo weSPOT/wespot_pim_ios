@@ -140,13 +140,14 @@
 #warning Implement Number
         }
     }
-    
+
     // Remove the account type to get the localAccountId?
     NSString *mail = [respDict objectForKey:@"userEmail"];
+    NSString *type = [mail substringToIndex:1];
     mail = [mail stringByReplacingOccurrencesOfString:@"2:" withString:@""];
     
     // Set Linked Objects
-    response.account = [Account retrieveFromDbWithLocalId:mail withManagedContext:context];
+    response.account = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
     response.generalItem = [GeneralItem retrieveFromDbWithId:[NSNumber numberWithLongLong:[[respDict objectForKey:@"generalItemId"] longLongValue]]
                                           withManagedContext:context];
     response.run = [Run retrieveRun:[NSNumber numberWithLongLong:[[respDict objectForKey:@"runId"] longLongValue]]

@@ -290,7 +290,7 @@ typedef NS_ENUM(NSInteger, tools) {
             break;
         case MYMEDIA: {
             cell.textLabel.Text = @"My media";
-            cell.imageView.image = [UIImage imageNamed:@"collect-data"];
+            cell.imageView.image = [UIImage imageNamed:@"mymedia"];
             
             ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             

@@ -170,19 +170,19 @@ typedef NS_ENUM(NSInteger, friends) {
         case FRIENDS:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             
-            Account *generalItem = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            Account *account = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
             
-            cell.textLabel.text = generalItem.name;
+            cell.textLabel.text = account.name;
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
           
-            NSData* icon = [generalItem picture];
+            NSData* icon = [account picture];
             if (icon) {
                 cell.imageView.image = [UIImage imageWithData:icon];
             } else {
                 // Fixup for Friends Icons do not show immediately (icon property is empty).
                 // LocalId == oauthId
                 for (NSDictionary *dict in self.AllUsers) {
-                    if ([[dict objectForKey:@"oauthId"] isEqualToString:generalItem.localId]) {
+                    if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId]) {
                         NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
                         
                         //NSLog(@"[%s] USERS %@", __func__, [dict objectForKey:@"oauthId"]);

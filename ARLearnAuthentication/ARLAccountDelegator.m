@@ -22,7 +22,7 @@
 + (void) deleteCurrentAccount: (NSManagedObjectContext * ) context {
     // Delete only the current account.
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
-                                       withManagedContext:context];
+                                              accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]                                       withManagedContext:context];
     
     [context deleteObject:account];
     account = nil;

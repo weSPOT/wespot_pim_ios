@@ -354,7 +354,7 @@ typedef NS_ENUM(NSInteger, sections) {
         case INVITE:
             cell.textLabel.text = @"Invite friends";
             cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-            cell.detailTextLabel.text = @"2";
+            cell.detailTextLabel.text = @"";
             break;
     }
     
@@ -441,7 +441,7 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController * newViewController;
-
+    
     switch (indexPath.section) {
         case HEADER:
             break;
@@ -450,14 +450,18 @@ typedef NS_ENUM(NSInteger, sections) {
             if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
                 [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
             }
+        }
             break;
             
         case INVITE: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InviteFriendTableViewController"];
+            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+            }
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            //            [alert show];
         }
             break;
-        }
     }
 
     if (newViewController) {

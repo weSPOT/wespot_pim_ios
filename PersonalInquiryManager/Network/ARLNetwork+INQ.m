@@ -107,7 +107,7 @@
  *
  *  @return The Friends as JSON.
  */
-+ (id) getFriends : (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
++ (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
 //    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
 
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -123,13 +123,34 @@
 }
 
 /*!
+ *  Get the Users of an Inquiry.
+ *
+ *  @param inquiryId The Inquiry Id.
+ *
+ *  @return The Users as JSON.
+ */
++ (id) getInqueryUsers: (NSString *) localId withProviderId: (NSNumber *) oauthProvider inquiryId: (NSNumber *) inquiryId {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.users",                     @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                  
+                          localId,                              @"oauthId",
+                          [self elggProviderId:oauthProvider],  @"oauthProvider",
+                          
+                          nil];
+    
+    //  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
+}
+/*!
  *  Get the available Users.
  *
  *  @return The Users as JSON.
  */
 + (id) getUsers {
-    // veg - 31-01-2014 Used elgUrl and apiKey constants.
-    // NSString *url = [NSString stringWithFormat:@"%@site.users&api_key=%@&minutes=44480", elgUrl, apiKey];
     NSNumber *minutes =[[NSNumber alloc] initWithInt:44480];
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"site.users",                        @"method",
@@ -153,10 +174,6 @@
  *  @return The Inquiries as JSON.
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-    // NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.inquiries", apiKey, localId, [self elggProviderId:oauthProvider]];
-    
-    // NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
-    
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"user.inquiries",                    @"method",
                           apiKey,                               @"api_key",
@@ -179,7 +196,7 @@
  *
  *  @return The Hypothesis of the Inquiry as JSON.
  */
-+ (id) getHypothesis:  (NSNumber *) inquiryId {
++ (id) getHypothesis: (NSNumber *) inquiryId {
     // NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:

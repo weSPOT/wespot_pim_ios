@@ -9,6 +9,7 @@
 #import "INQProfileTableViewController.h"
 
 @interface INQProfileTableViewController ()
+
 /*!
  *  ID's and order of the cells sections.
  */

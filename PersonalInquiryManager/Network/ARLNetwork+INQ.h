@@ -30,6 +30,8 @@
 + (id) getUsers;
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
 
++ (id) getInqueryUsers: (NSString *) localId withProviderId: (NSNumber *) oauthProvider inquiryId: (NSNumber *) inquiryId;
+
 + (id) getHypothesis: (NSNumber *) inquiryId;
 + (id) getReflection:  (NSNumber *) inquiryId;
 + (id) getNotes: (NSNumber *) inquiryId;

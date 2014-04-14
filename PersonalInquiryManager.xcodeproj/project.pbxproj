@@ -141,6 +141,7 @@
 		8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6E80E618D5BAFA0077D70E /* libzbar.a */; };
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
+		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
@@ -369,6 +370,8 @@
 		8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQProfileTableViewController.m; sourceTree = "<group>"; };
 		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
+		8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInviteFriendsViewController.h; sourceTree = "<group>"; };
+		8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInviteFriendsViewController.m; sourceTree = "<group>"; };
 		8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -722,6 +725,8 @@
 		8D1945D018C0A2DD00C32EED /* Inquiry */ = {
 			isa = PBXGroup;
 			children = (
+				8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */,
+				8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */,
 				8D19460518C0A56300C32EED /* INQInquiryTableViewController.h */,
 				8D19460618C0A56300C32EED /* INQInquiryTableViewController.m */,
 			);
@@ -1054,6 +1059,7 @@
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,
 				8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */,
 				8D19461D18C0A5B000C32EED /* INQSplashViewController.m in Sources */,
+				8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */,
 				8D4511DA18E04F3A0012DEDF /* TestAccount.m in Sources */,
 				8D6AE1C818D5C5FE0094D911 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				8D6E80AA18D5B5AA0077D70E /* ARLAccountDelegator.m in Sources */,
@@ -1215,6 +1221,8 @@
 		3477E6A91769C9A000F3A5F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_CONSTANT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CLANG_WARN_ENUM_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CLANG_WARN_INT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
@@ -1245,6 +1253,8 @@
 		3477E6AA1769C9A000F3A5F3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_CONSTANT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CLANG_WARN_ENUM_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";
 				CLANG_WARN_INT_CONVERSION = "$(CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION)";

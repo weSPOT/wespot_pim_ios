@@ -286,6 +286,7 @@ static NSRecursiveLock *_theLock;
  */
 - (Account *) CurrentAccount {
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+                                              accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]
                                        withManagedContext:self.managedObjectContext];
     
     _isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];

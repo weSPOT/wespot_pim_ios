@@ -10,6 +10,8 @@
 
 @interface INQAddFriendTableViewController ()
 
+@property (strong, nonatomic) NSArray *usersFriends;
+
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 @end
@@ -22,13 +24,19 @@
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
-#warning Todo (or mark grey) Outselves and Friends.
-    if (!self.AllUsers) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    if (ARLNetwork.networkAvailable) {
+        if (!self.AllUsers) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            
+            [self getAllUsers];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        }
         
-        [self getAllUsers];
+        // Get our friends.
+        Account * account = [ARLNetwork CurrentAccount];
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.usersFriends = [(NSDictionary *)[ARLNetwork getFriends:account.localId withProviderId:account.accountType] objectForKey:@"result"];
     }
 }
 
@@ -43,6 +51,26 @@
     NSDictionary *usersJson = [ARLNetwork getUsers];
     
     self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
+    
+    Account * account = [ARLNetwork CurrentAccount];
+    
+    // Remove ourself from the AllUsers array.
+    // We cannot be invited to be friends with ourselfs.
+    NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.AllUsers];
+    
+    NSLog(@"[%s] %d users", __func__, [tmp count]);
+    for (NSDictionary *dict in self.AllUsers) {
+        NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
+        if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId] &&
+            [provider isEqualToString:[[NSString alloc] initWithFormat:@"%@", account.accountType]]) {
+            
+            [tmp removeObject:dict];
+            break;
+        }
+    }
+     NSLog(@"[%s] %d users", __func__, [tmp count]);
+    
+    self.AllUsers = tmp;
 }
 
 -(NSString*) cellIdentifier {
@@ -59,11 +87,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (!self.AllUsers) {
-        [self getAllUsers];
+    if (ARLNetwork.networkAvailable) {
+        
+        if (!self.AllUsers) {
+            [self getAllUsers];
+        }
+        
+        return [self.AllUsers count];
     }
     
-    return self.AllUsers.count;
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -80,22 +113,46 @@
     }
 
     // Configure the cell...
+    NSDictionary *user = (NSDictionary *)self.AllUsers[indexPath.item];
     
-    cell.textLabel.text = [(NSDictionary *)self.AllUsers[indexPath.item] objectForKey:@"name"];
+    cell.textLabel.text = [user objectForKey:@"name"];
+    cell.detailTextLabel.text = @"";
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
-    @autoreleasepool {
-        NSURL *imageURL   = [NSURL URLWithString:[self.AllUsers[indexPath.item] objectForKey:@"icon"]];
-        
-        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-        if (imageData) {
-            cell.imageView.image = [UIImage imageWithData:imageData];
+    for (NSDictionary *dict in self.usersFriends) {
+        if ([[dict objectForKey:@"oauthId"] isEqualToString:[user objectForKey:@"oauthId"]] &&
+            [[dict objectForKey:@"oauthProvider"] isEqualToString:[user objectForKey:@"oauthProvider"]]) {
+            
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            
+            break;
+        }
+    }
+    
+    if (ARLNetwork.networkAvailable) {
+        @autoreleasepool {
+            NSURL *imageURL   = [NSURL URLWithString:[user objectForKey:@"icon"]];
+            
+            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+            if (imageData) {
+                cell.imageView.image = [UIImage imageWithData:imageData];
+            }
         }
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell.accessoryType == UITableViewCellAccessoryNone) {
+        NSString *message = [[NSString alloc] initWithFormat:@"Invite %@ to become a Friend?", cell.textLabel.text];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        [alert show];
+        
+        #warning Implement sending a Friend Request.
+    }
 }
 
 @end

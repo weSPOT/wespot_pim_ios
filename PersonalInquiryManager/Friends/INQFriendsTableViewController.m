@@ -174,7 +174,9 @@ typedef NS_ENUM(NSInteger, friends) {
             
             cell.textLabel.text = account.name;
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-          
+            cell.detailTextLabel.text = @"";
+            cell.accessoryType = UITableViewCellAccessoryNone;
+             
             NSData* icon = [account picture];
             if (icon) {
                 cell.imageView.image = [UIImage imageWithData:icon];
@@ -183,15 +185,14 @@ typedef NS_ENUM(NSInteger, friends) {
                 // LocalId == oauthId
                 for (NSDictionary *dict in self.AllUsers) {
                     if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId]) {
-                        NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
-                        
-                        //NSLog(@"[%s] USERS %@", __func__, [dict objectForKey:@"oauthId"]);
-                        
-                        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                        if (imageData) {
-                            cell.imageView.image = [UIImage imageWithData:imageData];
+                        @autoreleasepool {
+                            NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
+                   
+                            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                            if (imageData) {
+                                cell.imageView.image = [UIImage imageWithData:imageData];
+                            }
                         }
-                        
                         break;
                     }
                 }

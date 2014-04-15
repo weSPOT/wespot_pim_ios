@@ -18,21 +18,17 @@ typedef NS_ENUM(NSInteger, profile) {
      *  Friends.
      */
     FRIENDS = 0,
-//    /*!
-//     *  E-Mail.
-//     */
-//    EMAIL,
-//    /*!
-//     *  Account Type.
-//     */
-//    TYPE,
-//    /*!
-//     *  Picture
-//     */
-//    //    PICTURE,
-//    //    /*!
-//    //     *  Number of Profle Fields
-//    //     */
+    //    /*!
+    //     *  E-Mail.
+    //     */
+    //    EMAIL,
+    //    /*!
+    //     *  Account Type.
+    //     */
+    //    TYPE,
+    /*!
+     *  Number of Profle Fields
+     */
     numFriends
 };
 
@@ -68,8 +64,6 @@ typedef NS_ENUM(NSInteger, profile) {
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    Account * account = [ARLNetwork CurrentAccount];
-    
     //    {
     //        result =     (
     //                      {
@@ -88,25 +82,29 @@ typedef NS_ENUM(NSInteger, profile) {
     //        status = 0;
     //    }
     
-    // Get our friends.
-    self.usersFriends = [(NSDictionary *)[ARLNetwork getFriends:account.localId withProviderId:account.accountType] objectForKey:@"result"];
-    
-    // Get users of this inquiry.
-    self.inquiryUsers = [(NSDictionary *)[ARLNetwork getInqueryUsers:account.localId withProviderId:account.accountType inquiryId:self.inquiryId] objectForKey:@"result"];
-    
-    // Remove outself from the inquiryUsers array.
-    // We cannot beb friends with outselfs.
-    NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.inquiryUsers];
-    for (NSDictionary *d in self.inquiryUsers) {
-        NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[d objectForKey:@"oauthProvider"]]];
-        if ([[d objectForKey:@"oauthId"] isEqualToString:account.localId] &&
-            [provider isEqualToString:[[NSString alloc] initWithFormat:@"%@", account.accountType]]) {
-            
-            [tmp removeObject:d];
-            break;
+    if (ARLNetwork.networkAvailable) {
+        Account * account = [ARLNetwork CurrentAccount];
+        
+        // Get our friends.
+        self.usersFriends = [(NSDictionary *)[ARLNetwork getFriends:account.localId withProviderId:account.accountType] objectForKey:@"result"];
+        
+        // Get users of this inquiry.
+        self.inquiryUsers = [(NSDictionary *)[ARLNetwork getInqueryUsers:account.localId withProviderId:account.accountType inquiryId:self.inquiryId] objectForKey:@"result"];
+        
+        // Remove ourself from the inquiryUsers array.
+        // We cannot be friends with ourselfs.
+        NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.inquiryUsers];
+        for (NSDictionary *dict in self.inquiryUsers) {
+            NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
+            if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId] &&
+                [provider isEqualToString:[[NSString alloc] initWithFormat:@"%@", account.accountType]]) {
+                
+                [tmp removeObject:dict];
+                break;
+            }
         }
+        self.inquiryUsers = tmp;
     }
-    self.inquiryUsers = tmp;
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,8 +128,8 @@ typedef NS_ENUM(NSInteger, profile) {
     switch (section) {
         case FRIENDS:
         {
-            if (self.inquiryUsers) {
-                return [self.inquiryUsers count];
+            if (self.usersFriends) {
+                return [self.usersFriends count];
             }
         }
     }
@@ -150,18 +148,42 @@ typedef NS_ENUM(NSInteger, profile) {
         {
             ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             
-            NSString *userId = [(NSDictionary *)self.inquiryUsers[indexPath.item] objectForKey:@"oauthId"];
-            NSString *type = [(NSDictionary *)self.inquiryUsers[indexPath.item] objectForKey:@"oauthProvider"];
+            NSString *userId = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthId"];
+            NSString *type = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthProvider"];
             
             NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:type]];
             
             Account *account = [Account retrieveFromDbWithLocalId:userId accountType:provider withManagedContext:appDelegate.managedObjectContext];
             
-            cell.textLabel.text = [(NSDictionary *)self.inquiryUsers[indexPath.item] objectForKey:@"name"];
+            cell.textLabel.text = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"name"];
+            cell.detailTextLabel.text = @"";
+            
             if (account && account.picture) {
                 cell.imageView.image = [UIImage imageWithData:account.picture];
+            } else {
+                if (ARLNetwork.networkAvailable) {
+                    @autoreleasepool {
+                        NSURL  *url = [NSURL URLWithString:[(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"icon"]];
+                        NSData *urlData = [NSData dataWithContentsOfURL:url];
+                        if (urlData ){
+                            cell.imageView.image = [UIImage imageWithData:urlData];
+                        }
+                    }
+                }
             }
-#warning get user image from url.
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            
+            for (NSDictionary *dict in self.inquiryUsers) {
+                if ([[dict objectForKey:@"oauthId"] isEqualToString:userId] &&
+                    [[dict objectForKey:@"oauthProvider"] isEqualToString:type]) {
+                    
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    
+                    break;
+                }
+            }
+
         }
             break;
     }
@@ -169,53 +191,18 @@ typedef NS_ENUM(NSInteger, profile) {
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell.accessoryType == UITableViewCellAccessoryNone) {
+        NSString *message = [[NSString alloc] initWithFormat:@"Invite %@ to join this Inquiry?", cell.textLabel.text];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        [alert show];
+        
+#warning Implement Invite to Join Inquiry.
+    }
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

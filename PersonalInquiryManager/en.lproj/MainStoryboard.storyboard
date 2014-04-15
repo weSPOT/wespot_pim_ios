@@ -732,7 +732,7 @@
         <!--Discuss View-->
         <scene sceneID="Rqp-Xu-www">
             <objects>
-                <viewController storyboardIdentifier="DiscussView" title="Analysis" id="vdD-jd-pdT" userLabel="Discuss View" customClass="INQDiscussViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CommunicateView" title="Communicate" id="vdD-jd-pdT" userLabel="Discuss View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UiW-LV-h83">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -740,32 +740,57 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Discuss" id="DJe-h3-fbB"/>
+                    <navigationItem key="navigationItem" title="Communicate" id="DJe-h3-fbB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRm-Pc-ohE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3011" y="1586"/>
-        </scene>
-        <!--Communicate View-->
-        <scene sceneID="GCL-bQ-7El">
-            <objects>
-                <viewController storyboardIdentifier="CommunicateView" title="Analysis" id="8JJ-mJ-WU8" userLabel="Communicate View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ji0-Hk-Kcd">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="0.0" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Communicate" id="Qbr-5I-Uj5"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OTc-2Y-b5x" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
             <point key="canvasLocation" x="3011" y="2160"/>
+        </scene>
+        <!--Discuss View Controller - Discuss-->
+        <scene sceneID="XZO-Xy-LtP">
+            <objects>
+                <tableViewController storyboardIdentifier="DiscussView" title="Discuss" id="Efz-kd-iM4" customClass="INQDiscussViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Gcf-Tc-7pl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="messageCell" textLabel="me7-Wm-akm" detailTextLabel="7p9-cT-FVi" style="IBUITableViewCellStyleSubtitle" id="PVW-CS-6M7">
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PVW-CS-6M7" id="iny-Jk-RlU">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="me7-Wm-akm">
+                                            <rect key="frame" x="15" y="3" width="34" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7p9-cT-FVi">
+                                            <rect key="frame" x="15" y="25" width="43" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Efz-kd-iM4" id="raE-sB-QX1"/>
+                            <outlet property="delegate" destination="Efz-kd-iM4" id="3Lm-BJ-Mrr"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZyP-v7-REG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3011" y="1586"/>
         </scene>
         <!--Splash Content View Controller - SplashContentViewController-->
         <scene sceneID="OU4-5z-vf9">

@@ -50,10 +50,32 @@
  *
  *  @return The requested Inquiry.
  */
-+ (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext *) context{
++ (Inquiry *) retrieveFromDb: (NSDictionary *) inqDict withManagedContext: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
   
     request.predicate = [NSPredicate predicateWithFormat:@"inquiryId = %@", [inqDict objectForKey:@"inquiryId"]];
+    
+    NSArray *inquiryFromDb = [context executeFetchRequest:request error:nil];
+    
+    if (!inquiryFromDb) {
+        return nil;
+    } else {
+        return [inquiryFromDb lastObject];
+    }
+}
+
+/*!
+ *  Retrieves an Inquiry from the database given an Id.
+ *
+ *  @param inquiryId The Id of the Inquiry we want.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested Inquiry.
+ */
++ (Inquiry *) retrieveFromDbWithInquiryId: (NSNumber *) inquiryId withManagedContext: (NSManagedObjectContext *) context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"inquiryId = %@", inquiryId];
     
     NSArray *inquiryFromDb = [context executeFetchRequest:request error:nil];
     

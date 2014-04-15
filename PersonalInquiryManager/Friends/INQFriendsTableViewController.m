@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, friends) {
 
 @implementation INQFriendsTableViewController
 
--(NSString*) cellIdentifier {
+-(NSString *) cellIdentifier {
     return  @"friendsCell";
 }
 
@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, friends) {
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             cell.detailTextLabel.text = @"";
             cell.accessoryType = UITableViewCellAccessoryNone;
-             
+            
             NSData* icon = [account picture];
             if (icon) {
                 cell.imageView.image = [UIImage imageWithData:icon];

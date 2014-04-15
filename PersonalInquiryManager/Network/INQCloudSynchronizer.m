@@ -153,7 +153,7 @@
     
     // ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context/*appDelegate.managedObjectContext*/ enityName:@"Inquiry"];
+    NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
     
     NSMutableSet *dbIds = [[NSMutableSet alloc] init];
     NSMutableSet *jsIds = [[NSMutableSet alloc] init];
@@ -174,7 +174,7 @@
         NSPredicate *predicate = [NSPredicate predicateWithFormat:
                                   @"inquiryId = %@",
                                   inquiryId];
-        Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context/*appDelegate.managedObjectContext*/ enityName:@"Inquiry" predicate:predicate] lastObject];
+        Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry" predicate:predicate] lastObject];
         
         NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
         
@@ -192,12 +192,12 @@
             //            if (run) {
             //                [appDelegate.managedObjectContext deleteObject:run];
             //            }
-            [self.context/*appDelegate.managedObjectContext*/ deleteObject:inquiry];
+            [self.context deleteObject:inquiry];
         }
     }
     
     if (dbIds.count>0) {
-        [self.context/*appDelegate.managedObjectContext*/ save:nil];
+        [self.context save:nil];
     }
     
     //******************************
@@ -248,6 +248,32 @@
             
             if (selectedRun) {
                 newInquiry.run = selectedRun;
+            }
+        }
+        
+#warning Syncing MEssages must be made more inteligent.
+        
+        if (newInquiry.run) {
+            //{
+            //    deleted = 0;
+            //    lastModificationDate = 1397566132526;
+            //    name = Default;
+            //    runId = 5300507992129536;
+            //    threadId = 5757904829284352;
+            //    type = "org.celstec.arlearn2.beans.run.Thread";
+            //}
+            
+            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
+            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
+            
+            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
+            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+            
+            for (NSDictionary *mDict in messages)
+            {
+                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+     
+                NSLog(@"[%s] %@",__func__, msg.body);
             }
         }
         

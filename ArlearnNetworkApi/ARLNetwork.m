@@ -1,4 +1,4 @@
-//
+ //
 //  ARLNetwork.m
 //  ARLearn
 //
@@ -316,8 +316,6 @@
           contentType:(NSString *) contentTypeIn withData:(NSData *) data {
     NSLog(@"[%s] Uploading %@ - %@", __func__, contentTypeIn, fileName);
     
-//  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
     NSString *boundary = @"0xKhTmLbOuNdArY";
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -352,8 +350,6 @@
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 
     NSLog(@"[%s] Uploaded %@ - %@", __func__, contentTypeIn, fileName);
-    
-    // [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 #pragma mark - Account
@@ -382,6 +378,14 @@
 
 + (NSDictionary *) geoSearch: (NSNumber*) distance withLat:(NSNumber *) lat withLng: (NSNumber *) lng {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/search/lat/%f/lng/%f/distance/%ld", lat.doubleValue, lng.doubleValue, distance.longValue  ]];
+}
+
++ (NSDictionary *) defaultThread: (NSNumber *) runId {
+        return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/thread/runId/%@/default", runId ]];
+}
+
++ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default", runId ]];
 }
 
 @end

@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "ARLNetwork+INQ.h"
 
-@interface INQDiscussViewController : UIViewController
+#import "Inquiry+Create.h"
+
+@interface INQDiscussViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSNumber *inquiryId;
 
 @end
+
+

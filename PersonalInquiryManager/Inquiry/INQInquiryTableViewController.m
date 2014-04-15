@@ -415,6 +415,11 @@ typedef NS_ENUM(NSInteger, sections) {
             
         case DISCUSS: {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DiscussView"];
+            
+             // Pass the parameters to render.
+            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+            }
         }
             break;
             

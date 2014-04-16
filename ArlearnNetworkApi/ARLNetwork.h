@@ -76,6 +76,7 @@ contentType:(NSString *) contentType withData:(NSData *) data;
 + (NSDictionary *) geoSearch: (NSNumber *) distance withLat:(NSNumber *) lat withLng: (NSNumber *) lng;
 + (NSDictionary *) defaultThread: (NSNumber *) runId;
 + (NSDictionary *) defaultThreadMessages: (NSNumber *) runId;
++ (NSDictionary *) addMessage: (NSString *) message;
 
 + (id) executeARLearnGetWithAuthorization: (NSString *) path;
 

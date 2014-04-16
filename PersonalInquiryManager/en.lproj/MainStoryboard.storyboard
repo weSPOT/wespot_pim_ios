@@ -829,6 +829,83 @@
             </objects>
             <point key="canvasLocation" x="278" y="1037"/>
         </scene>
+        <!--Add Message View Controller-->
+        <scene sceneID="ACu-sj-C9E">
+            <objects>
+                <viewController storyboardIdentifier="AddMessageController" title="New inquiy" id="wXZ-PW-eiy" userLabel="Add Message View Controller" customClass="INQAddMessageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9o1-N7-75D">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login" id="x44-L0-Eoh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="eAG-gC-crK" customClass="TPKeyboardAvoidingScrollView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="EvM-md-PzQ">
+                                        <rect key="frame" x="9" y="210" width="303" height="100"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="W1g-uL-NhD">
+                                        <rect key="frame" x="137" y="318" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Send">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="createInquiryTap:" destination="wXZ-PW-eiy" eventType="touchUpInside" id="VYU-yO-E77"/>
+                                            <action selector="loginButtonAction:" destination="C65-w6-g4e" eventType="touchUpInside" id="h78-71-hu3"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Inquiry Title" minimumFontSize="17" id="aBR-S5-yMN">
+                                        <rect key="frame" x="9" y="142" width="302" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tVq-4A-kHj">
+                                        <rect key="frame" x="9" y="181" width="302" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rSl-Gm-boG">
+                                        <rect key="frame" x="10" y="113" width="302" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="background" destination="x44-L0-Eoh" id="Yhm-hg-mwQ"/>
+                        <outlet property="createButton" destination="W1g-uL-NhD" id="Sga-m7-QYC"/>
+                        <outlet property="descriptionEdit" destination="EvM-md-PzQ" id="g4P-8t-nIf"/>
+                        <outlet property="descriptionLabel" destination="tVq-4A-kHj" id="cZl-YV-m8o"/>
+                        <outlet property="scrollView" destination="eAG-gC-crK" id="tBt-s0-tmJ"/>
+                        <outlet property="titleEdit" destination="aBR-S5-yMN" id="7DH-xg-moD"/>
+                        <outlet property="titleLabel" destination="rSl-Gm-boG" id="r6v-RY-Cdh"/>
+                        <outlet property="view" destination="9o1-N7-75D" id="ik8-nE-s7D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vdq-fq-4Dk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3410" y="1586"/>
+        </scene>
     </scenes>
     <resources>
         <image name="login" width="640" height="1136"/>

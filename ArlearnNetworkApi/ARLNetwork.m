@@ -388,4 +388,8 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default", runId ]];
 }
 
++ (NSDictionary *) addMessage: (NSString *) message {
+    return [self executeARLearnPostWithAuthorization:@"messages/message" postData:[self stringToData:message] withContentType:applicationjson];
+}
+
 @end

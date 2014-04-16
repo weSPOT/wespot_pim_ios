@@ -468,7 +468,6 @@ typedef NS_ENUM(NSInteger, sections) {
                     break;
                     
                 case ANALYSIS: {
-                    
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
                 }
@@ -494,6 +493,7 @@ typedef NS_ENUM(NSInteger, sections) {
             
         case INVITE: {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InviteFriendTableViewController"];
+            
             if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
                 [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
             }

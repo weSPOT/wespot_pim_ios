@@ -142,6 +142,7 @@
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
+		8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */; };
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
@@ -372,6 +373,8 @@
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
 		8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInviteFriendsViewController.h; sourceTree = "<group>"; };
 		8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInviteFriendsViewController.m; sourceTree = "<group>"; };
+		8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddMessageViewController.h; sourceTree = "<group>"; };
+		8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAddMessageViewController.m; sourceTree = "<group>"; };
 		8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -678,6 +681,8 @@
 			children = (
 				8D1945C918C0A24200C32EED /* INQDiscussViewController.h */,
 				8D1945CA18C0A24200C32EED /* INQDiscussViewController.m */,
+				8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */,
+				8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */,
 			);
 			path = Discuss;
 			sourceTree = "<group>";
@@ -1066,6 +1071,7 @@
 				8D4511EF18E04F3B0012DEDF /* Inquiry.m in Sources */,
 				8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */,
 				8D4511F218E04F3C0012DEDF /* SynchronizationBookKeeping.m in Sources */,
+				8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */,
 				8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */,
 				8D4511E018E04F3B0012DEDF /* Game.m in Sources */,
 				8D6AE1CA18D5C5FE0094D911 /* TPKeyboardAvoidingTableView.m in Sources */,

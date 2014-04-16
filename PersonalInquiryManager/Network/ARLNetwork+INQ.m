@@ -262,7 +262,6 @@
     
     NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
     NSString *provider = [ARLNetwork elggProviderId:account.accountType];
-//  NSString *key = [[NSString alloc] initWithFormat:@"%@", apiKey];
   
     NSString *encoded = [ARLNetwork htmlEncode:description];
     

@@ -229,13 +229,15 @@ typedef NS_ENUM(NSInteger, friends) {
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    UIViewController *newViewController;
+    UIViewController *newViewController;
     
     switch (indexPath.section) {
         case SEND: {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessageController"];
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
+            }
         }
             break;
         case MESSAGES: {
@@ -243,6 +245,10 @@ typedef NS_ENUM(NSInteger, friends) {
             [alert show];
         }
             break;
+    }
+    
+    if (newViewController) {
+        [self.navigationController pushViewController:newViewController animated:YES];
     }
 }
 

@@ -143,6 +143,7 @@ typedef NS_ENUM(NSInteger, groups) {
             cell.textLabel.Text = @"Unearned Badge";
             cell.imageView.image = [UIImage imageNamed:@"badges"];
             cell.backgroundColor = [UIColor grayColor];
+
             [cell setAccessoryType:UITableViewCellAccessoryNone];
         }
             break;
@@ -183,6 +184,9 @@ typedef NS_ENUM(NSInteger, groups) {
                     // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];
                     break;
             }
+            break;
+            
+        case UNEARNED:
             break;
     }
 

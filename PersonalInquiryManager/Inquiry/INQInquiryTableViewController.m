@@ -393,7 +393,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         case PLAN: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PlanView"];
+            // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PlanView"];
         }
             break;
             
@@ -409,7 +409,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         case ANALYSIS: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisView"];
+            // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisView"];
         }
             break;
             
@@ -424,7 +424,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         case COMMUNICATE: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CommunicateView"];
+            // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CommunicateView"];
         }
             break;
             
@@ -451,8 +451,42 @@ typedef NS_ENUM(NSInteger, sections) {
         case HEADER:
             break;
         case PARTS: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
-            if ([newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
+            
+            switch (indexPath.item) {
+                case HYPOTHESIS:
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    break;
+                    
+                case PLAN: {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                    
+                case DATACOLLECTION:
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    break;
+                    
+                case ANALYSIS: {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                    
+                case DISCUSS:
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    break;
+                    
+                case COMMUNICATE: {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+            }
+            
+            if (newViewController && [newViewController respondsToSelector:@selector(initWithInitialPage:)]) {
                 [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
             }
         }

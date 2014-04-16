@@ -151,7 +151,13 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
         [alert show];
         
-        #warning Implement sending a Friend Request.
+#warning Implement sending a Friend Request.
+        
+    } else {
+        NSString *message = [[NSString alloc] initWithFormat:@"%@ is already a Friend?", cell.textLabel.text];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
     }
 }
 

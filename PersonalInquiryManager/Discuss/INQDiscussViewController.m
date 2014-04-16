@@ -206,7 +206,8 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (indexPath.section) {
         case SEND:
             cell.textLabel.text = @"Add message";
-            // cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+            cell.detailTextLabel.text = @"";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
             break;
         case MESSAGES:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
@@ -219,6 +220,30 @@ typedef NS_ENUM(NSInteger, friends) {
     }
     
     return cell;
+}
+/*!
+ *  For each row in the table jump to the associated view.
+ *
+ *  @param tableView The UITableView
+ *  @param indexPath The NSIndexPath containing grouping/section and record index.
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //    UIViewController *newViewController;
+    
+    switch (indexPath.section) {
+        case SEND: {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+            break;
+        case MESSAGES: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+            break;
+    }
 }
 
 @end

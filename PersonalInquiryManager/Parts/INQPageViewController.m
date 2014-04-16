@@ -63,33 +63,40 @@
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-
-    if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:0]]) {
-        return nil;
-    }
+    UIViewController *view = nil;
     
-    // Decrease the index by 1 to return
-    self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] - 1];
-
-    NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
-    
-    UIViewController *view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
+    do {
+        
+        if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:0]]) {
+            return nil;
+        }
+        
+        // Decrease the index by 1 to return
+        self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] - 1];
+        
+        NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
+        
+        view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
+    } while (!view);
     
     return view;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     // Increase the index by 1 to return
+    UIViewController *view = nil;
     
-    if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:5]]) {
-        return nil;
-    }
-    
-    self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] + 1];
-
-    NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
-    
-    UIViewController *view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
+    do {
+        if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:5]]) {
+            return nil;
+        }
+        
+        self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] + 1];
+        
+        NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
+        
+        view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
+    } while (!view);
     
     return view;
 }

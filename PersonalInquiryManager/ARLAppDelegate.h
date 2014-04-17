@@ -14,6 +14,8 @@
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
 
+#define DEVELOPMENT_MODE @"enable_development_mode"
+
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 
 + (NSRecursiveLock *) theLock;

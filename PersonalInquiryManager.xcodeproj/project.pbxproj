@@ -72,6 +72,7 @@
 		34D4231C17B677BD0051E84C /* video_48x48.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FA17B677BD0051E84C /* video_48x48.png */; };
 		34D4231D17B677BD0051E84C /* wespot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FB17B677BD0051E84C /* wespot_logo.png */; };
 		34D4231E17B677BD0051E84C /* youtube.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FC17B677BD0051E84C /* youtube.png */; };
+		8D090E1C18FFDE95006A9D93 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8D090E1B18FFDE95006A9D93 /* Settings.bundle */; };
 		8D1945C318C0A1AD00C32EED /* INQCommunicateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */; };
 		8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C618C0A20300C32EED /* INQAnalysisViewController.m */; };
 		8D1945CB18C0A24200C32EED /* INQDiscussViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945CA18C0A24200C32EED /* INQDiscussViewController.m */; };
@@ -227,6 +228,7 @@
 		34D422FA17B677BD0051E84C /* video_48x48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_48x48.png; sourceTree = "<group>"; };
 		34D422FB17B677BD0051E84C /* wespot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wespot_logo.png; sourceTree = "<group>"; };
 		34D422FC17B677BD0051E84C /* youtube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = youtube.png; sourceTree = "<group>"; };
+		8D090E1B18FFDE95006A9D93 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8D1945C018C0A1AD00C32EED /* INQCommunicateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQCommunicateViewController.h; sourceTree = "<group>"; };
 		8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQCommunicateViewController.m; sourceTree = "<group>"; };
 		8D1945C518C0A20200C32EED /* INQAnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAnalysisViewController.h; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
+				8D090E1B18FFDE95006A9D93 /* Settings.bundle */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				8D6E809818D5B5A90077D70E /* ARLearnAuthentication */,
 				8D6E80BF18D5B7AC0077D70E /* ARLearnContextAwareNotification */,
@@ -1013,6 +1016,7 @@
 				34D4230C17B677BD0051E84C /* dc_note_128_grey.png in Resources */,
 				34D4230D17B677BD0051E84C /* dc_video_128.png in Resources */,
 				34D4230E17B677BD0051E84C /* dc_video_128_grey.png in Resources */,
+				8D090E1C18FFDE95006A9D93 /* Settings.bundle in Resources */,
 				8D6E80F018D5BAFB0077D70E /* zbar-samples.png in Resources */,
 				34D4230F17B677BD0051E84C /* dc_voice_search_128.png in Resources */,
 				34D4231017B677BD0051E84C /* dc_voice_search_128_grey.png in Resources */,

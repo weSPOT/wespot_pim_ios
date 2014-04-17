@@ -164,11 +164,88 @@
 //                           }];
 //}
 
+//// See http://stackoverflow.com/questions/8915630/ios-uiimageview-how-to-handle-uiimage-image-orientation
+//- (UIImage *)fixrotation:(UIImage *)image{
+//    
+//    
+//    if (image.imageOrientation == UIImageOrientationUp) return image;
+//    CGAffineTransform transform = CGAffineTransformIdentity;
+//    
+//    switch (image.imageOrientation) {
+//        case UIImageOrientationDown:
+//        case UIImageOrientationDownMirrored:
+//            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+//            transform = CGAffineTransformRotate(transform, M_PI);
+//            break;
+//            
+//        case UIImageOrientationLeft:
+//        case UIImageOrientationLeftMirrored:
+//            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+//            transform = CGAffineTransformRotate(transform, M_PI_2);
+//            break;
+//            
+//        case UIImageOrientationRight:
+//        case UIImageOrientationRightMirrored:
+//            transform = CGAffineTransformTranslate(transform, 0, image.size.height);
+//            transform = CGAffineTransformRotate(transform, -M_PI_2);
+//            break;
+//        case UIImageOrientationUp:
+//        case UIImageOrientationUpMirrored:
+//            break;
+//    }
+//    
+//    switch (image.imageOrientation) {
+//        case UIImageOrientationUpMirrored:
+//        case UIImageOrientationDownMirrored:
+//            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+//            transform = CGAffineTransformScale(transform, -1, 1);
+//            break;
+//            
+//        case UIImageOrientationLeftMirrored:
+//        case UIImageOrientationRightMirrored:
+//            transform = CGAffineTransformTranslate(transform, image.size.height, 0);
+//            transform = CGAffineTransformScale(transform, -1, 1);
+//            break;
+//        case UIImageOrientationUp:
+//        case UIImageOrientationDown:
+//        case UIImageOrientationLeft:
+//        case UIImageOrientationRight:
+//            break;
+//    }
+//    
+//    // Now we draw the underlying CGImage into a new context, applying the transform
+//    // calculated above.
+//    CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height,
+//                                             CGImageGetBitsPerComponent(image.CGImage), 0,
+//                                             CGImageGetColorSpace(image.CGImage),
+//                                             CGImageGetBitmapInfo(image.CGImage));
+//    CGContextConcatCTM(ctx, transform);
+//    switch (image.imageOrientation) {
+//        case UIImageOrientationLeft:
+//        case UIImageOrientationLeftMirrored:
+//        case UIImageOrientationRight:
+//        case UIImageOrientationRightMirrored:
+//            // Grr...
+//            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.height,image.size.width), image.CGImage);
+//            break;
+//            
+//        default:
+//            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
+//            break;
+//    }
+//    
+//    // And now we just create a new UIImage from the drawing context
+//    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+//    UIImage *img = [UIImage imageWithCGImage:cgimg];
+//    CGContextRelease(ctx);
+//    CGImageRelease(cgimg);
+//    return img;
+//    
+//}
+
 - (void) downloadResponses {
     for (Response *response in [Response getReponsesWithoutMedia:self.context]) {
         NSURL  *url = [NSURL URLWithString:response.fileName];
-        
-#warning swap fetching urlData with respons types (so we do not have to download/store the complete videos). Store only thumbs.
         
         if (response.data == nil && response.thumb == nil) {
             if ([response.contentType isEqualToString:@"application/jpg"])
@@ -182,6 +259,35 @@
                     
                     // Create Thumbnails from Images to lower memory load.
                     UIImage *img = [UIImage imageWithData:urlData];
+                    
+                    NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
+                    
+                    //                    if (img.imageOrientation != UIImageOrientationUp) {
+                    //                        UIGraphicsBeginImageContextWithOptions(img.size, NO, img.scale);
+                    //                        [img drawInRect:(CGRect){0, 0, img.size}];
+                    //                        UIImage *normalizedImage = UIGraphicsGetImageFromCurrentImageContext();
+                    //                        UIGraphicsEndImageContext();
+                    //
+                    //                        img = normalizedImage;
+                    //                    }
+                    
+                    //                    NSString *tmp = NSTemporaryDirectory();
+                    //                    NSString *file = [tmp stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", response.responseId]];
+                    //
+                    //                    // Make sure there is no other file with the same name first
+                    //                    if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
+                    //                        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+                    //                    }
+                    //
+                    //                    [urlData writeToFile:file atomically:NO];
+                    
+                    //                    //if (img.imageOrientation != UIImageOrientationUp) {
+                    //                    img = [UIImage imageWithCGImage:[UIImage imageWithData:urlData].CGImage
+                    //                                              scale:img.scale
+                    //                                        orientation:img.imageOrientation];
+                    //                    //}
+                    
+                    NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
                     
                     UIImage *thumbImage = nil;
                     CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
@@ -201,6 +307,8 @@
                     response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
                     // response.data = UIImageJPEGRepresentation(img, 0.75);
                     
+                    
+     
                     img = nil;
                     thumbImage = nil;
                     
@@ -214,30 +322,32 @@
                 
                 //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
                 
-                
                 // 1) Save NSData to File in temp Directory.
                 // See http://stackoverflow.com/questions/1489522/stringbyappendingpathcomponent-hows-it-work
-                //                NSString *tmp = NSTemporaryDirectory();
-                //                NSString *url = [tmp stringByAppendingPathComponent:@"temp.mov"];
-                //
-                //                // Make sure there is no other file with the same name first
-                //                if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {
-                //                    [[NSFileManager defaultManager] removeItemAtPath:url error:nil];
-                //                }
-                //
-                //                [urlData writeToFile:url atomically:NO];
+                NSString *tmp = NSTemporaryDirectory();
+                NSString *file = [tmp stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov", response.responseId]];
                 
-                NSLog(@"[%s] Thumbnailing url=%@", __func__, response.fileName);
+                // Make sure there is no other file with the same name first
+                if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+                }
                 
-                NSString *url = response.fileName;
+                [[NSData dataWithContentsOfURL:url] writeToFile:file atomically:NO];
+
+                NSLog(@"[%s] Thumbnailing url=%@", __func__, url);
                 
                 // 2) Create an AVAsset from it.
                 //                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
-                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:url] options:nil];
+                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+                // http://stackoverflow.com/questions/4627940/how-to-detect-iphone-sdk-if-a-video-file-was-recorded-in-portrait-orientation
+                //                NSLog(@"[%s] Naural Size: %f x %f", __func__, [urlAsset naturalSize].width, [urlAsset naturalSize].height);
+                //                CGAffineTransform txf = [urlAsset preferredTransform];
+                //                NSLog(@"[%s] Preferred transform Size: %f x %f", __func__, txf.tx, txf.ty);
                 
                 // 3) Set max ThumbNail size,
                 //See http://stackoverflow.com/questions/19368513/generating-thumbnail-from-video-ios7
                 AVAssetImageGenerator *generateImg = [[AVAssetImageGenerator alloc] initWithAsset:urlAsset];
+  
                 generateImg.maximumSize = CGSizeMake(256, 256);
                 
                 // 4) Set the time of the ThumbNail.
@@ -256,6 +366,14 @@
                 // 6) Save both original and thumbnail.
                 // response.data = urlData;
                 response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
+                
+                //Fails because it's web-based.
+//                NSURL *myURL = [[NSURL alloc] initWithString:url];
+//                MPMoviePlayerController *movieController = [[MPMoviePlayerController alloc] initWithContentURL:myURL];
+//                UIImage *thumbImage2 = [movieController thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//                movieController = nil;
+//                float width = thumbImage2.size.width;
+//                float height = thumbImage2.size.height;
                 
                 //7) Remove temporary file.
                 //            if ([[NSFileManager defaultManager] fileExistsAtPath:url]) {

@@ -212,11 +212,11 @@
     if (!account) return;
     
     NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                         @"org.celstec.arlearn2.beans.notification.APNDeviceDescription", @"type",
-                                         account, @"account",
-                                         deviceUniqueIdentifier, @"deviceUniqueIdentifier",
-                                         deviceToken, @"deviceToken",
-                                         bundleIdentifier, @"bundleIdentifier",
+                                         @"org.celstec.arlearn2.beans.notification.APNDeviceDescription",   @"type",
+                                         account,                                                           @"account",
+                                         deviceUniqueIdentifier,                                            @"deviceUniqueIdentifier",
+                                         deviceToken,                                                       @"deviceToken",
+                                         bundleIdentifier,                                                  @"bundleIdentifier",
                                          nil];
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:apnRegistrationBean options:0 error:nil];
@@ -243,12 +243,12 @@
     NSString *account = [NSString stringWithFormat:@"%@:%@", accountType, accountLocalId];
     
     NSDictionary *actionDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                action, @"action",
-                                runId, @"runId",
-                                itemId, @"generalItemId",
-                                account, @"userEmail",
-                                time, @"time",
-                                itemType, @"generalItemType",
+                                action,         @"action",
+                                runId,          @"runId",
+                                itemId,         @"generalItemId",
+                                account,        @"userEmail",
+                                time,           @"time",
+                                itemType,       @"generalItemType",
                                 nil];
     
     [self publishAction:actionDict];
@@ -271,11 +271,11 @@
     NSString* account = [NSString stringWithFormat:@"%@:%@", accountType, accountLocalId];
     
     NSDictionary *responseDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                value, @"responseValue",
-                                runId, @"runId",
-                                generalItemId, @"generalItemId",
-                                timeStamp, @"timestamp",
-                                account, @"userEmail",
+                                value,              @"responseValue",
+                                runId,              @"runId",
+                                generalItemId,      @"generalItemId",
+                                timeStamp,          @"timestamp",
+                                account,            @"userEmail",
                                 nil];
     
     [self publishResponse:responseDict];

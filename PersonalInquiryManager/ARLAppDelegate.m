@@ -12,8 +12,6 @@
 
 -(void)reachabilityChanged:(NSNotification*)note;
 
-//+(NSRecursiveLock *) theLock;
-
 @end
 
 
@@ -38,6 +36,15 @@ static NSRecursiveLock *_theLock;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Register default preferences.
+    NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSNumber numberWithBool:YES], DEVELOPMENT_MODE,
+                                nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
+    
+    // Synchronize preferences.
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     // Override point for customization after application launch.
     _networkAvailable = NO;
     

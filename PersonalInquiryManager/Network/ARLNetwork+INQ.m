@@ -8,10 +8,43 @@
 
 #import "ARLNetwork+INQ.h"
 
+@interface ARLNetwork()
+
+@end
+    
+    
 /*!
  *  Extends ARLNetwork with Inquiry specific methods.
  */
 @implementation ARLNetwork (INQ)
+
+/*!
+ *  Getter for elgUrl property.
+ *
+ *  @return the correct base Url for calling json methods (including ?method=).
+*/
+
++(NSString *) elgUrl __attribute__((deprecated)) {
+    return [self.elgBaseUrl stringByAppendingString:@"?method="];
+}
+
+/*!
+ *  Getter for elgUrl property.
+ *
+ *  @return the correct base Url for calling json methods.
+ */
++(NSString *) elgBaseUrl {
+    if (self.elgDeveloperMode)
+    {
+        return @"http://dev.inquiry.wespot.net/services/api/rest/json/";
+    } else {
+        return @"http://inquiry.wespot.net/services/api/rest/json/";
+    }
+}
+
++(BOOL) elgDeveloperMode {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:DEVELOPMENT_MODE];
+}
 
 /*!
  *  Fetch the JSON response of a REST service using GET.
@@ -47,7 +80,7 @@
  *  @return The JSON Response.
  */
 + (id) returnJsonGET: (NSString *) url query:(NSString *) query {
-    NSString *urlandquery = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, query];
+    NSString *urlandquery = [[NSString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, query];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: urlandquery]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -257,7 +290,7 @@
  *
  *  @return <#return value description#>
  */
-+ (id) createInquiry: (NSString *)title description: (NSString *)description { // forGame: (NSNumber *)gameId forRun: (NSNumber *)runId{
++ (id) createInquiry: (NSString *)title description: (NSString *)description {
     Account *account = [ARLNetwork CurrentAccount];
     
     NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
@@ -284,7 +317,7 @@
 
     NSString *body = [ARLNetwork dictionaryToParmeters:dict];
     
-    NSString *url = elgBaseUrl;
+    NSString *url = ARLNetwork.elgBaseUrl;
     
     return [self returnJsonPOST:url body:body];
 }
@@ -319,7 +352,7 @@
  *  @return The Url with its parameters.
  */
 + (NSString *) dictionaryToUrl: (NSDictionary *)dict {
-    return [[NSMutableString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    return [[NSMutableString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
 }
 
 /*!

@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 //#define serviceUrl    @"http://ar-learn.appspot.com"
-#define serviceUrl      @"http://streetlearn.appspot.com"
 //#define serviceUrl    @"http://192.168.1.8:8080"
+
+#define serviceUrl      @"http://streetlearn.appspot.com"
 #define textplain       @"text/plain"
 
 #define accept          @"Accept"

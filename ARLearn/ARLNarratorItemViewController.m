@@ -455,6 +455,40 @@ typedef NS_ENUM(NSInteger, responses) {
                 } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
                     if (response.thumb) {
                         cell.imgView.image = [UIImage imageWithData:response.thumb];
+                
+                        // rotate 90' Right (will al least make portrait videos right).
+                        CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI / 2.0 );
+                        [cell.imgView setTransform:rotate];
+                        
+                        // create a new bitmap image context
+                        UIGraphicsBeginImageContext(cell.imgView.image.size);
+                        
+                        // draw original image into the context
+                        [cell.imgView.image drawAtPoint:CGPointZero];
+                        
+                        // draw icon
+                        UIImage *ico = [UIImage imageNamed:@"task-video-overlay"];
+                        
+                        // see http://stackoverflow.com/questions/8858404/uiimage-aspect-fit-when-using-drawinrect
+                        CGFloat aspect = cell.imgView.image.size.width / cell.imgView.image.size.height;
+
+                        CGPoint p = CGPointMake(cell.imgView.image.size.width, cell.imgView.image.size.height);
+                        
+                        if (ico.size.width / aspect <= ico.size.width) {
+                            CGSize s = CGSizeMake(ico.size.width, ico.size.width/(aspect));
+                            [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
+                        }else {
+                            CGSize s = CGSizeMake(ico.size.height*aspect, ico.size.height);
+                            [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
+                        }
+                        
+                        // make image out of bitmap context
+                        UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
+                        
+                        // free the context
+                        UIGraphicsEndImageContext();
+
+                        cell.imgView.image = retImage;
 //                  } else if (response.data) {
 //                      cell.imgView.image = [UIImage imageWithData:response.data];
                     } else {

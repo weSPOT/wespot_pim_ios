@@ -5,24 +5,33 @@
 //  Created by Stefaan Ternier on 8/8/13.
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
-
+#import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <UIKit/UIKit.h>
 
 #import "ARLNetwork.h"
 #import "INQLoginViewController.h"
 
-//#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
-//dev.
-#define elgBaseUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/"
+////#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
+////dev.
+//#define elgBaseUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/"
+//
+//#define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
+//
+////#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
 
-#define elgUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/?method="
-
-//#define elgUrl @"http://inquiry.wespot.net/services/api/rest/json/?method="
 #define apiKey @"27936b77bcb9bb67df2965c6518f37a77a7ab9f8"
 
 #define MISSING_ID 3639020
 
 @interface ARLNetwork (INQ)
+
++(NSString *) elgUrl;
++(NSString *) elgBaseUrl;
++(BOOL) elgDeveloperMode;
+
+//@property (readonly, nonatomic) NSString *elgUrl;
+//@property (readonly, nonatomic) NSString *elgBaseUrl;
 
 + (id) createInquiry: (NSString *)title description: (NSString *)description;
 

@@ -251,7 +251,7 @@
             }
         }
         
-#warning Syncing MEssages must be made more inteligent.
+#warning Syncing Messages must be made more inteligent.
         
         if (newInquiry.run) {
             //{

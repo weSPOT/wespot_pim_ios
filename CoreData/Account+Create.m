@@ -79,7 +79,7 @@
  *
  *  @return <#return value description#>
  */
-+ (Account *) retrieveFromDbWithLocalId: (NSString *)localId accountType: (NSString *) accountType withManagedContext: (NSManagedObjectContext*) context{
++ (Account *) retrieveFromDbWithLocalId: (NSString *) localId accountType: (NSString *) accountType withManagedContext: (NSManagedObjectContext*) context {
     Account * account = nil;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];

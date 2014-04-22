@@ -21,11 +21,17 @@
 
 @property (nonatomic, readwrite) BOOL syncUsers;
 @property (nonatomic, readwrite) BOOL syncInquiries;
+@property (nonatomic, readwrite) BOOL syncInquiryUsers;
+@property (nonatomic, readwrite) BOOL syncMessages;
 
-@property (strong, nonatomic)  NSManagedObjectContext * context;
-@property (strong, nonatomic)  NSManagedObjectContext * parentContext;
+@property (strong, nonatomic)  NSNumber *inquiryId;
 
-+ (void) syncUsers: (NSManagedObjectContext*) context;
-+ (void) syncInquiries: (NSManagedObjectContext*) context;
+@property (strong, nonatomic)  NSManagedObjectContext *context;
+@property (strong, nonatomic)  NSManagedObjectContext *parentContext;
+
++ (void) syncUsers: (NSManagedObjectContext *) context;
++ (void) syncInquiries: (NSManagedObjectContext *) context;
++ (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId;
++ (void) syncMessages: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId;
 
 @end

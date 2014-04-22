@@ -32,7 +32,6 @@
 @property (nonatomic, readwrite) BOOL syncActions;
 
 @property (strong, nonatomic)  NSNumber * gameId;
-
 @property (strong, nonatomic)  NSNumber * visibilityRunId;
 
 @property (strong, nonatomic)  NSManagedObjectContext * context;

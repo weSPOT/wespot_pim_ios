@@ -45,6 +45,11 @@
     message.run = [Run retrieveRun:[NSNumber numberWithLongLong:[[dict objectForKey:@"runId"] longLongValue]]
              inManagedObjectContext:context];
     
+    message.account = [Account retrieveFromDbWithLocalId:[dict objectForKey:@"senderId"] accountType:[dict objectForKey:@"senderProviderId"] withManagedContext:context];
+    
+ //   "senderId": "116743449349920850150",
+ //   "senderProviderId": 2
+    
     // Set TimeStamp.
     message.date = [NSNumber numberWithLongLong:[[dict objectForKey:@"timestamp"] longLongValue]];
     

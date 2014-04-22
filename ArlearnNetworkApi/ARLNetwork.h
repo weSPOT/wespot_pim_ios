@@ -64,8 +64,7 @@
 + (void) publishResponse: (NSNumber *) runId responseValue: (NSString *) value itemId: (NSNumber *) generalItemId timeStamp: (NSNumber *) timeStamp;
 
 + (NSString *) requestUploadUrl: (NSString *) fileName withRun:(NSNumber *) runId;
-+ (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName
-contentType:(NSString *) contentType withData:(NSData *) data;
++ (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName contentType:(NSString *) contentType withData:(NSData *) data;
 
 + (NSDictionary *) anonymousLogin: (NSString *) account;
 + (NSDictionary *) accountDetails;
@@ -80,6 +79,8 @@ contentType:(NSString *) contentType withData:(NSData *) data;
 + (NSDictionary *) addMessage: (NSString *) message;
 
 + (id) executeARLearnGetWithAuthorization: (NSString *) path;
+
++ (NSDictionary *) getUserInfo: (NSNumber *) runId userId:(NSString *) userId providerId:(NSString *) providerId;
 
 @end
 

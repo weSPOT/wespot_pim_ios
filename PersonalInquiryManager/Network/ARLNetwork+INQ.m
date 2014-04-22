@@ -162,7 +162,7 @@
  *
  *  @return The Users as JSON.
  */
-+ (id) getInqueryUsers: (NSString *) localId withProviderId: (NSNumber *) oauthProvider inquiryId: (NSNumber *) inquiryId {
++ (id) getInquiryUsers: (NSString *) localId withProviderId: (NSNumber *) oauthProvider inquiryId: (NSNumber *) inquiryId {
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"inquiry.users",                     @"method",
                           apiKey,                               @"api_key",

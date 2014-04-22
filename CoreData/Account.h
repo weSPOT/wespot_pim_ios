@@ -2,14 +2,14 @@
 //  Account.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/27/14.
+//  Created by Wim van der Vegt on 4/22/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Action, Response;
+@class Action, Message, Response;
 
 @interface Account : NSManagedObject
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSData * picture;
 @property (nonatomic, retain) NSSet *actions;
+@property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *responses;
 @end
 
@@ -31,6 +32,11 @@
 - (void)removeActionsObject:(Action *)value;
 - (void)addActions:(NSSet *)values;
 - (void)removeActions:(NSSet *)values;
+
+- (void)addMessagesObject:(Message *)value;
+- (void)removeMessagesObject:(Message *)value;
+- (void)addMessages:(NSSet *)values;
+- (void)removeMessages:(NSSet *)values;
 
 - (void)addResponsesObject:(Response *)value;
 - (void)removeResponsesObject:(Response *)value;

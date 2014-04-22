@@ -12,6 +12,6 @@
 
 + (Account *) accountWithDictionary: (NSDictionary *) dict inManagedObjectContext: (NSManagedObjectContext * ) context;
 + (Account *) retrieveFromDb: (NSDictionary *) dict withManagedContext: (NSManagedObjectContext*) context;
-+ (Account *) retrieveFromDbWithLocalId: (NSString *) localId accountType: (NSString *) accuntType  withManagedContext: (NSManagedObjectContext*) context;
++ (Account *) retrieveFromDbWithLocalId: (NSString *) localId accountType: (NSString *) accountType withManagedContext: (NSManagedObjectContext*) context;
 
 @end

@@ -15,10 +15,10 @@
  *
  *  @param context The Core Data Context.
  */
-+ (void) syncUsers: (NSManagedObjectContext*) context {
++ (void) syncUsers: (NSManagedObjectContext *) context {
     NSLog(@"[%s]", __func__);
     
-    INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
+    INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
   
     [synchronizer createContext:context];
     
@@ -32,10 +32,10 @@
  *
  *  @param context The Core Data Context.
  */
-+ (void) syncInquiries: (NSManagedObjectContext*) context {
++ (void) syncInquiries: (NSManagedObjectContext *) context {
     NSLog(@"[%s]", __func__);
     
-    INQCloudSynchronizer* synchronizer = [[INQCloudSynchronizer alloc] init];
+    INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
     
@@ -44,13 +44,43 @@
     [synchronizer sync];
 }
 
++ (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
+    NSLog(@"[%s]", __func__);
+    
+    INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.inquiryId = inquiryId;
+    synchronizer.syncInquiryUsers = YES;
+    
+    [synchronizer sync];
+}
+
+/*!
+ *  Synchronize Messages with the backend.
+ *
+ *  @param context The Core Data Context.
+ */
++ (void) syncMessages: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
+    NSLog(@"[%s]", __func__);
+    
+    INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.inquiryId = inquiryId;
+    synchronizer.syncMessages = YES;
+    
+    [synchronizer sync];
+}
 
 /*!
  *  Create a local Core Data Context.
  *
  *  @param mainContext The Parent Core Data Context.
  */
-- (void) createContext: (NSManagedObjectContext*) mainContext {
+- (void) createContext: (NSManagedObjectContext *) mainContext {
     self.parentContext = mainContext;
     
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
@@ -115,6 +145,10 @@
 
         if (self.syncUsers) {
             [self syncAllUsers];
+        } else if (self.syncInquiryUsers) {
+            [self synchronizeInquiryUsers];
+        } else if (self.syncMessages) {
+            [self synchronizeMessages];
         } else if (self.syncInquiries) {
             [self syncronizeInquiries];
         } else {
@@ -251,31 +285,31 @@
             }
         }
         
-#warning Syncing Messages must be made more inteligent.
-        
-        if (newInquiry.run) {
-            //{
-            //    deleted = 0;
-            //    lastModificationDate = 1397566132526;
-            //    name = Default;
-            //    runId = 5300507992129536;
-            //    threadId = 5757904829284352;
-            //    type = "org.celstec.arlearn2.beans.run.Thread";
-            //}
-            
-            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
-            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
-            
-            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
-            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
-            
-            for (NSDictionary *mDict in messages)
-            {
-                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
-     
-                NSLog(@"[%s] %@",__func__, msg.body);
-            }
-        }
+//#warning Syncing Messages must be made more inteligent.
+//        
+//        if (newInquiry.run) {
+//            //{
+//            //    deleted = 0;
+//            //    lastModificationDate = 1397566132526;
+//            //    name = Default;
+//            //    runId = 5300507992129536;
+//            //    threadId = 5757904829284352;
+//            //    type = "org.celstec.arlearn2.beans.run.Thread";
+//            //}
+//            
+//            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
+//            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
+//            
+//            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
+//            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+//            
+//            for (NSDictionary *mDict in messages)
+//            {
+//                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+//     
+//                NSLog(@"[%s] %@",__func__, msg.body);
+//            }
+//        }
         
         NSError *error = nil;
         [self.context save:&error];
@@ -289,7 +323,7 @@
  *
  *  Runs on a separate thread in the background.
  */
-- (void) syncAllUsers{
+- (void) syncAllUsers {
     NSLog(@"[%s]", __func__);
     
     // Fetch Account default values for localId and withProviderId.
@@ -332,6 +366,77 @@
     }
     
     self.syncUsers = NO;
+}
+
+/*!
+ *  Synchronize Users (Friends) with backend.
+ *
+ *  Runs on a separate thread in the background.
+ */
+- (void) synchronizeInquiryUsers {
+    NSLog(@"[%s] inruiryId: %@", __func__, self.inquiryId);
+    
+    Account * account = [ARLNetwork CurrentAccount];
+    
+    // Fetch Account default values for localId and withProviderId.
+    NSDictionary *dict = [ARLNetwork getInquiryUsers:account.localId withProviderId:account.accountType inquiryId:self.inquiryId];
+    
+    for (NSDictionary *user in [dict objectForKey:@"result"]) {
+        if ( [((NSObject *)[user objectForKey:@"oauthProvider"]) isKindOfClass: [NSString class]]) {
+            Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
+            
+            NSString *oauthProvider = [user objectForKey:@"oauthProvider"];
+            NSString *oauthProviderType = [NSString stringWithFormat:@"%@",[ARLNetwork elggProviderByName:oauthProvider]];
+            
+            // + (Account *) retrieveFromDbWithLocalId: (NSString *) localId accountType: (NSString *) accountType withManagedContext: (NSManagedObjectContext*) context;
+            if (![Account retrieveFromDbWithLocalId:[user objectForKey:@"oauthId"] accountType:oauthProviderType withManagedContext:self.context]) {
+                NSDictionary *userInfo = [ARLNetwork getUserInfo:inquiry.run.runId userId:[user objectForKey:@"oauthId"] providerId: oauthProviderType];
+                // veg - 03-02-2014 Are the oauthId/oauthProvider equal to the ones used to retrieve friends?
+                //            NSString *oauthId = [user objectForKey:@"oauthId"];
+                //            NSString *oauthProvider = [user objectForKey:@"oauthProvider"];
+                //            NSString *name = [user objectForKey:@"name"];
+                //            NSString *icon = [user objectForKey:@"icon"];
+                //
+                //            //NSLog(@"[%s] user %@", __func__, user);
+                //
+                //            // veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
+                //            NSNumber *oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];
+                
+                [Account accountWithDictionary:userInfo inManagedObjectContext:self.context];
+            }
+        }
+    }
+    
+    self.syncInquiryUsers = NO;
+}
+
+
+/*!
+ *  Synchronize Messages with backend.
+ *
+ *  Runs on a separate thread in the background.
+ */
+- (void) synchronizeMessages{
+    NSLog(@"[%s] inquiryIdId=%@", __func__, self.inquiryId);
+    Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
+    
+    NSDictionary *tDict = [ARLNetwork defaultThread:inquiry.run.runId];
+    // NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
+    
+    NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+    NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+    
+    for (NSDictionary *mDict in messages)
+    {
+        Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+        
+        // NSLog(@"[%s] %@",__func__, msg.body);
+    }
+    
+    NSError *error = nil;
+    [self.context save:&error];
+    
+    self.syncMessages = NO;
 }
 
 @end

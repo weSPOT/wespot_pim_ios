@@ -113,8 +113,6 @@
 		8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36BD18E1C32E000FCEA6 /* Response.m */; };
 		8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */; };
 		8D4C36C718E46076000FCEA6 /* Message+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36C618E46076000FCEA6 /* Message+Create.m */; };
-		8D4C36CD18E462FC000FCEA6 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36CC18E462FC000FCEA6 /* Message.m */; };
-		8D4C36D018E47C51000FCEA6 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36CF18E47C51000FCEA6 /* Account.m */; };
 		8D4C36D618E47E3B000FCEA6 /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */; };
 		8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
@@ -141,6 +139,8 @@
 		8D6E80F018D5BAFB0077D70E /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */; };
 		8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6E80E618D5BAFA0077D70E /* libzbar.a */; };
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
+		8D96FF221906ABAB00520DEF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF211906ABAB00520DEF /* Message.m */; };
+		8D96FF251906ABAC00520DEF /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF241906ABAC00520DEF /* Account.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
 		8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */; };
@@ -301,10 +301,6 @@
 		8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemView.m; sourceTree = "<group>"; };
 		8D4C36C518E46076000FCEA6 /* Message+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Message+Create.h"; sourceTree = "<group>"; };
 		8D4C36C618E46076000FCEA6 /* Message+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Message+Create.m"; sourceTree = "<group>"; };
-		8D4C36CB18E462FC000FCEA6 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		8D4C36CC18E462FC000FCEA6 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
-		8D4C36CE18E47C51000FCEA6 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		8D4C36CF18E47C51000FCEA6 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		8D4C36D418E47E3B000FCEA6 /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
 		8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
 		8D4C36D718EC3F19000FCEA6 /* INQNewInquiryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewInquiryViewController.h; sourceTree = "<group>"; };
@@ -371,6 +367,10 @@
 		8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		8D750DC818D74BEB0005C41D /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQProfileTableViewController.h; sourceTree = "<group>"; };
 		8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQProfileTableViewController.m; sourceTree = "<group>"; };
+		8D96FF201906ABAB00520DEF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		8D96FF211906ABAB00520DEF /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		8D96FF231906ABAC00520DEF /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		8D96FF241906ABAC00520DEF /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
 		8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInviteFriendsViewController.h; sourceTree = "<group>"; };
@@ -524,13 +524,15 @@
 			children = (
 				34D4228817B670EC0051E84C /* Account+Create.h */,
 				34D4228917B670EC0051E84C /* Account+Create.m */,
-				8D4C36CE18E47C51000FCEA6 /* Account.h */,
-				8D4C36CF18E47C51000FCEA6 /* Account.m */,
 				34D4228C17B670EC0051E84C /* Action+Create.h */,
 				34D4228D17B670EC0051E84C /* Action+Create.m */,
 				8D4511DB18E04F3B0012DEDF /* Action.h */,
 				8D4511DC18E04F3B0012DEDF /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
+				8D96FF231906ABAC00520DEF /* Account.h */,
+				8D96FF241906ABAC00520DEF /* Account.m */,
+				8D96FF201906ABAB00520DEF /* Message.h */,
+				8D96FF211906ABAB00520DEF /* Message.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
 				34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */,
 				8D4511F318E04F3C0012DEDF /* CurrentItemVisibility.h */,
@@ -557,8 +559,6 @@
 				8D4511EE18E04F3B0012DEDF /* Inquiry.m */,
 				8D4C36C518E46076000FCEA6 /* Message+Create.h */,
 				8D4C36C618E46076000FCEA6 /* Message+Create.m */,
-				8D4C36CB18E462FC000FCEA6 /* Message.h */,
-				8D4C36CC18E462FC000FCEA6 /* Message.m */,
 				34D422AA17B670EC0051E84C /* Response+Create.h */,
 				34D422AB17B670EC0051E84C /* Response+Create.m */,
 				8D4C36BC18E1C32E000FCEA6 /* Response.h */,
@@ -1055,7 +1055,6 @@
 				8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */,
 				8D5C668118D6F5B9003B79E5 /* ARLAudioRecorderViewController.m in Sources */,
 				8D19460718C0A56300C32EED /* INQInquiryTableViewController.m in Sources */,
-				8D4C36D018E47C51000FCEA6 /* Account.m in Sources */,
 				8D19460A18C0A57000C32EED /* INQMainViewController.m in Sources */,
 				8D6E80C618D5B7AC0077D70E /* ARLAppearDisappearDelegator.m in Sources */,
 				8D6E80BB18D5B5DB0077D70E /* ARLCloudSynchronizer.m in Sources */,
@@ -1103,17 +1102,18 @@
 				34D422C017B670ED0051E84C /* GeneralItem+ARLearnBeanCreate.m in Sources */,
 				34D422C217B670ED0051E84C /* GeneralItemData+Extra.m in Sources */,
 				8D1945F218C0A51200C32EED /* INQLoginViewController.m in Sources */,
+				8D96FF221906ABAB00520DEF /* Message.m in Sources */,
 				8D4511E918E04F3B0012DEDF /* GeneralItemData.m in Sources */,
 				34D422C417B670ED0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m in Sources */,
 				8D4511E618E04F3B0012DEDF /* Run.m in Sources */,
 				8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */,
 				8D19461018C0A58D00C32EED /* INQCloudSynchronizer.m in Sources */,
 				34D422C717B670ED0051E84C /* Response+Create.m in Sources */,
-				8D4C36CD18E462FC000FCEA6 /* Message.m in Sources */,
 				8D19460418C0A55800C32EED /* INQMyInquiriesTableViewController.m in Sources */,
 				8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */,
 				8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
+				8D96FF251906ABAC00520DEF /* Account.m in Sources */,
 				8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */,
 				8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,

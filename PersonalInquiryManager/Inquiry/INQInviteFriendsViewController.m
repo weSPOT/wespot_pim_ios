@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, profile) {
         self.usersFriends = [(NSDictionary *)[ARLNetwork getFriends:account.localId withProviderId:account.accountType] objectForKey:@"result"];
         
         // Get users of this inquiry.
-        self.inquiryUsers = [(NSDictionary *)[ARLNetwork getInqueryUsers:account.localId withProviderId:account.accountType inquiryId:self.inquiryId] objectForKey:@"result"];
+        self.inquiryUsers = [(NSDictionary *)[ARLNetwork getInquiryUsers:account.localId withProviderId:account.accountType inquiryId:self.inquiryId] objectForKey:@"result"];
         
         // Remove ourself from the inquiryUsers array.
         // We cannot be friends with ourselfs.

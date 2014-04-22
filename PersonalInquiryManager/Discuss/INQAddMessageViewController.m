@@ -37,7 +37,7 @@
     // Do any additional setup after loading the view.
     self.titleEdit.delegate = self;
     self.descriptionEdit.delegate = self;
-    //    self.descriptionEdit
+
     [self addConstraints];
 }
 
@@ -66,34 +66,6 @@
     NSDictionary *result= [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
 
     NSLog(@"[%s] %@", __func__, result);
-    
-//   NSDictionary *dict = [ARLNetwork createInquiry:title description:html];
-//
-//    if (dict) {
-//        NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
-//        
-//        if ([[dict objectForKey:@"status"] intValue] == 0) {
-//            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//            
-//            // Sync will return our new Inquiry and it's Run.
-//            if (ARLNetwork.networkAvailable) {
-//                [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
-//            }
-//        } else {
-//            //{
-//            //    message = "No user with corresponding credentials found: Google_101754523769925754305";
-//            //    status = "-1";
-//            //}
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                            message:[[NSString alloc]
-//                                                                     initWithFormat:@"%@",
-//                                                                     [dict objectForKey:@"result"]]
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"OK"
-//                                                  otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-//    }
 }
 
 - (void)addConstraints {
@@ -241,8 +213,14 @@
 }
 
 - (IBAction)createInquiryTap:(id)sender {
-   if ([self.titleEdit.text length]>0 && [self.descriptionEdit.text length]>0) {
+    if ([self.titleEdit.text length]>0 && [self.descriptionEdit.text length]>0) {
         [self createDefaultThreadMessage:self.titleEdit.text description:self.descriptionEdit.text];
+        
+        if (ARLNetwork.networkAvailable) {
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            
+            [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+        }
         
         [self.navigationController popViewControllerAnimated:YES];
     }

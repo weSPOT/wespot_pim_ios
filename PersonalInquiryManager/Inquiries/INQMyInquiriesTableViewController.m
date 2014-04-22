@@ -185,7 +185,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     
     [self setupFetchedResultsController];
     
-    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
     
     self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];

@@ -2,12 +2,13 @@
 //  Account.m
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/27/14.
+//  Created by Wim van der Vegt on 4/22/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import "Account.h"
 #import "Action.h"
+#import "Message.h"
 #import "Response.h"
 
 
@@ -22,6 +23,7 @@
 @dynamic name;
 @dynamic picture;
 @dynamic actions;
+@dynamic messages;
 @dynamic responses;
 
 @end

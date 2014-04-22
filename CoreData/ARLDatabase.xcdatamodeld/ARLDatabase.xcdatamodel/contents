@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="Account" syncable="YES">
         <attribute name="accountLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="accountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -10,6 +10,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="picture" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="actions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Action" inverseName="account" inverseEntity="Action" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="account" inverseEntity="Message" syncable="YES"/>
         <relationship name="responses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Response" inverseName="account" inverseEntity="Response" syncable="YES"/>
     </entity>
     <entity name="Action" representedClassName="Action" syncable="YES">
@@ -86,6 +87,7 @@
         <attribute name="messageId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="threadId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="messages" inverseEntity="Account" syncable="YES"/>
         <relationship name="run" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Run" inverseName="messages" inverseEntity="Run" syncable="YES"/>
     </entity>
     <entity name="Response" representedClassName="Response" syncable="YES">
@@ -133,7 +135,7 @@
         <attribute name="picture" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-2736" positionY="-1323" width="128" height="195"/>
+        <element name="Account" positionX="-2736" positionY="-1377" width="128" height="208"/>
         <element name="Action" positionX="-2943" positionY="-1152" width="128" height="135"/>
         <element name="CurrentItemVisibility" positionX="-2927" positionY="-972" width="128" height="90"/>
         <element name="Game" positionX="-3332" positionY="-687" width="128" height="165"/>
@@ -141,10 +143,10 @@
         <element name="GeneralItemData" positionX="-2538" positionY="-1017" width="128" height="135"/>
         <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="150"/>
         <element name="Inquiry" positionX="-3314" positionY="-958" width="128" height="163"/>
-        <element name="Message" positionX="-2934" positionY="-738" width="128" height="135"/>
-        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="240"/>
+        <element name="Message" positionX="-2826" positionY="-711" width="128" height="148"/>
+        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="238"/>
         <element name="Run" positionX="-3116" positionY="-1008" width="128" height="223"/>
         <element name="SynchronizationBookKeeping" positionX="-3116" positionY="-1134" width="128" height="90"/>
-        <element name="TestAccount" positionX="-2583" positionY="-441" width="128" height="165"/>
+        <element name="TestAccount" positionX="-2531" positionY="-714" width="128" height="165"/>
     </elements>
 </model>

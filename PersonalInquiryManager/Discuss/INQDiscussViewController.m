@@ -59,12 +59,61 @@ typedef NS_ENUM(NSInteger, friends) {
     
     self.fetchedResultsController.delegate = self;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    
     NSLog(@"[%s] runId: %@", __func__, inquiry.run.runId);
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
 
+    if (ARLNetwork.networkAvailable) {
+        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:inquiry.inquiryId];
+    }
+    
     NSLog(@"[%s] Messages: %d", __func__, [[self.fetchedResultsController fetchedObjects] count]);
+}
+
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    //    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    //
+    //    NSError *error = nil;
+    //    [self.fetchedResultsController performFetch:&error];
+    //
+    //    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+    //        [self.tableView reloadData];
+    //    }
+
+    
+    // See if there are any Inquiry objects added and if so, reload the tableView.
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+    
+    for (NSManagedObject *obj in insertedObjects) {
+        if ([[obj entity].name isEqualToString:@"Message"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            [self.tableView reloadData];
+            return;
+        }
+    }
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -82,60 +131,6 @@ typedef NS_ENUM(NSInteger, friends) {
     
     // Dispose of any resources that can be recreated.
 }
-
-// Get Default Thread
-// GET /rest/messages/thread/runId/5117857260109824/default
-
-//{
-//    "type": "org.celstec.arlearn2.beans.run.Thread",
-//    "runId": 5117857260109824,
-//    "threadId": 6397033275457536,
-//    "name": "Default",
-//    "deleted": false,
-//    "lastModificationDate": 1395924374319
-//}
-
-// Get Messags from Default Thread
-// GET /rest/messages/runId/5117857260109824/default
-
-//{
-//    "type": "org.celstec.arlearn2.beans.run.MessageList",
-//    "serverTime": 1395925562539,
-//    "messages": [
-//                 {
-//                     "type": "org.celstec.arlearn2.beans.run.Message",
-//                     "runId": 5117857260109824,
-//                     "deleted": false,
-//                     "subject": "Heading",
-//                     "body": "Here comes some text",
-//                     "threadId": 6397033275457536,
-//                     "messageId": 5802343513718784,
-//                     "date": 1395925443163
-//                 }
-//                 ]
-//}
-
-// Post a Message on the Main Thread.
-// POST /rest/messages/message
-
-//{
-//    "type": "org.celstec.arlearn2.beans.run.Message",
-//    "runId": 5117857260109824,
-//    "threadId": 6397033275457536,
-//    "subject": "Heading",
-//    "body": "Here comes some text"
-//}
-
-//{
-//    "type": "org.celstec.arlearn2.beans.run.Message",
-//    "runId": 5117857260109824,
-//    "deleted": false,
-//    "subject": "Heading",
-//    "body": "Here comes some text",
-//    "threadId": 6397033275457536,
-//    "messageId": 5802343513718784,
-//    "date": 1395925443163
-//}
 
 /*!
  *  The number of sections in a Table.

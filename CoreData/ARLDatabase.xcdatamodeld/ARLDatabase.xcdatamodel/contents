@@ -135,7 +135,7 @@
         <attribute name="picture" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-2736" positionY="-1377" width="128" height="208"/>
+        <element name="Account" positionX="-2736" positionY="-1377" width="128" height="210"/>
         <element name="Action" positionX="-2943" positionY="-1152" width="128" height="135"/>
         <element name="CurrentItemVisibility" positionX="-2927" positionY="-972" width="128" height="90"/>
         <element name="Game" positionX="-3332" positionY="-687" width="128" height="165"/>

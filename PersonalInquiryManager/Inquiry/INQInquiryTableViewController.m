@@ -69,6 +69,8 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
+@property (readonly, nonatomic) NSInteger *headerCellHeight;
+
 @property (readonly, nonatomic) CGFloat navbarWidth;
 
 @end
@@ -81,6 +83,10 @@ typedef NS_ENUM(NSInteger, sections) {
 
 -(NSString *) cellIdentifier {
     return  @"inquiryPartCell";
+}
+
+-(NSInteger *) headerCellHeight {
+    return 210;
 }
 
 - (void)refreshTable {
@@ -194,7 +200,7 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier]; // forIndexPath:indexPath
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     
     if (!cell || (indexPath.section==HEADER)) {
         switch (indexPath.section) {
@@ -216,6 +222,8 @@ typedef NS_ENUM(NSInteger, sections) {
         case HEADER:
             if (cell.contentView.subviews.count==0)
             {
+                // Setup & Remove Auto Constraints.
+ 
                 // Icon
                 UIImage *image = [UIImage imageNamed:@"description"];
                 UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
@@ -240,12 +248,12 @@ typedef NS_ENUM(NSInteger, sections) {
                 UIWebView *webView = [[UIWebView alloc] init];
                 webView.backgroundColor = [UIColor clearColor];
                 [webView loadHTMLString:self.inquiry.desc baseURL:nil];
-                
+                webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                webView.layer.borderWidth = 1.0f;
                 webView.translatesAutoresizingMaskIntoConstraints = NO;
                 [cell.contentView addSubview:webView];
                 
                 cell.detailTextLabel.text = @"";
-                //Remove Constraints
                 
                 //Add Constraints
                 NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -279,7 +287,7 @@ typedef NS_ENUM(NSInteger, sections) {
                                       views:viewsDictionary]];
                 
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", 210-image.size.height-2*20]
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", (int)self.headerCellHeight - image.size.height - 2*20]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
@@ -289,6 +297,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
             break;
+            
         case PARTS : {
             switch (indexPath.item) {
                 case HYPOTHESIS:
@@ -358,7 +367,7 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     switch (indexPath.section) {
         case HEADER:
-            return 210;
+            return 1.0f * (int)self.headerCellHeight;
         case PARTS:
             return tableView.rowHeight;
         case INVITE:

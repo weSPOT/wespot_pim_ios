@@ -51,7 +51,7 @@
  //   "senderProviderId": 2
     
     // Set TimeStamp.
-    message.date = [NSNumber numberWithLongLong:[[dict objectForKey:@"timestamp"] longLongValue]];
+    message.date = [NSNumber numberWithLongLong:[[dict objectForKey:@"date"] longLongValue]];
     
     NSError *error = nil;
     [context save:&error];

@@ -154,7 +154,7 @@
 #warning Implement sending a Friend Request.
         
     } else {
-        NSString *message = [[NSString alloc] initWithFormat:@"%@ is already a Friend?", cell.textLabel.text];
+        NSString *message = [[NSString alloc] initWithFormat:@"%@ is already a Friend!", cell.textLabel.text];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

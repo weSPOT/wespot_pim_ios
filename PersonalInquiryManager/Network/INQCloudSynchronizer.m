@@ -388,19 +388,9 @@
             NSString *oauthProvider = [user objectForKey:@"oauthProvider"];
             NSString *oauthProviderType = [NSString stringWithFormat:@"%@",[ARLNetwork elggProviderByName:oauthProvider]];
             
-            // + (Account *) retrieveFromDbWithLocalId: (NSString *) localId accountType: (NSString *) accountType withManagedContext: (NSManagedObjectContext*) context;
+            // For non-existing users, download the full user info to create the Account record.
             if (![Account retrieveFromDbWithLocalId:[user objectForKey:@"oauthId"] accountType:oauthProviderType withManagedContext:self.context]) {
                 NSDictionary *userInfo = [ARLNetwork getUserInfo:inquiry.run.runId userId:[user objectForKey:@"oauthId"] providerId: oauthProviderType];
-                // veg - 03-02-2014 Are the oauthId/oauthProvider equal to the ones used to retrieve friends?
-                //            NSString *oauthId = [user objectForKey:@"oauthId"];
-                //            NSString *oauthProvider = [user objectForKey:@"oauthProvider"];
-                //            NSString *name = [user objectForKey:@"name"];
-                //            NSString *icon = [user objectForKey:@"icon"];
-                //
-                //            //NSLog(@"[%s] user %@", __func__, user);
-                //
-                //            // veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
-                //            NSNumber *oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];
                 
                 [Account accountWithDictionary:userInfo inManagedObjectContext:self.context];
             }
@@ -420,17 +410,12 @@
     NSLog(@"[%s] inquiryIdId=%@", __func__, self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
-    NSDictionary *tDict = [ARLNetwork defaultThread:inquiry.run.runId];
-    // NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
-    
     NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
     NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
     
     for (NSDictionary *mDict in messages)
     {
-        Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
-        
-        // NSLog(@"[%s] %@",__func__, msg.body);
+        [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
     }
     
     NSError *error = nil;

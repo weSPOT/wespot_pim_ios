@@ -32,12 +32,19 @@ typedef NS_ENUM(NSInteger, friends) {
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property (readonly, nonatomic) NSInteger *messageCellHeight;
+
 @end
 
 @implementation INQDiscussViewController
 
 -(NSString *) cellIdentifier {
     return  @"messageCell";
+}
+
+
+-(NSInteger *) messageCellHeight {
+    return 120;
 }
 
 - (void)setupFetchedResultsController {
@@ -190,12 +197,18 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+    if (!cell || (indexPath.section==SEND)) {
+        switch (indexPath.section) {
+            case SEND:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+                break;
+            case MESSAGES:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+        }
     }
-    
-    // cell.backgroundColor = [UIColor clearColor];
-    
+
     // Configure the cell...
     
     switch (indexPath.section) {
@@ -209,13 +222,130 @@ typedef NS_ENUM(NSInteger, friends) {
             
             Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);
             
+            // 1) Caption
             cell.textLabel.text = message.subject;
-            cell.detailTextLabel.text = message.body;
+            cell.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // 2) Icon (User Avatar)
+            cell.imageView.image = [UIImage imageNamed:@"profile"];
+            if (message.account) {
+                NSData* icon = [message.account picture];
+                
+                if (icon) {
+                    cell.imageView.image = [UIImage imageWithData:icon];
+                }
+            }
+            cell.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // 3) Details (Date + User Name)
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+            [dateFormatter setTimeStyle:kCFDateFormatterShortStyle];
+            
+//            1398254256101
+//            1398211200
+
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[message.date longLongValue]/1000.0];
+            
+            if (message.account) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], message.account.name];
+            } else {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], @"unknown sender"];
+            }
+            cell.detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // 4) Message Body (can contain html).
+            UITextView *textView = [[UITextView alloc] init];
+            textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            textView.layer.borderWidth = 1.0f;
+            textView.editable = NO;
+            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                                                  NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
+                                                             documentAttributes:nil error:nil];
+            textView.attributedText = html;
+            textView.translatesAutoresizingMaskIntoConstraints = NO;
+            [cell.contentView addSubview:textView];
+           
+            cell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // 5) Add constraints.
+            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                             cell.imageView, @"icon",
+                                             cell.detailTextLabel, @"details",
+                                             cell.textLabel, @"text",
+                                             textView, @"body",
+                                             cell.contentView, @"content",
+                                             nil];
+            if (cell.imageView) {
+                // 1) Size ContentView (needed to get rid of selected cell tbrouble)
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|[content(==%d)]", (int)self.messageCellHeight]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|[content(==%0.0f)]", tableView.bounds.size.width]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                
+                // 2) Size Icon and align it with text.
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", tableView.rowHeight]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", tableView.rowHeight]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                
+                // 3) Align details with text and icon.
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"V:|-[text]-[details]"
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"H:[icon]-[details]-|"
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                
+                // 4) Align body with icon.
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"H:[icon]-[body]-|"
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+                [cell addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[body(==%0.0f)]", (int)self.messageCellHeight-tableView.rowHeight-2*20]
+                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                                      metrics:nil
+                                      views:viewsDictionary]];
+            }
         }
     }
     
     return cell;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case SEND:
+            return tableView.rowHeight;
+        case MESSAGES:
+            return 1.0f * (int)self.messageCellHeight;
+    }
+    
+    // Error
+    return tableView.rowHeight;
+}
+
 /*!
  *  For each row in the table jump to the associated view.
  *

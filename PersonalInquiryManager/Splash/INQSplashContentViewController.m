@@ -76,7 +76,7 @@
                                views:viewsDictionary]];
     // Carousel
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: @"V:|-20-[title]-[carousel(==320)]"
+                               constraintsWithVisualFormat: @"V:|-60-[title]-[carousel(==320)]"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

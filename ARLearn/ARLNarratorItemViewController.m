@@ -186,9 +186,9 @@ typedef NS_ENUM(NSInteger, responses) {
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"contentType"
-                                                                 ascending:YES],
+                                                                 ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)],
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
-                                                                 ascending:YES],
+                                                                 ascending:YES selector:@selector(compare:)],
                                    nil];
     } else if (self.account) {
         request.predicate = [NSPredicate predicateWithFormat:
@@ -197,7 +197,7 @@ typedef NS_ENUM(NSInteger, responses) {
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
-                                                                 ascending:YES],
+                                                                 ascending:YES selector:@selector(compare:)],
                                    nil];
     }
 

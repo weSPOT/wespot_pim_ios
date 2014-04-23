@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [request setFetchBatchSize:8];
     
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES selector:@selector(compare:)]];
     
     request.predicate = [NSPredicate predicateWithFormat:
                          @"run.runId == %lld",

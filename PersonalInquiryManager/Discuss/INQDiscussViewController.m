@@ -358,10 +358,15 @@ typedef NS_ENUM(NSInteger, friends) {
     
     switch (indexPath.section) {
         case SEND: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessageController"];
-            
-            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
-                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
+            if (ARLNetwork.networkAvailable) {
+                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessageController"];
+                
+                if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+                    [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
+                }
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Only available when on-line" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
             }
         }
             break;

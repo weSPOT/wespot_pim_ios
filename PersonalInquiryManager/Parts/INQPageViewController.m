@@ -10,8 +10,8 @@
 
 @interface INQPageViewController ()
 
-//#warning TODO Correct Initial Number in PageControl (self.currentPageIndex and PageViewController are not in sync).
-//#warning TODO Cannot scroll backwards property starting from the last page..
+@property (strong, nonatomic) UIBarButtonItem *buttonFF;
+@property (strong, nonatomic) UIBarButtonItem *buttonFB;
 
 @end
 
@@ -33,6 +33,18 @@
     [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [self didMoveToParentViewController:self];
+    
+    self.buttonFF = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward
+                                                                 target:self
+                                                                 action:@selector(nextPage)];
+    self.buttonFB = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind
+                                                                 target:self
+                                                                 action:@selector(prevPage)];
+
+    [self.navigationItem setRightBarButtonItems:[[NSArray alloc] initWithObjects:self.buttonFF, self.buttonFB, nil]];
+    
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -79,12 +91,19 @@
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);
     
+#warning hardcoded highest page index
+
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+    
     return view;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     // Increase the index by 1 to return
     UIViewController *view = nil;
+    
+    // ßNSLog(@"[%s] Old Index: %d", __func__, [self.viewControllers indexOfObject:viewController]);
     
     do {
         if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:5]]) {
@@ -97,6 +116,11 @@
         
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);
+    
+#warning hardcoded highest page index
+    
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
     return view;
 }
@@ -116,6 +140,26 @@
 -(void)setCurrentPageIndex:(NSNumber *)currentPageIndex
 {
     _currentPageIndex= currentPageIndex;
+}
+
+-(void)nextPage {
+    UIViewController *next = [self pageViewController:self viewControllerAfterViewController:[self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]]];
+    
+    if (next) {
+        NSArray *viewControllers = [NSArray arrayWithObject:next];
+        
+        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
+}
+
+-(void)prevPage {
+    UIViewController * prev = [self pageViewController:self viewControllerBeforeViewController:[self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]]];
+    
+    if (prev) {
+        NSArray *viewControllers = [NSArray arrayWithObject:prev];
+        
+        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
 }
 
 @end

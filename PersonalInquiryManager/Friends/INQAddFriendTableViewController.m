@@ -59,6 +59,7 @@
     NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.AllUsers];
     
     NSLog(@"[%s] %d users", __func__, [tmp count]);
+    NSLog(@"[%s] removing ourselves", __func__);
     for (NSDictionary *dict in self.AllUsers) {
         NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
         if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId] &&
@@ -68,7 +69,7 @@
             break;
         }
     }
-     NSLog(@"[%s] %d users", __func__, [tmp count]);
+    NSLog(@"[%s] %d users", __func__, [tmp count]);
     
     self.AllUsers = tmp;
 }

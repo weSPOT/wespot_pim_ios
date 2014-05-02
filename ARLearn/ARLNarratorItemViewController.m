@@ -46,6 +46,9 @@ typedef NS_ENUM(NSInteger, responses) {
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property (readonly, nonatomic) CGFloat noColumns;
+@property (readonly, nonatomic) CGFloat columnInset;
+
 @end
 
 @implementation ARLNarratorItemViewController
@@ -69,8 +72,17 @@ typedef NS_ENUM(NSInteger, responses) {
     return self.tabBarController.tabBar.bounds.size.height;
 }
 
--(NSString*) cellIdentifier {
+-(NSString *) cellIdentifier {
     return  @"responseItemCell";
+}
+
+
+-(CGFloat) noColumns {
+    return  4.0f;
+}
+
+-(CGFloat) columnInset {
+    return  10.0f;
 }
 
 /*!
@@ -510,14 +522,14 @@ typedef NS_ENUM(NSInteger, responses) {
 
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //    NSString *searchTerm = self.searches[indexPath.section];
-    //
-    //    FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
+
+    // noColumns
+    CGFloat w = self.collectionView.bounds.size.width - ((self.noColumns) * self.columnInset);
+    w /= self.noColumns;
+    w-= 1 + (2 * self.noColumns);
     
     // 2
-    CGSize retval = /*photo.thumbnail.size.width > 0 ? photo.thumbnail.size :*/CGSizeMake(100, 100);
-    retval.height += 35;
-    retval.width += 35;
+    CGSize retval = CGSizeMake(w, w);
     
     return retval;
 }
@@ -525,7 +537,8 @@ typedef NS_ENUM(NSInteger, responses) {
 // 3
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(50, 20, 50, 20);
+    
+    return UIEdgeInsetsMake(self.columnInset, self.columnInset, self.columnInset, self.columnInset);
 }
 
 // 4
@@ -701,5 +714,11 @@ typedef NS_ENUM(NSInteger, responses) {
         [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
     }
 }
+
+//-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+//                               duration:(NSTimeInterval)duration{
+//    
+//    [self.collectionViewLayout invalidateLayout];
+//}
 
 @end

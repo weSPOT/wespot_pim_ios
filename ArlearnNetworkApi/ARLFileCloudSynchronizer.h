@@ -24,12 +24,15 @@
 @property (nonatomic, readwrite) BOOL syncGeneralItems;
 @property (nonatomic, readwrite) BOOL syncResponses;
 
+@property (strong, nonatomic)  NSString *contentType;
+
 - (void) createContext: (NSManagedObjectContext*) mainContext;
 
 - (void) sync;
 
 + (void) syncGeneralItems: (NSManagedObjectContext*) context;
-+ (void) syncResponseData: (NSManagedObjectContext*) context;
++ (void) syncResponseData: (NSManagedObjectContext*) context
+              contentType: (NSString *) contentType;
 
 //+ (void)downloadImageWithURL:(Response *)resp completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock;
 

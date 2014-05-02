@@ -31,16 +31,16 @@
 @property (nonatomic, readwrite) BOOL syncResponses;
 @property (nonatomic, readwrite) BOOL syncActions;
 
-@property (strong, nonatomic)  NSNumber * gameId;
-@property (strong, nonatomic)  NSNumber * visibilityRunId;
+@property (strong, nonatomic)  NSNumber *gameId;
+@property (strong, nonatomic)  NSNumber *visibilityRunId;
 
-@property (strong, nonatomic)  NSManagedObjectContext * context;
-@property (strong, nonatomic)  NSManagedObjectContext * parentContext;
+@property (strong, nonatomic)  NSManagedObjectContext *context;
+@property (strong, nonatomic)  NSManagedObjectContext *parentContext;
 
-+ (void) syncGamesAndRuns: (NSManagedObjectContext*) context;
-+ (void) syncResponses: (NSManagedObjectContext*) context;
-+ (void) syncActions: (NSManagedObjectContext*) context ;
-+ (void) syncVisibilityForInquiry: (NSManagedObjectContext*) context
++ (void) syncGamesAndRuns: (NSManagedObjectContext *) context;
++ (void) syncResponses: (NSManagedObjectContext *) context;
++ (void) syncActions: (NSManagedObjectContext *) context ;
++ (void) syncVisibilityForInquiry: (NSManagedObjectContext *) context
                               run: (Run *) run;
 
 - (void) sync;

@@ -353,13 +353,13 @@ typedef NS_ENUM(NSInteger, responses) {
         [self processJsonSetup:[jsonDict objectForKey:@"openQuestion"]];
         
         self.navigationController.toolbarHidden = NO;
-    } else {
+    } else if (self.account) {
         self.navigationController.toolbarHidden = YES;
         self.withAudio = YES;
         self.withPicture = YES;
         self.withVideo = YES;
-        //      self.withText = YES;
-        //      self.withValue = YES;
+        //self.withText = YES;
+        //self.withValue = YES;
     }
     
     [self setupFetchedResultsController];
@@ -368,11 +368,28 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-        if (ARLNetwork.networkAvailable) {
+    if (ARLNetwork.networkAvailable) {
         if (self.run) {
-            [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext];
+            if (self.withPicture) {
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"application/jpg"];
+            }
+            if (self.self.withVideo) {
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"video/quicktime"];
+            }
+            if (self.withAudio) {
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"audio/aac"];
+            }
+            
+            if (self.withText) {
+                // TODO
+            }
+            if (self.withValue) {
+                // TODO
+            }
         } else if (self.account) {
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext];
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"application/jpg"];
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"video/quicktime"];
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"audio/aac"];
         }
     }
 }

@@ -229,7 +229,7 @@
 + (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"data = %@ AND fileName != %@", NULL, NULL];
+    request.predicate = [NSPredicate predicateWithFormat:@"(data = %@ AND thumb = %@) AND fileName != %@", NULL, NULL, NULL];
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
@@ -237,7 +237,7 @@
     if (error) {
         NSLog(@"error %@", error);
     } else {
-        NSLog(@"[%s] Found %d Responses without Media", __func__, unsyncedResponses.count);
+        NSLog(@"[%s] Found %d Responses without Media or Thumbnail", __func__, unsyncedResponses.count);
     }
     
     return unsyncedResponses;

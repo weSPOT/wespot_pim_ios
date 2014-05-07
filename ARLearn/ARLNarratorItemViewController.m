@@ -31,11 +31,11 @@ typedef NS_ENUM(NSInteger, responses) {
 @property (nonatomic, readwrite) BOOL withVideo;
 @property (nonatomic, readwrite) BOOL isVisible;
 
-@property (nonatomic, strong) UITextField *valueTextField;
-@property (strong, nonatomic) UIImagePickerController * imagePickerController;
+@property (strong, nonatomic) UITextField *valueTextField;
+@property (strong, nonatomic) UIImagePickerController *imagePickerController;
 
-@property (nonatomic, strong) NSString *textDescription;
-@property (nonatomic, strong) NSString *valueDescription;
+@property (strong, nonatomic) NSString *textDescription;
+@property (strong, nonatomic) NSString *valueDescription;
 
 @property (readonly, nonatomic) CGFloat statusbarHeight;
 @property (readonly, nonatomic) CGFloat navbarHeight;
@@ -55,7 +55,6 @@ typedef NS_ENUM(NSInteger, responses) {
 
 @synthesize run = _run;
 @synthesize generalItem = _generalItem;
-
 @synthesize account = _account;
 
 -(CGFloat) statusbarHeight
@@ -127,19 +126,23 @@ typedef NS_ENUM(NSInteger, responses) {
  */
 - (UIImage *)grayishImage:(UIImage *)inputImage {
     UIGraphicsBeginImageContextWithOptions(inputImage.size, NO, inputImage.scale);
-    CGRect imageRect = CGRectMake(0.0f, 0.0f, inputImage.size.width, inputImage.size.height);
     
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-    // Draw a white background
-    CGContextSetRGBFillColor(ctx, 1.0f, 1.0f, 1.0f, 1.0f);
-    CGContextFillRect(ctx, imageRect);
-    
-    // Draw the luminosity on top of the white background to get grayscale
-    [inputImage drawInRect:imageRect blendMode:kCGBlendModeLuminosity alpha:1.0f];
-    
-    // Apply the source image's alpha
-    [inputImage drawInRect:imageRect blendMode:kCGBlendModeDestinationIn alpha:1.0f];
+    @autoreleasepool {
+        CGRect imageRect = CGRectMake(0.0f, 0.0f, inputImage.size.width, inputImage.size.height);
+        
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        
+        // Draw a white background
+        CGContextSetRGBFillColor(ctx, 1.0f, 1.0f, 1.0f, 1.0f);
+        CGContextFillRect(ctx, imageRect);
+        
+        // Draw the luminosity on top of the white background to get grayscale
+        [inputImage drawInRect:imageRect blendMode:kCGBlendModeLuminosity alpha:1.0f];
+        
+        // Apply the source image's alpha
+        [inputImage drawInRect:imageRect blendMode:kCGBlendModeDestinationIn alpha:1.0f];
+        
+    }
     
     UIImage* grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -396,6 +399,8 @@ typedef NS_ENUM(NSInteger, responses) {
 
 - (void) viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    self.fetchedResultsController = nil;
 }
 
 /*!

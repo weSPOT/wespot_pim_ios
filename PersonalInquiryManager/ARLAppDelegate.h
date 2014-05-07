@@ -15,6 +15,8 @@
 #import "INQCloudSynchronizer.h"
 
 #define DEVELOPMENT_MODE @"enable_development_mode"
+#define INQUIRY_VISIBILITY @"inquiry_visibility"
+#define INQUIRY_MEMBERSHIP @"inquiry_membership"
 
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 

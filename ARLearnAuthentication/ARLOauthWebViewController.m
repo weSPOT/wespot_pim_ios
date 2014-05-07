@@ -27,6 +27,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    // http://stackoverflow.com/questions/10018418/uiwebview-not-freeing-all-live-bytes-using-arc
+    [self.webView setDelegate:nil];
+    [self.webView loadHTMLString: @"" baseURL: nil];
+    //    [self.webView stopLoading];
+    //    [self.webView removeFromSuperview];
+    
+    [super viewDidDisappear:animated];
+    
+    //    self.webView = nil;
+    //    self.NavigationAfterClose = nil;
+    
+    //    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:nil];
+    //    [NSURLCache setSharedURLCache:sharedCache];
 }
 
 /*!
@@ -44,20 +63,20 @@
 
     self.domain = [[NSURL URLWithString:authenticateUrl] host];
     
-    UIWebView *web = (UIWebView *)self.view;
-    
-    [web loadHTMLString:[NSString stringWithFormat:@"<h1>Connecting to %@.</h1>", name] baseURL:nil];
-    
-    [CATransaction flush];
-    
-    [web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
+    @autoreleasepool {
+//        [self.webView loadHTMLString:[NSString stringWithFormat:@"<h1>Connecting to %@.</h1>", name] baseURL:nil];
+//        
+       [CATransaction flush];
+        
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
+        //cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60.0]];
+    }
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
    
-    NSString * urlAsString =request.URL.description;
+    NSString *urlAsString =request.URL.description;
   
-    // NSLog(@"[%s] %@",__func__, request.URL.absoluteString);
     if (!urlAsString)
     {
         return YES;
@@ -74,26 +93,27 @@
     }
     
     if (!([urlAsString rangeOfString:@"oauth.html?accessToken="].location == NSNotFound)) {
-        NSArray *listItems = [urlAsString componentsSeparatedByString:@"accessToken="];
-        NSString * lastObject =[listItems lastObject];
-        
-        listItems = [lastObject componentsSeparatedByString:@"&"];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:[listItems objectAtIndex:0] forKey:@"auth"];
-        
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        NSDictionary *accountDetails = [ARLNetwork accountDetails];
-
-        [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
-        [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
-        [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
-
-        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-
-        [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        @autoreleasepool {
+            NSArray *listItems = [urlAsString componentsSeparatedByString:@"accessToken="];
+            NSString *lastObject =[listItems lastObject];
+            
+            listItems = [lastObject componentsSeparatedByString:@"&"];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[listItems objectAtIndex:0] forKey:@"auth"];
+            
+            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            NSDictionary *accountDetails = [ARLNetwork accountDetails];
+            
+            [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
+            [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
+            [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
+            
+            NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+            
+            [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        }
         
         [self close];
-        
         return YES;
         
     } else if (!([urlAsString rangeOfString:@"about:blank"].location == NSNotFound)) {
@@ -124,7 +144,6 @@
         return YES;
         
     }else {
-        // NSLog(@"not found %@", urlAsString);
         return YES;
     }
     
@@ -133,16 +152,11 @@
 
 -(void) close {
     if (self.NavigationAfterClose) {
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [self.navigationController presentViewController:self.NavigationAfterClose animated:NO completion:nil];
         
-        if ([appDelegate respondsToSelector:@selector(syncData)]) {
-            [appDelegate performSelector:@selector(syncData)];
-        }
-        
-        [self.navigationController presentViewController:self.NavigationAfterClose animated:YES  completion:nil];
+        self.NavigationAfterClose = nil;
     } else {
         [self.navigationController popViewControllerAnimated:YES];
-        // ß[self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

@@ -77,14 +77,6 @@ typedef NS_ENUM(NSInteger, tools) {
     [self.tableView reloadData];
     
     [self.refreshControl endRefreshing];
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self.tableView reloadData];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [refresh endRefreshing];
-//            [self.refreshControl endRefreshing];
-//        });
-//    });
 }
 
 - (void)contextChanged:(NSNotification*)notification
@@ -115,10 +107,10 @@ typedef NS_ENUM(NSInteger, tools) {
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
     
-    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
+    //    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
     
-    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -130,7 +122,6 @@ typedef NS_ENUM(NSInteger, tools) {
         self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
 
         self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.loginButton,nil];
-
         
         [self adjustLoginButton];
     }
@@ -148,6 +139,17 @@ typedef NS_ENUM(NSInteger, tools) {
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void) dealloc {
+    NSLog(@"[%s]" , __func__);
 }
 
 -(void)loginButtonButtonTap:(id)sender {
@@ -180,6 +182,8 @@ typedef NS_ENUM(NSInteger, tools) {
             // Move to another UINavigationController or UITabBarController etc.
             // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
             [self.navigationController presentViewController:newViewController animated:YES completion:nil];
+            
+            newViewController=nil;
         }
 
         [ARLAppDelegate.theLock unlock];
@@ -274,42 +278,46 @@ typedef NS_ENUM(NSInteger, tools) {
             cell.textLabel.Text = @"My inquiries";
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            NSInteger count = [appDelegate entityCount:@"Inquiry"];
-            
-            if (count!=0) {
-                NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
-                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
-                NSRange range=[value rangeOfString:value];
+            @autoreleasepool {
+                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                NSInteger count = [appDelegate entityCount:@"Inquiry"];
                 
-                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
-                
-                [cell.detailTextLabel setAttributedText:string];
+                if (count!=0) {
+                    NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                    NSRange range=[value rangeOfString:value];
+                    
+                    [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                    
+                    [cell.detailTextLabel setAttributedText:string];
+                }
             }
         }
             break;
         case MYMEDIA: {
             cell.textLabel.Text = @"My media";
             cell.imageView.image = [UIImage imageNamed:@"mymedia"];
-            
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            
-            Account *account = ARLNetwork.CurrentAccount;
-            
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:
-                                      @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
-                                      account.localId, account.accountType];
-            
-            NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
-            
-            if (count!=0) {
-                NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
-                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
-                NSRange range=[value rangeOfString:value];
+           
+            @autoreleasepool {
+                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
                 
-                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                Account *account = ARLNetwork.CurrentAccount;
                 
-                [cell.detailTextLabel setAttributedText:string];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:
+                                          @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
+                                          account.localId, account.accountType];
+                
+                NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
+                
+                if (count!=0) {
+                    NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                    NSRange range=[value rangeOfString:value];
+                    
+                    [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                    
+                    [cell.detailTextLabel setAttributedText:string];
+                }
             }
         }
             break;
@@ -327,18 +335,20 @@ typedef NS_ENUM(NSInteger, tools) {
                     cell.textLabel.Text = @"Friends";
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
                     
-                    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-                    NSInteger count = [appDelegate entityCount:@"Account"];
-                    
-                    if (count > 1) {
-                        NSString *value = [[NSString alloc] initWithFormat:@"%d", count - 1];
-                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
-                        NSRange range=[value rangeOfString:value];
+                    @autoreleasepool {
+                        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                        NSInteger count = [appDelegate entityCount:@"Account"];
                         
-                        [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
-                        
-                        [cell.detailTextLabel setAttributedText:string];
-
+                        if (count > 1) {
+                            NSString *value = [[NSString alloc] initWithFormat:@"%d", count - 1];
+                            NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                            NSRange range=[value rangeOfString:value];
+                            
+                            [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                            
+                            [cell.detailTextLabel setAttributedText:string];
+                            
+                        }
                     }
                     break;
             }
@@ -404,6 +414,8 @@ typedef NS_ENUM(NSInteger, tools) {
     
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
+        
+        newViewController = nil;
     }
 }
 

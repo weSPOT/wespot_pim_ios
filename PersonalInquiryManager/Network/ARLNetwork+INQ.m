@@ -46,6 +46,14 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:DEVELOPMENT_MODE];
 }
 
++(NSInteger *) defaultInquiryVisibility {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:INQUIRY_VISIBILITY];
+}
+
++(NSInteger *) defaultInquiryMembership {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:INQUIRY_MEMBERSHIP];
+}
+
 /*!
  *  Fetch the JSON response of a REST service using GET.
  *
@@ -184,7 +192,7 @@
  *  @return The Users as JSON.
  */
 + (id) getUsers {
-    NSNumber *minutes =[[NSNumber alloc] initWithInt:44480];
+    NSNumber *minutes =[NSNumber numberWithInt:44480];
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"site.users",                        @"method",
                           apiKey,                               @"api_key",
@@ -290,7 +298,7 @@
  *
  *  @return <#return value description#>
  */
-+ (id) createInquiry: (NSString *)title description: (NSString *)description {
++ (id) createInquiry: (NSString *)title description: (NSString *)description visibility: (NSNumber *)visibility membership: (NSNumber *)membership {
     Account *account = [ARLNetwork CurrentAccount];
     
     NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
@@ -305,8 +313,8 @@
                           title,                    @"name",
                           encoded,                  @"description",
                           @"Interests",             @"interests",                               //(Tags, comma separated)
-                          @"2",                     @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
-                          @"1",                     @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
+                          membership,               @"membership",                              //(Membership: 0 -> Closed, 2 -> Open)
+                          visibility,               @"vis",                                     //(Visibility: 0 -> Inquiry members only, 1 -> logged in users, 2 -> Public)
                           @"yes",                   @"wespot_arlearn_enable",                   //(Enable ARLearn for Data Collection: Yes/No)
                           @"no",                    @"group_multiple_admin_allow_enable",       //(Allow multiple admins: Yes/No)
                           
@@ -323,8 +331,7 @@
 }
 
 + (NSString *) htmlEncode:(NSString *)html {
-    NSString *encoded = [[NSString alloc] initWithFormat:@"%@",CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)html, NULL, CFSTR("!$&'()*+,-./:;=?@_~<>"), kCFStringEncodingUTF8)];
-   return encoded;
+   return [NSString stringWithFormat:@"%@",CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)html, NULL, CFSTR("!$&'()*+,-./:;=?@_~<>"), kCFStringEncodingUTF8)];
 }
 
 /*!

@@ -70,19 +70,17 @@
 }
 
 - (void) setConstraints {
-    NSDictionary *   viewsDictionary =
-    [[NSDictionary alloc] initWithObjectsAndKeys:
-     self.countField, @"countField",
-     self.saveButton, @"saveButton",
-     self.recordButtons, @"recordButtons", nil];
+    NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     self.countField,       @"countField",
+                                     self.saveButton,       @"saveButton",
+                                     self.recordButtons,    @"recordButtons",
+                                     nil];
     
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"V:[countField]-[saveButton]-[recordButtons(==80)]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-    
-    
     
     [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.recordButtons attribute:NSLayoutAttributeCenterX
@@ -99,7 +97,6 @@
                               relatedBy:NSLayoutRelationEqual
                               toItem:self.view attribute:NSLayoutAttributeCenterX
                               multiplier:1 constant:0]];
-    
 }
 
 /*!

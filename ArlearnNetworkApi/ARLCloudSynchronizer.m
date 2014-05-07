@@ -112,6 +112,8 @@
 {
     NSError *error = nil;
     
+    NSLog(@"[%s] Saving NSManagedObjectContext", __func__);
+    
     if (self.context) {
         if ([self.context hasChanges]){
             if (![self.context save:&error]) {
@@ -173,6 +175,7 @@
             [self synchronizeActions];
         } else {
             [self saveContext];
+            [NSThread sleepForTimeInterval:0.25];
             break;
         }
     }
@@ -189,14 +192,16 @@
 - (void) syncronizeRuns{ //: (NSManagedObjectContext *) context
     NSLog(@"[%s]", __func__);
     
-    NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
-    NSDictionary * dict = [ARLNetwork runsParticipateFrom:lastDate];
-    NSNumber * serverTime = [dict objectForKey:@"serverTime"];
-    for (NSDictionary *run in [dict objectForKey:@"runs"]) {
-        [Run runWithDictionary:run inManagedObjectContext:self.context];
-    }
-    if (serverTime) {
-        [SynchronizationBookKeeping createEntry:@"myRuns" time:serverTime inManagedObjectContext:self.context];
+    @autoreleasepool {
+        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
+        NSDictionary *dict = [ARLNetwork runsParticipateFrom:lastDate];
+        NSNumber *serverTime = [dict objectForKey:@"serverTime"];
+        for (NSDictionary *run in [dict objectForKey:@"runs"]) {
+            [Run runWithDictionary:run inManagedObjectContext:self.context];
+        }
+        if (serverTime) {
+            [SynchronizationBookKeeping createEntry:@"myRuns" time:serverTime inManagedObjectContext:self.context];
+        }
     }
     
     self.syncRuns = NO;
@@ -204,111 +209,119 @@
 
 - (void) syncronizeGames { //: (NSManagedObjectContext *) context{
     NSLog(@"[%s]", __func__);
-
-    NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myGames"];
-    NSDictionary * gdict = [ARLNetwork gamesParticipateFrom:lastDate];
-    NSNumber * serverTime = [gdict objectForKey:@"serverTime"];
     
-    for (NSDictionary *game in [gdict objectForKey:@"games"]) {
-        [Game gameWithDictionary:game inManagedObjectContext:self.context];
+    @autoreleasepool {
+        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myGames"];
+        NSDictionary *gdict = [ARLNetwork gamesParticipateFrom:lastDate];
+        NSNumber * serverTime = [gdict objectForKey:@"serverTime"];
+        
+        for (NSDictionary *game in [gdict objectForKey:@"games"]) {
+            [Game gameWithDictionary:game inManagedObjectContext:self.context];
+        }
+        
+        if (serverTime) {
+            [SynchronizationBookKeeping createEntry:@"myGames" time:serverTime inManagedObjectContext:self.context];
+        }
     }
-    
-    if (serverTime) {
-        [SynchronizationBookKeeping createEntry:@"myGames" time:serverTime inManagedObjectContext:self.context];
-    }
-    
     self.syncGames = NO;
 }
 
 - (void) synchronizeGeneralItemsWithGame {
     NSLog(@"[%s]", __func__);
-
-    NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
-//  lastDate = [NSNumber numberWithInt:0];
-    NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId from:lastDate];
-    NSNumber * serverTime = [gisDict objectForKey:@"serverTime"];
-    Game * game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
     
-    for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
-        [GeneralItem generalItemWithDictionary:generalItemDict
-                                      withGame:game
-                        inManagedObjectContext:self.context];
+    @autoreleasepool {
+        NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
+ 
+        NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId from:lastDate];
+        NSNumber * serverTime = [gisDict objectForKey:@"serverTime"];
+        Game * game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
         
-
+        for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
+            [GeneralItem generalItemWithDictionary:generalItemDict
+                                          withGame:game
+                            inManagedObjectContext:self.context];
+            
+            
+        }
+        if (serverTime) {
+            [SynchronizationBookKeeping createEntry:@"generalItems"
+                                               time:serverTime
+                                          idContext:self.gameId
+                             inManagedObjectContext:self.context];
+        }
     }
-    if (serverTime) {
-        [SynchronizationBookKeeping createEntry:@"generalItems"
-                                           time:serverTime
-                                      idContext:self.gameId
-                         inManagedObjectContext:self.context];
-    }
-
     self.gameId = nil;
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements {
     NSLog(@"[%s]", __func__);
-
-    Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
-    [self synchronizeGeneralItemsAndVisibilityStatements:run];
+    
+    @autoreleasepool {
+        Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
+        [self synchronizeGeneralItemsAndVisibilityStatements:run];
+    }
     
     self.visibilityRunId = nil;
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
     NSLog(@"[%s] run:%@", __func__, run.runId);
-
-    NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
-
-    NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
     
-    NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
-    NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
-    NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
-    
-    if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
-        for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
-            [GeneralItemVisibility visibilityWithDictionary:viStatement withRun:run];
-        }
-    }
-    
-    //    {
-    //        deleted = 0;
-    //        responses =     (
-    //                         {
-    //                             deleted = 0;
-    //                             generalItemId = 4596856252268544;
-    //                             responseId = 4524418407596032;
-    //                             responseValue = "{\"text\":\"\"}";
-    //                             runId = 5117857260109824;
-    //                             timestamp = 1395396382116;
-    //                             type = "org.celstec.arlearn2.beans.run.Response";
-    //                             userEmail = "2:101754523769925754305";
-    //                         },
+    @autoreleasepool {
+        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
         
-     NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
-    
-    for (NSDictionary *response in [respDict objectForKey:@"responses"] ) {
-        [Response responseWithDictionary:response inManagedObjectContext:self.context];
-    }
-    
-    if (serverTime) {
-        [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
-                                           time:serverTime
-                                      idContext:run.runId
-                         inManagedObjectContext:self.context];
+        NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
+        
+        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
+        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
+        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
+        
+        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
+            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
+                [GeneralItemVisibility visibilityWithDictionary:viStatement withRun:run];
+            }
+        }
+        
+        //    {
+        //        deleted = 0;
+        //        responses =     (
+        //                         {
+        //                             deleted = 0;
+        //                             generalItemId = 4596856252268544;
+        //                             responseId = 4524418407596032;
+        //                             responseValue = "{\"text\":\"\"}";
+        //                             runId = 5117857260109824;
+        //                             timestamp = 1395396382116;
+        //                             type = "org.celstec.arlearn2.beans.run.Response";
+        //                             userEmail = "2:101754523769925754305";
+        //                         },
+        @autoreleasepool {
+            NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
+            
+            for (NSDictionary *response in [respDict objectForKey:@"responses"] ) {
+                [Response responseWithDictionary:response inManagedObjectContext:self.context];
+            }
+        }
+        if (serverTime) {
+            [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
+                                               time:serverTime
+                                          idContext:run.runId
+                             inManagedObjectContext:self.context];
+        }
     }
 }
 
 - (void) synchronizeActions {
     NSLog(@"[%s]", __func__);
-
-    NSArray* actions =  [Action getUnsyncedActions:self.context];
-    for (Action* action in actions) {
-        [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
-        action.synchronized = [NSNumber numberWithBool:YES];
+    
+    @autoreleasepool {
+        NSArray* actions =  [Action getUnsyncedActions:self.context];
+        for (Action* action in actions) {
+            [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
+            action.synchronized = [NSNumber numberWithBool:YES];
+        }
     }
     
     self.syncActions = NO;
@@ -319,47 +332,51 @@
 
 //  BOOL uploads = NO;
     
-    NSArray* responses =  [Response getUnsyncedReponses:self.context];
-    for (Response* resp in responses) {
-        if (resp.value) {
-            [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
-            resp.synchronized = [NSNumber numberWithBool:YES];
-        } else {
-            u_int32_t random = arc4random();
-            NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
-            
-            if (resp.run.runId) {
-                NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
-                [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
-                
-                NSString * serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
-                                        [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
-                                        [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
-                NSDictionary *myDictionary;
-                
-                NSString * contentType;
-                if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
-                if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
-                if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
-                
-                if ([resp.width intValue] ==0 ) {
-                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   serverUrl, contentType, nil];
-                    
+    @autoreleasepool {
+        NSArray* responses =  [Response getUnsyncedReponses:self.context];
+        for (Response* resp in responses) {
+            @autoreleasepool {
+                if (resp.value) {
+                    [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
+                    resp.synchronized = [NSNumber numberWithBool:YES];
                 } else {
-                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   resp.width, @"width",
-                                   resp.height, @"height",
-                                   serverUrl, contentType, nil];
+                    u_int32_t random = arc4random();
+                    NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
+                    
+                    if (resp.run.runId) {
+                        NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
+                        [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
+                        
+                        NSString * serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
+                                                [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+                                                [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
+                        NSDictionary *myDictionary;
+                        
+                        NSString * contentType;
+                        if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
+                        if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
+                        if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
+                        
+                        if ([resp.width intValue] ==0 ) {
+                            myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                            serverUrl, contentType, nil];
+                            
+                        } else {
+                            myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                            resp.width, @"width",
+                                            resp.height, @"height",
+                                            serverUrl, contentType, nil];
+                        }
+                        
+                        NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
+                        
+                        [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
+                        
+                        resp.synchronized = [NSNumber numberWithBool:YES];
+                        
+                        //              uploads=YES;
+                    }
                 }
-                
-                NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
-                
-                [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
-                
-                resp.synchronized = [NSNumber numberWithBool:YES];
-                
-//              uploads=YES;
             }
         }
     }

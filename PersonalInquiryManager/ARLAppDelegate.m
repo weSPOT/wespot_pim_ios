@@ -39,6 +39,8 @@ static NSRecursiveLock *_theLock;
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [NSNumber numberWithBool:YES], DEVELOPMENT_MODE,
+                                [NSNumber numberWithInt:1], INQUIRY_VISIBILITY,
+                                [NSNumber numberWithInt:2], INQUIRY_MEMBERSHIP,
                                 nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
     

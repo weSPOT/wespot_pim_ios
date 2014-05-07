@@ -217,6 +217,7 @@ typedef NS_ENUM(NSInteger, friends) {
             cell.detailTextLabel.text = @"";
             cell.imageView.image = [UIImage imageNamed:@"add-friend"];
             break;
+            
         case MESSAGES:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             
@@ -228,11 +229,13 @@ typedef NS_ENUM(NSInteger, friends) {
             
             // 2) Icon (User Avatar)
             cell.imageView.image = [UIImage imageNamed:@"profile"];
+            cell.imageView.highlightedImage = [UIImage imageNamed:@"profile"];
             if (message.account) {
                 NSData* icon = [message.account picture];
                 
                 if (icon) {
                     cell.imageView.image = [UIImage imageWithData:icon];
+                    cell.imageView.highlightedImage = [UIImage imageWithData:icon];
                 }
             }
             cell.imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -263,7 +266,9 @@ typedef NS_ENUM(NSInteger, friends) {
             NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
                                                                                   NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
-                                                             documentAttributes:nil error:nil];
+                                                             documentAttributes:nil
+                                                                          error:nil];
+            
             textView.attributedText = html;
             textView.translatesAutoresizingMaskIntoConstraints = NO;
             [cell.contentView addSubview:textView];
@@ -272,14 +277,16 @@ typedef NS_ENUM(NSInteger, friends) {
             
             // 5) Add constraints.
             NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                             cell.imageView, @"icon",
-                                             cell.detailTextLabel, @"details",
-                                             cell.textLabel, @"text",
-                                             textView, @"body",
-                                             cell.contentView, @"content",
+                                             cell.imageView,            @"icon",
+                                             cell.detailTextLabel,      @"details",
+                                             cell.textLabel,            @"text",
+                                             textView,                  @"body",
+                                             cell.contentView,          @"content",
                                              nil];
+            
+            [cell removeConstraints:cell.constraints];
             if (cell.imageView) {
-                // 1) Size ContentView (needed to get rid of selected cell tbrouble)
+                // 1) Size ContentView (needed to get rid of selected cell trouble)
                 [cell addConstraints:[NSLayoutConstraint
                                       constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|[content(==%d)]", (int)self.messageCellHeight]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
@@ -380,6 +387,12 @@ typedef NS_ENUM(NSInteger, friends) {
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                               duration:(NSTimeInterval)duration{
+
+    [self.tableView reloadData];
 }
 
 @end

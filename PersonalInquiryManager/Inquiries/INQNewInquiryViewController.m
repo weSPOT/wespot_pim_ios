@@ -19,6 +19,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *visibilitySegments;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *membershipSegments;
+@property (weak, nonatomic) IBOutlet UILabel *visibilityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *membershipLabel;
 
 - (IBAction)createInquiryTap:(id)sender;
 
@@ -47,20 +51,37 @@
     // Do any additional setup after loading the view.
     self.titleEdit.delegate = self;
     self.descriptionEdit.delegate = self;
-//    self.descriptionEdit
+    
+    self.visibilitySegments.apportionsSegmentWidthsByContent = YES;
+    self.membershipSegments.apportionsSegmentWidthsByContent = NO;
+    
+    self.visibilitySegments.selectedSegmentIndex = [ARLNetwork defaultInquiryVisibility];
+    self.membershipSegments.selectedSegmentIndex = [ARLNetwork defaultInquiryMembership];
+    
+    //    [self.visibilitySegments addTarget:self
+    //                           action:@selector(action:)
+    //                 forControlEvents:UIControlEventValueChanged];
+    //    [self.memberhipSegments addTarget:self
+    //                          action:@selector(action:)
+    //                forControlEvents:UIControlEventValueChanged];
+    
     [self addConstraints];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
     NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
    
-    NSDictionary *dict = [ARLNetwork createInquiry:title description:html];
+    NSNumber *visibility =  [NSNumber numberWithInt:self.visibilitySegments.selectedSegmentIndex];
+    NSNumber *membership = [NSNumber numberWithInt:2 *self.membershipSegments.selectedSegmentIndex];
+    
+    NSDictionary *dict = [ARLNetwork createInquiry:title description:html visibility:visibility membership:membership];
     
     if (dict) {
         NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
@@ -99,6 +120,10 @@
                                      self.view,                 @"view",
                                      self.scrollView,           @"scroll",
                                      self.background,           @"background",
+                                     self.visibilityLabel,      @"visibilityLabel",
+                                     self.visibilitySegments,   @"visibilitySegments",
+                                     self.membershipLabel,      @"membershipLabel",
+                                     self.membershipSegments,   @"memberhipSegments",
                                      nil];
     
     // Fails
@@ -116,6 +141,13 @@
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.background.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    self.visibilitySegments.translatesAutoresizingMaskIntoConstraints = NO;
+    self.membershipSegments.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.visibilityLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.membershipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+
     
     // Size UIScrollView to View.
     [self.view addConstraint: [NSLayoutConstraint
@@ -151,34 +183,18 @@
                                multiplier:1.0
                                constant:0]];
     
-    // TODO
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",40 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(80)]-[visibilityLabel]-[visibilitySegments]-[membershipLabel]-[memberhipSegments]-[createButton]",40 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
     
     // Align around vertical center.
     // see http://stackoverflow.com/questions/20020592/centering-view-with-visual-format-nslayoutconstraints?rq=1
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.titleLabel
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
+
     [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.titleEdit
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.descriptionLabel
                               attribute:NSLayoutAttributeCenterX
                               relatedBy:NSLayoutRelationEqual
                               toItem:self.view
@@ -201,8 +217,24 @@
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1
                               constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.visibilitySegments
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.membershipSegments
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
     
-      // Fix Widths
+    // Fix Widths
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[titleEdit]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
@@ -216,6 +248,38 @@
 
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:[createButton(==200)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[visibilitySegments]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[memberhipSegments]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[titleLabel]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[descriptionLabel]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[visibilityLabel]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[membershipLabel]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

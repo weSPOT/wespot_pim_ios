@@ -67,7 +67,8 @@ typedef NS_ENUM(NSInteger, sections) {
     numSections
 };
 
-@property (readonly, nonatomic) NSString *cellIdentifier;
+@property (readonly, nonatomic) NSString *cellIdentifier1;
+@property (readonly, nonatomic) NSString *cellIdentifier2;
 
 @property (readonly, nonatomic) NSInteger *headerCellHeight;
 
@@ -81,8 +82,12 @@ typedef NS_ENUM(NSInteger, sections) {
     return self.navigationController.navigationBar.bounds.size.width;
 }
 
--(NSString *) cellIdentifier {
-    return  @"inquiryPartCell";
+-(NSString *) cellIdentifier1 {
+    return  @"inquiryPartCell1";
+}
+
+-(NSString *) cellIdentifier2 {
+    return  @"inquiryPartCell2";
 }
 
 -(NSInteger *) headerCellHeight {
@@ -200,102 +205,93 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+    UITableViewCell *cell;
     
-    if (!cell || (indexPath.section==HEADER)) {
-        switch (indexPath.section) {
-            case HEADER:
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
-                break;
-            case PARTS:
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.cellIdentifier];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            case INVITE:
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
-                break;
-        }
+    //    if (!cell || (indexPath.section==HEADER)) {
+    switch (indexPath.section) {
+        case HEADER:
+            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1];
+           cell.accessoryType = UITableViewCellAccessoryNone;
+            break;
+        case PARTS:
+            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        case INVITE:
+            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+            break;
     }
+    //    }
     
     // Configure the cell...
     switch (indexPath.section) {
         case HEADER:
-            if (cell.contentView.subviews.count==0)
-            {
-                // Setup & Remove Auto Constraints.
- 
-                // Icon
-                UIImage *image = [UIImage imageNamed:@"description"];
-                UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
-                
-                imageView.backgroundColor = [UIColor clearColor];
-                //[imageView setFrame:CGRectMake(5, 5, imageView.frame.size.width, imageView.frame.size.height)];
-                imageView.translatesAutoresizingMaskIntoConstraints = NO;
-                
-                [cell.contentView addSubview:imageView];
-                
-                // Tile
-                UITextView *textView = [[UITextView alloc] init];
-                textView.backgroundColor = [UIColor clearColor];
-                textView.editable = NO;
-                textView.text = self.inquiry.title;
-                //textView.frame = CGRectMake(110, 5, self.navbarWidth-115, 100);
-                
-                textView.translatesAutoresizingMaskIntoConstraints = NO;
-                [cell.contentView addSubview:textView];
-                
-                // Description
-                UIWebView *webView = [[UIWebView alloc] init];
-                webView.backgroundColor = [UIColor clearColor];
-                [webView loadHTMLString:self.inquiry.desc baseURL:nil];
-                webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                webView.layer.borderWidth = 1.0f;
-                webView.translatesAutoresizingMaskIntoConstraints = NO;
-                [cell.contentView addSubview:webView];
-                
-                cell.detailTextLabel.text = @"";
-                
-                //Add Constraints
-                NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                                 imageView, @"icon",
-                                                 textView, @"text",
-                                                 webView, @"description",
-                                                 nil];
-                
-                [cell.contentView addConstraints:[NSLayoutConstraint
-                                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
-                                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                                  metrics:nil
-                                                  views:viewsDictionary]];
-                
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                
-                [cell.contentView addConstraints:[NSLayoutConstraint
-                                                  constraintsWithVisualFormat:@"V:|-[text(==icon)]"
-                                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                                  metrics:nil
-                                                  views:viewsDictionary]];
-                
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"H:|-[description]-|"
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", (int)self.headerCellHeight - image.size.height - 2*20]
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                
-                
-                //Cell
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
+        {
+            // Setup & Remove Auto Constraints.
+            
+            // Fetch views by tag.
+            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
+            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+            UIWebView *webView = (UIWebView *)[cell.contentView viewWithTag:3];
+
+            // Icon
+            UIImage *image = [UIImage imageNamed:@"description"];
+            imageView.image = image;
+            imageView.backgroundColor = [UIColor clearColor];
+            imageView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            [cell.contentView addSubview:imageView];
+            
+            // Tile
+            textView.backgroundColor = [UIColor clearColor];
+            textView.editable = NO;
+            textView.text = self.inquiry.title;
+            textView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // Description
+            webView.backgroundColor = [UIColor clearColor];
+            [webView loadHTMLString:self.inquiry.desc baseURL:nil];
+            webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            webView.layer.borderWidth = 1.0f;
+            webView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            //Add Constraints
+            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                             imageView, @"icon",
+                                             textView, @"text",
+                                             webView, @"description",
+                                             nil];
+            
+            [cell.contentView addConstraints:[NSLayoutConstraint
+                                              constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
+                                              options:NSLayoutFormatDirectionLeadingToTrailing
+                                              metrics:nil
+                                              views:viewsDictionary]];
+            
+            [cell addConstraints:[NSLayoutConstraint
+                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
+                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                  metrics:nil
+                                  views:viewsDictionary]];
+            
+            [cell.contentView addConstraints:[NSLayoutConstraint
+                                              constraintsWithVisualFormat:@"V:|-[text(==icon)]"
+                                              options:NSLayoutFormatDirectionLeadingToTrailing
+                                              metrics:nil
+                                              views:viewsDictionary]];
+            
+            [cell addConstraints:[NSLayoutConstraint
+                                  constraintsWithVisualFormat:@"H:|-[description]-|"
+                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                  metrics:nil
+                                  views:viewsDictionary]];
+            
+            [cell addConstraints:[NSLayoutConstraint
+                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", (int)self.headerCellHeight - image.size.height - 2*20]
+                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                  metrics:nil
+                                  views:viewsDictionary]];
+        }
             break;
             
         case PARTS : {

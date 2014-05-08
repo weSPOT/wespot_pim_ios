@@ -297,7 +297,8 @@
     Response *response = [Response initResponse:run
                                  forGeneralItem:generalItem
                                        withData:data
-                         inManagedObjectContext: generalItem.managedObjectContext];
+                         inManagedObjectContext:generalItem.managedObjectContext];
+    
     response.width =width;
     response.height = height;
     response.contentType = @"application/jpg";
@@ -318,7 +319,8 @@
     Response *response = [Response initResponse:run
                                  forGeneralItem:generalItem
                                        withData:data
-                         inManagedObjectContext: generalItem.managedObjectContext];
+                         inManagedObjectContext:generalItem.managedObjectContext];
+    
     response.contentType = @"video/quicktime";
     response.fileName = @"mov";
 }
@@ -334,10 +336,11 @@
                      withRun: (Run *)run
              withGeneralItem: (GeneralItem *) generalItem {
     
-    Response * response = [Response initResponse:run
-                                  forGeneralItem:generalItem
-                                        withData:data
-                          inManagedObjectContext: generalItem.managedObjectContext];
+    Response *response = [Response initResponse:run
+                                 forGeneralItem:generalItem
+                                       withData:data
+                         inManagedObjectContext:generalItem.managedObjectContext];
+    
     response.contentType = @"audio/aac";
     response.fileName = @"m4a";
 }

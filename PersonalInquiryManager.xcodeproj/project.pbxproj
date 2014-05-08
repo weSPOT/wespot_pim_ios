@@ -145,6 +145,7 @@
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
 		8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */; };
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
+		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -378,6 +379,8 @@
 		8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddMessageViewController.h; sourceTree = "<group>"; };
 		8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAddMessageViewController.m; sourceTree = "<group>"; };
 		8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8DB8E3B5191B9510000C51CB /* INQWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQWebViewController.h; path = Viewers/INQWebViewController.h; sourceTree = "<group>"; };
+		8DB8E3B6191B9510000C51CB /* INQWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQWebViewController.m; path = Viewers/INQWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,6 +507,7 @@
 				8D750DC718D74BEB0005C41D /* Profile */,
 				8D0249FD18A80B08009D0566 /* Splash */,
 				8D19462918C0A80100C32EED /* Supporting Files */,
+				8DB8E3B8191B9535000C51CB /* Viewers */,
 			);
 			path = PersonalInquiryManager;
 			sourceTree = "<group>";
@@ -930,6 +934,15 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		8DB8E3B8191B9535000C51CB /* Viewers */ = {
+			isa = PBXGroup;
+			children = (
+				8DB8E3B5191B9510000C51CB /* INQWebViewController.h */,
+				8DB8E3B6191B9510000C51CB /* INQWebViewController.m */,
+			);
+			name = Viewers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1050,6 +1063,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */,
 				3477E6991769C9A000F3A5F3 /* ARLAppDelegate.m in Sources */,
 				8D4511DD18E04F3B0012DEDF /* Action.m in Sources */,
 				8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */,

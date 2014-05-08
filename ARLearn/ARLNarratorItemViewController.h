@@ -20,6 +20,7 @@
 #import "ARLAudioRecorderViewController.h"
 #import "ARLAppDelegate.h"
 #import "ARLNarratorItemView.h"
+#import "INQWebViewController.h"
 
 @interface ARLNarratorItemViewController : UICollectionViewController
 <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate>

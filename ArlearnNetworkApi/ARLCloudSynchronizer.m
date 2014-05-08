@@ -347,9 +347,12 @@
                         NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
                         [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
                         
-                        NSString * serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
+                        NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
                                                 [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                 [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
+                        
+                        NSLog(@"[%s] Uploaded: %@",__func__, serverUrl);
+                        
                         NSDictionary *myDictionary;
                         
                         NSString * contentType;
@@ -380,10 +383,6 @@
             }
         }
     }
-    
-//    if (uploads) {
-//        [ARLFileCloudSynchronizer syncResponseData:self.context];
-//    }
     
     self.syncResponses = NO;
 }

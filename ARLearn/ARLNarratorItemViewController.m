@@ -231,12 +231,14 @@ typedef NS_ENUM(NSInteger, responses) {
         NSLog(@"[%s] Error, neither account nor run is set.", __func__);
     }
     
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
     self.fetchedResultsController.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+
+    [self.collectionView reloadData];
 }
 
 - (void)contextChanged:(NSNotification*)notification
@@ -571,10 +573,36 @@ typedef NS_ENUM(NSInteger, responses) {
  }*/
 
 #pragma mark - UICollectionViewDelegate
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: Select Item
+    Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if (response.fileName) {
+        CGSize size = [[UIScreen mainScreen] bounds].size;
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        
+        INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
+        
+        if ([response.contentType isEqualToString:@"application/jpg"]) {
+            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@' style='width:100%%;' /></body></html>",
+                               response.fileName];
+        } else if ( [response.contentType isEqualToString:@"video/quicktime"]) {
+            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
+                               response.fileName, size.width * screenScale, size.height * screenScale];
+        } else if ( [response.contentType isEqualToString:@"audio/aac"]) {
+            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
+                               response.fileName, size.width * screenScale, size.height * screenScale];
+        }
+        
+        NSLog(@"[%s] %@", __func__, response.fileName);
+        
+        if (controller && controller.html) {
+            [self.navigationController pushViewController:controller animated:TRUE];
+        }
+    }
 }
+
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item
 }
@@ -736,11 +764,5 @@ typedef NS_ENUM(NSInteger, responses) {
         [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
     }
 }
-
-//-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-//                               duration:(NSTimeInterval)duration{
-//    
-//    [self.collectionViewLayout invalidateLayout];
-//}
 
 @end

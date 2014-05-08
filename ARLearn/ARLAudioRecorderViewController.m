@@ -17,20 +17,32 @@
 
 - (void) clickedSaveButton: (NSData*) audioData{
     
-    [Response createAudioResponse:audioData  withRun:self.run withGeneralItem:self.generalItem];
+    [Response createAudioResponse:audioData withRun:self.run withGeneralItem:self.generalItem];
+   
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
-        NSError *error = nil;
-        if (self.generalItem.managedObjectContext) {
-            if ([self.generalItem.managedObjectContext hasChanges]){
-                if (![self.generalItem.managedObjectContext save:&error]) {
-                    NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
-                    abort();
-                }
-                [ ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
-            }
+#warning Disabled hasChanges check to force a save.
     
+    if (self.generalItem.managedObjectContext) {
+        if ([self.generalItem.managedObjectContext hasChanges]) {
+            NSError *error = nil;
+            if (![self.generalItem.managedObjectContext save:&error]) {
+                NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
+                abort();
+            }
         }
+        
+        if ([self.generalItem.managedObjectContext.parentContext hasChanges]) {
+            NSError *error = nil;
+            if (![self.generalItem.managedObjectContext save:&error]) {
+                NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
+                abort();
+            }
+        }
+        
+        [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext contentType:@"audio/aac"];
+        [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 

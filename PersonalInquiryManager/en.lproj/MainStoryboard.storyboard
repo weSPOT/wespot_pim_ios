@@ -545,10 +545,26 @@
                             <outlet property="delegate" destination="SNy-hy-AfW" id="4gn-IA-kqO"/>
                         </connections>
                     </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ufb-vk-Twd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3410" y="461"/>
+        </scene>
+        <!--Web Viewer Controller-->
+        <scene sceneID="71n-k4-xWE">
+            <objects>
+                <viewController storyboardIdentifier="WebViewController" id="awS-yc-WPI" userLabel="Web Viewer Controller" customClass="INQWebViewController" sceneMemberID="viewController">
+                    <webView key="view" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scalesPageToFit="YES" id="cPu-CF-YQb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </webView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iV9-R2-fhf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3758" y="461"/>
         </scene>
         <!--Plan View-->
         <scene sceneID="XIq-1U-3iK">

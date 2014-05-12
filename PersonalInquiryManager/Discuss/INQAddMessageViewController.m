@@ -10,9 +10,8 @@
 
 @interface INQAddMessageViewController ()
 
-@property (strong, nonatomic) IBOutlet UIView *view;
+@property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *view;
 @property (weak, nonatomic) IBOutlet UIImageView *background;
-@property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleEdit;
@@ -76,7 +75,6 @@
                                      self.descriptionEdit,      @"descriptionEdit",
                                      self.createButton,         @"createButton",
                                      self.view,                 @"view",
-                                     self.scrollView,           @"scroll",
                                      self.background,           @"background",
                                      nil];
     
@@ -93,47 +91,12 @@
     
     self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    // self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.background.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // Size UIScrollView to View.
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeWidth
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeWidth
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeTop
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeTop
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeHeight
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeHeight
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeLeft
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeLeft
-                               multiplier:1.0
-                               constant:0]];
-    
-    // TODO
+
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",40 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

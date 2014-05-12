@@ -135,6 +135,16 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [self setupFetchedResultsController];
 }
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+}
 
 - (void)didReceiveMemoryWarning
 {

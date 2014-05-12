@@ -585,7 +585,7 @@ typedef NS_ENUM(NSInteger, responses) {
         INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
         
         if ([response.contentType isEqualToString:@"application/jpg"]) {
-            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@' style='width:100%%;' /></body></html>",
+            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
                                response.fileName];
         } else if ( [response.contentType isEqualToString:@"video/quicktime"]) {
             controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",

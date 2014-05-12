@@ -99,6 +99,10 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     [super viewDidLoad];
     
+    NSLog(@"[%s] Version String:  %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]);
+    NSLog(@"[%s] Build Number:    %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
+    NSLog(@"[%s] Git Commit Hash: %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"]);
+   
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification

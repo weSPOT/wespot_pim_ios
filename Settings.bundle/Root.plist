@@ -5,34 +5,71 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Version Information</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>Defaults</string>
 		</dict>
 		<dict>
+			<key>DefaultValue</key>
+			<string>1.0.130</string>
+			<key>Key</key>
+			<string>app_version</string>
+			<key>Title</key>
+			<string>Version</string>
 			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>6d9fd5d+</string>
+			<key>Key</key>
+			<string>git_hash</string>
+			<key>Title</key>
+			<string>Git hash</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Defaults</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<integer>1</integer>
+			<key>Key</key>
+			<string>inquiry_visibility</string>
+			<key>Title</key>
+			<string>Inquiry visibility</string>
 			<key>Titles</key>
 			<array>
 				<string>Members only</string>
 				<string>Logged in users</string>
 				<string>Public</string>
 			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
 			<key>Values</key>
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
 				<integer>2</integer>
 			</array>
-			<key>Title</key>
-			<string>Inquiry visibility</string>
-			<key>Key</key>
-			<string>inquiry_visibility</string>
-			<key>DefaultValue</key>
-			<integer>1</integer>
 		</dict>
 		<dict>
+			<key>DefaultValue</key>
+			<integer>2</integer>
+			<key>Key</key>
+			<string>inquiry_membership</string>
+			<key>Title</key>
+			<string>Inquiry membership</string>
+			<key>Titles</key>
+			<array>
+				<string>Closed</string>
+				<string>Open</string>
+			</array>
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Values</key>
@@ -40,17 +77,6 @@
 				<integer>0</integer>
 				<integer>2</integer>
 			</array>
-			<key>Titles</key>
-			<array>
-				<string>Closed</string>
-				<string>Open</string>
-			</array>
-			<key>Title</key>
-			<string>Inquiry membership</string>
-			<key>Key</key>
-			<string>inquiry_membership</string>
-			<key>DefaultValue</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>Title</key>

@@ -38,12 +38,24 @@ static NSRecursiveLock *_theLock;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSString *gitHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    
+    
+    NSLog(@"[%s] Version String:  %@",__func__, appVersion);
+    NSLog(@"[%s] Build Number:    %@",__func__, appBuild);
+    NSLog(@"[%s] Git Commit Hash: %@",__func__, gitHash);
+    
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSNumber numberWithBool:YES], DEVELOPMENT_MODE,
-                                [NSNumber numberWithInt:1], INQUIRY_VISIBILITY,
-                                [NSNumber numberWithInt:2], INQUIRY_MEMBERSHIP,
+                                [NSNumber numberWithBool:YES],      DEVELOPMENT_MODE,
+                                [NSNumber numberWithInt:1],         INQUIRY_VISIBILITY,
+                                [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
+                                gitHash,                            GIT_HASH,
+                                appVersion,                         APP_VERSION,
                                 nil];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
     
     // Synchronize preferences.

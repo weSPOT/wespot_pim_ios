@@ -14,9 +14,11 @@
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
 
-#define DEVELOPMENT_MODE @"enable_development_mode"
-#define INQUIRY_VISIBILITY @"inquiry_visibility"
-#define INQUIRY_MEMBERSHIP @"inquiry_membership"
+#define DEVELOPMENT_MODE    @"enable_development_mode"
+#define INQUIRY_VISIBILITY  @"inquiry_visibility"
+#define INQUIRY_MEMBERSHIP  @"inquiry_membership"
+#define GIT_HASH            @"git_hash"
+#define APP_VERSION         @"app_version"
 
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
 

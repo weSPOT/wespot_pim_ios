@@ -13,6 +13,10 @@
 @property (strong, nonatomic) UIBarButtonItem *buttonFF;
 @property (strong, nonatomic) UIBarButtonItem *buttonFB;
 
+#warning hardcoded highest page index
+#define MIN_PAGE_INDEX 0
+#define MAX_PAGE_INDEX 4
+
 @end
 
 @implementation INQPageViewController
@@ -91,10 +95,9 @@
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);
     
-#warning hardcoded highest page index
 
-    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
-    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != MAX_PAGE_INDEX;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != MIN_PAGE_INDEX;
     
     return view;
 }
@@ -116,11 +119,10 @@
         
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);
+
     
-#warning hardcoded highest page index
-    
-    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
-    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != MAX_PAGE_INDEX;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != MIN_PAGE_INDEX;
     
     return view;
 }

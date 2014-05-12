@@ -163,7 +163,7 @@ typedef NS_ENUM(NSInteger, tools) {
     } else {
         if (ARLNetwork.isLoggedIn) {
             ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            [ARLAccountDelegator deleteCurrentAccount:appDelegate.managedObjectContext];
+            [appDelegate LogOut];
             
             //#warning not enough to toggle isLoggedIn.
             [self adjustLoginButton];

@@ -25,6 +25,8 @@
 @synthesize isLoggedIn = _isLoggedIn;
 @synthesize networkAvailable = _networkAvailable;
 
+@synthesize CurrentAccount = _CurrentAccount;
+
 static NSRecursiveLock *_theLock;
 
 +(NSRecursiveLock *) theLock {
@@ -294,13 +296,20 @@ static NSRecursiveLock *_theLock;
  *  @return The Current Account.
  */
 - (Account *) CurrentAccount {
-    Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
-                                              accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]
-                                       withManagedContext:self.managedObjectContext];
+    if (!_CurrentAccount) {
+        _CurrentAccount  = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
+                                                  accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]
+                                           withManagedContext:self.managedObjectContext];
+    }
+    _isLoggedIn = [NSNumber numberWithBool:(_CurrentAccount)?YES:NO];
     
-    _isLoggedIn = [NSNumber numberWithBool:(account)?YES:NO];
+    return _CurrentAccount;
+}
+
+- (void) LogOut {
+    [ARLAccountDelegator deleteCurrentAccount:self.managedObjectContext];
     
-    return account;
+    _CurrentAccount = nil;
 }
 
 /*!

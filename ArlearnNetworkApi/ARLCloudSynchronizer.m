@@ -129,12 +129,10 @@
                     abort();
                 }
                 
-#warning is this the correct spot to sync/responses files?
-                
                 if (ARLNetwork.networkAvailable) {
                     [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
-                    
-//                  [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
+#warning Is this the correct spot to sync/responses files?
+                    // [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
                 }
             }];
         }

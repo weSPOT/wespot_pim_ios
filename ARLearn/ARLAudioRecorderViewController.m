@@ -21,8 +21,6 @@
    
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
-#warning Disabled hasChanges check to force a save.
-    
     if (self.generalItem.managedObjectContext) {
         if ([self.generalItem.managedObjectContext hasChanges]) {
             NSError *error = nil;

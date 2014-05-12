@@ -11,8 +11,7 @@
 @interface ARLNetwork()
 
 @end
-    
-    
+
 /*!
  *  Extends ARLNetwork with Inquiry specific methods.
  */

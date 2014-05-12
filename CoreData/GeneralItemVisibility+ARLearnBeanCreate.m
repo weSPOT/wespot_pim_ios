@@ -22,7 +22,9 @@
  */
 + (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run withGeneralItem: (GeneralItem *) generalItem {
     GeneralItemVisibility * giVis = [self retrieveFromDb:visDict withManagedContext:run.managedObjectContext];
+    
 #warning since generalItem parameter is unused this method is identical to the one below. Seems a private method.
+    
     BOOL newItemCreated = false;
     if ([[visDict objectForKey:@"deleted"] boolValue]) {
         //item is deleted

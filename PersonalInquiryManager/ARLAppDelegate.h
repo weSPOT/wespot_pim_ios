@@ -32,6 +32,8 @@
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate;
 
+- (void) LogOut;
+
 @property (strong, nonatomic) UIWindow *window;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -40,6 +42,8 @@
 
 @property (readonly, strong, nonatomic) NSNumber *isLoggedIn;
 @property (readonly, strong, nonatomic) NSNumber *networkAvailable;
+
+@property (readonly, strong, nonatomic) Account *CurrentAccount;
 
 @end
  

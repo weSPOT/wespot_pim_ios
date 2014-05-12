@@ -162,7 +162,7 @@
         NSLog(@"[%s] error %@", __func__, error);
     }
     
-#warning schedule sync for file/url here?
+#warning Schedule sync for file/url here?
     
     //    if (!response.data && response.fileName) {
     //        [ARLFileCloudSynchronizer syncResponses:context];

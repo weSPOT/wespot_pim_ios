@@ -256,22 +256,23 @@
         @autoreleasepool {
             if ([response.contentType isEqualToString:self.contentType])
             {
-                NSURL  *url = [NSURL URLWithString:response.fileName];
+                NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                 
                 if (response.data == nil && response.thumb == nil) {
                     if ([response.contentType isEqualToString:@"application/jpg"]) {
                         cnt++;
                         
-                        NSLog(@"[%s] ** Downloading url=%@", __func__, response.fileName);
+                        NSLog(@"[%s] ** Downloading url=%@", __func__, url);
                         
                         NSData *urlData = [NSData dataWithContentsOfURL:url];
                         
                         if (urlData) {
-                            NSLog(@"[%s] ** Downloaded url=%@", __func__, response.fileName);
+                            NSLog(@"[%s] ** Downloaded url=%@", __func__, url);
                             
                             // Create Thumbnails from Images to lower memory load.
-                            UIImage *img = [UIImage imageWithData:urlData];
+                            // UIImage *img = [UIImage imageWithData:urlData];
                             
+                            // Obsolete Rotation code:
                             // NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
                             
                             // if (img.imageOrientation != UIImageOrientationUp) {
@@ -301,27 +302,29 @@
                             
                             // NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
                             
-                            UIImage *thumbImage = nil;
-                            CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
-                            UIGraphicsBeginImageContext(targetSize);
+                            // Obsolete Thumbnail odew:
+                            // UIImage *thumbImage = nil;
+                            // CGSize targetSize = CGSizeMake(img.size.width/8, img.size.height/8);
+                            // UIGraphicsBeginImageContext(targetSize);
+                            //
+                            // CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
+                            // thumbnailRect.origin = CGPointMake(0.0,0.0);
+                            // thumbnailRect.size.width  = targetSize.width;
+                            // thumbnailRect.size.height = targetSize.height;
+                            //
+                            // [img drawInRect:thumbnailRect];
+                            //
+                            // thumbImage = UIGraphicsGetImageFromCurrentImageContext();
+                            //
+                            // UIGraphicsEndImageContext();
+                            //                            
+                            // // Compress Image
+                            // response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
+                            // // response.data = UIImageJPEGRepresentation(img, 0.75);
                             
-                            CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
-                            thumbnailRect.origin = CGPointMake(0.0,0.0);
-                            thumbnailRect.size.width  = targetSize.width;
-                            thumbnailRect.size.height = targetSize.height;
-                            
-                            [img drawInRect:thumbnailRect];
-                            
-                            thumbImage = UIGraphicsGetImageFromCurrentImageContext();
-                            
-                            UIGraphicsEndImageContext();
-                            
-                            // Compress Image
-                            response.thumb = UIImageJPEGRepresentation(thumbImage, 0.75);
-                            // response.data = UIImageJPEGRepresentation(img, 0.75);
-                            
-                            img = nil;
-                            thumbImage = nil;
+                            response.thumb = urlData; //[UIImage imageWithData:urlData];
+                            //img = nil;
+                            //thumbImage = nil;
                             
                             urlData = nil;
                             

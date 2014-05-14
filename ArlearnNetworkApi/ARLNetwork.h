@@ -51,6 +51,9 @@
 //Responses
 + (NSDictionary *) responsesForRun: (NSNumber *) runId;
 
+//GeneralItems
++ (id) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)type gameId:(NSNumber *)gameId;
+
 //ItemVisibility
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId;
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;

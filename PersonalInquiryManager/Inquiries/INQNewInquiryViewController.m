@@ -34,15 +34,9 @@
 
 @implementation INQNewInquiryViewController
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
+/*!
+ *  viewDidLoad
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,16 +51,12 @@
     self.visibilitySegments.selectedSegmentIndex = [ARLNetwork defaultInquiryVisibility];
     self.membershipSegments.selectedSegmentIndex = [ARLNetwork defaultInquiryMembership];
     
-    //    [self.visibilitySegments addTarget:self
-    //                           action:@selector(action:)
-    //                 forControlEvents:UIControlEventValueChanged];
-    //    [self.memberhipSegments addTarget:self
-    //                          action:@selector(action:)
-    //                forControlEvents:UIControlEventValueChanged];
-    
     [self addConstraints];
 }
 
+/*!
+ *  didReceiveMemoryWarning
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -74,6 +64,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*!
+ *  Create an new Inquiry.
+ *
+ *  @param title       <#title description#>
+ *  @param description <#description description#>
+ */
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
     NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
    
@@ -109,19 +105,22 @@
     }
 }
 
+/*!
+ *  Add constraints.
+ */
 - (void)addConstraints {
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     self.view,                 @"view",
+                                     self.background,           @"background",
                                      self.titleLabel,           @"titleLabel",
                                      self.titleEdit,            @"titleEdit",
                                      self.descriptionLabel,     @"descriptionLabel",
                                      self.descriptionEdit,      @"descriptionEdit",
-                                     self.createButton,         @"createButton",
-                                     self.view,                 @"view",
-                                     self.background,           @"background",
                                      self.visibilityLabel,      @"visibilityLabel",
                                      self.visibilitySegments,   @"visibilitySegments",
                                      self.membershipLabel,      @"membershipLabel",
                                      self.membershipSegments,   @"memberhipSegments",
+                                     self.createButton,         @"createButton",
                                      nil];
     
     // Fails

@@ -17,7 +17,12 @@ typedef NS_ENUM(NSInteger, groups) {
     /*!
      *  Collected Data.
      */
-    DATA = 0,
+    ADDTASK = 0,
+    
+    /*!
+     *  Collected Data.
+     */
+    DATA = 1,
 
     /*!
      *  Number of Groups
@@ -53,7 +58,7 @@ typedef NS_ENUM(NSInteger, groups) {
 }
 
 -(NSInteger*) sectionOffset {
-    return  0;
+    return  1;
 }
 
 - (void)setupFetchedResultsController {
@@ -244,6 +249,10 @@ typedef NS_ENUM(NSInteger, groups) {
 {
     NSUInteger *count = 0;
     switch (section) {
+        case ADDTASK: {
+            count=1;
+        }
+            break;
         case DATA: {
             count = [self.fetchedResultsController.fetchedObjects count];
         }
@@ -272,9 +281,18 @@ typedef NS_ENUM(NSInteger, groups) {
     
     // Create the new ViewController.
     switch (indexPath.section) {
+        case ADDTASK: {
+            cell.textLabel.text = @"Add collection task";
+            cell.detailTextLabel.text = @"";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+        }
+            break;
+            
         case DATA: {
             // Fetch Data from CoreData
-            CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
+            NSIndexPath *tmp = [self tableIndexPathToCoreDataIndexPath:indexPath];
+            NSLog(@"%dx%d", tmp.row, tmp.section);
+            CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:tmp]);
             
             GeneralItem *generalItem = civ.item;
             
@@ -307,12 +325,23 @@ typedef NS_ENUM(NSInteger, groups) {
             }
             
             jsonDict = nil;
-            return cell;
         }
             break;
     }
     
-    return nil;
+    return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch (section){
+        case ADDTASK:
+            return @"";
+        case DATA:
+            return @"Collection tasks";
+    }
+    
+    // Error
+    return @"";
 }
 
 /*!
@@ -326,6 +355,14 @@ typedef NS_ENUM(NSInteger, groups) {
     
     // Create the new ViewController.
     switch (indexPath.section) {
+        case ADDTASK: {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewGeneralItemView"];
+            if ([newViewController respondsToSelector:@selector(setRun:)]) {
+                [newViewController performSelector:@selector(setRun:) withObject:self.run];
+            }
+        }
+            break;
+            
         case DATA: {
             GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
             

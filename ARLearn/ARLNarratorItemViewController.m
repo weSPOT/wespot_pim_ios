@@ -57,29 +57,58 @@ typedef NS_ENUM(NSInteger, responses) {
 @synthesize generalItem = _generalItem;
 @synthesize account = _account;
 
+/*!
+ *  Getter
+ *
+ *  @return The StatusBar Heigth.
+ */
 -(CGFloat) statusbarHeight
 {
     // NOTE: Not always turned yet when we try to retrieve the height.
     return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The NavBar Heigth.
+ */
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The STabBar Heigth.
+ */
 -(CGFloat) tabbarHeight {
     return self.tabBarController.tabBar.bounds.size.height;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Cell Identifier.
+ */
 -(NSString *) cellIdentifier {
     return  @"responseItemCell";
 }
 
-
+/*!
+ *  Getter
+ *
+ *  @return The Number of Columns.
+ */
 -(CGFloat) noColumns {
     return  4.0f;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Column Inset.
+ */
 -(CGFloat) columnInset {
     return  10.0f;
 }
@@ -154,23 +183,28 @@ typedef NS_ENUM(NSInteger, responses) {
     return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
+/*!
+ *  Process the JSON (the openQuestion object) that is stored with the GeneralItem.
+ *
+ *  @param jsonDict The openQuestion object in JSON format.
+ */
 - (void) processJsonSetup:(NSDictionary *) jsonDict {
     self.isVisible = YES;
     
-    self.withAudio = [(NSNumber*)[jsonDict objectForKey:@"withAudio"] intValue] ==1;
+    self.withAudio =   [(NSNumber*)[jsonDict objectForKey:@"withAudio"] intValue] ==1;
     self.withPicture = [(NSNumber*)[jsonDict objectForKey:@"withPicture"] intValue] ==1;
-    self.withText = [(NSNumber*)[jsonDict objectForKey:@"withText"] intValue] ==1;
-    self.withValue = [(NSNumber*)[jsonDict objectForKey:@"withValue"] intValue] ==1;
-    self.withVideo = [(NSNumber*)[jsonDict objectForKey:@"withVideo"] intValue] ==1;
+    self.withText =    [(NSNumber*)[jsonDict objectForKey:@"withText"] intValue] ==1;
+    self.withValue =   [(NSNumber*)[jsonDict objectForKey:@"withValue"] intValue] ==1;
+    self.withVideo =   [(NSNumber*)[jsonDict objectForKey:@"withVideo"] intValue] ==1;
     
-    self.textDescription = [jsonDict objectForKey:@"textDescription"];
+    self.textDescription =  [jsonDict objectForKey:@"textDescription"];
     self.valueDescription = [jsonDict objectForKey:@"valueDescription"];
     
-    UIBarButtonItem *audioButton = [self addUIBarButtonWithImage:@"task-record" enabled:self.withAudio action:@selector(collectAudio)];
-    UIBarButtonItem *imageButton = [self addUIBarButtonWithImage:@"task-photo" enabled:self.withPicture action:@selector(collectImage)];
-    UIBarButtonItem *videoButton = [self addUIBarButtonWithImage:@"task-video" enabled:self.withVideo action:@selector(collectVideo)];
-    UIBarButtonItem *noteButton = [self addUIBarButtonWithImage:@"task-explore" enabled:self.withValue action:@selector(collectNumber)];
-    UIBarButtonItem *textButton = [self addUIBarButtonWithImage:@"task-text" enabled:self.withText action:@selector(collectText)];
+    UIBarButtonItem *audioButton = [self addUIBarButtonWithImage:@"task-record"  enabled:self.withAudio   action:@selector(collectAudio)];
+    UIBarButtonItem *imageButton = [self addUIBarButtonWithImage:@"task-photo"   enabled:self.withPicture action:@selector(collectImage)];
+    UIBarButtonItem *videoButton = [self addUIBarButtonWithImage:@"task-video"   enabled:self.withVideo   action:@selector(collectVideo)];
+    UIBarButtonItem *noteButton  = [self addUIBarButtonWithImage:@"task-explore" enabled:self.withValue   action:@selector(collectNumber)];
+    UIBarButtonItem *textButton  = [self addUIBarButtonWithImage:@"task-text"    enabled:self.withText    action:@selector(collectText)];
     
     UIBarButtonItem *flexButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -185,19 +219,41 @@ typedef NS_ENUM(NSInteger, responses) {
     [request setFetchBatchSize:8];
     
     if (self.run && self.run.runId) {
-        NSString *contentType = @"";
-        if (self.withPicture) {
-            contentType = @"application/jpg";
-        } else if (self.withVideo) {
-            contentType = @"video/quicktime";
-        } else if (self.withAudio) {
-            contentType = @"audio/aac";
+        NSMutableArray *tmp = [[NSMutableArray alloc] init];
+        if (self.withPicture){
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"application/jpg"]]];
         }
-        
-        request.predicate = [NSPredicate predicateWithFormat:
-                             @"run.runId = %lld AND contentType = %@",
-                             [self.run.runId longLongValue], contentType];
+        if (self.self.withVideo){
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"video/quicktime"]]];
+        }
+        if (self.withAudio){
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"audio/aac"]]];
+        }
 
+        // Nice, But fails with CoreData: Unknown predicate type for predicate: BLOCKPREDICATE
+        //        request.predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        //            Response *response = (Response *)evaluatedObject;
+        //
+        //            BOOL result = response.run.runId == self.run.runId;
+        //            if (result && self.withPicture)  {
+        //                result = [[response contentType] isEqualToString:@"application/jpg"];
+        //            }
+        //            if (result && self.withVideo)  {
+        //                result = [[response contentType] isEqualToString:@"video/quicktime"];
+        //            }
+        //            if (result && self.withAudio)  {
+        //                result = [[response contentType] isEqualToString:@"audio/aac"];
+        //            }
+        //
+        //            return result;
+        //        }];
+        
+        // See http://stackoverflow.com/questions/4476026/add-additional-argument-to-an-existing-nspredicate
+        NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tmp];
+        NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld",[self.run.runId longLongValue], [self.generalItem.generalItemId longLongValue]];
+        
+        // Example Predicate: (run.runId == 5860462742732800 AND generalItem.generalItemId == 3713019) AND (contentType == "application/jpg" OR contentType == "video/quicktime" OR contentType == "audio/aac")
+        request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:andPredicate, orPredicate, nil]];
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"contentType"
@@ -215,7 +271,6 @@ typedef NS_ENUM(NSInteger, responses) {
                                                                  ascending:YES selector:@selector(compare:)],
                                    nil];
     }
-
     
     if (self.run) {
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request

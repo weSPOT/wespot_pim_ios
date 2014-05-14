@@ -72,9 +72,10 @@
 }
 
 + (id) executeARLearnPOST: (NSString *) path
-                 postData:(NSData *) data
+                 postData: (NSData *) data
                withAccept: (NSString *) acceptValue
-          withContentType: (NSString *) ctValue{
+          withContentType: (NSString *) ctValue
+{
     NSString* urlString;
     if ([path hasPrefix:@"/"]) {
         urlString = [NSString stringWithFormat:@"%@%@", serviceUrl, path];
@@ -198,6 +199,76 @@
 
 + (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
+}
+
++ (id) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)type gameId:(NSNumber *)gameId
+{
+    //Full/Return value:
+    //    {
+    //        "type": "org.celstec.arlearn2.beans.generalItem.NarratorItem",
+    //        "gameId": 6356217932808192,
+    //        "deleted": false,
+    //        "lastModificationDate": 1376052351788,
+    //        "id": 3713019,
+    //        "sortKey": 0,
+    //        "scope": "user",
+    //        "name": "TEST ITEM",
+    //        "description": "",
+    //        "autoLaunch": false,
+    //        "showCountDown": false,
+    //        "section": "section1",
+    //        "fileReferences": [],
+    //        "richText": "",
+    //        "openQuestion": {
+    //            "withPicture": true,
+    //            "withText": true,
+    //            "withValue": true,
+    //            "withAudio": true,
+    //            "withVideo": true,
+    //            "valueDescription": "voer temp in",
+    //            "textDescription": "voer text in"
+    //        },
+    //        "roles": []
+    //    }
+    
+    //Minimal ex openQuestion:
+    //    {
+    //        "type": "org.celstec.arlearn2.beans..generalItem.NarratorItem",
+    //        "gameId": 0,
+    //        "name": "Item name",
+    //        "description": "Item description",
+    //        "richText": "<p>Item description</p>"
+    //        "openQuestion": {
+    //            "withPicture": true,
+    //            "withText": true,
+    //            "withValue": true,
+    //            "withAudio": true,
+    //            "withVideo": true,
+    //            "valueDescription": "voer temp in",
+    //            "textDescription": "voer text in"
+    //        },
+    //    }
+    
+    NSDictionary *openQuestion = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  [type isEqualToNumber:[NSNumber numberWithInt:0]]?@"true":@"false",         @"withPicture",
+                                  [type isEqualToNumber:[NSNumber numberWithInt:1]]?@"true":@"false",         @"withVideo",
+                                  [type isEqualToNumber:[NSNumber numberWithInt:2]]?@"true":@"false",         @"withAudio",
+                                  [type isEqualToNumber:[NSNumber numberWithInt:3]]?@"true":@"false",         @"withText",
+                                  [type isEqualToNumber:[NSNumber numberWithInt:4]]?@"true":@"false",         @"withValue",
+                                  nil];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
+                          gameId,                                                   @"gameId",
+                          title,                                                    @"name",
+                          description,                                              @"description",
+                          openQuestion,                                             @"openQuestion",
+                          nil];
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    
+    return [self executeARLearnPostWithAuthorization:@"generalItems" postData:postData withContentType:applicationjson ];
+    
 }
 
 #pragma mark - Responses

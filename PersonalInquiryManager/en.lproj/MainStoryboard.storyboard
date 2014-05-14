@@ -542,7 +542,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ufb-vk-Twd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3410" y="461"/>
+            <point key="canvasLocation" x="3410" y="159"/>
         </scene>
         <!--Web Viewer Controller-->
         <scene sceneID="71n-k4-xWE">
@@ -557,7 +557,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iV9-R2-fhf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3758" y="461"/>
+            <point key="canvasLocation" x="3756" y="159"/>
         </scene>
         <!--Plan View-->
         <scene sceneID="XIq-1U-3iK">
@@ -623,6 +623,74 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="64z-ff-fl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3011" y="452"/>
+        </scene>
+        <!--New General Item View Controller-->
+        <scene sceneID="XgL-Du-ea0">
+            <objects>
+                <viewController storyboardIdentifier="NewGeneralItemView" id="Vd5-v9-n8b" customClass="INQNewGeneralItemViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lwF-wF-Tty" customClass="TPKeyboardAvoidingScrollView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login" id="NGN-dG-VSb">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bCP-bJ-OXX">
+                                <rect key="frame" x="20" y="63" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="g5y-mf-Wgr">
+                                <rect key="frame" x="20" y="92" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V7c-fa-K9C">
+                                <rect key="frame" x="20" y="130" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Z4i-wv-Auj">
+                                <rect key="frame" x="20" y="151" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Photo"/>
+                                    <segment title="Video"/>
+                                    <segment title="Audio"/>
+                                    <segment title="Text"/>
+                                    <segment title="Number"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWf-9R-2t7">
+                                <rect key="frame" x="137" y="225" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Create">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createTap:" destination="Vd5-v9-n8b" eventType="touchUpInside" id="K7e-Np-eb2"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="createButton" destination="UWf-9R-2t7" id="kSQ-LR-ghM"/>
+                        <outlet property="titleEdit" destination="g5y-mf-Wgr" id="jza-X0-AZI"/>
+                        <outlet property="titleLabel" destination="bCP-bJ-OXX" id="lgG-oU-Ccx"/>
+                        <outlet property="typeLabel" destination="V7c-fa-K9C" id="aQb-SL-pxk"/>
+                        <outlet property="typeSegments" destination="Z4i-wv-Auj" id="jon-fB-ErT"/>
+                        <outlet property="view" destination="lwF-wF-Tty" id="Lh6-mE-uXh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dcx-5J-hcR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3412" y="721"/>
         </scene>
         <!--MainNavigation-->
         <scene sceneID="ci8-Q4-vWJ">
@@ -800,10 +868,10 @@
             </objects>
             <point key="canvasLocation" x="3011" y="1021"/>
         </scene>
-        <!--Discuss View-->
+        <!--Communicate View-->
         <scene sceneID="Rqp-Xu-www">
             <objects>
-                <viewController storyboardIdentifier="CommunicateView" title="Communicate" id="vdD-jd-pdT" userLabel="Discuss View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CommunicateView" title="Communicate" id="vdD-jd-pdT" userLabel="Communicate View" customClass="INQCommunicateViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UiW-LV-h83">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

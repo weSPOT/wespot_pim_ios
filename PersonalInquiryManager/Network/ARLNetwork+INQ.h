@@ -30,13 +30,14 @@
 +(NSString *) elgBaseUrl;
 
 +(BOOL) elgDeveloperMode;
+
 +(NSInteger *) defaultInquiryVisibility;
 +(NSInteger *) defaultInquiryMembership;
 
 //@property (readonly, nonatomic) NSString *elgUrl;
 //@property (readonly, nonatomic) NSString *elgBaseUrl;
 
-+ (id) createInquiry: (NSString *)title description: (NSString *)description visibility: (NSNumber *) visibility membership: (NSNumber *) membership;
++ (id) createInquiry: (NSString *)title description:(NSString *)description visibility: (NSNumber *) visibility membership: (NSNumber *) membership;
 
 + (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider;
 + (id) getUsers;

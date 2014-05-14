@@ -114,7 +114,7 @@
     self.typeSegments.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
-    //-[descriptionEdit(==100)]
+
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit]-[typeLabel]-[typeSegments]-[createButton]",0 + self.navbarHeight]

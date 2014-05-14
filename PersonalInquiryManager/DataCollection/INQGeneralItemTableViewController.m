@@ -196,8 +196,6 @@ typedef NS_ENUM(NSInteger, groups) {
 
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
-
-#warning call syncVisibilityForInquiry here?
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
@@ -291,7 +289,7 @@ typedef NS_ENUM(NSInteger, groups) {
         case DATA: {
             // Fetch Data from CoreData
             NSIndexPath *tmp = [self tableIndexPathToCoreDataIndexPath:indexPath];
-            NSLog(@"%dx%d", tmp.row, tmp.section);
+            
             CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:tmp]);
             
             GeneralItem *generalItem = civ.item;
@@ -299,7 +297,7 @@ typedef NS_ENUM(NSInteger, groups) {
             // Set Font to Bold if unread.
             cell.textLabel.text = generalItem.name;
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-            cell.detailTextLabel.text = @"";
+            cell.detailTextLabel.text = generalItem.richText;
             
             // If Read set Font to normal.
             for (Action * action in generalItem.actions) {

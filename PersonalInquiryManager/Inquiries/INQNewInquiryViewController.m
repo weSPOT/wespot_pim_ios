@@ -146,7 +146,7 @@
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(80)]-[visibilityLabel]-[visibilitySegments]-[membershipLabel]-[memberhipSegments]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(==80)]-[visibilityLabel]-[visibilitySegments]-[membershipLabel]-[memberhipSegments]-[createButton]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleEdit;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextField *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegments;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
@@ -41,6 +43,7 @@
     
     // Do any additional setup after loading the view.
     self.titleEdit.delegate = self;
+    self.descriptionEdit.delegate = self;
     
     self.typeSegments.apportionsSegmentWidthsByContent = YES;
     
@@ -65,8 +68,8 @@
  *  @param title       The title
  *  @param description The description
  */
-- (void) createGeneralItem:(NSString *)title type:(NSNumber *)itemType {
-    NSDictionary *result = [ARLNetwork createGeneralItem:title description:@"TODO" type:itemType gameId:self.run.gameId];
+- (void) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)itemType {
+    NSDictionary *result = [ARLNetwork createGeneralItem:title description:description type:itemType gameId:self.run.gameId];
     
     NSLog(@"[%s] %@", __func__, result);
 }
@@ -78,11 +81,11 @@
  */
 - (IBAction)createTap:(UIButton *)sender {
     if ([self.titleEdit.text length]>0) {
-        [self createGeneralItem:self.titleEdit.text type:[NSNumber numberWithInt:self.typeSegments.selectedSegmentIndex]];
+        [self createGeneralItem:self.titleEdit.text description:self.descriptionEdit.text type:[NSNumber numberWithInt:self.typeSegments.selectedSegmentIndex]];
+        
+        [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];
         
         [self.navigationController popViewControllerAnimated:YES];
-        
-        //TODO Force a sync of tasks.
     }
 }
 
@@ -94,6 +97,8 @@
                                      self.view,                 @"view",
                                      self.titleLabel,           @"titleLabel",
                                      self.titleEdit,            @"titleEdit",
+                                     self.descriptionLabel,     @"descriptionLabel",
+                                     self.descriptionEdit,      @"descriptionEdit",
                                      self.typeLabel,            @"typeLabel",
                                      self.typeSegments,         @"typeSegments",
                                      self.createButton,         @"createButton",
@@ -102,14 +107,17 @@
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.titleEdit.translatesAutoresizingMaskIntoConstraints = NO;
     
+    self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.descriptionEdit.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.typeLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.typeSegments.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    //-[descriptionEdit(==100)]
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[typeLabel]-[typeSegments]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit]-[typeLabel]-[typeSegments]-[createButton]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -125,6 +133,14 @@
                               multiplier:1
                               constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.descriptionEdit
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+  [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.typeSegments
                               attribute:NSLayoutAttributeCenterX
                               relatedBy:NSLayoutRelationEqual
@@ -153,6 +169,16 @@
                                metrics:nil
                                views:viewsDictionary]];
  
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[descriptionLabel]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[descriptionEdit]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
     
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[typeLabel]-|"

@@ -262,6 +262,7 @@
                           gameId,                                                   @"gameId",
                           title,                                                    @"name",
                           description,                                              @"description",
+                          description,                                              @"richText",
                           openQuestion,                                             @"openQuestion",
                           nil];
     

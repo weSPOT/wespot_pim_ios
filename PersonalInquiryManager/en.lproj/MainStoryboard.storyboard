@@ -649,14 +649,26 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dTZ-wo-qDh">
+                                <rect key="frame" x="20" y="130" width="91" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="HW0-DR-INw">
+                                <rect key="frame" x="20" y="159" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V7c-fa-K9C">
-                                <rect key="frame" x="20" y="130" width="42" height="21"/>
+                                <rect key="frame" x="20" y="197" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Z4i-wv-Auj">
-                                <rect key="frame" x="20" y="151" width="280" height="29"/>
+                                <rect key="frame" x="20" y="226" width="280" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Photo"/>
@@ -667,7 +679,7 @@
                                 </segments>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWf-9R-2t7">
-                                <rect key="frame" x="137" y="225" width="46" height="30"/>
+                                <rect key="frame" x="137" y="262" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Create">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -681,16 +693,18 @@
                     </view>
                     <connections>
                         <outlet property="createButton" destination="UWf-9R-2t7" id="kSQ-LR-ghM"/>
+                        <outlet property="descriptionEdit" destination="HW0-DR-INw" id="6CM-2W-OXQ"/>
+                        <outlet property="descriptionLabel" destination="dTZ-wo-qDh" id="JIw-ph-VZs"/>
                         <outlet property="titleEdit" destination="g5y-mf-Wgr" id="jza-X0-AZI"/>
                         <outlet property="titleLabel" destination="bCP-bJ-OXX" id="lgG-oU-Ccx"/>
-                        <outlet property="typeLabel" destination="V7c-fa-K9C" id="aQb-SL-pxk"/>
+                        <outlet property="typeLabel" destination="V7c-fa-K9C" id="JL3-I6-Ye9"/>
                         <outlet property="typeSegments" destination="Z4i-wv-Auj" id="jon-fB-ErT"/>
                         <outlet property="view" destination="lwF-wF-Tty" id="Lh6-mE-uXh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dcx-5J-hcR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3412" y="721"/>
+            <point key="canvasLocation" x="3410" y="732"/>
         </scene>
         <!--MainNavigation-->
         <scene sceneID="ci8-Q4-vWJ">

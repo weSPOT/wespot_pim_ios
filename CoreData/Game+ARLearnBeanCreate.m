@@ -56,8 +56,14 @@
     
     //NSLog(@"[%s] exists %@", __func__, [gameDict objectForKey:@"description"]);
     
-    if ([gameDict objectForKey:@"description"] )game.richTextDescription = [gameDict objectForKey:@"description"];
-    if (!game.hasMap) game.hasMap = NO;
+    if ([gameDict objectForKey:@"description"]) {
+        game.richTextDescription = [gameDict objectForKey:@"description"];
+    }
+    
+    if (!game.hasMap) {
+        game.hasMap = NO;
+    }
+    
     [self setCorrespondingRuns:game];
     
     NSError *error = nil;

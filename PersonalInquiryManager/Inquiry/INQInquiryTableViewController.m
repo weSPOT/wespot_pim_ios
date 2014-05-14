@@ -78,18 +78,38 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @implementation INQInquiryTableViewController
 
+/*!
+ *  Getter
+ *
+ *  @return The NavBar Width.
+ */
 -(CGFloat) navbarWidth {
     return self.navigationController.navigationBar.bounds.size.width;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The First Cell Identifier.
+ */
 -(NSString *) cellIdentifier1 {
     return  @"inquiryPartCell1";
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Second Cell Identifier.
+ */
 -(NSString *) cellIdentifier2 {
     return  @"inquiryPartCell2";
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Header Cell Height.
+ */
 -(NSInteger *) headerCellHeight {
     return 210;
 }
@@ -117,6 +137,9 @@ typedef NS_ENUM(NSInteger, sections) {
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
+/*!
+ *  viewDidLoad
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -127,7 +150,15 @@ typedef NS_ENUM(NSInteger, sections) {
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
-    
+}
+
+/*!
+ *  viewWillAppear
+ *
+ *  @param animated <#animated description#>
+ */
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
         ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -138,7 +169,14 @@ typedef NS_ENUM(NSInteger, sections) {
     }
 }
 
+/*!
+ *  viewDidAppear
+ *
+ *  @param animated <#animated description#>
+ */
 - (void)viewDidAppear:(BOOL)animated  {
+    [super viewDidAppear:animated];
+    
     [self.tableView reloadData];
 }
 
@@ -207,7 +245,6 @@ typedef NS_ENUM(NSInteger, sections) {
 {
     UITableViewCell *cell;
     
-    //    if (!cell || (indexPath.section==HEADER)) {
     switch (indexPath.section) {
         case HEADER:
             cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1];
@@ -221,7 +258,6 @@ typedef NS_ENUM(NSInteger, sections) {
             cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
             break;
     }
-    //    }
     
     // Configure the cell...
     switch (indexPath.section) {

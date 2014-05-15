@@ -29,13 +29,30 @@
 
 static NSRecursiveLock *_theLock;
 
-+(NSRecursiveLock *) theLock {
+/*!
+ *  A Recursive Lock used to serialize the syncs.
+ *  Maybe not nessesary anymore if all syncs share a 
+ *  common context (which is not the case yet).
+ *
+ *  @return The Recusive Lock.
+ */
++ (NSRecursiveLock *) theLock {
     if(!_theLock){
         _theLock = [[NSRecursiveLock alloc] init];
     }
     return _theLock;
 }
 
+/*!
+ *  See SDK.
+ *
+ *  Called when the app has been fully loaded.
+ *
+ *  @param application   <#application description#>
+ *  @param launchOptions <#launchOptions description#>
+ *
+ *  @return <#return value description#>
+ */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSString *gitHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
@@ -76,28 +93,53 @@ static NSRecursiveLock *_theLock;
     return YES;
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param application <#application description#>
+ */
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param application <#application description#>
+ */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param application <#application description#>
+ */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param application <#application description#>
+ */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param application <#application description#>
+ */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -243,6 +285,9 @@ static NSRecursiveLock *_theLock;
     return unsyncedData;
 }
 
+/*!
+ *  Synchronize data at first run (after login) or manually with the Sync button.
+ */
 - (void) syncData {
     NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
     
@@ -255,6 +300,11 @@ static NSRecursiveLock *_theLock;
     [INQCloudSynchronizer syncUsers:self.managedObjectContext];
 }
 
+/*!
+ *  On a save notification, merge the conext into the main one.
+ *
+ *  @param notification <#notification description#>
+ */
 - (void) _mocDidSaveNotification:(NSNotification *)notification
 {
     NSManagedObjectContext *savedContext = [notification object];
@@ -271,6 +321,9 @@ static NSRecursiveLock *_theLock;
     });
 }
 
+/*!
+ *  Save NSManagedObjectContext.
+ */
 - (void) saveContext {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
@@ -287,7 +340,7 @@ static NSRecursiveLock *_theLock;
 /*!
  *  Returns the Applications Document Directory.
  *
- *  @return <#return value description#>
+ *  @return Returns a path into the Applications Document Directory.
  */
 - (NSURL *) applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
@@ -305,6 +358,10 @@ static NSRecursiveLock *_theLock;
 /*!
  *  Getter for CurrentAccount.
  *
+ *  Note: we need to cache the account because retrieving it 
+ *        in a different context or in the main ui thread might cause deadlock.
+ *  Note: because IsLoggedIn is also a rad-only property we need to update the
+ *        backing field.
  *  @return The Current Account.
  */
 - (Account *) CurrentAccount {
@@ -318,6 +375,10 @@ static NSRecursiveLock *_theLock;
     return _CurrentAccount;
 }
 
+/*!
+ *  Because CurrentAccount is a read-only property 
+ *  we need to reset the backing field when doing a logout.
+ */
 - (void) LogOut {
     [ARLAccountDelegator deleteCurrentAccount:self.managedObjectContext];
     
@@ -371,6 +432,14 @@ static NSRecursiveLock *_theLock;
     return [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
 }
 
+/*!
+ *  Retrieve the number of records from a specified table with an (filtering) predicate.
+ *
+ *  @param entityName <#entityName description#>
+ *  @param predicate  <#predicate description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSInteger *) entityCount:(NSString *) entityName predicate:(NSPredicate *) predicate {
     
     NSFetchRequest *request = [[NSFetchRequest alloc]  init];
@@ -387,6 +456,8 @@ static NSRecursiveLock *_theLock;
 }
 
 /*!
+ *  Retrieve the number of records from a specified table.
+ *
  *  See http://stackoverflow.com/questions/1134289/cocoa-core-data-efficient-way-to-count-entities
  */
 - (NSInteger *) entityCount:(NSString *) entityName {

@@ -48,6 +48,11 @@
 
 @implementation INQLoginViewController
 
+/*!
+ *  See SDK.
+ * 
+ *  Set background, clear fields and add layout constraints.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -68,27 +73,29 @@
     [self addConstraints];
 }
 
-
+/*!
+ *  See SDK.
+ *
+ *  @param animated <#animated description#>
+ */
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    //    [self adjustLoginButton];
 }
 
+/*!
+ *  See SDK.
+ *
+ *  @param animated <#animated description#>
+ */
 -(void) viewDidDisappear:(BOOL)animated
 {
      [super viewWillDisappear:animated];
-    
-    //    self.background = nil;
-    //    self.usernameEdit.delegate = nil;
-    //    self.usernameEdit = nil;
-    //    self.passwordEdit.delegate = nil;
-    //    self.passwordEdit = nil;
-    //    self.loginButton = nil;
-
 }
 
+/*!
+ *  See SDK.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -134,6 +141,8 @@
 
 /*!
  *  Login using WeSpot.
+ *
+ *  Just mimic a submit of the login form Stefaan made.
  *
  *  @param sender <#sender description#>
  */
@@ -190,46 +199,44 @@
             willSendRequest:(NSURLRequest *)request
            redirectResponse:(NSURLResponse *)redirectResponse
 {
-    // @autoreleasepool {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) redirectResponse;
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) redirectResponse;
+    
+    int statusCode = [httpResponse statusCode];
+    
+    NSLog (@"HTTP status %d", statusCode);
+    
+    // http statuscodes between 300 & 400 is a redirect ...
+    if (httpResponse && statusCode >= 300 && statusCode < 400)
+    {
+        NSLog(@"willSendRequest (from %@ to %@)", redirectResponse.URL, request.URL);
+    }
+    
+    NSLog(@"HTTP request %@", self.connection.originalRequest.URL);
+    
+    if (redirectResponse)
+    {
+        NSMutableURLRequest *newRequest = [self.originalRequest mutableCopy]; // original request
+        [newRequest setURL: [request URL]];
         
-        int statusCode = [httpResponse statusCode];
+        NSLog (@"query to %@", newRequest.URL.query);
+        NSLog (@"redirected to %@", newRequest.URL);
         
-        NSLog (@"HTTP status %d", statusCode);
-        
-        // http statuscodes between 300 & 400 is a redirect ...
-        if (httpResponse && statusCode >= 300 && statusCode < 400)
-        {
-            NSLog(@"willSendRequest (from %@ to %@)", redirectResponse.URL, request.URL);
-        }
-        
-        NSLog(@"HTTP request %@", self.connection.originalRequest.URL);
-        
-        if (redirectResponse)
-        {
-            NSMutableURLRequest *newRequest = [self.originalRequest mutableCopy]; // original request
-            [newRequest setURL: [request URL]];
-            
-            NSLog (@"query to %@", newRequest.URL.query);
-            NSLog (@"redirected to %@", newRequest.URL);
-            
-            NSString *query = [request URL].query;
-            NSArray *array = [query componentsSeparatedByString:@"&"];
-            for (NSString *item in array) {
-                if ([item rangeOfString:@"accessToken="].location != NSNotFound) {
-                    self.token = [item substringFromIndex:[@"accessToken=" length]];
-                }
+        NSString *query = [request URL].query;
+        NSArray *array = [query componentsSeparatedByString:@"&"];
+        for (NSString *item in array) {
+            if ([item rangeOfString:@"accessToken="].location != NSNotFound) {
+                self.token = [item substringFromIndex:[@"accessToken=" length]];
             }
-            
-            return newRequest;
         }
-        else
-        {
-            NSLog (@"original %@" , request.URL);
-            
-            return request;
-        }
-//    }
+        
+        return newRequest;
+    }
+    else
+    {
+        NSLog (@"original %@" , request.URL);
+        
+        return request;
+    }
 }
 
 /*!
@@ -263,17 +270,7 @@
  *  @param connection <#connection description#>
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    
-    // initialize convert the received data to string with UTF8 encoding
-    //    NSString *htmlSTR = [[NSString alloc] initWithData:self.receivedData
-    //                                              encoding:NSUTF8StringEncoding];
-
-    // NSLog(@"[%s] %@" ,__func__, htmlSTR);
-    
     if ([self.token length]!=0) {
-        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Got an accessToken" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        //[alert show];
-        
         //Copied from ARLOauthWebViewController.m
         [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:@"auth"];
         
@@ -291,6 +288,9 @@
     }
 }
 
+/*!
+ *  Handle the Back Button.
+ */
 - (void)navigateBack {
     if (ARLNetwork.isLoggedIn) {
         UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
@@ -309,10 +309,20 @@
     }
 }
 
+/*!
+ *  Handle the Back Button.
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)backButtonAction:(UIBarButtonItem *)sender {
     [self navigateBack];
 }
 
+/*!
+ *  Perform the actual Login.
+ *
+ *  @param serviceId <#serviceId description#>
+ */
 - (void)performLogin:(NSInteger)serviceId {
     [self initOauthUrls];
     
@@ -338,21 +348,26 @@
     }
 }
 
+/*!
+ *  Initialize the Oauth Urls for the various services supported.
+ */
 - (void) initOauthUrls {
     NSDictionary* network = [ARLNetwork oauthInfo];
     
     for (NSDictionary* dict in [network objectForKey:@"oauthInfoList"]) {
-//        NSLog(@"[%s] %@", __func__, [dict objectForKey:@"providerId"]);
         switch ([(NSNumber*)[dict objectForKey:@"providerId"] intValue]) {
             case FACEBOOK:
                 self.facebookLoginString = [NSString stringWithFormat:@"https://graph.facebook.com/oauth/authorize?client_id=%@&display=page&redirect_uri=%@&scope=publish_stream,email", [dict objectForKey:@"clientId"], [dict objectForKey:@"redirectUri"]];
                 break;
+                
             case GOOGLE:
                 self.googleLoginString = [NSString stringWithFormat:@"https://accounts.google.com/o/oauth2/auth?redirect_uri=%@&response_type=code&client_id=%@&approval_prompt=force&scope=profile+email", [dict objectForKey:@"redirectUri"], [dict objectForKey:@"clientId"]];
                 break;
+                
             case LINKEDIN:
                 self.linkedInLoginString = [NSString stringWithFormat:@"https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=%@&scope=r_fullprofile+r_emailaddress+r_network&state=BdhOU9fFb6JcK5BmoDeOZbaY58&redirect_uri=%@", [dict objectForKey:@"clientId"], [dict objectForKey:@"redirectUri"]];
                 break;
+                
             case TWITTER:
                 self.twitterLoginString = [NSString stringWithFormat:@"%@?twitter=init", [dict objectForKey:@"redirectUri"]];
                 break;
@@ -361,14 +376,9 @@
     }
 }
 
-//- (void) adjustLoginButton  {
-//    if (ARLNetwork.isLoggedIn) {
-////     NSLog(@"[%s] Logout", __func__);
-//    } else {
-////     NSLog(@"[%c] Login", __func__);
-//    }
-//}
-
+/*!
+ *  Add Layout Constraints.
+ */
 - (void) addConstraints {
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
         self.wespotLabel,   @"wespot",
@@ -499,24 +509,51 @@
                                views:viewsDictionary]];
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Status Bar Height.
+ */
 -(CGFloat) statusbarHeight
 {
     // NOTE: Not always turned yet when we try to retrieve the height.
     return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Nav Bar Height.
+ */
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Tab Bar Height.
+ */
 -(CGFloat) tabbarHeight {
     return self.tabBarController.tabBar.bounds.size.height;
 }
 
+/*!
+ *  Getter
+ *
+ *  @return The Current Orientation.
+ */
 -(UIInterfaceOrientation) interfaceOrientation {
     return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
+/*!
+ *  Handle the Return key (move either to next field or submit).
+ *
+ *  @param textField <#textField description#>
+ *
+ *  @return <#return value description#>
+ */
 - (BOOL) textFieldShouldReturn:(UITextField *)textField{
     //Dismiss the keyboard.
     [textField resignFirstResponder];

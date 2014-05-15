@@ -53,7 +53,7 @@
 }
 
 /*!
- *  didReceiveMemoryWarning
+ *  See SDK.
  */
 - (void)didReceiveMemoryWarning
 {
@@ -201,7 +201,7 @@
 /*!
  *  Getter
  *
- *  @return the StatusBar Height.
+ *  @return the Status Bar Height.
  */
 -(CGFloat) statusbarHeight
 {
@@ -212,7 +212,7 @@
 /*!
  *  Getter
  *
- *  @return the NavBar Height.
+ *  @return the Nav Bar Height.
  */
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
@@ -221,7 +221,7 @@
 /*!
  *  Getter
  *
- *  @return the TabBar Height.
+ *  @return the Tab Bar Height.
  */
 -(CGFloat) tabbarHeight {
     return self.tabBarController.tabBar.bounds.size.height;

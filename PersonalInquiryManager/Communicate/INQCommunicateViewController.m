@@ -14,6 +14,9 @@
 
 @implementation INQCommunicateViewController
 
+/*!
+ *  See SDK.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -21,6 +24,9 @@
 	// Do any additional setup after loading the view.
 }
 
+/*!
+ *  See SDK.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

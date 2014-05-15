@@ -18,10 +18,12 @@ typedef NS_ENUM(NSInteger, groups) {
      *  Earned Badges.
      */
     EARNED = 0,
+    
     /*!
      *  Unearned Badges.
      */
     UNEARNED,
+    
     /*!
      *  Number of Groups
      */
@@ -34,6 +36,11 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @implementation INQBadgesViewController
 
+/*!
+ *  Getter
+ *
+ *  @return The Cell Identifier.
+ */
 -(NSString*) cellIdentifier {
     return  @"badgesCell";
 }
@@ -54,25 +61,6 @@ typedef NS_ENUM(NSInteger, groups) {
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
 }
-
-///*!
-// *  Setup UIWebViewDelegate's based Authentication.
-// *
-// *  NOTE: Seems ununsed.
-// *
-// *  @param authenticateUrl The Url to Authenticate against.
-// *  @param aDelegate       The Delegate.
-// */
-//- (void)loadAuthenticateUrl:(NSString *)authenticateUrl delegate:(id) aDelegate {
-//    UIWebView *web = (UIWebView*)(self.view);
-//
-//    web.delegate = self;
-//    web.scalesPageToFit = YES;
-//    
-//    // self.domain = [[NSURL URLWithString:authenticateUrl] host];
-//    
-//    [web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
-//}
 
 /*!
  *  Low Memory Warning.
@@ -119,7 +107,6 @@ typedef NS_ENUM(NSInteger, groups) {
     return 0;
 }
 
-
 /*!
  *  Return the Table Data one Cell at a Time.
  *
@@ -152,6 +139,14 @@ typedef NS_ENUM(NSInteger, groups) {
     return cell;
 }
 
+/*!
+ *  Return the Title for a Section Header.
+ *
+ *  @param tableView <#tableView description#>
+ *  @param section   <#section description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
@@ -194,6 +189,5 @@ typedef NS_ENUM(NSInteger, groups) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
 }
-
 
 @end

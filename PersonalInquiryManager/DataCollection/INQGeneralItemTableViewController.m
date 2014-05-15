@@ -43,24 +43,47 @@ typedef NS_ENUM(NSInteger, groups) {
 
 @implementation INQGeneralItemTableViewController
 
+/*!
+ *  Getter.
+ *
+ *  @return The Nav Bar Height.
+ */
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
 }
 
+/*!
+ *  Getter.
+ *
+ *  @return The Status Bar Height.
+ */
 -(CGFloat) statusbarHeight
 {
     // NOTE: Not always turned yet when we try to retrieve the height.
     return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
 
+/*!
+ *  Getter.
+ *
+ *  @return The Cell Identifier.
+ */
 -(NSString*) cellIdentifier {
     return  @"generalitemCell";
 }
 
+/*!
+ *  Getter.
+ *
+ *  @return The Section Offset.
+ */
 -(NSInteger*) sectionOffset {
     return  1;
 }
 
+/*!
+ *  Setup the NSFetchedResultsController.
+ */
 - (void)setupFetchedResultsController {
     if (self.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
@@ -93,18 +116,22 @@ typedef NS_ENUM(NSInteger, groups) {
     }
 }
 
+/*!
+ *  Getter
+ *
+ *  @param run The Run.
+ */
 - (void) setRun: (Run *) run {
     _run = run;
     
     [self setupFetchedResultsController];
 }
 
-- (void)refreshTable {
-    [self.tableView reloadData];
-    
-    [self.refreshControl endRefreshing];
-}
-
+/*!
+ *  Notification, send when something changes in the NSManagedContext.
+ *
+ *  @param notification <#notification description#>
+ */
 - (void)contextChanged:(NSNotification*)notification
 {
     ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -126,64 +153,20 @@ typedef NS_ENUM(NSInteger, groups) {
         [self.tableView reloadData];
         return;
     }
-    
-//    // See if there are any Inquiry objects added and if so, reload the tableView.
-//    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-//    
-//    for(NSManagedObject *obj in insertedObjects){
-//        if ([[obj entity].name isEqualToString:@"CurrentItemVisibility"]) {
-//            NSError *error = nil;
-//            [self.fetchedResultsController performFetch:&error];
-//            
-//            [self.tableView reloadData];
-//            return;
-//        }
-//    }
-//    
-//    // If no Inqury objecst are added, look for updates and refresh them.
-//    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-//    
-//    BOOL fetched = NO;
-//    NSArray *indexPaths = [[NSArray alloc] init];
-//    
-//    for(NSManagedObject *obj in updatedObjects){
-//        if ([[obj entity].name isEqualToString:@"CurrentItemVisibility"]) {
-//            if (!fetched) {
-//                NSError *error = nil;
-//                [self.fetchedResultsController performFetch:&error];
-//                fetched=YES;
-//            }
-//            
-//            CurrentItemVisibility *updated = (CurrentItemVisibility *)obj;
-//            
-//            //workaround for indexPathForObject:obj not working.
-//            for (CurrentItemVisibility *civ in self.fetchedResultsController.fetchedObjects) {
-//                if ([civ.objectID isEqual:updated.objectID]) {
-//                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:civ];
-//                    if (indexPath) {
-//                        indexPaths = [indexPaths arrayByAddingObject:indexPath];
-//                    }
-//                    break;
-//                }
-//                
-//            }
-//        }
-//    }
-//    
-//    if (indexPaths.count != 0 )
-//    {// Fails
-//        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-//    }
-
 }
 
 /*!
+ *  Remove the Notification. Dealloc is the closest to ViewDidLoad.
+ *
  *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
  */
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/*!
+ *  See SDK.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -194,6 +177,13 @@ typedef NS_ENUM(NSInteger, groups) {
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
+/*!
+ *  See SDK.
+ *
+ *  Setup view, and load data.
+ *
+ *  @param animated <#animated description#>
+ */
 -(void)viewDidAppear:(BOOL)animated    {
     [super viewDidAppear:animated];
     
@@ -232,6 +222,7 @@ typedef NS_ENUM(NSInteger, groups) {
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
+    
     return numGroups;
 }
 
@@ -329,7 +320,14 @@ typedef NS_ENUM(NSInteger, groups) {
     
     return cell;
 }
-
+/*!
+ *  Return the Title of a Section Header.
+ *
+ *  @param tableView <#tableView description#>
+ *  @param section   <#section description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     switch (section){
         case ADDTASK:
@@ -396,10 +394,25 @@ typedef NS_ENUM(NSInteger, groups) {
     }
 }
 
+
+/*!
+ *  Adjust the IndexPath passed into the table methods with the SectionOffset.
+ *
+ *  @param indexPath <#indexPath description#>
+ *
+ *  @return <#return value description#>
+ */
 -(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
 }
 
+/*!
+ *  Adjust the CoreData IndexPath to the table methods with the SectionOffset.
+ *
+ *  @param indexPath <#indexPath description#>
+ *
+ *  @return <#return value description#>
+ */
 -(NSIndexPath *)coreDataIndexPathToTableIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+(int)self.sectionOffset];
 }

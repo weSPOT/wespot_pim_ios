@@ -256,11 +256,11 @@
         @autoreleasepool {
             if ([response.contentType isEqualToString:self.contentType])
             {
-                NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
-                
                 if (response.data == nil && response.thumb == nil) {
                     if ([response.contentType isEqualToString:@"application/jpg"]) {
                         cnt++;
+                        
+                        NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                         
                         NSLog(@"[%s] ** Downloading url=%@", __func__, url);
                         
@@ -335,7 +335,9 @@
                     } else if ([response.contentType isEqualToString:@"video/quicktime"]) {
                         cnt++;
                         
-                        NSLog(@"[%s] ** Downloading url=%@", __func__, response.fileName);
+                        NSURL *url = [NSURL URLWithString:response.fileName];
+                                                           
+                        NSLog(@"[%s] ** Downloading url=%@", __func__, url);
                         
                         //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
                         
@@ -402,12 +404,23 @@
                         thumbImage = nil;
                         generateImg = nil;
                     } else if ([response.contentType isEqualToString:@"audio/aac"]) {
+                        // NSURL *url = [NSURL URLWithString:response.fileName];
+                        
+                        // NSLog(@"[%s] ** Not Downloading url=%@", __func__, url);
+                        
                         //response.data = [NSData dataWithContentsOfURL:url];
                     } else {
                         cnt++;
                         
+                        NSURL *url = [NSURL URLWithString:response.fileName];
+                        
+                        NSLog(@"[%s] ** Downloading url=%@", __func__, url);
+                        
                         response.data = [NSData dataWithContentsOfURL:url];
                     }
+                    
+                    NSError *error = nil;
+                    [self.context save:&error];
                 }
             }
         }

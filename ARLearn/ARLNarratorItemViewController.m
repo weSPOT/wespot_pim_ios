@@ -433,7 +433,7 @@ typedef NS_ENUM(NSInteger, responses) {
             if (self.withPicture) {
                 [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"application/jpg"];
             }
-            if (self.self.withVideo) {
+            if (self.withVideo) {
                 [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"video/quicktime"];
             }
             if (self.withAudio) {

@@ -298,7 +298,7 @@ typedef NS_ENUM(NSInteger, responses) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
         return ;
     }

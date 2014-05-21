@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
                                                                                      ascending:YES
                                                                                       selector:@selector(localizedCaseInsensitiveCompare:)]];
     
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
         return ;
     }
@@ -195,7 +195,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     [super viewDidAppear:animated];
     
     if (ARLNetwork.networkAvailable) {
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
     }
     

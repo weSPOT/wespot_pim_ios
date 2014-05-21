@@ -145,6 +145,7 @@
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
 		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 		8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */; };
+		8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */; };
 		8DE646F61922162700CB8E67 /* INQNewGeneralItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -381,6 +382,7 @@
 		8DB8E3B6191B9510000C51CB /* INQWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQWebViewController.m; path = Viewers/INQWebViewController.m; sourceTree = "<group>"; };
 		8DC3AA5D192CB9AC00C16A31 /* INQQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQQuestionViewController.h; path = Question/INQQuestionViewController.h; sourceTree = "<group>"; };
 		8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQQuestionViewController.m; path = Question/INQQuestionViewController.m; sourceTree = "<group>"; };
+		8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8DE646F41922162700CB8E67 /* INQNewGeneralItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewGeneralItemViewController.h; sourceTree = "<group>"; };
 		8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNewGeneralItemViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -390,6 +392,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */,
 				8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */,
 				8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */,
 				34D422CE17B671150051E84C /* MobileCoreServices.framework in Frameworks */,
@@ -461,6 +464,7 @@
 		3477E6871769C9A000F3A5F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */,
 				8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */,
 				34D422CD17B671150051E84C /* MobileCoreServices.framework */,
 				347ACF9117B2865C00B4B345 /* AddressBook.framework */,
@@ -981,6 +985,11 @@
 				TargetAttributes = {
 					3477E6841769C9A000F3A5F3 = {
 						DevelopmentTeam = GND5FJCB67;
+						SystemCapabilities = {
+							com.apple.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

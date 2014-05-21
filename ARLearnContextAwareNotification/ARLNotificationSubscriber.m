@@ -44,7 +44,7 @@
     if ([@"org.celstec.arlearn2.beans.run.User" isEqualToString:[message objectForKey:@"type"]]) {
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
         
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [synchronizer createContext:appDelegate.managedObjectContext];
         
         synchronizer.syncRuns = YES;
@@ -58,7 +58,7 @@
         
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
         
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [synchronizer createContext:appDelegate.managedObjectContext];
         
         synchronizer.syncRuns = YES;
@@ -72,7 +72,7 @@
         
         ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
         
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [synchronizer createContext:appDelegate.managedObjectContext];
         
         synchronizer.gameId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"gameId"]];

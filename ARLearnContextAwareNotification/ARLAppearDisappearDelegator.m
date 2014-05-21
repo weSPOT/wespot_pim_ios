@@ -40,7 +40,7 @@
     NSLog(@"timer went off  ");
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [CurrentItemVisibility updateVisibility:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentRun"] withManagedContext:appDelegate.managedObjectContext];
         [appDelegate.managedObjectContext save:nil];
         for (CurrentItemVisibility* vis in [CurrentItemVisibility retrieveVisibleFor: [NSNumber numberWithLongLong:3457078]withManagedContext: appDelegate.managedObjectContext]) {

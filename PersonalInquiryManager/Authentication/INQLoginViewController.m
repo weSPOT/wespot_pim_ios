@@ -274,7 +274,7 @@
         //Copied from ARLOauthWebViewController.m
         [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:@"auth"];
         
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSDictionary *accountDetails = [ARLNetwork accountDetails];
         
         [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];

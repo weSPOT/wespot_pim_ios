@@ -28,6 +28,7 @@
 @synthesize CurrentAccount = _CurrentAccount;
 
 static NSRecursiveLock *_theLock;
+static CLLocationManager *locationManager;
 
 /*!
  *  A Recursive Lock used to serialize the syncs.
@@ -89,6 +90,9 @@ static NSRecursiveLock *_theLock;
     Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
     [reach startNotifier];
+    
+#warning This Location code must be relocated to a better place!!
+    [self startStandardUpdates];
     
     return YES;
 }
@@ -462,6 +466,63 @@ static NSRecursiveLock *_theLock;
  */
 - (NSInteger *) entityCount:(NSString *) entityName {
     return [self entityCount:entityName predicate:nil];
+}
+
+/*!
+ *  Use GPS to upate location.
+ */
+- (void)startStandardUpdates
+{
+    // Create the location manager if this object does not
+    // already have one.
+    if (nil == locationManager) {
+        locationManager = [[CLLocationManager alloc] init];
+    }
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    
+    // Set a movement threshold for new events.
+    locationManager.distanceFilter = 500; // meters
+    
+    locationManager.pausesLocationUpdatesAutomatically=YES;
+    
+    [locationManager startUpdatingLocation];
+}
+
+/*!
+ *  Use WiFi to update location.
+ */
+- (void)startSignificantChangeUpdates
+{
+    // Create the location manager if this object does not
+    // already have one.
+    if (nil == locationManager)
+        locationManager = [[CLLocationManager alloc] init];
+    
+    locationManager.delegate = self;
+    [locationManager startMonitoringSignificantLocationChanges];
+}
+
+/*!
+ *  Delegate method from the CLLocationManagerDelegate protocol.
+ *
+ *  @param manager   The CLLocationManager
+ *  @param locations The locations to process.
+ */
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations {
+    
+    // If it's a relatively recent event, turn off updates to save power.
+    CLLocation* location = [locations lastObject];
+    NSDate* eventDate = location.timestamp;
+    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    
+    if (abs(howRecent) < 15.0) {
+        // If the event is recent, do something with it.
+        NSLog(@"latitude %+.6f, longitude %+.6f\n",
+              location.coordinate.latitude,
+              location.coordinate.longitude);
+    }
 }
 
 @end

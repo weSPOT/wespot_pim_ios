@@ -101,7 +101,7 @@
             
             [[NSUserDefaults standardUserDefaults] setObject:[listItems objectAtIndex:0] forKey:@"auth"];
             
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             NSDictionary *accountDetails = [ARLNetwork accountDetails];
             
             [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];

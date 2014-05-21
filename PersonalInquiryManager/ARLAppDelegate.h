@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "Reachability.h"
 
@@ -20,7 +21,7 @@
 #define GIT_HASH            @"git_hash"
 #define APP_VERSION         @"app_version"
 
-@interface ARLAppDelegate : UIResponder <UIApplicationDelegate>
+@interface ARLAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
 
 + (NSRecursiveLock *) theLock;
 

@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, tools) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
         return ;
     }
@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, tools) {
         [alert show];
     } else {
         if (ARLNetwork.isLoggedIn) {
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             [appDelegate LogOut];
             
             //#warning not enough to toggle isLoggedIn.
@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, tools) {
 }
 
 - (void)syncButtonButtonTap:(id)sender {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
    
     if ([appDelegate respondsToSelector:@selector(syncData)]) {
         [appDelegate performSelector:@selector(syncData)];
@@ -288,7 +288,7 @@ typedef NS_ENUM(NSInteger, tools) {
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             
             @autoreleasepool {
-                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
                 NSInteger count = [appDelegate entityCount:@"Inquiry"];
                 
                 if (count!=0) {
@@ -308,7 +308,7 @@ typedef NS_ENUM(NSInteger, tools) {
             cell.imageView.image = [UIImage imageNamed:@"mymedia"];
            
             @autoreleasepool {
-                ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
                 
                 Account *account = ARLNetwork.CurrentAccount;
                 
@@ -345,7 +345,7 @@ typedef NS_ENUM(NSInteger, tools) {
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
                     
                     @autoreleasepool {
-                        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
                         NSInteger count = [appDelegate entityCount:@"Account"];
                         
                         if (count > 1) {

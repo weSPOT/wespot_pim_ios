@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, profile) {
     switch (indexPath.section) {
         case FRIENDS:
         {
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             NSString *userId = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthId"];
             NSString *type = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthProvider"];

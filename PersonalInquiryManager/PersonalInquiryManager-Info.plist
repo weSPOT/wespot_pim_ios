@@ -30,6 +30,12 @@
 	<true/>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses the microphone to collect inquiry data.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app uses the camera to collect inquiry data.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>This app uses location data when a user uploads collected inquiry data.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

@@ -131,7 +131,7 @@ typedef NS_ENUM(NSInteger, sections) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
         return ;
     }
@@ -170,7 +170,7 @@ typedef NS_ENUM(NSInteger, sections) {
     [super viewWillAppear:animated];
     
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
         [INQCloudSynchronizer syncInquiryUsers:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
         
@@ -359,7 +359,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 case DATACOLLECTION: {
                     cell.textLabel.text = @"Collect Data";
                     
-                    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
                     NSInteger count = [appDelegate entityCount:@"CurrentItemVisibility"
                                                      predicate:[NSPredicate predicateWithFormat:@"visible = 1 and run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
                     

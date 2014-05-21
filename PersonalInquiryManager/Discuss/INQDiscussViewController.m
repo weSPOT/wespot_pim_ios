@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, friends) {
 }
 
 - (void)setupFetchedResultsController {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
     
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
         return ;
     }

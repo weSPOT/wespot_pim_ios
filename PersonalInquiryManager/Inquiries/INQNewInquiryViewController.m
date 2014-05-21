@@ -99,7 +99,7 @@
         NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
         
         if ([[dict objectForKey:@"status"] intValue] == 0) {
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             // Sync will return our new Inquiry and it's Run.
             if (ARLNetwork.networkAvailable) {

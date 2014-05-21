@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, friends) {
     [super viewDidAppear:animated];
 
     if (ARLNetwork.networkAvailable) {
-        ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
         });
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, friends) {
                          [accountType intValue],
                          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
     
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     self.fetchedResultsController.delegate = self;

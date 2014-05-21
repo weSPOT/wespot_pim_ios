@@ -38,7 +38,7 @@
             
             newViewController = nil;
             
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
 
             if ([appDelegate respondsToSelector:@selector(syncData)]) {
                 [appDelegate performSelector:@selector(syncData)];

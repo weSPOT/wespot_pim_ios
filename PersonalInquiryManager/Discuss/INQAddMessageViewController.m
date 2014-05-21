@@ -49,7 +49,7 @@
 - (void) createDefaultThreadMessage:(NSString *)title description:(NSString *)description {
     NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
     
-    ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
 
@@ -180,7 +180,7 @@
         [self createDefaultThreadMessage:self.titleEdit.text description:self.descriptionEdit.text];
         
         if (ARLNetwork.networkAvailable) {
-            ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
         }

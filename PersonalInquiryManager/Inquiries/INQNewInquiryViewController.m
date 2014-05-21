@@ -29,7 +29,7 @@
 @property (readonly, nonatomic) CGFloat navbarHeight;
 @property (readonly, nonatomic) CGFloat tabbarHeight;
 @property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
-
+@property (readonly, nonatomic) NSString *DefaultInquiryDescription;
 @end
 
 @implementation INQNewInquiryViewController
@@ -50,6 +50,23 @@
     
     self.visibilitySegments.selectedSegmentIndex = [ARLNetwork defaultInquiryVisibility];
     self.membershipSegments.selectedSegmentIndex = [ARLNetwork defaultInquiryMembership];
+    
+    self.descriptionEdit.text = self.DefaultInquiryDescription;
+    
+    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                nil];
+    {
+        [self.visibilitySegments setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        [self.visibilitySegments setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+        [self.visibilitySegments setTitleTextAttributes:attributes forState:UIControlStateSelected];
+    }
+    {
+        [self.membershipSegments setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        [self.membershipSegments setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+        [self.membershipSegments setTitleTextAttributes:attributes forState:UIControlStateSelected];
+    }
     
     [self addConstraints];
 }
@@ -263,6 +280,13 @@
         [self createInquiry:self.titleEdit.text description:self.descriptionEdit.text];
         
         [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You need to enter both title and description to create a new inquiry!"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
     }
 }
 
@@ -282,6 +306,10 @@
 
 -(UIInterfaceOrientation) interfaceOrientation {
     return [[UIApplication sharedApplication] statusBarOrientation];
+}
+
+-(NSString *)DefaultInquiryDescription {
+    return @"This is a self-guided, mobile created, inquiry. Please provide a description of the inquiry here.";
 }
 
 @end

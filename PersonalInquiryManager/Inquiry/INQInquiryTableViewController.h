@@ -18,4 +18,6 @@
 
 @property (strong, nonatomic)  Inquiry *inquiry;
 
++(NSInteger) numParts;
+
 @end

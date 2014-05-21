@@ -13,15 +13,9 @@
 @property (strong, nonatomic) UIBarButtonItem *buttonFF;
 @property (strong, nonatomic) UIBarButtonItem *buttonFB;
 
-#warning hardcoded highest page index
-#define MIN_PAGE_INDEX 0
-#define MAX_PAGE_INDEX 4
-
 @end
 
 @implementation INQPageViewController
-
-#warning UIPageViewControl pages erratic when in scroll mode. Curl seems to be ok (but lacks the Page Control at the bottom).
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,8 +41,17 @@
 
     [self.navigationItem setRightBarButtonItems:[[NSArray alloc] initWithObjects:self.buttonFF, self.buttonFB, nil]];
     
-    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != 4;
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // see http://stackoverflow.com/questions/22098493/uipageviewcontroller-disable-swipe-gesture
+    for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
+        recognizer.enabled = NO;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -96,8 +99,8 @@
     } while (!view);
     
 
-    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != MAX_PAGE_INDEX;
-    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != MIN_PAGE_INDEX;
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
     return view;
 }
@@ -121,8 +124,8 @@
     } while (!view);
 
     
-    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] != MAX_PAGE_INDEX;
-    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != MIN_PAGE_INDEX;
+    self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
+    self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
     return view;
 }
@@ -144,13 +147,20 @@
     _currentPageIndex= currentPageIndex;
 }
 
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+    // see http://stackoverflow.com/questions/22098493/uipageviewcontroller-disable-swipe-gesture
+    for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
+        recognizer.enabled = NO;
+    }
+}
+
 -(void)nextPage {
     UIViewController *next = [self pageViewController:self viewControllerAfterViewController:[self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]]];
     
     if (next) {
         NSArray *viewControllers = [NSArray arrayWithObject:next];
         
-        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     }
 }
 
@@ -160,7 +170,7 @@
     if (prev) {
         NSArray *viewControllers = [NSArray arrayWithObject:prev];
         
-        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     }
 }
 

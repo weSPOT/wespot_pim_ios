@@ -15,33 +15,37 @@
  */
 typedef NS_ENUM(NSInteger, indices) {
     /*!
-     *  Hypothesis & question.
+     *  Hypothesis.
      */
     HYPOTHESIS = 0,
     /*!
+     *  Question.
+     */
+    QUESTION = 100,
+    /*!
      *  Plan
      */
-     PLAN,
+    PLAN = 101,
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECTION,
+    DATACOLLECTION = 1,
     /*!
      *  Analysis.
      */
-    ANALYSIS,
+    ANALYSIS = 102,
     /*!
      *  Discussion.
      */
-    DISCUSS,
+    DISCUSS = 2,
     /*!
      *  Communication.
      */
-    COMMUNICATE,
+    COMMUNICATE = 103,
     /*!
      *  Number of items in this NS_ENUM.
      */
-    numItems,
+    numItems = 3,
 };
 
 /*!
@@ -77,6 +81,11 @@ typedef NS_ENUM(NSInteger, sections) {
 @end
 
 @implementation INQInquiryTableViewController
+
+
++(NSInteger) numParts {
+    return numItems;
+}
 
 /*!
  *  Getter
@@ -337,6 +346,11 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
+                case QUESTION:
+                    cell.textLabel.text = @"Question";
+                    cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
+                    break;
                 case PLAN:
                     cell.textLabel.text = @"Plan";
                     cell.detailTextLabel.text = @"";
@@ -426,8 +440,17 @@ typedef NS_ENUM(NSInteger, sections) {
         }
             break;
             
+        case QUESTION: {
+            // Create the new ViewController.
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"QuestionView"];
+            
+            // Pass the parameters to render.
+            // [newViewController performSelector:@selector(setQuestion:) withObject:self.inquiry.question];
+        }
+            break;
+        
         case PLAN: {
-            // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PlanView"];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PlanView"];
         }
             break;
             
@@ -443,7 +466,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         case ANALYSIS: {
-            // newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisView"];
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisView"];
         }
             break;
             

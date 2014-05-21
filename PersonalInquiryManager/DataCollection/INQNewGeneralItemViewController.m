@@ -49,6 +49,15 @@
     
     self.typeSegments.selectedSegmentIndex = 0;
     
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                nil];
+    {
+        [self.typeSegments setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        [self.typeSegments setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+        [self.typeSegments setTitleTextAttributes:attributes forState:UIControlStateSelected];
+    }
+    
     [self addConstraints];
 }
 
@@ -140,7 +149,7 @@
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1
                               constant:0]];
-  [self.view addConstraint:[NSLayoutConstraint
+    [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.typeSegments
                               attribute:NSLayoutAttributeCenterX
                               relatedBy:NSLayoutRelationEqual

@@ -252,6 +252,30 @@
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
+
+/*!
+ *  Return the Question of an Inquiry.
+ *
+ *  @param inquiryId The Inquiry Id.
+ *
+ *  @return The Question of the Inquiry as JSON.
+ */
++ (id) getQuestion: (NSNumber *) inquiryId {
+    // NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.question",                  @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
+    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    return [self returnJson:[self dictionaryToUrl:dict]];
+}
+
 /*!
  *  Return the Reflection of an Inquiry.
  *

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "INQInquiryTableViewController.h"
 
 @interface INQPageViewController : UIPageViewController <UIPageViewControllerDataSource>
 

@@ -1,31 +1,39 @@
 //
-//  INQHypothesisViewController.m
+//  INQQuestionViewController.m
 //  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 9/6/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by Wim van der Vegt on 5/21/14.
+//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQHypothesisViewController.h"
+#import "INQQuestionViewController.h"
 
-@interface INQHypothesisViewController ()
+@interface INQQuestionViewController ()
+
+- (IBAction)submit:(UIButton *)sender;
+
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @property (readonly, nonatomic) CGFloat statusbarHeight;
 @property (readonly, nonatomic) CGFloat navbarHeight;
 
 @end
 
-@implementation INQHypothesisViewController
+@implementation INQQuestionViewController
 
-- (void) setHypothesis:(NSString *) hypothesis {
-    if (_hypothesis != hypothesis){
-        _hypothesis = hypothesis;
+- (void) setQuestion:(NSString *) question {
+    if (_question != question) {
+        _question = question;
     }
 }
 
-- (void)viewDidLoad
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    [super viewDidLoad];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -38,10 +46,10 @@
     web.backgroundColor = [UIColor whiteColor];
     web.delegate = self;
     
-    if ([self.hypothesis length] ==0) {
-        [web loadHTMLString:@"No hypothesis has been added yet for this inquiry." baseURL:[[NSBundle mainBundle] bundleURL]];
+    if ([self.question length] ==0) {
+        [web loadHTMLString:@"No question has been added yet for this inquiry." baseURL:[[NSBundle mainBundle] bundleURL]];
     }else {
-        [web loadHTMLString:self.hypothesis baseURL:[[NSBundle mainBundle] bundleURL]];
+        [web loadHTMLString:self.question baseURL:[[NSBundle mainBundle] bundleURL]];
     }
 }
 
@@ -57,6 +65,9 @@
 
 -(CGFloat) navbarHeight {
     return self.navigationController.navigationBar.bounds.size.height;
+}
+
+- (IBAction)submit:(UIButton *)sender {
 }
 
 -(CGFloat) statusbarHeight

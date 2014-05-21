@@ -29,6 +29,7 @@
 
 static NSRecursiveLock *_theLock;
 static CLLocationManager *locationManager;
+static CLLocationCoordinate2D currentCoordinates;
 
 /*!
  *  A Recursive Lock used to serialize the syncs.
@@ -92,6 +93,8 @@ static CLLocationManager *locationManager;
     [reach startNotifier];
     
 #warning This Location code must be relocated to a better place!!
+    currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
+    
     [self startStandardUpdates];
     
     return YES;
@@ -470,6 +473,8 @@ static CLLocationManager *locationManager;
 
 /*!
  *  Use GPS to upate location.
+ *
+ *  See https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Articles/AboutInformationPropertyListFiles.html
  */
 - (void)startStandardUpdates
 {
@@ -478,15 +483,18 @@ static CLLocationManager *locationManager;
     if (nil == locationManager) {
         locationManager = [[CLLocationManager alloc] init];
     }
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
     
-    // Set a movement threshold for new events.
-    locationManager.distanceFilter = 500; // meters
-    
-    locationManager.pausesLocationUpdatesAutomatically=YES;
-    
-    [locationManager startUpdatingLocation];
+    if (locationManager && CLLocationManager.locationServicesEnabled) {
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        
+        // Set a movement threshold for new events.ß
+        locationManager.distanceFilter = 500; // meters
+        
+        locationManager.pausesLocationUpdatesAutomatically=YES;
+        
+        [locationManager startUpdatingLocation];
+    }
 }
 
 /*!
@@ -496,11 +504,16 @@ static CLLocationManager *locationManager;
 {
     // Create the location manager if this object does not
     // already have one.
-    if (nil == locationManager)
+    if (nil == locationManager) {
         locationManager = [[CLLocationManager alloc] init];
+    }
     
-    locationManager.delegate = self;
-    [locationManager startMonitoringSignificantLocationChanges];
+    if (locationManager && CLLocationManager.locationServicesEnabled) {
+        
+        locationManager.delegate = self;
+        
+        [locationManager startMonitoringSignificantLocationChanges];
+    }
 }
 
 /*!
@@ -513,16 +526,32 @@ static CLLocationManager *locationManager;
      didUpdateLocations:(NSArray *)locations {
     
     // If it's a relatively recent event, turn off updates to save power.
-    CLLocation* location = [locations lastObject];
-    NSDate* eventDate = location.timestamp;
-    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    CLLocation *location = [locations lastObject];
     
-    if (abs(howRecent) < 15.0) {
-        // If the event is recent, do something with it.
-        NSLog(@"latitude %+.6f, longitude %+.6f\n",
-              location.coordinate.latitude,
-              location.coordinate.longitude);
+    if (location) {
+        NSDate *eventDate = location.timestamp;
+        NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+        
+        if (abs(howRecent) < 15.0) {
+            // If the event is recent, do something with it.
+            NSLog(@"latitude %+.6f, longitude %+.6f\n",
+                  location.coordinate.latitude,
+                  location.coordinate.longitude);
+        }
+        
+        if (CLLocationCoordinate2DIsValid(location.coordinate)) {
+            currentCoordinates = location.coordinate;
+        }
     }
+}
+
+/*!
+ *  Returns the Current Location.
+ *
+ *  @return the current location.
+ */
++ (CLLocationCoordinate2D) CurrentLocation {
+    return currentCoordinates;
 }
 
 @end

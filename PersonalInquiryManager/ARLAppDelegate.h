@@ -25,6 +25,8 @@
 
 + (NSRecursiveLock *) theLock;
 
++ (CLLocationCoordinate2D) CurrentLocation;
+
 + (NSString *) jsonString:(NSDictionary *) jsonDictionary;
 
 - (NSInteger *) entityCount:(NSString *) entityName;

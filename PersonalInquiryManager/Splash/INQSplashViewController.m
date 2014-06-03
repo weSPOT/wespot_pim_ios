@@ -57,7 +57,7 @@
     // Create page view controller
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashPageViewController"];
     self.pageViewController.dataSource = self;
-    
+
     NSMutableArray *tmp = [[NSMutableArray alloc] init];
     for (int i=0;i<4;i++) {
         [tmp addObject:[self viewControllerAtIndex:i]];
@@ -70,10 +70,11 @@
     // Change the size of page view controller
     self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 30);
     
-    [self addChildViewController:_pageViewController];
-    [self.view addSubview:_pageViewController.view];
+#warning Disabled the NSPageViewController for now (no decent content).
+    //[self addChildViewController:_pageViewController];
+    //[self.view addSubview:_pageViewController.view];
     
-    [self.pageViewController didMoveToParentViewController:self];
+    //[self.pageViewController didMoveToParentViewController:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated {

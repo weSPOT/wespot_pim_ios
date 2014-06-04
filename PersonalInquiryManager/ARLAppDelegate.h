@@ -37,6 +37,8 @@
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate;
 
+- (void) ShowAbortMessage: (NSString *) title message:(NSString *) message;
+
 - (void) LogOut;
 
 @property (strong, nonatomic) UIWindow *window;

@@ -99,24 +99,25 @@ static CLLocationCoordinate2D currentCoordinates;
   
     // Create Database Context etc here so we get an early error if database was updated.
     if (![self managedObjectContext]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice")
-                                                        message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+        [self ShowAbortMessage:NSLocalizedString(@"Notice", @"Notice")
+                       message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")];
     }
     
     return YES;
 }
 
+- (void) ShowAbortMessage: (NSString *) title message:(NSString *) message {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     abort();
 }
-
-//-(void)alertViewCancel:(UIAlertView *)alertView {
-//    abort();
-//}
 
 /*!
  *  See SDK.

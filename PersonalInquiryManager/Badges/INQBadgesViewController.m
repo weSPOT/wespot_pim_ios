@@ -151,9 +151,9 @@ typedef NS_ENUM(NSInteger, groups) {
 {
     switch (section) {
         case EARNED:
-            return @"Earned";
+            return NSLocalizedString(@"Earned", @"Earned");
         case UNEARNED:
-            return @"Unearned";
+            return NSLocalizedString(@"Unearned", @"Unearned");
     }
     
     return @"";

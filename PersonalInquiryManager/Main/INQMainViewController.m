@@ -167,7 +167,7 @@ typedef NS_ENUM(NSInteger, tools) {
     NSLog(@"[%s] %@",__func__, ARLAppDelegate.theLock);
     
     if (![ARLAppDelegate.theLock tryLock]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Synchronization in progress, logout not possible" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
         [alert show];
     } else {
         if (ARLNetwork.isLoggedIn) {
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, tools) {
             [self adjustLoginButton];
             
             if (ARLNetwork.isLoggedIn) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Cound not log-out" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Cound not log-out",@"Cound not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
                 [alert show];
             } else {
                 newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];

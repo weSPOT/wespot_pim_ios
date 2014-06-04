@@ -397,13 +397,13 @@ typedef NS_ENUM(NSInteger, friends) {
                     [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
                 }
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Only available when on-line" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Only available when on-line", @"Only available when on-line") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
                 [alert show];
             }
         }
             break;
         case MESSAGES: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Not implemented yet" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
             [alert show];
         }
             break;

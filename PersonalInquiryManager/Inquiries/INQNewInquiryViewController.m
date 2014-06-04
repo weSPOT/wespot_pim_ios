@@ -110,12 +110,12 @@
             //    message = "No user with corresponding credentials found: Google_101754523769925754305";
             //    status = "-1";
             //}
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
                                                             message:[[NSString alloc]
                                                                      initWithFormat:@"%@",
                                                                      [dict objectForKey:@"result"]]
                                                            delegate:self
-                                                  cancelButtonTitle:@"OK"
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];
             [alert show];
         }
@@ -281,10 +281,10 @@
         
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"You need to enter both title and description to create a new inquiry!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                        message:NSLocalizedString(@"You need to enter both title and description to create a new inquiry!", @"You need to enter both title and description to create a new inquiry!")
                                                        delegate:self
-                                              cancelButtonTitle:@"OK"
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                               otherButtonTitles:nil, nil];
         [alert show];
     }

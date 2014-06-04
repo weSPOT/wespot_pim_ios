@@ -188,7 +188,7 @@
             newViewController = nil;
         }
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Not online, login not possible" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")message:NSLocalizedString(@"Not online, login not possible", @"Not online, login not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
         [alert show];
     }
 }

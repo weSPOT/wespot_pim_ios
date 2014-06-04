@@ -781,10 +781,10 @@
             </objects>
             <point key="canvasLocation" x="-523" y="452"/>
         </scene>
-        <!--Page View Controller - Splash PageView Controller-->
+        <!--Page View Controller-->
         <scene sceneID="6ok-KE-msh">
             <objects>
-                <pageViewController storyboardIdentifier="SplashPageViewController" autoresizesArchivedViewToFullSize="NO" title="Splash PageView Controller" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="R07-3X-IJB" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="SplashPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="R07-3X-IJB" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S1G-Ey-0ph" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="270" y="452"/>
@@ -1020,10 +1020,10 @@
             </objects>
             <point key="canvasLocation" x="3011" y="1586"/>
         </scene>
-        <!--Splash Content View Controller - SplashContentViewController-->
+        <!--Splash Content View Controller-->
         <scene sceneID="OU4-5z-vf9">
             <objects>
-                <viewController storyboardIdentifier="SplashContentViewController" title="SplashContentViewController" id="xtb-aC-6c9" customClass="INQSplashContentViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashContentViewController" id="xtb-aC-6c9" customClass="INQSplashContentViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QOy-u2-ecb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

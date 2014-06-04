@@ -21,7 +21,7 @@
 #define GIT_HASH            @"git_hash"
 #define APP_VERSION         @"app_version"
 
-@interface ARLAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
+@interface ARLAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
 
 + (NSRecursiveLock *) theLock;
 

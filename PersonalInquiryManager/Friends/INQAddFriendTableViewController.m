@@ -147,17 +147,17 @@
     UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.accessoryType == UITableViewCellAccessoryNone) {
-        NSString *message = [[NSString alloc] initWithFormat:@"Invite %@ to become a Friend?", cell.textLabel.text];
+        NSString *message = [[NSString alloc] initWithFormat:NSLocalizedString(@"Invite %@ to become a Friend?", @"Invite %@ to become a Friend?"), cell.textLabel.text];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
         [alert show];
         
 #warning Implement sending a Friend Request.
         
     } else {
-        NSString *message = [[NSString alloc] initWithFormat:@"%@ is already a Friend!", cell.textLabel.text];
+        NSString *message = [[NSString alloc] initWithFormat:NSLocalizedString(@"%@ is already a Friend!", @"%@ is already a Friend!"), cell.textLabel.text];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
         [alert show];
     }
 }

@@ -680,7 +680,7 @@ typedef NS_ENUM(NSInteger, responses) {
  *  Request a Number.
  */
 - (void) collectNumber{
-    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.valueDescription message:@"Not implemented yet" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.valueDescription message:NSLocalizedString(@"Not implemented yet",@"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
     
     self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
     [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
@@ -693,7 +693,7 @@ typedef NS_ENUM(NSInteger, responses) {
  *  Request Text.
  */
 - (void) collectText{
-    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.textDescription message:@"Not implemented yet" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.textDescription message:NSLocalizedString(@"Not implemented yet",@"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
     
     self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
     [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
@@ -712,7 +712,7 @@ typedef NS_ENUM(NSInteger, responses) {
 {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
-    if ([title isEqualToString:@"OK"]) {
+    if ([title isEqualToString:NSLocalizedString(@"OK", @"OK")]) {
         [Response createTextResponse: self.valueTextField.text withRun:self.run withGeneralItem:self.generalItem ];
         [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
         

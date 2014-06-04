@@ -307,7 +307,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
             if (ARLNetwork.networkAvailable) {
                 newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewInquiryController"];
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"Only available when on-line" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Only available when on-line", @"Only available when on-line") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
                 [alert show];
             }
         }

@@ -96,14 +96,32 @@ static CLLocationCoordinate2D currentCoordinates;
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
     [self startStandardUpdates];
+  
+    // Create Database Context etc here so we get an early error if database was updated.
+    if (![self managedObjectContext]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice")
+                                                        message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }
     
     return YES;
 }
 
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    abort();
+}
+
+//-(void)alertViewCancel:(UIAlertView *)alertView {
+//    abort();
+//}
+
 /*!
  *  See SDK.
  *
- *  @param application <#application description#>
+ *  @param application ;;
  */
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -201,16 +219,14 @@ static CLLocationCoordinate2D currentCoordinates;
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+        
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
             NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
             
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notice" message:@"The database has been changed. Please re-install the application" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-            
-            abort();
+            return nil;
         }
     }
-    
+
     return _persistentStoreCoordinator;
 }
 

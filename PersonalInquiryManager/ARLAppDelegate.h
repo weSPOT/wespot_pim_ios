@@ -24,6 +24,7 @@
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
 
 + (NSRecursiveLock *) theLock;
++ (NSCondition *) theAbortLock;
 
 + (CLLocationCoordinate2D) CurrentLocation;
 
@@ -36,8 +37,6 @@
 
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate;
-
-- (void) ShowAbortMessage: (NSString *) title message:(NSString *) message;
 
 - (void) LogOut;
 

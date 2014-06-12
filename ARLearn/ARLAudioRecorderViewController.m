@@ -25,16 +25,14 @@
         if ([self.generalItem.managedObjectContext hasChanges]) {
             NSError *error = nil;
             if (![self.generalItem.managedObjectContext save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
         
         if ([self.generalItem.managedObjectContext.parentContext hasChanges]) {
             NSError *error = nil;
             if (![self.generalItem.managedObjectContext save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
         

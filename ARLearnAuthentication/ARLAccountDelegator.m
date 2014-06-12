@@ -75,8 +75,7 @@
     if (context) {
         if ([context hasChanges]){
             if (![context save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
     }
@@ -94,8 +93,7 @@
     NSError *error = nil;
     NSArray *entities = [context executeFetchRequest:request error:&error];
     if (error) {
-        NSLog(@"error %@", error);
-        abort();
+        [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
     }
     
     for (id entity in entities) {

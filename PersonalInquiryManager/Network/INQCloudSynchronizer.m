@@ -108,19 +108,26 @@
     
     NSLog(@"[%s] Saving NSManagedObjectContext", __func__);
     
+    //#warning ABORT TEST CODE AHEAD
+    //    NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : @"DESCRIPTION" };
+    //    
+    //    error = [[NSError alloc] initWithDomain:@"DOMAIN" code:1 userInfo:errorDictionary];
+    //
+    //[ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
+    
     if (self.context) {
         if ([self.context hasChanges]){
             if (![self.context save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
         
         if ([self.parentContext hasChanges]){
-//          NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
             [self.parentContext performBlock:^{
                 NSError *error = nil;
-                if (![self.parentContext save:&error]) {abort();}
+                if (![self.parentContext save:&error]) {
+                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
+                }
             }];
         }
     }

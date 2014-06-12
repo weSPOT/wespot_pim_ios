@@ -117,22 +117,20 @@
     if (self.context) {
         if ([self.context hasChanges]){
             if (![self.context save:&error]) {
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
         
         if ([self.parentContext hasChanges]) {
             [self.parentContext performBlock:^{
-//              NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
+                //              NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {
-                    abort();
+                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
                 }
                 
                 if (ARLNetwork.networkAvailable) {
                     [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
-#warning Is this the correct spot to sync/responses files?
-                    // [ARLFileCloudSynchronizer syncResponseData:self.parentContext];
                 }
             }];
         }

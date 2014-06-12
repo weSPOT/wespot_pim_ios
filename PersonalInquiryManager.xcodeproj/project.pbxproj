@@ -826,6 +826,7 @@
 		8D6E80BE18D5B6100077D70E /* External */ = {
 			isa = PBXGroup;
 			children = (
+				8D72B216194885A600012B8C /* AJNotificationView */,
 				8D6AE1BF18D5C5FE0094D911 /* TPKeyboardAvoiding */,
 				8D6E80CA18D5BA010077D70E /* Reachability */,
 				8D6E80CE18D5BAFA0077D70E /* ZBarSDK */,
@@ -917,6 +918,13 @@
 				8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		8D72B216194885A600012B8C /* AJNotificationView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AJNotificationView;
 			sourceTree = "<group>";
 		};
 		8D750DC718D74BEB0005C41D /* Profile */ = {

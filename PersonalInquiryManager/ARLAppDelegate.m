@@ -14,7 +14,6 @@
 
 @end
 
-
 @implementation ARLAppDelegate
 
 // veg: These three need to stay as we implement the getter (so NO default _ prefixed backing field).
@@ -28,6 +27,8 @@
 @synthesize CurrentAccount = _CurrentAccount;
 
 static NSRecursiveLock *_theLock;
+static NSCondition *_theAbortLock;
+
 static CLLocationManager *locationManager;
 static CLLocationCoordinate2D currentCoordinates;
 
@@ -41,8 +42,17 @@ static CLLocationCoordinate2D currentCoordinates;
 + (NSRecursiveLock *) theLock {
     if(!_theLock){
         _theLock = [[NSRecursiveLock alloc] init];
+        [_theLock setName:@"Recursive Sync Lock"];
     }
     return _theLock;
+}
+
++ (NSCondition *) theAbortLock {
+    if(!_theAbortLock){
+        _theAbortLock = [[NSCondition alloc] init];
+        [_theAbortLock setName:@"Show Abort Condition"];
+    }
+    return _theAbortLock;
 }
 
 /*!
@@ -96,7 +106,7 @@ static CLLocationCoordinate2D currentCoordinates;
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
     [self startStandardUpdates];
-  
+    
     // Create Database Context etc here so we get an early error if database was updated.
     if (![self managedObjectContext]) {
         [self ShowAbortMessage:NSLocalizedString(@"Notice", @"Notice")
@@ -112,11 +122,19 @@ static CLLocationCoordinate2D currentCoordinates;
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                           otherButtonTitles:nil, nil];
-    [alert show];
+    
+   // UIAlertView should run on the main thread!
+   [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 }
 
+/*!
+ *  Handle the Dismiss Button by unlocking theAbortLock.
+ *
+ *  @param alertView   <#alertView description#>
+ *  @param buttonIndex <#buttonIndex description#>
+ */
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    abort();
+    [ARLAppDelegate.theAbortLock signal];
 }
 
 /*!
@@ -247,8 +265,7 @@ static CLLocationCoordinate2D currentCoordinates;
 //    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
 //    
 //    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-//        NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-//        abort();
+//        [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
 //    }
 }
 
@@ -264,8 +281,7 @@ static CLLocationCoordinate2D currentCoordinates;
     NSError *error = nil;
     NSArray *entities = [context executeFetchRequest:request error:&error];
     if (error) {
-        NSLog(@"error %@", error);
-        abort();
+        [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
     }
     
     for (id entity in entities) {
@@ -353,10 +369,7 @@ static CLLocationCoordinate2D currentCoordinates;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"[%s] Unresolved error %@, %@",__func__, error, [error userInfo]);
-            abort();
+           [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
         }
     }
 }

@@ -720,8 +720,7 @@ typedef NS_ENUM(NSInteger, responses) {
         if (self.generalItem.managedObjectContext) {
             if ([self.generalItem.managedObjectContext hasChanges]){
                 if (![self.generalItem.managedObjectContext save:&error]) {
-                    NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-                    abort();
+                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
                 }
             }
         }
@@ -803,15 +802,13 @@ typedef NS_ENUM(NSInteger, responses) {
     if (self.generalItem.managedObjectContext) {
         if ([self.generalItem.managedObjectContext hasChanges]){
             if (![self.generalItem.managedObjectContext save:&error]) {
-                NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-                abort();
+                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
             }
         }
         if (self.generalItem.managedObjectContext.parentContext) {
             if ([self.generalItem.managedObjectContext.parentContext hasChanges]){
                 if (![self.generalItem.managedObjectContext.parentContext save:&error]) {
-                    NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
-                    abort();
+                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
                 }
             }
         }

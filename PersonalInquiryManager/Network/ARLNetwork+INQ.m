@@ -528,7 +528,7 @@
     
     Account *account = ARLNetwork.CurrentAccount;
 
-    if (account && [appDelegate performSelector:@selector(isLoggedIn)]) {
+    if (account && [appDelegate respondsToSelector:@selector(isLoggedIn)]) {
         return [appDelegate performSelector:@selector(isLoggedIn) withObject: nil]== [NSNumber numberWithBool:YES];
     }
     
@@ -543,11 +543,50 @@
 + (Account *) CurrentAccount {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    if ([appDelegate performSelector:@selector(CurrentAccount)]) {
+    if ([appDelegate respondsToSelector:@selector(CurrentAccount)]) {
         return [appDelegate performSelector:@selector(CurrentAccount) withObject:nil];
     }
     
     return nil;
+}
+
+static NSRecursiveLock *_abortLock;
+
++ (void)ShowAbortMessage: (NSString *) title message:(NSString *) message {
+    UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    // See http://stackoverflow.com/questions/3753154/make-uialertview-blocking
+    //NSRunLoop *run_loop = [NSRunLoop currentRunLoop];
+    
+    if ([appDelegate respondsToSelector:@selector(ShowAbortMessage:message:)]) {
+        [appDelegate performSelector:@selector(ShowAbortMessage:message:) withObject:title withObject:message];
+    }
+    
+    // Lock the Condition
+    [ARLAppDelegate.theAbortLock lock];
+    
+    // Only do this if not the MainThread!!!!
+    if (![NSThread isMainThread]) {
+        
+        // We wait until OK on the UIAlertView is tapped and provides a Signal to continue.
+        [ARLAppDelegate.theAbortLock wait];
+        
+        // Unlock the Condition also when we exit.
+        [ARLAppDelegate.theAbortLock unlock];
+        
+        [NSThread exit];
+    } else {
+        // Unlock the Condition when we're not running on the mainthread.
+        [ARLAppDelegate.theAbortLock unlock];
+    }
+}
+
++ (void)ShowAbortMessage: (NSError *) error func:(NSString *)func {
+    
+    NSString *msg = [NSString stringWithFormat:@"%@\n\nUnresolved error code %d,\n\n%@", func, [error code], [error localizedDescription]];
+    
+     [ARLNetwork ShowAbortMessage:NSLocalizedString(@"Error", @"Error")
+                         message:msg];
 }
 
 /*!
@@ -560,7 +599,7 @@
     
     NSNumber *result = nil;
     
-    if ([appDelegate performSelector:@selector(networkAvailable)]) {
+    if ([appDelegate respondsToSelector:@selector(networkAvailable)]) {
         result = [appDelegate performSelector:@selector(networkAvailable) withObject: nil];
     }
    

@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, tools) {
     NSLog(@"[%s] Version String:  %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]);
     NSLog(@"[%s] Build Number:    %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
     NSLog(@"[%s] Git Commit Hash: %@",__func__, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"]);
-   
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
@@ -148,6 +148,10 @@ typedef NS_ENUM(NSInteger, tools) {
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+    
+    
+//#warning TEST CODE FOR ABORT
+//    [ARLNetwork ShowAbortMessage:@"TEST" message:@"TEST MESSAGE"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -448,5 +452,6 @@ typedef NS_ENUM(NSInteger, tools) {
     self.syncButton.enabled=[reach isReachable];
     self.loginButton.enabled=[reach isReachable];
 }
+
 
 @end

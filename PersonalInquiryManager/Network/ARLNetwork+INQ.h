@@ -59,6 +59,9 @@
 + (BOOL)networkAvailable;
 + (BOOL)isLoggedIn;
 
++ (void)ShowAbortMessage: (NSString *) title message:(NSString *) message;
++ (void)ShowAbortMessage: (NSError *) error func:(NSString *)func;
+
 + (Account *) CurrentAccount;
 
 @end

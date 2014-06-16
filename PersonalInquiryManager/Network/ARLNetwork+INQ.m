@@ -215,7 +215,7 @@
  */
 + (id) getInquiries: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          @"user.allinquiries",                    @"method",
+                          @"user.inquiries",                    @"method",
                           apiKey,                               @"api_key",
                           
                           localId,                              @"oauthId",
@@ -416,6 +416,9 @@
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider {
     NSString * providerString;
     switch (oauthProvider.intValue) {
+        case INTERNAL:
+            providerString = @"0";
+            break;
         case FACEBOOK:
             providerString = @"Facebook";
             break;
@@ -444,7 +447,13 @@
  *
  *  @return the id of the oauth provider.
  */
-+ (NSNumber *) elggProviderByName: (NSString  *) oauthProvider {
++ (NSNumber *) elggProviderByName: (NSString *) oauthProvider {
+    NSString *tmp = [NSString stringWithFormat:@"%@", oauthProvider];
+    
+    if ([tmp isEqualToString:@"0"]) {
+        return [NSNumber numberWithInt:INTERNAL];
+    }
+    
     if ([oauthProvider isEqualToString:@"Facebook"]) {
         return [NSNumber numberWithInt:FACEBOOK];
     }

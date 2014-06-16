@@ -21,6 +21,10 @@
  */
 typedef NS_ENUM(NSInteger, services) {
     /*!
+     *  Internal (Admin).
+     */
+    INTERNAL = 0,
+    /*!
      *  Facebook.
      */
     FACEBOOK = 1,

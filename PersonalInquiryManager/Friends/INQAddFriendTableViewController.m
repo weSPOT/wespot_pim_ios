@@ -57,7 +57,7 @@
     // Remove ourself from the AllUsers array.
     // We cannot be invited to be friends with ourselfs.
     NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.AllUsers];
-    
+
     NSLog(@"[%s] %d users", __func__, [tmp count]);
     NSLog(@"[%s] removing ourselves", __func__);
     for (NSDictionary *dict in self.AllUsers) {

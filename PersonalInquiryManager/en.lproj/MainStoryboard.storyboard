@@ -297,28 +297,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem title="Facebook" style="plain" id="6K9-D5-hpa">
-                            <connections>
-                                <action selector="facebookButtonAction:" destination="C65-w6-g4e" id="hCa-R2-sNm"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem title="Google" style="plain" id="Zvk-7G-K0w">
-                            <connections>
-                                <action selector="googleButtonAction:" destination="C65-w6-g4e" id="9LG-W4-ME9"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem title="Linked-in" style="plain" id="AjJ-9C-6Jj">
-                            <connections>
-                                <action selector="linkedinButtonAction:" destination="C65-w6-g4e" id="BYx-ZV-Zpb"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem title="Twitter" style="plain" id="ev6-qW-R7F">
-                            <connections>
-                                <action selector="twitterButtonAction:" destination="C65-w6-g4e" id="4xa-ee-glN"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="T3s-PS-Baz">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Hfu-fQ-5M5"/>
                     </navigationItem>
@@ -326,13 +305,9 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="background" destination="R9y-On-aNn" id="pNm-QE-sc1"/>
-                        <outlet property="facebookButton" destination="6K9-D5-hpa" id="L19-5g-ky3"/>
-                        <outlet property="googleButton" destination="Zvk-7G-K0w" id="JJL-BG-XY3"/>
-                        <outlet property="linkedinButton" destination="AjJ-9C-6Jj" id="fGs-S6-UDf"/>
                         <outlet property="loginButton" destination="wb2-eO-8PX" id="1B7-50-wIn"/>
                         <outlet property="passwordEdit" destination="I8s-ST-ART" id="c0L-ID-BGq"/>
                         <outlet property="scrollView" destination="rUr-BR-U0d" id="aNb-WS-WMd"/>
-                        <outlet property="twitterButton" destination="ev6-qW-R7F" id="fj0-Ut-iaM"/>
                         <outlet property="usernameEdit" destination="e3Q-ey-D0v" id="meo-0y-hoN"/>
                         <outlet property="wespotLabel" destination="hNw-Yk-opI" id="nE5-Kq-QgR"/>
                     </connections>
@@ -346,7 +321,7 @@
             <objects>
                 <viewController storyboardIdentifier="oauthWebView" id="89P-XK-L7a" customClass="ARLOauthWebViewController" sceneMemberID="viewController">
                     <webView key="view" contentMode="scaleToFill" id="zMt-HN-dNb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
@@ -354,7 +329,14 @@
                         </connections>
                     </webView>
                     <tabBarItem key="tabBarItem" title="Me" id="w7K-k6-1qI"/>
-                    <navigationItem key="navigationItem" title="Login" id="qfK-Mf-DK8"/>
+                    <navigationItem key="navigationItem" title="Login" id="qfK-Mf-DK8">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="eTb-uc-WMy">
+                            <connections>
+                                <action selector="backButtonAction:" destination="89P-XK-L7a" id="12y-7z-ebr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="webView" destination="zMt-HN-dNb" id="elj-eK-ElT"/>
                     </connections>
@@ -801,12 +783,82 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IOR-c9-cmv">
+                                <rect key="frame" x="82" y="400" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Twitter">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="twitterButtonAction:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="YVE-dj-Sfa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hls-3Z-rZH">
+                                <rect key="frame" x="82" y="324" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.8666666666666667" green="0.29411764705882354" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Google">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="googleButtonAction:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="vVo-jm-tuR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Nz7-zN-b6W">
+                                <rect key="frame" x="82" y="286" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Facebook">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="facebookButtonAction:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="mhT-yG-NTY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gwh-kA-h0s">
+                                <rect key="frame" x="82" y="362" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Linkedin">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="linkedinButtonAction:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="2Dg-4e-LqX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lDJ-vn-teD">
+                                <rect key="frame" x="82" y="219" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.34509803921568627" green="0.49411764705882355" blue="0.63921568627450975" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="weSPOT">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="weSpotButtonAction:" destination="Uqj-u2-UUO" eventType="touchUpInside" id="yW9-O0-etR"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E9k-y3-bqY">
+                                <rect key="frame" x="82" y="257" width="157" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="fuE-ct-sKb"/>
                     <connections>
                         <outlet property="backgroundImage" destination="s5v-zW-D76" id="Eb8-fk-tQs"/>
+                        <outlet property="facebookButton" destination="Nz7-zN-b6W" id="cLr-LY-Rdd"/>
+                        <outlet property="googleButton" destination="hls-3Z-rZH" id="LhI-8G-3Ma"/>
+                        <outlet property="linkedinButton" destination="gwh-kA-h0s" id="K3x-Ju-zoV"/>
+                        <outlet property="orLabel" destination="E9k-y3-bqY" id="gvV-t6-p67"/>
+                        <outlet property="twitterButton" destination="IOR-c9-cmv" id="UVq-e1-pn0"/>
+                        <outlet property="weSportButton" destination="lDJ-vn-teD" id="EKO-rR-gIn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qx-D2-SNO" userLabel="First Responder" sceneMemberID="firstResponder"/>

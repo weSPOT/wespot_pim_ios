@@ -96,9 +96,9 @@
     NSDictionary *dict = [ARLNetwork createInquiry:title description:html visibility:visibility membership:membership];
     
     if (dict) {
-        NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
-        
         if ([[dict objectForKey:@"status"] intValue] == 0) {
+            NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
+
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             // Sync will return our new Inquiry and it's Run.
@@ -113,7 +113,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
                                                             message:[[NSString alloc]
                                                                      initWithFormat:@"%@",
-                                                                     [dict objectForKey:@"result"]]
+                                                                     [dict objectForKey:@"message"]]
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];

@@ -15,6 +15,8 @@
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 
+- (IBAction)backButtonAction:(UIBarButtonItem *)sender;
+
 @end
 
 @implementation ARLOauthWebViewController
@@ -28,7 +30,10 @@
 {
     [super viewDidLoad];
     
-    //
+    //[self.navigationController setToolbarHidden:NO];
+    [self.navigationController setNavigationBarHidden:NO];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonAction:)];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -167,6 +172,21 @@
         if ([[cookie name] isEqualToString:@"arlearn.AccessToken"]) {
             [cookieJar deleteCookie:cookie];
         }
+    }
+}
+
+/*!
+ *  Handle the Back Button.
+ *
+ *  @param sender <#sender description#>
+ */
+- (IBAction)backButtonAction:(UIBarButtonItem *)sender {
+    if (self.NavigationAfterClose) {
+        [self.navigationController presentViewController:self.NavigationAfterClose animated:NO completion:nil];
+        
+        self.NavigationAfterClose = nil;
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

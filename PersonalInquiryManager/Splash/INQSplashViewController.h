@@ -13,7 +13,7 @@
 #import "INQSplashContentViewController.h"
 #import "ARLNetwork+INQ.h"
 
-@interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource>
+@interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource, NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
 

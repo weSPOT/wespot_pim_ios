@@ -42,7 +42,7 @@ static CLLocationCoordinate2D currentCoordinates;
 + (NSRecursiveLock *) theLock {
     if(!_theLock){
         _theLock = [[NSRecursiveLock alloc] init];
-        [_theLock setName:@"Recursive Sync Lock"];
+        //[_theLock setName:@"Recursive Sync Lock"];
     }
     return _theLock;
 }
@@ -50,7 +50,7 @@ static CLLocationCoordinate2D currentCoordinates;
 + (NSCondition *) theAbortLock {
     if(!_theAbortLock){
         _theAbortLock = [[NSCondition alloc] init];
-        [_theAbortLock setName:@"Show Abort Condition"];
+        //[_theAbortLock setName:@"Show Abort Condition"];
     }
     return _theAbortLock;
 }

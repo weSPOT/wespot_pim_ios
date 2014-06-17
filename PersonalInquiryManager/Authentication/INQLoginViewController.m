@@ -16,16 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIImageView *background;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *facebookButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *googleButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *linkedinButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *twitterButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
-- (IBAction)facebookButtonAction:(UIBarButtonItem *)sender;
-- (IBAction)googleButtonAction:(UIBarButtonItem *)sender;
-- (IBAction)linkedinButtonAction:(UIBarButtonItem *)sender;
-- (IBAction)twitterButtonAction:(UIBarButtonItem *)sender;
 - (IBAction)loginButtonAction:(UIButton *)sender;
 - (IBAction)backButtonAction:(UIBarButtonItem *)sender;
 
@@ -33,11 +25,6 @@
 @property (readonly, nonatomic) CGFloat navbarHeight;
 @property (readonly, nonatomic) CGFloat tabbarHeight;
 @property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
-
-@property (strong, nonatomic) NSString * facebookLoginString;
-@property (strong, nonatomic) NSString * googleLoginString;
-@property (strong, nonatomic) NSString * linkedInLoginString;
-@property (strong, nonatomic) NSString * twitterLoginString;
 
 @property (retain, nonatomic) NSURLConnection *connection;
 @property (retain, nonatomic) NSMutableData *receivedData;
@@ -58,10 +45,6 @@
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-    
-    [self initOauthUrls];
-    
-    //    [self adjustLoginButton];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonAction:)];
     
@@ -101,42 +84,6 @@
     [super didReceiveMemoryWarning];
     
     // Dispose of any resources that can be recreated.
-}
-
-/*!
- *  Login using Facebook.
- *
- *  @param sender <#sender description#>
- */
-- (IBAction)facebookButtonAction:(UIBarButtonItem *)sender {
-    [self performLogin:FACEBOOK];
-}
-
-/*!
- *  Login using Google.
- *
- *  @param sender <#sender description#>
- */
-- (IBAction)googleButtonAction:(UIBarButtonItem *)sender {
-    [self performLogin:GOOGLE];
-}
-
-/*!
- *  Login using Linked-in.
- *
- *  @param sender <#sender description#>
- */
-- (IBAction)linkedinButtonAction:(UIBarButtonItem *)sender {
-    [self performLogin:LINKEDIN];
-}
-
-/*!
- *  Login using Twitter.
- *
- *  @param sender <#sender description#>
- */
-- (IBAction)twitterButtonAction:(UIBarButtonItem *)sender {
-    [self performLogin:TWITTER];
 }
 
 /*!
@@ -218,18 +165,30 @@
         NSMutableURLRequest *newRequest = [self.originalRequest mutableCopy]; // original request
         [newRequest setURL: [request URL]];
         
-        NSLog (@"query to %@", newRequest.URL.query);
-        NSLog (@"redirected to %@", newRequest.URL);
-        
-        NSString *query = [request URL].query;
-        NSArray *array = [query componentsSeparatedByString:@"&"];
-        for (NSString *item in array) {
-            if ([item rangeOfString:@"accessToken="].location != NSNotFound) {
-                self.token = [item substringFromIndex:[@"accessToken=" length]];
+        if ([newRequest.URL.query isEqualToString:@"incorrectPassword"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Incorrect Password", @"Incorrect Password") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }else if ([newRequest.URL.query isEqualToString:@"incorrectUsername"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Incorrect Username", @"Incorrect Username") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
+            [alert show];
+            
+        } else {
+            NSLog (@"query to %@", newRequest.URL.query);
+            NSLog (@"redirected to %@", newRequest.URL);
+            
+            NSString *query = [request URL].query;
+            NSArray *array = [query componentsSeparatedByString:@"&"];
+            for (NSString *item in array) {
+                if ([item rangeOfString:@"accessToken="].location != NSNotFound) {
+                    self.token = [item substringFromIndex:[@"accessToken=" length]];
+                }
             }
+            
+            return newRequest;
         }
         
-        return newRequest;
+        return NULL;
     }
     else
     {
@@ -316,64 +275,6 @@
  */
 - (IBAction)backButtonAction:(UIBarButtonItem *)sender {
     [self navigateBack];
-}
-
-/*!
- *  Perform the actual Login.
- *
- *  @param serviceId <#serviceId description#>
- */
-- (void)performLogin:(NSInteger)serviceId {
-    [self initOauthUrls];
-    
-    ARLOauthWebViewController* svc = [self.storyboard instantiateViewControllerWithIdentifier:@"oauthWebView"];
-   
-    svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"]; //"MainNavigation"];
-    
-    [self.navigationController pushViewController:svc animated:YES];
-    
-    switch (serviceId) {
-        case FACEBOOK:
-            [svc loadAuthenticateUrl: self.facebookLoginString name:@"Facebook" delegate:svc];
-            break;
-        case GOOGLE:
-            [svc loadAuthenticateUrl: self.googleLoginString name:@"Google" delegate:svc];
-            break;
-        case LINKEDIN:
-            [svc loadAuthenticateUrl: self.linkedInLoginString name:@"Linked-in" delegate:svc];
-            break;
-        case TWITTER:
-            [svc loadAuthenticateUrl: self.twitterLoginString name:@"Twitter" delegate:svc];
-            break;
-    }
-}
-
-/*!
- *  Initialize the Oauth Urls for the various services supported.
- */
-- (void) initOauthUrls {
-    NSDictionary* network = [ARLNetwork oauthInfo];
-    
-    for (NSDictionary* dict in [network objectForKey:@"oauthInfoList"]) {
-        switch ([(NSNumber*)[dict objectForKey:@"providerId"] intValue]) {
-            case FACEBOOK:
-                self.facebookLoginString = [NSString stringWithFormat:@"https://graph.facebook.com/oauth/authorize?client_id=%@&display=page&redirect_uri=%@&scope=publish_stream,email", [dict objectForKey:@"clientId"], [dict objectForKey:@"redirectUri"]];
-                break;
-                
-            case GOOGLE:
-                self.googleLoginString = [NSString stringWithFormat:@"https://accounts.google.com/o/oauth2/auth?redirect_uri=%@&response_type=code&client_id=%@&approval_prompt=force&scope=profile+email", [dict objectForKey:@"redirectUri"], [dict objectForKey:@"clientId"]];
-                break;
-                
-            case LINKEDIN:
-                self.linkedInLoginString = [NSString stringWithFormat:@"https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=%@&scope=r_fullprofile+r_emailaddress+r_network&state=BdhOU9fFb6JcK5BmoDeOZbaY58&redirect_uri=%@", [dict objectForKey:@"clientId"], [dict objectForKey:@"redirectUri"]];
-                break;
-                
-            case TWITTER:
-                self.twitterLoginString = [NSString stringWithFormat:@"%@?twitter=init", [dict objectForKey:@"redirectUri"]];
-                break;
-                
-        }
-    }
 }
 
 /*!

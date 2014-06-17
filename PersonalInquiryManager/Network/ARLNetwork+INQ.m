@@ -37,9 +37,9 @@
         case TRUE:
             switch (self.elgDeveloperMode) {
                 case TRUE:
-                    return @"http://streetlearn.appspot.com/rest/ElggProxy?";
+                    return @"http://streetlearn.appspot.com/rest/ElggProxy/dev";
                 case FALSE:
-                    return @"http://streetlearn.appspot.com/rest/ElggProxy/dev?";
+                    return @"http://streetlearn.appspot.com/rest/ElggProxy";
             }
         case FALSE:
             
@@ -81,13 +81,15 @@
  */
 + (id) returnJson: (NSString *) url {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
-                                                        cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                        timeoutInterval:60.0];
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:60.0];
     [request setHTTPMethod:@"GET"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     
-//    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
-//    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    if (self.elgUseProxy) {
+        NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+        [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    }
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
@@ -114,6 +116,11 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     
+    if (self.elgUseProxy) {
+        NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+        [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    }
+    
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
@@ -137,6 +144,11 @@
     [request setHTTPMethod:@"POST"];
     [request setValue:applicationjson forHTTPHeaderField:accept];
     [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    if (self.elgUseProxy) {
+        NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+        [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    }
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
@@ -401,7 +413,11 @@
  *  @return The Url with its parameters.
  */
 + (NSString *) dictionaryToUrl: (NSDictionary *)dict {
-    return [[NSMutableString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    
+    NSLog(@"[%s] %@", __func__, url);
+    
+    return url;
 }
 
 /*!

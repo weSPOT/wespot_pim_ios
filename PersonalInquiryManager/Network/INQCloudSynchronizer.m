@@ -190,147 +190,150 @@
         
         NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
         
-        //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
-        
-        //******************************
-        // Wipe records that no longer exist.
-        //******************************
-        
-        // ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        
-        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
-        
-        NSMutableSet *dbIds = [[NSMutableSet alloc] init];
-        NSMutableSet *jsIds = [[NSMutableSet alloc] init];
-        
-        for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
-            [jsIds addObject:[inquiryDict objectForKey:@"inquiryId"]];
-        }
-        
-        for (Inquiry *inquiry in inquiries) {
-            if (inquiry.inquiryId) {
-                [dbIds addObject:inquiry.inquiryId];
+        if ([dict objectForKey:@"errorCode"]) {
+            NSLog(@"[%s] error[%@]: %@", __func__, [dict objectForKey:@"errorCode"], [dict objectForKey:@"error"]);
+        } else {
+            //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
+            
+            //******************************
+            // Wipe records that no longer exist.
+            //******************************
+            
+            // ARLAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            
+            NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
+            
+            NSMutableSet *dbIds = [[NSMutableSet alloc] init];
+            NSMutableSet *jsIds = [[NSMutableSet alloc] init];
+            
+            for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
+                [jsIds addObject:[inquiryDict objectForKey:@"inquiryId"]];
             }
-        }
-        
-        [dbIds minusSet:jsIds];
-        
-        for (NSNumber *inquiryId in dbIds) {
-            @autoreleasepool {
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:
-                                          @"inquiryId = %@",
-                                          inquiryId];
-                Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry" predicate:predicate] lastObject];
-                
-                NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
-                
-#warning Also Remove all associated stuff?
-                
-                // Inquiry
-                //      Run
-                //          Action
-                //          CurrentItemVisibility / GeneralItem / GeneralItemData / GeneralItemVisibility
-                //          Message
-                //          Response
-                
-                if (inquiry) {
-                    //            Run *run = inquiry.run;
-                    //            if (run) {
-                    //                [appDelegate.managedObjectContext deleteObject:run];
-                    //            }
-                    [self.context deleteObject:inquiry];
+            
+            for (Inquiry *inquiry in inquiries) {
+                if (inquiry.inquiryId) {
+                    [dbIds addObject:inquiry.inquiryId];
                 }
             }
-        }
-        
-        if (dbIds.count>0) {
-            [self.context save:nil];
-        }
-        
-        //******************************
-        // Update the remaining records.
-        //******************************
-        
-        for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
-            @autoreleasepool {
-                Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
-                
-                // NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
-                
-                // REST CALL (costs time)!
-                id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
-                if (hypDict) {
+            
+            [dbIds minusSet:jsIds];
+            
+            for (NSNumber *inquiryId in dbIds) {
+                @autoreleasepool {
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+                                              @"inquiryId = %@",
+                                              inquiryId];
+                    Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry" predicate:predicate] lastObject];
                     
-                    if ([hypDict count] != 0) {
-                        //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
-                        NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
-                        if (hypString) {
-                            newInquiry.hypothesis = hypString;
+                    NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
+                    
+#warning Also Remove all associated stuff?
+                    
+                    // Inquiry
+                    //      Run
+                    //          Action
+                    //          CurrentItemVisibility / GeneralItem / GeneralItemData / GeneralItemVisibility
+                    //          Message
+                    //          Response
+                    
+                    if (inquiry) {
+                        //            Run *run = inquiry.run;
+                        //            if (run) {
+                        //                [appDelegate.managedObjectContext deleteObject:run];
+                        //            }
+                        [self.context deleteObject:inquiry];
+                    }
+                }
+            }
+            
+            if (dbIds.count>0) {
+                [self.context save:nil];
+            }
+            
+            //******************************
+            // Update the remaining records.
+            //******************************
+            
+            for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
+                @autoreleasepool {
+                    Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
+                    
+                    // NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
+                    
+                    // REST CALL (costs time)!
+                    id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
+                    if (hypDict) {
+                        
+                        if ([hypDict count] != 0) {
+                            //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+                            NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+                            if (hypString) {
+                                newInquiry.hypothesis = hypString;
+                            }
                         }
                     }
-                }
-                
-                //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
-                //        if (refDict) {
-                //
-                //            if ([refDict count] != 0) {
-                //                //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
-                //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
-                //                if (refString) {
-                //                    newInquiry.reflection = refString;
-                //                }
-                //            }
-                //        }
-                
-                // Get the correct Run for this Inquiry.
-                if (!newInquiry.run) {
-                    NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
-                    Run *selectedRun = [Run retrieveRun:runId inManagedObjectContext:self.context];
                     
-                    if (!selectedRun) {
-                        //3639020 get run from server
-                        NSDictionary *rDict = [ARLNetwork runsWithId:runId];
+                    //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
+                    //        if (refDict) {
+                    //
+                    //            if ([refDict count] != 0) {
+                    //                //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+                    //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+                    //                if (refString) {
+                    //                    newInquiry.reflection = refString;
+                    //                }
+                    //            }
+                    //        }
+                    
+                    // Get the correct Run for this Inquiry.
+                    if (!newInquiry.run) {
+                        NSNumber *runId = [ARLNetwork getARLearnRunId:newInquiry.inquiryId];
+                        Run *selectedRun = [Run retrieveRun:runId inManagedObjectContext:self.context];
                         
-                        selectedRun = [Run runWithDictionary:rDict inManagedObjectContext:self.context];
+                        if (!selectedRun) {
+                            //3639020 get run from server
+                            NSDictionary *rDict = [ARLNetwork runsWithId:runId];
+                            
+                            selectedRun = [Run runWithDictionary:rDict inManagedObjectContext:self.context];
+                        }
+                        
+                        if (selectedRun) {
+                            newInquiry.run = selectedRun;
+                        }
                     }
                     
-                    if (selectedRun) {
-                        newInquiry.run = selectedRun;
-                    }
+                    //#warning Syncing Messages must be made more inteligent.
+                    //
+                    //        if (newInquiry.run) {
+                    //            //{
+                    //            //    deleted = 0;
+                    //            //    lastModificationDate = 1397566132526;
+                    //            //    name = Default;
+                    //            //    runId = 5300507992129536;
+                    //            //    threadId = 5757904829284352;
+                    //            //    type = "org.celstec.arlearn2.beans.run.Thread";
+                    //            //}
+                    //
+                    //            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
+                    //            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
+                    //
+                    //            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
+                    //            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+                    //
+                    //            for (NSDictionary *mDict in messages)
+                    //            {
+                    //                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+                    //     
+                    //                NSLog(@"[%s] %@",__func__, msg.body);
+                    //            }
+                    //        }
+                    
+                    NSError *error = nil;
+                    [self.context save:&error];
                 }
-                
-                //#warning Syncing Messages must be made more inteligent.
-                //
-                //        if (newInquiry.run) {
-                //            //{
-                //            //    deleted = 0;
-                //            //    lastModificationDate = 1397566132526;
-                //            //    name = Default;
-                //            //    runId = 5300507992129536;
-                //            //    threadId = 5757904829284352;
-                //            //    type = "org.celstec.arlearn2.beans.run.Thread";
-                //            //}
-                //
-                //            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
-                //            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
-                //
-                //            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
-                //            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
-                //            
-                //            for (NSDictionary *mDict in messages)
-                //            {
-                //                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
-                //     
-                //                NSLog(@"[%s] %@",__func__, msg.body);
-                //            }
-                //        }
-                
-                NSError *error = nil;
-                [self.context save:&error];
             }
         }
     }
-    
     self.syncInquiries = NO;
 }
 

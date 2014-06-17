@@ -71,7 +71,6 @@ static CLLocationCoordinate2D currentCoordinates;
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *appBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
-    
     NSLog(@"[%s] Version String:  %@",__func__, appVersion);
     NSLog(@"[%s] Build Number:    %@",__func__, appBuild);
     NSLog(@"[%s] Git Commit Hash: %@",__func__, gitHash);
@@ -79,6 +78,7 @@ static CLLocationCoordinate2D currentCoordinates;
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [NSNumber numberWithBool:NO],       DEVELOPMENT_MODE,
+                                [NSNumber numberWithBool:YES],      PROXY_MODE,
                                 [NSNumber numberWithInt:1],         INQUIRY_VISIBILITY,
                                 [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
                                 gitHash,                            GIT_HASH,

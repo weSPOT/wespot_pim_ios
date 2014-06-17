@@ -16,6 +16,7 @@
 #import "INQCloudSynchronizer.h"
 
 #define DEVELOPMENT_MODE    @"enable_development_mode"
+#define PROXY_MODE          @"enable_proxy_mode"
 #define INQUIRY_VISIBILITY  @"inquiry_visibility"
 #define INQUIRY_MEMBERSHIP  @"inquiry_membership"
 #define GIT_HASH            @"git_hash"

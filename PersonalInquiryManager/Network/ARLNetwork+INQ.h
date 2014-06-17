@@ -28,7 +28,7 @@
 
 @interface ARLNetwork (INQ)
 
-+(NSString *) elgUrl;
+//+(NSString *) elgUrl;
 +(NSString *) elgBaseUrl;
 
 +(BOOL) elgDeveloperMode;

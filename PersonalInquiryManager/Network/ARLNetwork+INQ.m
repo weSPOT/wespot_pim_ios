@@ -23,9 +23,9 @@
  *  @return the correct base Url for calling json methods (including ?method=).
 */
 
-+(NSString *) elgUrl __attribute__((deprecated)) {
-    return [self.elgBaseUrl stringByAppendingString:@"?method="];
-}
+//+(NSString *) elgUrl __attribute__((deprecated)) {
+//    return [self.elgBaseUrl stringByAppendingString:@"?method="];
+//}
 
 /*!
  *  Getter for elgUrl property.
@@ -33,16 +33,35 @@
  *  @return the correct base Url for calling json methods.
  */
 +(NSString *) elgBaseUrl {
-    if (self.elgDeveloperMode)
-    {
-        return @"http://dev.inquiry.wespot.net/services/api/rest/json/";
-    } else {
-        return @"http://inquiry.wespot.net/services/api/rest/json/";
+    switch (self.elgUseProxy) {
+        case TRUE:
+            switch (self.elgDeveloperMode) {
+                case TRUE:
+                    return @"http://streetlearn.appspot.com/rest/ElggProxy?";
+                case FALSE:
+                    return @"http://streetlearn.appspot.com/rest/ElggProxy/dev?";
+            }
+        case FALSE:
+            
+            switch (self.elgDeveloperMode) {
+                case TRUE:
+                    return @"http://dev.inquiry.wespot.net/services/api/rest/json/";
+                case FALSE:
+                    return @"http://inquiry.wespot.net/services/api/rest/json/";
+            }
     }
+    
+#warning not the default (yet), but the working production url.
+    return @"http://inquiry.wespot.net/services/api/rest/json/";
 }
 
 +(BOOL) elgDeveloperMode {
     return [[NSUserDefaults standardUserDefaults] boolForKey:DEVELOPMENT_MODE];
+}
+
+
++(BOOL) elgUseProxy {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:PROXY_MODE];
 }
 
 +(NSInteger *) defaultInquiryVisibility {

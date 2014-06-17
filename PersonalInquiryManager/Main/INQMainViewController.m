@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, tools) {
 
 @property (strong, nonatomic) UIBarButtonItem *spacerButton;
 @property (strong, nonatomic) UIBarButtonItem *syncButton;
-@property (strong, nonatomic) UIBarButtonItem *loginButton;
+@property (strong, nonatomic) UIBarButtonItem *logoutButton;
 
 @end
 
@@ -125,12 +125,12 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.loginButton) {
+    if (!self.logoutButton) {
         self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.syncButton = [[UIBarButtonItem alloc] initWithTitle:@"Sync" style:UIBarButtonItemStyleBordered target:self action:@selector(syncButtonButtonTap:)];
-        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+        self.logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonButtonTap:)];
 
-        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.loginButton,nil];
+        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.logoutButton,nil];
         
         [self adjustLoginButton];
     }
@@ -165,7 +165,7 @@ typedef NS_ENUM(NSInteger, tools) {
     NSLog(@"[%s]" , __func__);
 }
 
--(void)loginButtonButtonTap:(id)sender {
+-(void)logoutButtonButtonTap:(id)sender {
     UIViewController *newViewController;
     
     NSLog(@"[%s] %@",__func__, ARLAppDelegate.theLock);
@@ -434,9 +434,9 @@ typedef NS_ENUM(NSInteger, tools) {
 
 - (void) adjustLoginButton  {
     if (ARLNetwork.isLoggedIn) {
-        [self.loginButton setTitle:NSLocalizedString(@"Logout", nil)];
+        [self.logoutButton setTitle:NSLocalizedString(@"Logout", nil)];
     } else {
-        [self.loginButton setTitle:NSLocalizedString(@"Login", nil)];
+        [self.logoutButton setTitle:NSLocalizedString(@"Login", nil)];
     }
 }
 
@@ -450,7 +450,7 @@ typedef NS_ENUM(NSInteger, tools) {
     Reachability *reach = [note object];
     
     self.syncButton.enabled=[reach isReachable];
-    self.loginButton.enabled=[reach isReachable];
+    self.logoutButton.enabled=[reach isReachable];
 }
 
 

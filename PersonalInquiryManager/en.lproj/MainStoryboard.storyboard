@@ -298,7 +298,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="T3s-PS-Baz">
+                    <navigationItem key="navigationItem" title="Login" id="T3s-PS-Baz">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Hfu-fQ-5M5"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -858,7 +858,7 @@
                         <outlet property="linkedinButton" destination="gwh-kA-h0s" id="K3x-Ju-zoV"/>
                         <outlet property="orLabel" destination="E9k-y3-bqY" id="gvV-t6-p67"/>
                         <outlet property="twitterButton" destination="IOR-c9-cmv" id="UVq-e1-pn0"/>
-                        <outlet property="weSportButton" destination="lDJ-vn-teD" id="EKO-rR-gIn"/>
+                        <outlet property="weSpotButton" destination="lDJ-vn-teD" id="5Fb-GS-Zt9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qx-D2-SNO" userLabel="First Responder" sceneMemberID="firstResponder"/>

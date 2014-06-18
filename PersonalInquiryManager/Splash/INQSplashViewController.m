@@ -23,7 +23,7 @@
 - (IBAction)linkedinButtonAction:(UIButton *)sender;
 - (IBAction)twitterButtonAction:(UIButton *)sender;
 
-@property (weak, nonatomic) IBOutlet UIButton *weSportButton;
+@property (weak, nonatomic) IBOutlet UIButton *weSpotButton;
 @property (weak, nonatomic) IBOutlet UILabel *orLabel;
 @property (weak, nonatomic) IBOutlet UIButton *googleButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
@@ -117,13 +117,13 @@
     
     [super viewDidAppear:animated];
     
-    [self.navigationController setToolbarHidden:NO];
+    [self.navigationController setToolbarHidden:YES];
     
     if (!self.loginButton) {
-        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
+        //self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        //self.loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(loginButtonButtonTap:)];
         
-        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
+        //self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.loginButton,nil];
     }
     
     [self addConstraints];
@@ -227,7 +227,13 @@
 
 - (void) addConstraints {
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                     self.backgroundImage,   @"background",
+                                     self.backgroundImage,  @"background",
+                                     self.weSpotButton,     @"weSpotButton",
+                                     self.orLabel,          @"orLabel",
+                                     self.facebookButton,   @"facebookButton",
+                                     self.googleButton,     @"googleButton",
+                                     self.linkedinButton,   @"linkedinButton",
+                                     self.twitterButton,    @"twitterButton",
                                      nil];
     
 #warning constraints for new login buttons are missing.
@@ -239,7 +245,99 @@
     
     self.backgroundImage.translatesAutoresizingMaskIntoConstraints = NO;
     
-    // Size vertically
+    self.weSpotButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.orLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.facebookButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.googleButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.linkedinButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.twitterButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // Order vertically
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat: @"V:[weSpotButton]-[orLabel]-[facebookButton]-[googleButton]-[linkedinButton]-[twitterButton]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    // Align around vertical center.
+    // see http://stackoverflow.com/questions/20020592/centering-view-with-visual-format-nslayoutconstraints?rq=1
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.weSpotButton
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.orLabel
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.facebookButton
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.googleButton
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.linkedinButton
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.twitterButton
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
+    
+    // Fix Widths
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:[weSpotButton(==300)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:[facebookButton(==300)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:[googleButton(==300)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:[linkedinButton(==300)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:[twitterButton(==300)]"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+
+    // Background
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat: @"V:|[background]|"
                                options:NSLayoutFormatDirectionLeadingToTrailing

@@ -102,6 +102,8 @@ static CLLocationCoordinate2D currentCoordinates;
     
     [reach startNotifier];
     
+    _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
+    
 #warning This Location code must be relocated to a better place!!
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
@@ -329,15 +331,17 @@ static CLLocationCoordinate2D currentCoordinates;
  *  Synchronize data at first run (after login) or manually with the Sync button.
  */
 - (void) syncData {
-    NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
-    
-    // syncActions is also triggered by syncResponses!
-    // [ARLCloudSynchronizer syncActions:self.managedObjectContext];
-    [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
-    [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
-    
-    [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
-    [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+    if (ARLNetwork.networkAvailable==YES) {
+        NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
+
+        // syncActions is also triggered by syncResponses!
+        // [ARLCloudSynchronizer syncActions:self.managedObjectContext];
+        [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
+        [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
+        
+        [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
+        [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+    }
 }
 
 /*!

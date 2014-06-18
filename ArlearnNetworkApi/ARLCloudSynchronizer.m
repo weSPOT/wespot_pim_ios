@@ -156,7 +156,7 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    while (YES) {
+    while (ARLAppDelegate.SyncAllowed) {
         if (self.syncRuns) {
             [self syncronizeRuns];
         } else if (self.syncGames) {
@@ -170,11 +170,12 @@
         } else if (self.syncActions){
             [self synchronizeActions];
         } else {
-            [self saveContext];
-            [NSThread sleepForTimeInterval:0.25];
             break;
         }
     }
+    
+    [self saveContext];
+    [NSThread sleepForTimeInterval:0.25];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
@@ -315,8 +316,10 @@
     @autoreleasepool {
         NSArray* actions =  [Action getUnsyncedActions:self.context];
         for (Action* action in actions) {
-            [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
-            action.synchronized = [NSNumber numberWithBool:YES];
+            if (ARLAppDelegate.SyncAllowed) {
+                [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
+                action.synchronized = [NSNumber numberWithBool:YES];
+            }
         }
     }
     
@@ -325,61 +328,62 @@
 
 - (void) synchronizeResponses {
     NSLog(@"[%s]", __func__);
-
-//  BOOL uploads = NO;
+    
+    //  BOOL uploads = NO;
     
     @autoreleasepool {
         NSArray* responses =  [Response getUnsyncedReponses:self.context];
         for (Response* resp in responses) {
-            @autoreleasepool {
-                if (resp.value) {
-                    [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
-                    resp.synchronized = [NSNumber numberWithBool:YES];
-                } else {
-                    u_int32_t random = arc4random();
-                    NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
-                    
-                    if (resp.run.runId) {
-                        NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
-                        [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
-                        
-                        NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
-                                                [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
-                                                [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
-                        
-                        NSLog(@"[%s] Uploaded: %@",__func__, serverUrl);
-                        
-                        NSDictionary *myDictionary;
-                        
-                        NSString * contentType;
-                        if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
-                        if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
-                        if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
-                        
-                        if ([resp.width intValue] ==0 ) {
-                            myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                            serverUrl, contentType, nil];
-                            
-                        } else {
-                            myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                            resp.width, @"width",
-                                            resp.height, @"height",
-                                            serverUrl, contentType, nil];
-                        }
-                        
-                        NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
-                        
-                        [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
-                        
+            if (ARLAppDelegate.SyncAllowed) {
+                @autoreleasepool {
+                    if (resp.value) {
+                        [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
                         resp.synchronized = [NSNumber numberWithBool:YES];
+                    } else {
+                        u_int32_t random = arc4random();
+                        NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
                         
-                        //              uploads=YES;
+                        if (resp.run.runId) {
+                            NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
+                            [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
+                            
+                            NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
+                                                   [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+                                                   [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
+                            
+                            NSLog(@"[%s] Uploaded: %@",__func__, serverUrl);
+                            
+                            NSDictionary *myDictionary;
+                            
+                            NSString * contentType;
+                            if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
+                            if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
+                            if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
+                            
+                            if ([resp.width intValue] ==0 ) {
+                                myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                serverUrl, contentType, nil];
+                                
+                            } else {
+                                myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                resp.width, @"width",
+                                                resp.height, @"height",
+                                                serverUrl, contentType, nil];
+                            }
+                            
+                            NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
+                            
+                            [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
+                            
+                            resp.synchronized = [NSNumber numberWithBool:YES];
+                            
+                            //              uploads=YES;
+                        }
                     }
                 }
             }
         }
     }
-    
     self.syncResponses = NO;
 }
 

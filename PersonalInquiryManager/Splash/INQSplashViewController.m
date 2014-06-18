@@ -61,6 +61,8 @@
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
     if (ARLNetwork.isLoggedIn) {
+        ARLAppDelegate.SyncAllowed = YES;
+        
         UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
         
         if (newViewController) {
@@ -79,6 +81,8 @@
 
         return;
     }
+    
+    ARLAppDelegate.SyncAllowed = NO;
     
 	// Do any additional setup after loading the view, typically from a nib.
     
@@ -470,7 +474,7 @@
     
     ARLOauthWebViewController* svc = [self.storyboard instantiateViewControllerWithIdentifier:@"oauthWebView"];
     
-    svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"]; //"MainNavigation"];
+    svc.NavigationAfterClose = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
     
     [self.navigationController pushViewController:svc animated:YES];
     

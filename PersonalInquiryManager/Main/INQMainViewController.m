@@ -170,6 +170,8 @@ typedef NS_ENUM(NSInteger, tools) {
     
     NSLog(@"[%s] %@",__func__, ARLAppDelegate.theLock);
     
+    ARLAppDelegate.SyncAllowed = NO;
+    
     if (![ARLAppDelegate.theLock tryLock]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
         [alert show];

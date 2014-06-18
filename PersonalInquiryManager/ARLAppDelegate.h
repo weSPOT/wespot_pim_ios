@@ -27,6 +27,9 @@
 + (NSRecursiveLock *) theLock;
 + (NSCondition *) theAbortLock;
 
++ (BOOL *) SyncAllowed;
++ (void) setSyncAllowed:(BOOL *) value;
+
 + (CLLocationCoordinate2D) CurrentLocation;
 
 + (NSString *) jsonString:(NSDictionary *) jsonDictionary;

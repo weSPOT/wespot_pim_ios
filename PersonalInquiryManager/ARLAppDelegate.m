@@ -32,6 +32,8 @@ static NSCondition *_theAbortLock;
 static CLLocationManager *locationManager;
 static CLLocationCoordinate2D currentCoordinates;
 
+static BOOL _syncAllowed = NO;
+
 /*!
  *  A Recursive Lock used to serialize the syncs.
  *  Maybe not nessesary anymore if all syncs share a 
@@ -53,6 +55,14 @@ static CLLocationCoordinate2D currentCoordinates;
         //[_theAbortLock setName:@"Show Abort Condition"];
     }
     return _theAbortLock;
+}
+
++ (BOOL *) SyncAllowed {
+    return _syncAllowed;
+}
+
++ (void) setSyncAllowed:(BOOL *) value {
+    _syncAllowed = value;
 }
 
 /*!
@@ -427,6 +437,8 @@ static CLLocationCoordinate2D currentCoordinates;
  *  we need to reset the backing field when doing a logout.
  */
 - (void) LogOut {
+    ARLAppDelegate.SyncAllowed = NO;
+    
     [ARLAccountDelegator deleteCurrentAccount:self.managedObjectContext];
     
     _CurrentAccount = nil;

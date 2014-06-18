@@ -150,7 +150,7 @@
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    while (YES) {
+    while (ARLAppDelegate.SyncAllowed) {
 
         if (self.syncUsers) {
             [self syncAllUsers];
@@ -161,11 +161,12 @@
         } else if (self.syncInquiries) {
             [self syncronizeInquiries];
         } else {
-            [self saveContext];
-            [NSThread sleepForTimeInterval:0.25];
             break;
         }
     }
+
+    [self saveContext];
+    [NSThread sleepForTimeInterval:0.25];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
@@ -256,6 +257,10 @@
             
             for (NSDictionary *inquiryDict in [dict objectForKey:@"result"]) {
                 @autoreleasepool {
+                    if (!ARLAppDelegate.SyncAllowed) {
+                        break;
+                    }
+                    
                     Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
                     
                     // NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
@@ -334,11 +339,12 @@
             }
         }
         
-        
         // Sync ItemVisibility for inquiry
         NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
         for (Inquiry *inquiry in inquiries) {
-            [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+            if (ARLAppDelegate.SyncAllowed) {
+                [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+            }
         }
         
         NSError *error = nil;

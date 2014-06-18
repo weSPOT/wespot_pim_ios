@@ -161,7 +161,7 @@
 -(void) close {
     if (self.NavigationAfterClose) {
         [self.navigationController presentViewController:self.NavigationAfterClose animated:NO completion:nil];
-        
+
         self.NavigationAfterClose = nil;
     } else {
         [self.navigationController popViewControllerAnimated:YES];

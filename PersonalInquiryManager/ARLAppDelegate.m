@@ -341,6 +341,12 @@ static CLLocationCoordinate2D currentCoordinates;
         
         [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
         [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+        
+        // Sync ItemVisibility for inquiry
+//        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.managedObjectContext enityName:@"Inquiry"];
+//        for (Inquiry *inquiry in inquiries) {
+//            [ARLCloudSynchronizer syncVisibilityForInquiry:self.managedObjectContext run:inquiry.run];
+//        }
     }
 }
 

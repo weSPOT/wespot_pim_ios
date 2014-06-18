@@ -333,6 +333,16 @@
                 }
             }
         }
+        
+        
+        // Sync ItemVisibility for inquiry
+        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
+        for (Inquiry *inquiry in inquiries) {
+            [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+        }
+        
+        NSError *error = nil;
+        [self.context save:&error];
     }
     self.syncInquiries = NO;
 }

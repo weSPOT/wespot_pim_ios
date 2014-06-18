@@ -109,6 +109,9 @@
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             NSDictionary *accountDetails = [ARLNetwork accountDetails];
             
+            //Clear what's still in the tables.
+            [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
+            
             [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
             [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
             [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];

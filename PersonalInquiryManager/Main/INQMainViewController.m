@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger, tools) {
             [self adjustLoginButton];
             
             if (ARLNetwork.isLoggedIn) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Cound not log-out",@"Cound not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Could not log-out",@"Could not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
                 [alert show];
             } else {
                 newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];

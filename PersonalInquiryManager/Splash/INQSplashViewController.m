@@ -53,10 +53,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    	// Do any additional setup after loading the view.
     
-        [self initOauthUrls];
+    // Do any additional setup after loading the view.
+    
+    [self initOauthUrls];
     
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
@@ -71,7 +71,7 @@
             newViewController = nil;
             
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-
+            
             if ([appDelegate respondsToSelector:@selector(syncData)]) {
                 [appDelegate performSelector:@selector(syncData)];
             }
@@ -229,6 +229,8 @@
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                      self.backgroundImage,   @"background",
                                      nil];
+    
+#warning constraints for new login buttons are missing.
     
     // Fails
     // for (UIView *view in [viewsDictionary keyEnumerator]) {

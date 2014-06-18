@@ -17,6 +17,8 @@
 /*!
  *  Remove all accounts and associated data.
  *
+ *  Do not call this method directly  but use ARLAppDelegate.LogOut instead.
+ *
  *  @param context The NSManagedObjectContext
  */
 + (void) deleteCurrentAccount: (NSManagedObjectContext * ) context {
@@ -25,21 +27,20 @@
                                               accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]                                       withManagedContext:context];
     
     [context deleteObject:account];
-    account = nil;
     
     NSError *error = nil; [context save:&error];
     
-    //Clear the rest of the tables.
-    [self resetAccount:context];
+    //Clear the rest of the tables, moved to login.
+    //[self resetAccount:context];
     
-    if (ARLNetwork.CurrentAccount) {
-        NSLog(@"Not logged out yet");
-    }
+    //    if (ARLNetwork.CurrentAccount) {
+    //        NSLog(@"Not logged out yet");
+    //    }
 }
 
 /*!
  *  Reset all data associated to an account. 
- *  Also reset thesynchronization bookkeeping.
+ *  Also reset the synchronization bookkeeping.
  *
  *  @param The NSManagedObjectContext
  */

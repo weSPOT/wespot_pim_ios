@@ -92,7 +92,9 @@
     if ([self.titleEdit.text length]>0) {
         [self createGeneralItem:self.titleEdit.text description:self.descriptionEdit.text type:[NSNumber numberWithInt:self.typeSegments.selectedSegmentIndex]];
         
-        [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];
+        if (ARLNetwork.networkAvailable) {
+            [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];
+        }
         
         [self.navigationController popViewControllerAnimated:YES];
     }

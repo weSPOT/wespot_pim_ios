@@ -389,11 +389,13 @@ typedef NS_ENUM(NSInteger, groups) {
                               forRun:self.run
                       forGeneralItem:generalItem
               inManagedObjectContext:generalItem.managedObjectContext]) {
-                [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-                    [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
-                });
+                if (ARLNetwork.networkAvailable) {
+                    [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+                        [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];
+                    });
+                }
             }
         }
             break;

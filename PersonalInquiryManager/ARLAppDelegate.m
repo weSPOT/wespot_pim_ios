@@ -341,22 +341,15 @@ static BOOL _syncAllowed = NO;
  *  Synchronize data at first run (after login) or manually with the Sync button.
  */
 - (void) syncData {
-    if (ARLNetwork.networkAvailable==YES) {
+    if (ARLNetwork.networkAvailable) {
         NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
 
         // syncActions is also triggered by syncResponses!
-        // [ARLCloudSynchronizer syncActions:self.managedObjectContext];
         [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
         [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
         
         [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
         [INQCloudSynchronizer syncUsers:self.managedObjectContext];
-        
-        // Sync ItemVisibility for inquiry
-//        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.managedObjectContext enityName:@"Inquiry"];
-//        for (Inquiry *inquiry in inquiries) {
-//            [ARLCloudSynchronizer syncVisibilityForInquiry:self.managedObjectContext run:inquiry.run];
-//        }
     }
 }
 

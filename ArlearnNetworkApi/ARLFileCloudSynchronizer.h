@@ -34,6 +34,4 @@
 + (void) syncResponseData: (NSManagedObjectContext*) context
               contentType: (NSString *) contentType;
 
-//+ (void)downloadImageWithURL:(Response *)resp completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock;
-
 @end

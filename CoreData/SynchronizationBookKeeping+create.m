@@ -32,11 +32,12 @@
  *  @return The Last Synchronization Date.
  */
 + (NSNumber*) getLastSynchronizationDate : (NSManagedObjectContext *) managedContext type:(NSString *) type context:(NSNumber *) identifierContext {
-//    NSString * key = [NSString stringWithFormat:@"%@+%@", type, identifierContext];
-//    SynchronizationBookKeeping * objectFromCache = [[ARLCloudSynchronizer syncDates] objectForKey:key];
-//    if (objectFromCache) {
-//        return objectFromCache.lastSynchronization;
-//    }
+    //NSString * key = [NSString stringWithFormat:@"%@+%@", type, identifierContext];
+    //SynchronizationBookKeeping * objectFromCache = [[ARLCloudSynchronizer syncDates] objectForKey:key];
+    //if (objectFromCache) {
+    //  return objectFromCache.lastSynchronization;
+    //}
+    
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"SynchronizationBookKeeping"];
     if (identifierContext) {
         fetch.predicate = [NSPredicate predicateWithFormat: @"type = %@ and context = %lld", type, [identifierContext longLongValue]];
@@ -53,7 +54,9 @@
         return [NSNumber numberWithInt:0];
     } else {
         SynchronizationBookKeeping * bookKeeping = [result lastObject];
-//        [[ARLCloudSynchronizer syncDates] setObject:bookKeeping forKey:key];
+        
+        //[[ARLCloudSynchronizer syncDates] setObject:bookKeeping forKey:key];
+        
         [managedContext save:&error];
         if (error) {
             NSLog(@"[%s] error %@", __func__, error);

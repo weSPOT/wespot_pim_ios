@@ -36,8 +36,10 @@
             }
         }
         
-        [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext contentType:@"audio/aac"];
-        [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
+        if (ARLNetwork.networkAvailable) {
+            [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext contentType:@"audio/aac"];
+            [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
+        }
     }
     
     [self.navigationController popViewControllerAnimated:YES];

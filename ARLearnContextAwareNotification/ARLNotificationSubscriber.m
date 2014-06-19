@@ -39,46 +39,47 @@
 }
 
 - (void) dispatchMessage: (NSDictionary *) message {
-    message = [message objectForKey:@"aps"];
-    
-    if ([@"org.celstec.arlearn2.beans.run.User" isEqualToString:[message objectForKey:@"type"]]) {
-        ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+    if (ARLNetwork.networkAvailable) {
+        message = [message objectForKey:@"aps"];
         
-        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [synchronizer createContext:appDelegate.managedObjectContext];
+        if ([@"org.celstec.arlearn2.beans.run.User" isEqualToString:[message objectForKey:@"type"]]) {
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            [synchronizer createContext:appDelegate.managedObjectContext];
+            
+            synchronizer.syncRuns = YES;
+            synchronizer.syncGames = YES;
+            
+            [synchronizer sync];
+        }
         
-        synchronizer.syncRuns = YES;
-        synchronizer.syncGames = YES;
+        if ([@"org.celstec.arlearn2.beans.notification.RunModification" isEqualToString:[message objectForKey:@"type"]]) {
+            NSLog(@"about to update runs %@", [[message objectForKey:@"run"] objectForKey:@"runId"]);
+            
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            [synchronizer createContext:appDelegate.managedObjectContext];
+            
+            synchronizer.syncRuns = YES;
+            
+            [synchronizer sync];
+        }
         
-        [synchronizer sync];
-    }
-    
-    if ([@"org.celstec.arlearn2.beans.notification.RunModification" isEqualToString:[message objectForKey:@"type"]]) {
-        NSLog(@"about to update runs %@", [[message objectForKey:@"run"] objectForKey:@"runId"]);
-        
-        ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-        
-        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [synchronizer createContext:appDelegate.managedObjectContext];
-        
-        synchronizer.syncRuns = YES;
-        
-        [synchronizer sync];
-        
-    }
-    
-    if ([@"org.celstec.arlearn2.beans.notification.GeneralItemModification" isEqualToString:[message objectForKey:@"type"]]) {
-        NSLog(@"about to update gi %@", [message objectForKey:@"itemId"] );
-        
-        ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
-        
-        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [synchronizer createContext:appDelegate.managedObjectContext];
-        
-        synchronizer.gameId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"gameId"]];
-        synchronizer.visibilityRunId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"runId"]];
-        
-        [synchronizer sync];
+        if ([@"org.celstec.arlearn2.beans.notification.GeneralItemModification" isEqualToString:[message objectForKey:@"type"]]) {
+            NSLog(@"about to update gi %@", [message objectForKey:@"itemId"] );
+            
+            ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
+            
+            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            [synchronizer createContext:appDelegate.managedObjectContext];
+            
+            synchronizer.gameId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"gameId"]];
+            synchronizer.visibilityRunId = [NSDecimalNumber decimalNumberWithString:[message objectForKey:@"runId"]];
+            
+            [synchronizer sync];
+        }
     }
     
     NSMutableSet *set = [notDict objectForKey:[message objectForKey:@"type"]];

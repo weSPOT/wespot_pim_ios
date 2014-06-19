@@ -724,8 +724,9 @@ typedef NS_ENUM(NSInteger, responses) {
                 }
             }
         }
-        
-        [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
+        if (ARLNetwork.networkAvailable) {
+            [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
+        }
     }
 }
 
@@ -813,7 +814,9 @@ typedef NS_ENUM(NSInteger, responses) {
             }
         }
         
-        [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
+        if (ARLNetwork.networkAvailable) {
+            [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
+        }
     }
 }
 

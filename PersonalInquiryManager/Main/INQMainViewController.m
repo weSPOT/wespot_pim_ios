@@ -451,8 +451,8 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     Reachability *reach = [note object];
     
-    self.syncButton.enabled=[reach isReachable];
-    self.logoutButton.enabled=[reach isReachable];
+    self.syncButton.enabled = [reach isReachable];
+    self.logoutButton.enabled = YES;
 }
 
 

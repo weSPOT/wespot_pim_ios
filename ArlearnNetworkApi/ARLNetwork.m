@@ -365,13 +365,13 @@
  */
 + (NSString *) requestUploadUrl: (NSString *) fileName withRun:(NSNumber *) runId {
     NSString *str =[NSString stringWithFormat:@"runId=%@&account=%@:%@&fileName=%@", runId,
-                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
-                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],fileName];
+                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],fileName];
     
     id response = [self executeARLearnPOST:[NSString stringWithFormat: @"/uploadServiceWithUrl"]
-                    postData:[str dataUsingEncoding:NSUTF8StringEncoding]
-                  withAccept:textplain
-             withContentType:xwwformurlencode];
+                                  postData:[str dataUsingEncoding:NSUTF8StringEncoding]
+                                withAccept:textplain
+                           withContentType:xwwformurlencode];
     
     return (NSString *) response;
 }

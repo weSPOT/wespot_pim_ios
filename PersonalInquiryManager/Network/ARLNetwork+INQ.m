@@ -52,7 +52,7 @@
     }
     
 #warning not the default (yet), but the working production url.
-    return @"http://inquiry.wespot.net/services/api/rest/json/";
+    return @"http://streetlearn.appspot.com/rest/ElggProxy";
 }
 
 +(BOOL) elgDeveloperMode {

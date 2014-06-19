@@ -49,15 +49,16 @@ typedef NS_ENUM(NSInteger, friends) {
     [self.navigationController setToolbarHidden:YES];
     
     [self setupFetchedResultsController];
-    
-    if (!self.AllUsers) {
-        [self getAllUsers];
-    }
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
+    
+    if (!self.AllUsers) {
+        [self getAllUsers];
+    }
+    
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
@@ -207,6 +208,10 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (indexPath.section) {
         case ADD: {
             UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
+            
+            if ([newViewController respondsToSelector:@selector(AllUsers)]) {
+                [newViewController performSelector:@selector(AllUsers) withObject:self.AllUsers];
+            }
             
             [self.navigationController pushViewController:newViewController animated:YES];
         }

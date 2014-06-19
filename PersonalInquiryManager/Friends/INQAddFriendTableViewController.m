@@ -24,6 +24,13 @@
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
+    if (self.AllUsers)
+    {
+        [self removeOurselves];
+    }
+}
+
+- (void) viewDidAppear:(BOOL)animated {
     if (ARLNetwork.networkAvailable) {
         if (!self.AllUsers) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -34,7 +41,7 @@
         }
         
         // Get our friends.
-        Account * account = [ARLNetwork CurrentAccount];
+        Account *account = [ARLNetwork CurrentAccount];
         
         self.usersFriends = [(NSDictionary *)[ARLNetwork getFriends:account.localId withProviderId:account.accountType] objectForKey:@"result"];
     }
@@ -47,17 +54,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)getAllUsers {
-    NSDictionary *usersJson = [ARLNetwork getUsers];
-    
-    self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
-    
+- (void)removeOurselves {
     Account * account = [ARLNetwork CurrentAccount];
     
     // Remove ourself from the AllUsers array.
     // We cannot be invited to be friends with ourselfs.
     NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.AllUsers];
-
+    
     NSLog(@"[%s] %d users", __func__, [tmp count]);
     NSLog(@"[%s] removing ourselves", __func__);
     for (NSDictionary *dict in self.AllUsers) {
@@ -72,6 +75,14 @@
     NSLog(@"[%s] %d users", __func__, [tmp count]);
     
     self.AllUsers = tmp;
+}
+
+- (void)getAllUsers {
+    NSDictionary *usersJson = [ARLNetwork getUsers];
+    
+    self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
+    
+    [self removeOurselves];
 }
 
 -(NSString*) cellIdentifier {

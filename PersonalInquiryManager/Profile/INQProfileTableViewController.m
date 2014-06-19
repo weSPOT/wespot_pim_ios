@@ -25,24 +25,26 @@ typedef NS_ENUM(NSInteger, profile) {
     /*!
      *  Account Type.
      */
-    TYPE,
+    // TYPE,
     /*!
      *  Longitude.
      */
-    LONGITUDE,
+    // LONGITUDE,
     /*!
      *  Latitude.
      */
-    LATITUDE,
+    // LATITUDE,
     /*!
      *  Picture.
      */
-//  PICTURE,
+    //  PICTURE,
     /*!
      *  Number of Profle Fields
      */
     numProfile
 };
+
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
@@ -70,6 +72,10 @@ typedef NS_ENUM(NSInteger, profile) {
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     [self.navigationController setToolbarHidden:YES];
+    
+    //code below adds some custom stuff above the table
+    
+    // self.profileImage.clipsToBounds = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,30 +105,31 @@ typedef NS_ENUM(NSInteger, profile) {
     
     Account *account = ARLNetwork.CurrentAccount;
     
+    if (account.picture) {
+        self.profileImage.image = [UIImage imageWithData:account.picture];        
+    }
+    
     // Configure the cell...
     switch (indexPath.section) {
         case NAME:
             cell.textLabel.text = account.name;
-            if (account.picture) {
-                cell.imageView.image = [UIImage imageWithData:account.picture];
-            }
             break;
             
         case EMAIL:
             cell.textLabel.text = account.email;
             break;
             
-        case TYPE:
-            cell.textLabel.text = [ARLNetwork elggProviderId:account.accountType];
-            break;
-            
-        case LONGITUDE:
-            cell.textLabel.text = [NSString stringWithFormat:@"%+.6f", ARLAppDelegate.CurrentLocation.longitude];
-            break;
-            
-        case LATITUDE:
-            cell.textLabel.text = [NSString stringWithFormat:@"%+.6f", ARLAppDelegate.CurrentLocation.latitude];
-            break;
+            //        case TYPE:
+            //            cell.textLabel.text = [ARLNetwork elggProviderId:account.accountType];
+            //            break;
+            //
+            //        case LONGITUDE:
+            //            cell.textLabel.text = [NSString stringWithFormat:@"%+.6f", ARLAppDelegate.CurrentLocation.longitude];
+            //            break;
+            //
+            //        case LATITUDE:
+            //            cell.textLabel.text = [NSString stringWithFormat:@"%+.6f", ARLAppDelegate.CurrentLocation.latitude];
+            //            break;
 
     }
     
@@ -136,12 +143,12 @@ typedef NS_ENUM(NSInteger, profile) {
             return @"Name";
         case EMAIL:
             return @"Email";
-        case TYPE:
-            return @"Type of account";
-        case LONGITUDE:
-            return @"Longitude";
-        case LATITUDE:
-            return @"Latitude";
+            //        case TYPE:
+            //            return @"Type of account";
+            //        case LONGITUDE:
+            //            return @"Longitude";
+            //        case LATITUDE:
+            //            return @"Latitude";
     }
     
     // Error

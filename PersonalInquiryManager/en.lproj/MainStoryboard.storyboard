@@ -71,9 +71,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <imageView key="tableHeaderView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" id="zXQ-IA-D0N">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
+                            <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
+                        </imageView>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="profileCell" id="sVk-B3-XaN">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="183" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sVk-B3-XaN" id="ryD-kr-4yv">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -86,6 +90,9 @@
                             <outlet property="delegate" destination="Fx1-Yb-uzk" id="nf7-Lo-ggz"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="profileImage" destination="zXQ-IA-D0N" id="pB6-8c-a9w"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DSD-gk-HK3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1184,6 +1191,7 @@
     <resources>
         <image name="login" width="640" height="1136"/>
         <image name="main" width="640" height="1136"/>
+        <image name="profile" width="152" height="152"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

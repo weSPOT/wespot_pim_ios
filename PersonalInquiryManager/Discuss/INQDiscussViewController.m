@@ -218,7 +218,7 @@ typedef NS_ENUM(NSInteger, friends) {
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier1];
             }
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
             
         case MESSAGES:
@@ -226,7 +226,7 @@ typedef NS_ENUM(NSInteger, friends) {
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
             }
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = UITableViewCellAccessoryNone;
             
             break;
     }
@@ -371,7 +371,8 @@ typedef NS_ENUM(NSInteger, friends) {
         case SEND:
             return tableView.rowHeight;
         case MESSAGES:
-            return 1.0f * (int)self.messageCellHeight;
+#warning ** Calculate the correct height here based on the message content!!
+            return 1.0f * (int)self.messageCellHeight * ((int)[indexPath item]+1);
     }
     
     // Error
@@ -403,8 +404,8 @@ typedef NS_ENUM(NSInteger, friends) {
         }
             break;
         case MESSAGES: {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
-            [alert show];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
+            //            [alert show];
         }
             break;
     }

@@ -1009,7 +1009,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="messageCell1" textLabel="me7-Wm-akm" detailTextLabel="7p9-cT-FVi" style="IBUITableViewCellStyleSubtitle" id="PVW-CS-6M7">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="messageCell1" editingAccessoryType="disclosureIndicator" textLabel="me7-Wm-akm" detailTextLabel="7p9-cT-FVi" style="IBUITableViewCellStyleSubtitle" id="PVW-CS-6M7">
                                 <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PVW-CS-6M7" id="iny-Jk-RlU">
@@ -1033,7 +1033,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="messageCell2" editingAccessoryType="disclosureIndicator" rowHeight="111" id="Dze-Lz-5MF">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="messageCell2" rowHeight="111" id="Dze-Lz-5MF">
                                 <rect key="frame" x="0.0" y="99" width="320" height="111"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dze-Lz-5MF" id="AhF-j4-DZ2">

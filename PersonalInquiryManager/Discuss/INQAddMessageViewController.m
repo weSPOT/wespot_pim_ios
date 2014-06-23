@@ -47,7 +47,7 @@
 }
 
 - (void) createDefaultThreadMessage:(NSString *)title description:(NSString *)description {
-    NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
+    NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
     
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     

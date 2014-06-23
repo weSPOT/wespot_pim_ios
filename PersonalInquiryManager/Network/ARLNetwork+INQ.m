@@ -51,7 +51,6 @@
             }
     }
     
-#warning not the default (yet), but the working production url.
     return @"http://streetlearn.appspot.com/rest/ElggProxy";
 }
 
@@ -108,7 +107,7 @@
  *  @return The JSON Response.
  */
 + (id) returnJsonGET: (NSString *) url query:(NSString *) query {
-    NSString *urlandquery = [[NSString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, query];
+    NSString *urlandquery = [NSString stringWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, query];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: urlandquery]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -124,7 +123,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    //  [self dumpJsonData2:jsonData url:url];
+    //[self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -153,7 +152,7 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    // [self dumpJsonData2:jsonData url:url];
+    //[self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -179,8 +178,6 @@
  *  @return The Friends as JSON.
  */
 + (id) getFriends: (NSString *) localId withProviderId: (NSNumber *) oauthProvider {
-//    NSString * url = [NSString stringWithFormat:@"%@%@&api_key=%@&oauthId=%@&oauthProvider=%@", elgUrl, @"user.friends", apiKey, localId,[self elggProviderId:oauthProvider]];
-
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"user.friends",                      @"method",
                           apiKey,                               @"api_key",
@@ -211,9 +208,7 @@
                           [self elggProviderId:oauthProvider],  @"oauthProvider",
                           
                           nil];
-    
-    //  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
-    
+  
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 /*!
@@ -230,9 +225,7 @@
                           minutes,                              @"minutes",
                           
                           nil];
-    
-//  NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
-    
+
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
@@ -254,9 +247,6 @@
                           
                           nil];
     
-    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
-    // NSString *tmp = [self dictionaryToUrl:dict];
-    
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
@@ -277,9 +267,7 @@
                           inquiryId,                            @"inquiryId",
                           
                           nil];
-    
-    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
-    
+
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
@@ -301,9 +289,7 @@
                           inquiryId,                            @"inquiryId",
                           
                           nil];
-    
-    // NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
-    
+
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
@@ -355,13 +341,13 @@
 + (id) createInquiry: (NSString *)title description: (NSString *)description visibility: (NSNumber *)visibility membership: (NSNumber *)membership {
     Account *account = [ARLNetwork CurrentAccount];
     
-    NSString *user_uid = [[NSString alloc] initWithFormat:@"%@_%@",[ARLNetwork elggProviderId:account.accountType], account.localId];
+    NSString *user_uid = [NSString stringWithFormat:@"%@", account.localId];
     NSString *provider = [ARLNetwork elggProviderId:account.accountType];
   
     NSString *encoded = [ARLNetwork htmlEncode:description];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          @"inquiry.create",        @"method",                
+                          @"inquiry.create",        @"method",
                           apiKey,                   @"api_key",
                           
                           title,                    @"name",
@@ -399,7 +385,7 @@
     NSMutableString *url = [[NSMutableString alloc] init];
     
     for (NSString * key in dict) {
-        url = [[NSMutableString alloc ] initWithString:[url stringByAppendingFormat:@"%@%@=%@", ([url length] == 0)?@"":@"&", key, [dict objectForKey: key]]];
+        url = [NSMutableString stringWithString:[url stringByAppendingFormat:@"%@%@=%@", ([url length] == 0)?@"":@"&", key, [dict objectForKey: key]]];
     }
     
     return url;
@@ -413,7 +399,7 @@
  *  @return The Url with its parameters.
  */
 + (NSString *) dictionaryToUrl: (NSDictionary *)dict {
-    NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
+    NSString *url = [NSString stringWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
     
     NSLog(@"[%s] %@", __func__, url);
     

@@ -95,9 +95,9 @@ typedef NS_ENUM(NSInteger, profile) {
         // We cannot be friends with ourselfs.
         NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.inquiryUsers];
         for (NSDictionary *dict in self.inquiryUsers) {
-            NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
+            NSString *provider = [NSString stringWithFormat:@"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
             if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId] &&
-                [provider isEqualToString:[[NSString alloc] initWithFormat:@"%@", account.accountType]]) {
+                [provider isEqualToString:[NSString stringWithFormat:@"%@", account.accountType]]) {
                 
                 [tmp removeObject:dict];
                 break;
@@ -151,7 +151,7 @@ typedef NS_ENUM(NSInteger, profile) {
             NSString *userId = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthId"];
             NSString *type = [(NSDictionary *)self.usersFriends[indexPath.item] objectForKey:@"oauthProvider"];
             
-            NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:type]];
+            NSString *provider = [NSString stringWithFormat: @"%@", [ARLNetwork elggProviderByName:type]];
             
             Account *account = [Account retrieveFromDbWithLocalId:userId accountType:provider withManagedContext:appDelegate.managedObjectContext];
             
@@ -196,7 +196,7 @@ typedef NS_ENUM(NSInteger, profile) {
     UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.accessoryType == UITableViewCellAccessoryNone) {
-        NSString *message = [[NSString alloc] initWithFormat:NSLocalizedString(@"Invite %@ to join this Inquiry?", @"Invite %@ to join this Inquiry?"), cell.textLabel.text];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to join this Inquiry?", @"Invite %@ to join this Inquiry?"), cell.textLabel.text];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
         [alert show];

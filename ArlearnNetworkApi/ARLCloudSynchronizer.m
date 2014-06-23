@@ -174,8 +174,10 @@
         }
     }
     
-    [self saveContext];
-    [NSThread sleepForTimeInterval:0.25];
+    if (ARLAppDelegate.SyncAllowed) {
+        [self saveContext];
+        [NSThread sleepForTimeInterval:0.25];
+    }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     

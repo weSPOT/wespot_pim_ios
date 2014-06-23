@@ -64,9 +64,9 @@
     NSLog(@"[%s] %d users", __func__, [tmp count]);
     NSLog(@"[%s] removing ourselves", __func__);
     for (NSDictionary *dict in self.AllUsers) {
-        NSString *provider = [[NSString alloc] initWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
+        NSString *provider = [NSString stringWithFormat: @"%@", [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]]];
         if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId] &&
-            [provider isEqualToString:[[NSString alloc] initWithFormat:@"%@", account.accountType]]) {
+            [provider isEqualToString:[NSString stringWithFormat:@"%@", account.accountType]]) {
             
             [tmp removeObject:dict];
             break;
@@ -158,7 +158,7 @@
     UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.accessoryType == UITableViewCellAccessoryNone) {
-        NSString *message = [[NSString alloc] initWithFormat:NSLocalizedString(@"Invite %@ to become a Friend?", @"Invite %@ to become a Friend?"), cell.textLabel.text];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to become a Friend?", @"Invite %@ to become a Friend?"), cell.textLabel.text];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
         [alert show];
@@ -166,7 +166,7 @@
 #warning Implement sending a Friend Request.
         
     } else {
-        NSString *message = [[NSString alloc] initWithFormat:NSLocalizedString(@"%@ is already a Friend!", @"%@ is already a Friend!"), cell.textLabel.text];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"%@ is already a Friend!", @"%@ is already a Friend!"), cell.textLabel.text];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
         [alert show];

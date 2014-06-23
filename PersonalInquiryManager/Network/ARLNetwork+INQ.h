@@ -12,8 +12,6 @@
 #import "ARLNetwork.h"
 #import "INQLoginViewController.h"
 
-#warning switch to streetlearn.appspot.com/rest/ElggProxy?method=...
-
 ////#define elgUrl @"http://wespot.kmi.open.ac.uk/services/api/rest/json/?method="
 ////dev.
 //#define elgBaseUrl @"http://dev.inquiry.wespot.net/services/api/rest/json/"

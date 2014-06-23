@@ -165,8 +165,10 @@
         }
     }
 
-    [self saveContext];
-    [NSThread sleepForTimeInterval:0.25];
+    if (ARLAppDelegate.SyncAllowed) {
+        [self saveContext];
+        [NSThread sleepForTimeInterval:0.25];
+    }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
@@ -344,12 +346,17 @@
         for (Inquiry *inquiry in inquiries) {
             if (ARLAppDelegate.SyncAllowed) {
                 [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+            } else {
+                break;
             }
         }
         
-        NSError *error = nil;
-        [self.context save:&error];
+        if (ARLAppDelegate.SyncAllowed) {
+            NSError *error = nil;
+            [self.context save:&error];
+        }
     }
+    
     self.syncInquiries = NO;
 }
 

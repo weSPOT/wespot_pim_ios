@@ -162,9 +162,7 @@
          if (minutesString.length == 1) {
              minutesString = [NSString stringWithFormat:@"0%@", minutesString];
          }
-         return [[NSString alloc]
-                 initWithFormat:@"%@:%@",
-                 minutesString, secondsString];
+         return [NSString stringWithFormat:@"%@:%@", minutesString, secondsString];
      }
      
      - (void) clickedLeftButton {

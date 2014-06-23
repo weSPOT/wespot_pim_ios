@@ -88,7 +88,7 @@
  *  @param description <#description description#>
  */
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
-    NSString *html = [[NSString alloc] initWithFormat:@"<p>%@</p>", description];
+    NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
    
     NSNumber *visibility =  [NSNumber numberWithInt:self.visibilitySegments.selectedSegmentIndex];
     NSNumber *membership = [NSNumber numberWithInt:2 *self.membershipSegments.selectedSegmentIndex];
@@ -111,9 +111,7 @@
             //    status = "-1";
             //}
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-                                                            message:[[NSString alloc]
-                                                                     initWithFormat:@"%@",
-                                                                     [dict objectForKey:@"message"]]
+                                                            message:[NSString stringWithFormat:@"%@", [dict objectForKey:@"message"]]
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];

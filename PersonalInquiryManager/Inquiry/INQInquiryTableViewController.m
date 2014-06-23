@@ -364,8 +364,8 @@ typedef NS_ENUM(NSInteger, sections) {
                                                      predicate:[NSPredicate predicateWithFormat:@"visible = 1 and run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
                     
                     if (count!=0) {
-                        NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
-                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                        NSString *value = [NSString stringWithFormat:@"%d", count];
+                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                         NSRange range=[value rangeOfString:value];
                         
                         [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];

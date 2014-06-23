@@ -172,37 +172,47 @@ typedef NS_ENUM(NSInteger, tools) {
     
     ARLAppDelegate.SyncAllowed = NO;
     
-    if (![ARLAppDelegate.theLock tryLock]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-        [alert show];
-    } else {
-        if (ARLNetwork.isLoggedIn) {
-            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [appDelegate LogOut];
-            
-            //#warning not enough to toggle isLoggedIn.
-            [self adjustLoginButton];
-            
-            if (ARLNetwork.isLoggedIn) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Could not log-out",@"Could not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-                [alert show];
-            } else {
-                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
-            }
-        } else {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
+    NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
+    
+    while (YES) {
+        if ([ARLAppDelegate.theLock tryLock]) {
+            [ARLAppDelegate.theLock unlock];
+            break;
         }
-        
-        if (newViewController) {
-            // Move to another UINavigationController or UITabBarController etc.
-            // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
-            [self.navigationController presentViewController:newViewController animated:YES completion:nil];
-            
-            newViewController=nil;
-        }
-
-        [ARLAppDelegate.theLock unlock];
+        [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
     }
+    
+    //    if (![ARLAppDelegate.theLock tryLock]) {
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    //        [alert show];
+    //    } else {
+    if (ARLNetwork.isLoggedIn) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate LogOut];
+        
+        //#warning not enough to toggle isLoggedIn.
+        [self adjustLoginButton];
+        
+        if (ARLNetwork.isLoggedIn) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Could not log-out",@"Could not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+            [alert show];
+        } else {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
+        }
+    } else {
+        newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
+    }
+    
+    if (newViewController) {
+        // Move to another UINavigationController or UITabBarController etc.
+        // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
+        [self.navigationController presentViewController:newViewController animated:NO completion:nil];
+        
+        newViewController=nil;
+    }
+    
+    //        [ARLAppDelegate.theLock unlock];
+    //    }
 }
 
 - (void)syncButtonButtonTap:(id)sender {
@@ -285,7 +295,7 @@ typedef NS_ENUM(NSInteger, tools) {
     
     // cell.backgroundColor = [UIColor clearColor];
     
-    [cell.detailTextLabel setAttributedText:[[NSMutableAttributedString alloc]initWithString:@""]];
+    [cell.detailTextLabel setAttributedText:[[NSMutableAttributedString alloc] initWithString:@""]];
 
     // Configure the cell...
     switch (indexPath.section) {
@@ -298,8 +308,8 @@ typedef NS_ENUM(NSInteger, tools) {
                 NSInteger count = [appDelegate entityCount:@"Inquiry"];
                 
                 if (count!=0) {
-                    NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
-                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                     NSRange range=[value rangeOfString:value];
                     
                     [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
@@ -325,8 +335,8 @@ typedef NS_ENUM(NSInteger, tools) {
                 NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
                 
                 if (count!=0) {
-                    NSString *value = [[NSString alloc] initWithFormat:@"%d", count];
-                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                     NSRange range=[value rangeOfString:value];
                     
                     [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
@@ -355,8 +365,8 @@ typedef NS_ENUM(NSInteger, tools) {
                         NSInteger count = [appDelegate entityCount:@"Account"];
                         
                         if (count > 1) {
-                            NSString *value = [[NSString alloc] initWithFormat:@"%d", count - 1];
-                            NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:value];
+                            NSString *value = [NSString stringWithFormat:@"%d", count - 1];
+                            NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                             NSRange range=[value rangeOfString:value];
                             
                             [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];

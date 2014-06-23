@@ -116,7 +116,7 @@
         [request setHTTPMethod:@"POST"];
         
         //initialize a post data
-        NSString *postData = [[NSString alloc] initWithString:[[NSString alloc] initWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit", self.usernameEdit.text, self.passwordEdit.text]];
+        NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit", self.usernameEdit.text, self.passwordEdit.text];
         
         //set request content type we MUST set this value.
         [request setValue:@"text/html; charset=utf-8" forHTTPHeaderField:@"Content-Type"];

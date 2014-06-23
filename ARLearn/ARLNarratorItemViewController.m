@@ -283,7 +283,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
     } else {
-        NSLog(@"[%s] Error, neither account nor run is set.", __func__);
+        DLog(@"%@ - Neither account nor run is set.", NSLocalizedString(@"Error", @"Error"));
     }
     
     NSError *error = nil;
@@ -317,7 +317,7 @@ typedef NS_ENUM(NSInteger, responses) {
             if (self.generalItem == changedObject) {
                 self.navigationItem.title = self.generalItem.name;
                 
-                NSLog(@"[%s] TEXT='%@'",__func__, self.generalItem.richText);
+                DLog(@"TEXT='%@'", self.generalItem.richText);
                 
 #warning Replace the the TableView top Section.
                 // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
@@ -332,7 +332,8 @@ typedef NS_ENUM(NSInteger, responses) {
         if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
             GeneralItem* changedObject = (GeneralItem*) obj;
             if (self.generalItem == changedObject) {
-                NSLog(@"little less easy... I was deleted");
+                
+                DLog(@"little less easy... I was deleted");
                 
                 [self.navigationController popViewControllerAnimated:NO];
                 [self dismissViewControllerAnimated:TRUE completion:nil];
@@ -348,9 +349,14 @@ typedef NS_ENUM(NSInteger, responses) {
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     for(NSManagedObject *obj in insertedObjects){
         if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+           
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];
+            
+            ELog(error);
+            
             [self.collectionView reloadData];
+            
             return;
         }
     }
@@ -650,7 +656,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                response.fileName, size.width * screenScale, size.height * screenScale];
         }
         
-        NSLog(@"[%s] %@", __func__, response.fileName);
+        DLog(@"%@", response.fileName);
         
         if (controller && controller.html) {
             [self.navigationController pushViewController:controller animated:TRUE];
@@ -788,8 +794,10 @@ typedef NS_ENUM(NSInteger, responses) {
         [Response createImageResponse:imageData width:[NSNumber numberWithFloat:image.size.width] height:[NSNumber numberWithFloat:image.size.height]  withRun:self.run withGeneralItem:self.generalItem];
     } else {
         id object = [info objectForKey:UIImagePickerControllerMediaURL];
-        NSLog(@"[%s] dict %@", __func__, info);
-        NSLog(@"[%s] object %@", __func__, [object class ]);
+        
+        DLog(@"Dict %@", info);
+        DLog(@"Object %@", [object class ]);
+        
         NSData* videoData = [NSData dataWithContentsOfURL:object];
         [Response createVideoResponse:videoData withRun:self.run withGeneralItem:self.generalItem];
         

@@ -115,11 +115,9 @@
                          [[visDict objectForKey:@"status"] intValue]
                          ];
     NSError *error = nil;
-    
     NSArray *giVises = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
+    
     if (!giVises || ([giVises count] != 1)) {
         return nil;
     } else {

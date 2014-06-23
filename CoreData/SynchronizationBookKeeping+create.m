@@ -46,9 +46,7 @@
     }
     NSError *error;
     NSArray *result = [managedContext executeFetchRequest:fetch error:&error];
-    if (!result) {
-        NSLog(@"[%s] %@", __func__, [error localizedDescription]);
-    }
+    ELog(error);
     
     if ([result count] == 0) {
         return [NSNumber numberWithInt:0];
@@ -58,9 +56,8 @@
         //[[ARLCloudSynchronizer syncDates] setObject:bookKeeping forKey:key];
         
         [managedContext save:&error];
-        if (error) {
-            NSLog(@"[%s] error %@", __func__, error);
-        } 
+        ELog(error);
+        
         return bookKeeping.lastSynchronization;
     }
 }
@@ -124,9 +121,7 @@
    
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
     
     return bkItem;
 }

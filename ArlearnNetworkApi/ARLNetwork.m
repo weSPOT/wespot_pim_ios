@@ -25,7 +25,7 @@
 + (id) executeARLearnGetWithAuthorization: (NSString *) path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     
-    // NSLog(@"[%s] %@",__func__, urlString);
+    // DLog(@"%@", urlString);
     
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     
@@ -103,7 +103,8 @@
 +(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    NSLog(@"\r\n\r\n[%s]\r\n%@\r\n%@\r\n\r\n", __func__, url, jsonString);
+    DLog(@"%@", url);
+    DLog(@"%@", jsonString);
 }
 
 + (NSData *) stringToData: (NSString *) string {
@@ -386,7 +387,7 @@
  */
 + (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName
           contentType:(NSString *) contentTypeIn withData:(NSData *) data {
-    NSLog(@"[%s] Uploading %@ - %@", __func__, contentTypeIn, fileName);
+    DLog(@"Uploading %@ - %@", contentTypeIn, fileName);
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
     
@@ -421,7 +422,7 @@
     
     [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 
-    NSLog(@"[%s] Uploaded %@ - %@", __func__, contentTypeIn, fileName);
+    DLog(@"Uploaded %@ - %@", contentTypeIn, fileName);
 }
 
 #pragma mark - Account

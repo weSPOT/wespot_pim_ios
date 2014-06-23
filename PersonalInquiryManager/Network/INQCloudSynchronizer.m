@@ -16,7 +16,7 @@
  *  @param context The Core Data Context.
  */
 + (void) syncUsers: (NSManagedObjectContext *) context {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
   
@@ -33,7 +33,7 @@
  *  @param context The Core Data Context.
  */
 + (void) syncInquiries: (NSManagedObjectContext *) context {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
@@ -45,7 +45,7 @@
 }
 
 + (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
@@ -63,7 +63,7 @@
  *  @param context The Core Data Context.
  */
 + (void) syncMessages: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
@@ -106,7 +106,7 @@
 - (void)saveContext {
     NSError *error = nil;
     
-    NSLog(@"[%s] Saving NSManagedObjectContext", __func__);
+    DLog(@"Saving NSManagedObjectContext");
     
     //#warning ABORT TEST CODE AHEAD
     //    NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : @"DESCRIPTION" };
@@ -140,14 +140,14 @@
  */
 - (void) asyncExecution {
     mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
     
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
     
-    NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of INQ Synchronisation", __func__, machTID);
-
+     // DLog(@"Thread:0x%x - Start of INQ Synchronisation", machTID);
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     while (ARLAppDelegate.SyncAllowed) {
@@ -174,9 +174,9 @@
     
     [ARLAppDelegate.theLock unlock];
     
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
-    NSLog(@"\r\n[%s 0x%x] End of INQ Synchronisation\r\n*******************************************", __func__, machTID);
+    // DLog(@"Thread:0x%x - End of INQ Synchronisation", machTID);
 }
 
 /*!
@@ -189,14 +189,14 @@
         id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
         id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
         
-        NSLog(@"[%s] userId=%@ providerId=%@", __func__, localId, providerId);
+        DLog(@"UserId=%@ providerId=%@", localId, providerId);
         
         NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
         
         if ([dict objectForKey:@"errorCode"]) {
-            NSLog(@"[%s] error[%@]: %@", __func__, [dict objectForKey:@"errorCode"], [dict objectForKey:@"error"]);
+            DLog( @"%@ - %@: %@", NSLocalizedString(@"Error", @"Error"), [dict objectForKey:@"errorCode"], [dict objectForKey:@"error"]);
         } else {
-            //NSLog(@"[%s] syncronizeInquiries %@", __func__, [dict objectForKey:@"result"]);
+            //DLog(@"SyncronizeInquiries %@", [dict objectForKey:@"result"]);
             
             //******************************
             // Wipe records that no longer exist.
@@ -228,7 +228,7 @@
                                               inquiryId];
                     Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry" predicate:predicate] lastObject];
                     
-                    NSLog(@"[%s] Deleting Iqnquiry [%@] '%@'", __func__, inquiry.title, inquiry.inquiryId);
+                    DLog(@"Deleting Iqnquiry [%@] '%@'", inquiry.title, inquiry.inquiryId);
                     
 #warning Also Remove all associated stuff?
                     
@@ -366,7 +366,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) syncAllUsers {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         // Fetch Account default values for localId and withProviderId.

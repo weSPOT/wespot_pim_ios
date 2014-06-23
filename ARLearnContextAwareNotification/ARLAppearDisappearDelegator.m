@@ -20,7 +20,7 @@
 }
 
 - (void) setTimer: (NSDate *) fireDate {
-    NSLog(@"timer is scheduled to go off at %@ ", [fireDate description]);
+    DLog(@"Timer is scheduled to go off at %@ ", [fireDate description]);
     
     NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                               interval:0.5
@@ -37,14 +37,14 @@
 }
 
 - (void) fireTimer {
-    NSLog(@"timer went off  ");
+    DLog(@"timer went off: ");
     
     dispatch_async(dispatch_get_main_queue(), ^{
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [CurrentItemVisibility updateVisibility:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentRun"] withManagedContext:appDelegate.managedObjectContext];
         [appDelegate.managedObjectContext save:nil];
         for (CurrentItemVisibility* vis in [CurrentItemVisibility retrieveVisibleFor: [NSNumber numberWithLongLong:3457078]withManagedContext: appDelegate.managedObjectContext]) {
-            NSLog(@"vis statement %@", vis.item.name);
+            DLog(@"Visibility Statement %@", vis.item.name);
         }
     });
 }

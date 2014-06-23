@@ -81,9 +81,11 @@ static BOOL _syncAllowed = NO;
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *appBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
-    NSLog(@"[%s] Version String:  %@",__func__, appVersion);
-    NSLog(@"[%s] Build Number:    %@",__func__, appBuild);
-    NSLog(@"[%s] Git Commit Hash: %@",__func__, gitHash);
+    INQLog.LogOn = YES;
+    
+    DLog(@"Version String:  %@", appVersion);
+    DLog(@"Build Number:    %@", appBuild);
+    DLog(@"Git Commit Hash: %@", gitHash);
     
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -94,6 +96,19 @@ static BOOL _syncAllowed = NO;
                                 gitHash,                            GIT_HASH,
                                 appVersion,                         APP_VERSION,
                                 nil];
+    
+    // ERROR LOGGIN TEST CODE
+    //    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+    //                          @"LOCAL", NSLocalizedDescriptionKey,
+    //                          nil];
+    //
+    //    NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
+    //    ELog(error);
+  
+    //    NSError *error = nil;
+    //    ELog(error);
+    
+    //    EELog();
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
     
@@ -244,7 +259,7 @@ static BOOL _syncAllowed = NO;
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (!_persistentStoreCoordinator) {
-        NSLog(@"[%s]\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************", __func__);
+        DLog(@"\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************");
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
@@ -252,8 +267,9 @@ static BOOL _syncAllowed = NO;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
         
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-            NSLog(@"[%s] Unresolved error %@, %@", __func__, error, [error userInfo]);
             
+            ELog(error);
+
             return nil;
         }
     }
@@ -330,9 +346,8 @@ static BOOL _syncAllowed = NO;
     
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+ 
+    ELog(error);
     
     return unsyncedData;
 }
@@ -342,7 +357,7 @@ static BOOL _syncAllowed = NO;
  */
 - (void) syncData {
     if (ARLNetwork.networkAvailable) {
-        NSLog(@"[%s] %s",__func__, "Syncing Data\r\n*******************************************");
+        DLog(@"%s", "Syncing Data\r\n*******************************************");
 
         // syncActions is also triggered by syncResponses!
         [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
@@ -456,16 +471,16 @@ static BOOL _syncAllowed = NO;
 {
     Reachability *reach = [note object];
     
-//    NSLog(@"Reachability Changed");
-//    NSLog(@"From: %@", _networkAvailable);
+//    DLog(@"Reachability Changed");
+//    DLog(@"From: %@", _networkAvailable);
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
 
-//    NSLog(@"To: %@", _networkAvailable);
+//    DLog(@"To: %@", _networkAvailable);
 //    
-//    NSLog(@" All:  %d", [reach isReachable]);
-//    NSLog(@" Wifi: %d", [reach isReachableViaWiFi]);
-//    NSLog(@" WWan: %d", [reach isReachableViaWWAN]);
+//    DLog(@" All:  %d", [reach isReachable]);
+//    DLog(@" Wifi: %d", [reach isReachableViaWiFi]);
+//    DLog(@" WWan: %d", [reach isReachableViaWWAN]);
 }
 
 /*!
@@ -476,10 +491,11 @@ static BOOL _syncAllowed = NO;
  *  @return The resulting JSON NSString.
  */
 + (NSString *) jsonString:(NSDictionary *) jsonDictionary {
-    NSError *error;
+    NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                        options:0
                                                          error:&error];
+    ELog(error);
     
     return [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
 }
@@ -579,7 +595,7 @@ static BOOL _syncAllowed = NO;
         
         if (abs(howRecent) < 15.0) {
             // If the event is recent, do something with it.
-            NSLog(@"latitude %+.6f, longitude %+.6f\n",
+            DLog(@"Lat: %+.6f, Long: %+.6f\n",
                   location.coordinate.latitude,
                   location.coordinate.longitude);
         }

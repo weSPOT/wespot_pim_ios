@@ -32,7 +32,7 @@
 
 + (void) syncGamesAndRuns:(NSManagedObjectContext*)context
 {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     
@@ -46,8 +46,6 @@
 
 + (void) syncResponses:(NSManagedObjectContext*)context
 {
-    NSLog(@"[%s]", __func__);
-
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -60,7 +58,7 @@
 
 + (void) syncActions:(NSManagedObjectContext*)context
 {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     
@@ -80,7 +78,7 @@
 + (void) syncVisibilityForInquiry:(NSManagedObjectContext*)context
                               run:(Run *)run
 {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
     
@@ -112,7 +110,7 @@
 {
     NSError *error = nil;
     
-    NSLog(@"[%s] Saving NSManagedObjectContext", __func__);
+    DLog(@"Saving NSManagedObjectContext");
     
     if (self.context) {
         if ([self.context hasChanges]){
@@ -123,7 +121,7 @@
         
         if ([self.parentContext hasChanges]) {
             [self.parentContext performBlock:^{
-                //              NSLog(@"[%s] Saving Parent NSManagedObjectContext", __func__);
+                // DLog(@"Saving Parent NSManagedObjectContext");
                 NSError *error = nil;
                 if (![self.parentContext save:&error]) {
                     [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
@@ -146,13 +144,13 @@
 
 - (void) asyncExecution {
     mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
  
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
-    
-    NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of ARL Synchronisation", __func__, machTID);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
+  
+    // DLog(@"Thread:0x%x - Start of ARL Synchronisation", machTID);
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -182,14 +180,14 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     [ARLAppDelegate.theLock unlock];
-    
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Exit Lock", ARLAppDelegate.theLock);
-    
-    NSLog(@"\r\n[%s 0x%x] End of ARL Synchronisation\r\n*******************************************", __func__, machTID);
+   
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
+
+    // DLog(@"Thread:0x%x - End of ARL Synchronisation", machTID);
 }
 
 - (void) syncronizeRuns{ //: (NSManagedObjectContext *) context
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
@@ -207,7 +205,7 @@
 }
 
 - (void) syncronizeGames { //: (NSManagedObjectContext *) context{
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myGames"];
@@ -226,7 +224,7 @@
 }
 
 - (void) synchronizeGeneralItemsWithGame {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
@@ -253,7 +251,7 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         Run * run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
@@ -264,7 +262,7 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
-    NSLog(@"[%s] run:%@", __func__, run.runId);
+    DLog(@"Run:%@", run.runId);
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
@@ -313,7 +311,7 @@
 }
 
 - (void) synchronizeActions {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     @autoreleasepool {
         NSArray* actions =  [Action getUnsyncedActions:self.context];
@@ -329,7 +327,7 @@
 }
 
 - (void) synchronizeResponses {
-    NSLog(@"[%s]", __func__);
+     DLog(@"");
     
     //  BOOL uploads = NO;
     
@@ -353,7 +351,7 @@
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
                             
-                            NSLog(@"[%s] Uploaded: %@",__func__, serverUrl);
+                            DLog(@"Uploaded: %@", serverUrl);
                             
                             NSDictionary *myDictionary;
                             

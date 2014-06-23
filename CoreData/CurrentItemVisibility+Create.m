@@ -70,10 +70,12 @@
         if (appearAt.timeStamp.doubleValue < currentTimeMillis) {
                 visibility.visible = [NSNumber numberWithBool:YES];
         } else {
-            NSLog(@"***this item is not yet visible. Set a timer %@", appearAt.generalItem.name);
+            DLog(@"***this item is not yet visible. Set a timer %@", appearAt.generalItem.name);
 
             double longValue =appearAt.timeStamp.longLongValue - currentTimeMillis;
-            NSLog(@"***%f !< %f wait %f milliseconds", appearAt.timeStamp.doubleValue, currentTimeMillis, longValue);
+            
+            DLog(@"***%f !< %f wait %f milliseconds", appearAt.timeStamp.doubleValue, currentTimeMillis, longValue);
+            
             NSDate* triggerTime = [NSDate dateWithTimeIntervalSince1970:(localCurrentTimeMillis + longValue)/1000];
            [[ARLAppearDisappearDelegator sharedSingleton] setTimer:triggerTime];
         }
@@ -83,10 +85,12 @@
         if (disAppearAt.timeStamp.doubleValue < currentTimeMillis) {
             visibility.visible = [NSNumber numberWithBool:NO];    
         }else {
-            NSLog(@"***this item is not yet invisible. Set a timer");
+            DLog(@"***this item is not yet invisible. Set a timer");
             
             double longValue =disAppearAt.timeStamp.longLongValue - currentTimeMillis;
-            NSLog(@"***%f !< %f wait %f milliseconds", disAppearAt.timeStamp.doubleValue, currentTimeMillis, longValue);
+            
+            DLog(@"***%f !< %f wait %f milliseconds", disAppearAt.timeStamp.doubleValue, currentTimeMillis, longValue);
+            
             NSDate* triggerTime = [NSDate dateWithTimeIntervalSince1970:(localCurrentTimeMillis + longValue)/1000];
             
             [[ARLAppearDisappearDelegator sharedSingleton] setTimer:triggerTime];
@@ -111,9 +115,8 @@
     NSError *error = nil;
     
     NSArray *currentItemVisibility = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    
+    ELog(error);
     
     if (!currentItemVisibility || ([currentItemVisibility count] != 1)) {
         return nil;

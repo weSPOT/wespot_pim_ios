@@ -69,46 +69,46 @@
     [self.recordTimer invalidate];
     [self.controller.countField setFont:[UIFont fontWithName:@"Arial" size:50]];
     self.controller.countField.textColor = [UIColor blackColor];
-    NSError * error;
+   
+    NSError *error = nil;
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:self.tmpFileUrl error:&error];
-    if (error) {
-        NSLog(@"[%s] error %@",__func__, error);
-    }
+    
+    ELog(error);    
 }
 
 - (void) playAudio {
     self.player.numberOfLoops = 0;
     self.player.delegate = self;
-	if (self.player == nil)
-		NSLog(@"[%s] error", __func__);
-	else {
+	if (self.player == nil) {
+		EELog();
+    } else {
         [self.player play];
-        [self startPlayTimer];
-    }
-    
+    [self startPlayTimer];
+}
+
 }
 
 - (void) pauzePlaying {
-    if (self.player == nil)
-		NSLog(@"[%s] error", __func__);
-	else {
+    if (self.player == nil) {
+		EELog();
+	} else {
         [self.player pause];
     }
 }
 
 - (void) resumePlaying {
-    if (self.player == nil)
-		NSLog(@"[%s] error", __func__);
-	else {
+    if (self.player == nil) {
+		EELog();
+	} else {
         [self.player play];
     }
 }
 
 - (void) stopPlaying {
     [self.playTimer invalidate];
-    if (self.player == nil)
-		NSLog(@"[%s] error", __func__);
-	else {
+    if (self.player == nil) {
+		EELog();
+	} else {
         [self.player stop];
         self.player.currentTime =0 ;
         self.controller.countField.text = [self intervalToLabelForString:self.player.duration];

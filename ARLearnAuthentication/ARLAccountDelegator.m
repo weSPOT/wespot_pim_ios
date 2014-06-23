@@ -28,14 +28,11 @@
     
     [context deleteObject:account];
     
-    NSError *error = nil; [context save:&error];
-    
-    //Clear the rest of the tables, moved to login.
-    //[self resetAccount:context];
-    
-    //    if (ARLNetwork.CurrentAccount) {
-    //        NSLog(@"Not logged out yet");
-    //    }
+    NSError *error = nil;
+    [context save:&error];
+  
+    ELog(error);
+
 }
 
 /*!

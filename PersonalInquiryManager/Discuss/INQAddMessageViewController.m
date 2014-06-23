@@ -64,7 +64,7 @@
     
     NSDictionary *result= [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
 
-    NSLog(@"[%s] %@", __func__, result);
+    DLog(@"%@", result);
 }
 
 - (void)addConstraints {

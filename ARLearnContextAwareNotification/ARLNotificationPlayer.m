@@ -26,15 +26,16 @@
 - (AVAudioPlayer*) audioPlayer {
     if (!_audioPlayer) {
         NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/notification.mp3", [[NSBundle mainBundle] resourcePath]]];
+
         NSError *error;
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
         _audioPlayer.numberOfLoops = 0;
         _audioPlayer.delegate = self;
+        
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:NULL];
-        if (error) {
-            NSLog(@"error %@",error);
-        }
+        
+        ELog(error);
     }
     return _audioPlayer;
 }

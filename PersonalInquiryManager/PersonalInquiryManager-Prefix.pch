@@ -4,6 +4,8 @@
 
 #import <Availability.h>
 
+#import "INQLog.h"
+
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
@@ -12,4 +14,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <SystemConfiguration/SystemConfiguration.h>
+#endif
+
+#ifdef NDEBUG
+#define NSLog(...) /* suppress NSLog when in release mode */
 #endif

@@ -166,7 +166,8 @@
 +(void) dumpJsonData2: (NSData *) jsonData url: (NSString *) url {
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    NSLog(@"\r\n\r\n[%s]\r\n%@\r\n%@\r\n\r\n", __func__, url, jsonString);
+    DLog(@"%@", url);
+    DLog(@"%@", jsonString);
 }
 
 /*!
@@ -401,7 +402,7 @@
 + (NSString *) dictionaryToUrl: (NSDictionary *)dict {
     NSString *url = [NSString stringWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
     
-    NSLog(@"[%s] %@", __func__, url);
+    DLog(@"%@", url);
     
     return url;
 }

@@ -18,7 +18,7 @@
 @synthesize syncResponses = _syncResponses;
 
 + (void) syncGeneralItems: (NSManagedObjectContext*) context {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
     
@@ -31,7 +31,7 @@
 
 + (void) syncResponseData: (NSManagedObjectContext*) context
               contentType: (NSString *) contentType {
-    NSLog(@"[%s]", __func__);
+    DLog(@"");
     
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
     
@@ -59,13 +59,13 @@
 
 - (void) asyncExecution {
     mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
     
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passing Lock", ARLAppDelegate.theLock);
     
-    NSLog(@"\r\n[%s 0x%x]\r\n*******************************************\r\nStart of File Synchronisation", __func__, machTID);
+     // DLog(@"Thread:0x%x - Start of File Synchronisation", machTID);
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -89,9 +89,9 @@
     
     [ARLAppDelegate.theLock unlock];
     
-    NSLog(@"[%s 0x%x]\r\n\r\n%@\r\n%@\r\n\r\n", __func__, machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
-    NSLog(@"\r\n[%s 0x%x] End of File Synchronisation\r\n*******************************************", __func__, machTID);
+    // DLog(@"Thread:0x%x - End of File Synchronisation", machTID);
 }
 
 /*!
@@ -126,7 +126,7 @@
 
 - (void) downloadGeneralItems {
     for (GeneralItemData *giData in [GeneralItemData getUnsyncedData:self.context]) {
-        //      NSLog(@"[%s] gidata url=%@ replicated=%@ error=%@", __func__, giData.url, giData.replicated, giData.error);
+        // DLog(@"gidata url=%@ replicated=%@ error=%@", giData.url, giData.replicated, giData.error);
         
         if (ARLAppDelegate.SyncAllowed) {
             NSURL  *url = [NSURL URLWithString:giData.url];
@@ -135,7 +135,7 @@
                 giData.data = urlData;
                 giData.replicated = [NSNumber numberWithBool:YES];
             } else {
-                NSLog(@"[%s] Could not fetch url", __func__);
+                DLog(@"Could not fetch url");
             }
             
             //[self saveContext];
@@ -153,14 +153,14 @@
 //{
 //    NSURL *url = [[NSURL alloc] initWithString:resp.fileName];
 //
-//    NSLog(@"[%s] Downloading url=%@", __func__, resp.fileName);
+//    DLog(@"Downloading url=%@", resp.fileName);
 //
 //    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 //
 //    [NSURLConnection sendAsynchronousRequest:request
 //                                       queue:[NSOperationQueue mainQueue]
 //                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                               NSLog(@"[%s] [%d] Downloaded url=%@", __func__, [(NSHTTPURLResponse *)response statusCode], resp.fileName);
+//                               DLog(@"[%d] Downloaded url=%@", [(NSHTTPURLResponse *)response statusCode], resp.fileName);
 //                               if (!error && [(NSHTTPURLResponse *)response statusCode]==200)
 //                               {
 //                                   UIImage *image = [[UIImage alloc] initWithData:data];
@@ -256,7 +256,7 @@
 //}
 
 - (void) downloadResponses {
-    NSLog(@"[%s] ** Checking for contentType=%@", __func__, self.contentType);
+    DLog(@"** Checking for contentType=%@", self.contentType);
     
     int cnt = 0;
     
@@ -271,18 +271,18 @@
                             
                             NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                             
-                            NSLog(@"[%s] ** Downloading url=%@", __func__, url);
+                            DLog(@"** Downloading url=%@", url);
                             
                             NSData *urlData = [NSData dataWithContentsOfURL:url];
                             
                             if (urlData) {
-                                NSLog(@"[%s] ** Downloaded url=%@", __func__, url);
+                                DLog(@"** Downloaded url=%@", url);
                                 
                                 // Create Thumbnails from Images to lower memory load.
                                 // UIImage *img = [UIImage imageWithData:urlData];
                                 
                                 // Obsolete Rotation code:
-                                // NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
+                                // DLog(@"Orientation: %d", img.imageOrientation);
                                 
                                 // if (img.imageOrientation != UIImageOrientationUp) {
                                 //                        UIGraphicsBeginImageContextWithOptions(img.size, NO, img.scale);
@@ -309,7 +309,7 @@
                                 //                                        orientation:img.imageOrientation];
                                 // //}
                                 
-                                // NSLog(@"[%s] Orientation: %d", __func__, img.imageOrientation);
+                                // DLog(@"Orientation: %d", img.imageOrientation);
                                 
                                 // Obsolete Thumbnail odew:
                                 // UIImage *thumbImage = nil;
@@ -337,16 +337,16 @@
                                 
                                 urlData = nil;
                                 
-                                // NSLog(@"[%s] Image:%d Thumb:%d", __func__, [response.data length], [response.thumb length]);
+                                // DLog(@"Image:%d Thumb:%d", [response.data length], [response.thumb length]);
                             } else {
-                                NSLog(@"[%s] Error Could not fetch url=%@", __func__, response.fileName);
+                                DLog(@"Error Could not fetch url=%@", response.fileName);
                             }
                         } else if ([response.contentType isEqualToString:@"video/quicktime"]) {
                             cnt++;
                             
                             NSURL *url = [NSURL URLWithString:response.fileName];
                             
-                            NSLog(@"[%s] ** Downloading url=%@", __func__, url);
+                            DLog(@"** Downloading url=%@", url);
                             
                             //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
                             
@@ -362,16 +362,16 @@
                             //
                             //                    [[NSData dataWithContentsOfURL:url] writeToFile:file atomically:NO];
                             
-                            NSLog(@"[%s] ** Thumbnailing url=%@", __func__, url);
+                            DLog(@"** Thumbnailing url=%@", url);
                             
                             // 2) Create an AVAsset from it.
                             //                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
                             AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:url options:nil];
                             
                             // http://stackoverflow.com/questions/4627940/how-to-detect-iphone-sdk-if-a-video-file-was-recorded-in-portrait-orientation
-                            // NSLog(@"[%s] Naural Size: %f x %f", __func__, [urlAsset naturalSize].width, [urlAsset naturalSize].height);
+                            // DLog(@"Natural Size: %f x %f", [urlAsset naturalSize].width, [urlAsset naturalSize].height);
                             //                CGAffineTransform txf = [urlAsset preferredTransform];
-                            //                NSLog(@"[%s] Preferred transform Size: %f x %f", __func__, txf.tx, txf.ty);
+                            // DLog(@"Preferred transform Size: %f x %f", txf.tx, txf.ty);
                             
                             // 3) Set max ThumbNail size,
                             //See http://stackoverflow.com/questions/19368513/generating-thumbnail-from-video-ios7
@@ -387,7 +387,7 @@
                             CGImageRef refImg = [generateImg copyCGImageAtTime:time actualTime:NULL error:&error];
                             
                             if (error) {
-                                NSLog(@"[%s] Error==%@, RefImage==%@",__func__, error, refImg);
+                                DLog(@"Error==%@, RefImage==%@", error, refImg);
                             }
                             //
                             UIImage *thumbImage= [[UIImage alloc] initWithCGImage:refImg];
@@ -415,7 +415,7 @@
                         } else if ([response.contentType isEqualToString:@"audio/aac"]) {
                             // NSURL *url = [NSURL URLWithString:response.fileName];
                             
-                            // NSLog(@"[%s] ** Not Downloading url=%@", __func__, url);
+                            // DLog(@"** Not Downloading url=%@", url);
                             
                             //response.data = [NSData dataWithContentsOfURL:url];
                         } else {
@@ -423,7 +423,7 @@
                             
                             NSURL *url = [NSURL URLWithString:response.fileName];
                             
-                            NSLog(@"[%s] ** Downloading url=%@", __func__, url);
+                            DLog(@"** Downloading url=%@", url);
                             
                             response.data = [NSData dataWithContentsOfURL:url];
                         }
@@ -435,7 +435,7 @@
             }
         }
     }
-    NSLog(@"[%s] ** Downloaded %d files for contentType=%@", __func__, cnt, self.contentType);
+    DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
     
     self.syncResponses=NO;
 }

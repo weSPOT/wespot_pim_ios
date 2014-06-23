@@ -55,7 +55,7 @@
         }
         
         if ([@"org.celstec.arlearn2.beans.notification.RunModification" isEqualToString:[message objectForKey:@"type"]]) {
-            NSLog(@"about to update runs %@", [[message objectForKey:@"run"] objectForKey:@"runId"]);
+            DLog(@"About to update runs %@", [[message objectForKey:@"run"] objectForKey:@"runId"]);
             
             ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
             
@@ -68,7 +68,7 @@
         }
         
         if ([@"org.celstec.arlearn2.beans.notification.GeneralItemModification" isEqualToString:[message objectForKey:@"type"]]) {
-            NSLog(@"about to update gi %@", [message objectForKey:@"itemId"] );
+            DLog(@"About to update gi %@", [message objectForKey:@"itemId"] );
             
             ARLCloudSynchronizer* synchronizer = [[ARLCloudSynchronizer alloc] init];
             

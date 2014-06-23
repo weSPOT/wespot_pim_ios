@@ -135,6 +135,7 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [self setupFetchedResultsController];
 }
+
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -164,6 +165,14 @@ typedef NS_ENUM(NSInteger, friends) {
     return numMessages;
 }
 
+/*!
+ *  <#Description#>
+ *
+ *  @param tableView <#tableView description#>
+ *  @param section   <#section description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
@@ -287,24 +296,30 @@ typedef NS_ENUM(NSInteger, friends) {
             textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
             textView.layer.borderWidth = 1.0f;
             textView.editable = NO;
+            textView.scrollEnabled = NO;
+            
             NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                                  NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
+                                                                        options:@{
+                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
+                                                                                  }
                                                              documentAttributes:nil
                                                                           error:nil];
             
             textView.attributedText = html;
+       
+            CGRect frame = textView.frame;
+            frame.size = CGSizeMake(frame.size.width, cell.frame.size.height - frame.origin.y);
+            textView.frame = frame;
+            
             textView.translatesAutoresizingMaskIntoConstraints = NO;
            
-//            cell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-            
             // 5) Add constraints.
             NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                              imageView,            @"icon",
                                              detailTextLabel,      @"details",
                                              textLabel,            @"text",
                                              textView,             @"body",
-                                             // cell.contentView,     @"content",
                                              nil];
    
             [cell removeConstraints:cell.constraints];
@@ -354,10 +369,15 @@ typedef NS_ENUM(NSInteger, friends) {
                                       metrics:nil
                                       views:viewsDictionary]];
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[body(==%0.0f)]", (int)self.messageCellHeight-tableView.rowHeight-2*20]
+                                      constraintsWithVisualFormat:@"V:[icon]-[body]-|"
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
+                
+                [cell setNeedsLayout];
+                [cell layoutIfNeeded];
+                
+                NSLog([NSString stringWithFormat:@"[%s] actual textview size: %f0.0 x %f0.0", __func__, textView.frame.size.width, textView.frame.size.height]);
             }
         }
     }
@@ -370,9 +390,46 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (indexPath.section) {
         case SEND:
             return tableView.rowHeight;
-        case MESSAGES:
+        case MESSAGES: {
 #warning ** Calculate the correct height here based on the message content!!
-            return 1.0f * (int)self.messageCellHeight * ((int)[indexPath item]+1);
+            //UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
+            
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
+    
+            //UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+            UITextView *textView = [[UITextView alloc] init];
+            
+            //CGRect frame = textView.frame;
+#warning not 100% correct (we ommit both margins).
+            //frame.size = CGSizeMake(tableView.frame.size.width - 20.0, 1.0);
+            //textView.frame = frame;
+            
+            //[textView setScrollEnabled:YES];
+            
+            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options:@{
+                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
+                                                                                  }
+                                                             documentAttributes:nil
+                                                                          error:nil];
+            textView.attributedText = html;
+            //[textView sizeToFit];
+            //[textView setScrollEnabled:NO];
+            
+            // Correct for left/right margins.
+            CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 2*20.0, FLT_MAX)];
+            
+            NSLog(@"TextView Height is :%f", size.height);
+            
+            
+            NSLog([NSString stringWithFormat:@"[%s] textview size: %f x %f", __func__, size.width, size.height]);
+            
+            
+             // Correct for top/bottom margins.
+            return 1.0f * tableView.rowHeight + size.height + 2*20.0 + 10.0;
+        }
     }
     
     // Error
@@ -403,10 +460,7 @@ typedef NS_ENUM(NSInteger, friends) {
             }
         }
             break;
-        case MESSAGES: {
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
-            //            [alert show];
-        }
+        case MESSAGES:
             break;
     }
     
@@ -414,31 +468,6 @@ typedef NS_ENUM(NSInteger, friends) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
 }
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,tableView.frame.size.width,30)];
-//    
-//    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, headerView.frame.size.width-120.0, headerView.frame.size.height)];
-//    
-//    headerLabel.textAlignment = NSTextAlignmentRight;
-//    headerLabel.text = @"HEADER";
-//    headerLabel.backgroundColor = [UIColor clearColor];
-//    
-//    [headerView addSubview:headerLabel];
-//    
-//    return headerView;
-//    
-//}
-//
-//-(float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return  30.0;
-//}
-
-//-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-//                               duration:(NSTimeInterval)duration{
-//
-//   // [self.tableView invalidateLayout];
-//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return NO;

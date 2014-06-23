@@ -54,7 +54,7 @@
     game.gameId = [gameDict objectForKey:@"gameId"];
     game.hasMap = [[gameDict objectForKey:@"config"] objectForKey:@"mapAvailable"];
     
-    //NSLog(@"[%s] exists %@", __func__, [gameDict objectForKey:@"description"]);
+    // DLog(@"Exists %@", [gameDict objectForKey:@"description"]);
     
     if ([gameDict objectForKey:@"description"]) {
         game.richTextDescription = [gameDict objectForKey:@"description"];
@@ -68,9 +68,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
     
     return game;
 }

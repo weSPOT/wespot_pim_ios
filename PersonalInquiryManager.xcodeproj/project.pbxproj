@@ -137,6 +137,7 @@
 		8D6E80F018D5BAFB0077D70E /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */; };
 		8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6E80E618D5BAFA0077D70E /* libzbar.a */; };
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
+		8D77DADF1958631400D84482 /* INQLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D77DADE1958631400D84482 /* INQLog.m */; };
 		8D81D5CD193F57E200D4C7B4 /* storyboard.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5CB193F57E200D4C7B4 /* storyboard.strings */; };
 		8D81D5D2193F587800D4C7B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5D0193F587800D4C7B4 /* Localizable.strings */; };
 		8D96FF221906ABAB00520DEF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF211906ABAB00520DEF /* Message.m */; };
@@ -369,6 +370,8 @@
 		8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		8D750DC818D74BEB0005C41D /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQProfileTableViewController.h; sourceTree = "<group>"; };
 		8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQProfileTableViewController.m; sourceTree = "<group>"; };
+		8D77DADD1958631400D84482 /* INQLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLog.h; sourceTree = "<group>"; };
+		8D77DADE1958631400D84482 /* INQLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLog.m; sourceTree = "<group>"; };
 		8D81D5CC193F57E200D4C7B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/storyboard.strings; sourceTree = "<group>"; };
 		8D81D5D1193F587800D4C7B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8D96FF201906ABAB00520DEF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
@@ -517,6 +520,8 @@
 				8D19462918C0A80100C32EED /* Supporting Files */,
 				8DB8E3B8191B9535000C51CB /* Viewers */,
 				8DC3AA60192CB9EB00C16A31 /* Question */,
+				8D77DADD1958631400D84482 /* INQLog.h */,
+				8D77DADE1958631400D84482 /* INQLog.m */,
 			);
 			path = PersonalInquiryManager;
 			sourceTree = "<group>";
@@ -1201,6 +1206,7 @@
 				8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,
 				8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */,
+				8D77DADF1958631400D84482 /* INQLog.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,
 				8D1945FD18C0A54200C32EED /* INQAddFriendTableViewController.m in Sources */,
 			);

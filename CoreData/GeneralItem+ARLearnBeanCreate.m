@@ -73,9 +73,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
     
     return gi;
 }
@@ -113,9 +111,7 @@
     
     NSError *error = nil;
     NSArray *allVisibilityStatements = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
     
     for (GeneralItemVisibility *giv in allVisibilityStatements) {
         giv.generalItem = gi;
@@ -123,9 +119,7 @@
     
     error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
 }
 
 /*!
@@ -143,9 +137,7 @@
     
     NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
     
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
@@ -169,9 +161,7 @@
     
     NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
     
     if (!generalItemsFromDb || ([generalItemsFromDb count] != 1)) {
         return nil;
@@ -192,9 +182,7 @@
 
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
     
     return unsyncedData;
 }
@@ -226,7 +214,9 @@
  */
 - (NSData *) customIconData {
     for (GeneralItemData *data in self.data) {
-        NSLog(@"data %@", data.name);
+        
+        DLog(@"Data %@", data.name);
+        
         if ([data.name isEqualToString:@"iconUrl"]) {
             return data.data;
         }

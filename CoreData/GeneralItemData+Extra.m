@@ -25,9 +25,8 @@
     
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
+    
     return unsyncedData;
 }
 
@@ -66,9 +65,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
 }
 
 /*!

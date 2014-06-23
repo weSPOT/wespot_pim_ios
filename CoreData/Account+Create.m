@@ -43,7 +43,7 @@
     NSError *error = nil;
     [context save:&error];
     if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
+        ELog(error);
     }
     
     return account;

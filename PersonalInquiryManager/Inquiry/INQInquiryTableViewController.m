@@ -486,7 +486,7 @@ typedef NS_ENUM(NSInteger, sections) {
             break;
             
         default: {
-            NSLog(@"[%s] Unknown InquiryPart: %@",__func__, index);
+            DLog(@"Unknown InquiryPart: %@", index);
         }
             break;
     }

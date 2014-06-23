@@ -34,9 +34,8 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+
+    ELog(error);
     
     return action;
 }
@@ -55,9 +54,8 @@
     
     NSError *error = nil;
     NSArray *unsyncedActions = [context executeFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+
+    ELog(error);
     
     return unsyncedActions;
 }
@@ -83,9 +81,8 @@ inManagedObjectContext:(NSManagedObjectContext*) context
     
     NSError *error = nil;
     NSUInteger * count = [context countForFetchRequest:request error:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+
+    ELog(error);
     
     return count && count!=0;
 }

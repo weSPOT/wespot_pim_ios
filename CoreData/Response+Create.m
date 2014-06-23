@@ -34,9 +34,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
     
     return response;
 }
@@ -67,9 +65,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
     
     return response;
 }
@@ -158,9 +154,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
 
     return response;
 }
@@ -180,10 +174,8 @@
     
     NSError *error = nil;
     NSArray *responsesFromDb = [context executeFetchRequest:request error:&error];
+    ELog(error);
     
-    if (error) {
-        NSLog(@"error %@", error);
-    }
     if (!responsesFromDb || ([responsesFromDb count] != 1)) {
         return nil;
     } else {
@@ -205,10 +197,7 @@
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
-    
-    if (error) {
-        NSLog(@"error %@", error);
-    }
+    ELog(error);
     
     return unsyncedResponses;
 }
@@ -227,11 +216,10 @@
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
-    
     if (error) {
-        NSLog(@"error %@", error);
+        ELog(error);
     } else {
-        NSLog(@"[%s] Found %d Responses without Media or Thumbnail", __func__, unsyncedResponses.count);
+        DLog(@"Found %d Responses without Media or Thumbnail", unsyncedResponses.count);
     }
     
     return unsyncedResponses;

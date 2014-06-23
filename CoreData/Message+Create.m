@@ -55,9 +55,7 @@
     
     NSError *error = nil;
     [context save:&error];
-    if (error) {
-        NSLog(@"[%s] error %@", __func__, error);
-    }
+    ELog(error);
 
     return message;
 }
@@ -92,10 +90,8 @@
     
     NSError *error = nil;
     NSArray *responsesFromDb = [context executeFetchRequest:request error:&error];
+    ELog(error);
     
-    if (error) {
-        NSLog(@"error %@", error);
-    }
     if (!responsesFromDb || ([responsesFromDb count] != 1)) {
         return nil;
     } else {

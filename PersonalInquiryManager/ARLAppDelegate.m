@@ -77,11 +77,9 @@ static BOOL _syncAllowed = NO;
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSString *gitHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *appBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    
-    INQLog.LogOn = YES;
+    NSString *gitHash =     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
+    NSString *appVersion =  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
     DLog(@"Version String:  %@", appVersion);
     DLog(@"Build Number:    %@", appBuild);
@@ -91,24 +89,41 @@ static BOOL _syncAllowed = NO;
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [NSNumber numberWithBool:NO],       DEVELOPMENT_MODE,
                                 [NSNumber numberWithBool:YES],      PROXY_MODE,
+                                [NSNumber numberWithBool:NO],       ENABLE_LOGGING,
+
                                 [NSNumber numberWithInt:1],         INQUIRY_VISIBILITY,
                                 [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
+                                
                                 gitHash,                            GIT_HASH,
                                 appVersion,                         APP_VERSION,
+                                
                                 nil];
     
     // ERROR LOGGIN TEST CODE
-    //    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-    //                          @"LOCAL", NSLocalizedDescriptionKey,
-    //                          nil];
-    //
-    //    NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
-    //    ELog(error);
-  
-    //    NSError *error = nil;
-    //    ELog(error);
+    {
+        DLog(@"Test: %@", @"Clog");
+    }
     
-    //    EELog();
+    {
+        DLog(@"Test: %@", @"Dlog");
+    }
+    
+    {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"Test: ELog", NSLocalizedDescriptionKey,
+                          nil];
+    NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
+    ELog(error);
+    }
+    
+    {
+    NSError *error = nil;
+    ELog(error);
+    }
+    
+    {
+    EELog();
+    }
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
     
@@ -282,7 +297,7 @@ static BOOL _syncAllowed = NO;
  *
  *  NOTE: Core Data does not like this method, so we use deleteAllOfEntity instead.
  */
-- (void)clearDatabase {
+- (void) clearDatabase {
 //    NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
 //    NSError *error = nil;
 //    

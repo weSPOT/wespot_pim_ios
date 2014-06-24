@@ -9,42 +9,37 @@
 #import <Foundation/NSObject.h>
 #import <UIKit/UIKit.h>
 
-//#define INQLogFormat(s,...) \
-//[MLog logFile:__FILE__ lineNumber:__LINE__ \
-//format:(s),##__VA_ARGS__]
-//
-//#define \
-//if (INQLog.LogOn) {\
-//  NSLog([NSString )\
-//}
-
 /*!
  *  Log with date-time stamp using NSLog.
  *
  *  @param fmt The Format String
  *  @param ... The Arguments.
- *
- *  @return void
  */
 #define DLog(fmt, ...) if (INQLog.LogOn) { NSLog(@"[%s:%d] "fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__); }
 
+/*!
+ *  Log error with date-time stamp using NSLog.
+ *
+ *  @param error The NSError to log.
+ */
 #define ELog(error) if (INQLog.LogOn && error) { NSLog(@"[%s:%d] %@ [%d]: %@", __PRETTY_FUNCTION__, __LINE__, NSLocalizedString(@"Error", @"Error"), [error code], [error localizedDescription] ); }
 
+/*!
+ *  Log an error message with date-time stamp using NSLog.
+ */
 #define EELog() if (INQLog.LogOn) { NSLog(@"[%s:%d] %@", __PRETTY_FUNCTION__, __LINE__, NSLocalizedString(@"Error", @"Error") ); }
 
 /*!
- *  Log without date-time stamp using CFShow.
+ *  Log message without date-time stamp using CFShow.
  *
  *  @param fmt The Format String
  *  @param ... The Arguments.
- *
- *  @return void
  */
 #define CLog(fmt, ...) if (INQLog.LogOn) { CFShow((__bridge CFTypeRef)[NSString stringWithFormat:@"[%s:%d]| "fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__]); }
 
 @interface INQLog : NSObject
 
 + (BOOL *)LogOn;
-+ (void)setLogOn:(BOOL *)value;
+//+ (void)setLogOn:(BOOL *)value;
 
 @end

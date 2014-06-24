@@ -282,11 +282,9 @@ typedef NS_ENUM(NSInteger, inquiries) {
         case OPEN: {
             Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
-            // NSLog(@"[%s] Cell '%@' created at index %@", __func__,inquiry.title, indexPath);
-            
             cell.textLabel.text = inquiry.title;
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];            
-            cell.detailTextLabel.text = @""; //[NSString stringWithFormat:@"%d", arc4random() % 10];
+            cell.detailTextLabel.text = @"";
         }
     }
     return cell;

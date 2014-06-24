@@ -97,7 +97,7 @@
     
     if (dict) {
         if ([[dict objectForKey:@"status"] intValue] == 0) {
-            NSLog(@"[%s]\r\nresult=%@,\r\nstatus=%@", __func__, [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
+            DLog(@"Result: %@, Status: %@", [dict objectForKey:@"html"], [dict objectForKey:@"status"]);
 
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             

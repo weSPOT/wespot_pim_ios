@@ -8,6 +8,7 @@
 
 
 #import "INQLog.h"
+#import "ARLAppDelegate.h"
 
 /*!
  *  See http://iphonedevsdk.com/forum/iphone-sdk-development/6319-a-better-nslog-selectively-turning-logging-off.html
@@ -19,13 +20,14 @@
 
 static BOOL _logOn = YES;
 
-+ (void)setLogOn:(BOOL *)value
-{
-	_logOn = value;
-    
-}
+//+ (void)setLogOn:(BOOL *)value
+//{
+//	_logOn = value;
+//    
+//}
 
 + (BOOL *)LogOn {
+    _logOn = [[NSUserDefaults standardUserDefaults] boolForKey:ENABLE_LOGGING];
     return _logOn;
 }
 

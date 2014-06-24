@@ -265,14 +265,14 @@
                     
                     Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
                     
-                    // NSLog(@"[%s] inquiryId=%@", __func__, newInquiry.inquiryId);
+                    // DLog(@"InquiryId=%@", newInquiry.inquiryId);
                     
                     // REST CALL (costs time)!
                     id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
                     if (hypDict) {
                         
                         if ([hypDict count] != 0) {
-                            //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+                            //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
                             NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
                             if (hypString) {
                                 newInquiry.hypothesis = hypString;
@@ -284,7 +284,7 @@
                     //        if (refDict) {
                     //
                     //            if ([refDict count] != 0) {
-                    //                //NSLog(@"[%s] hypDict %@",__func__, [hypDict objectAtIndex:0] );
+                    //                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
                     //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
                     //                if (refString) {
                     //                    newInquiry.reflection = refString;
@@ -322,7 +322,7 @@
                     //            //}
                     //
                     //            NSDictionary *tDict = [ARLNetwork defaultThread:newInquiry.run.runId];
-                    //            NSLog(@"[%s] runId:%@, threadId:%@",__func__, [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
+                    //            DLog(@"RunId: %@, ThreadId: %@", [tDict objectForKey:@"runId"], [tDict objectForKey:@"threadId"]);
                     //
                     //            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:newInquiry.run.runId];
                     //            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
@@ -331,7 +331,7 @@
                     //            {
                     //                Message *msg = [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
                     //     
-                    //                NSLog(@"[%s] %@",__func__, msg.body);
+                    //                DLog(@"Body: %@", msg.body);
                     //            }
                     //        }
                     
@@ -381,7 +381,7 @@
                     NSString* name = [user objectForKey:@"name"];
                     NSString* icon = [user objectForKey:@"icon"];
                     
-                    //NSLog(@"[%s] user %@", __func__, user);
+                    //DLog(@"User: %@", user);
                     
                     // veg - 03-02-2014 Moved code below to ARLNetwork+INQ.m as utility method.
                     NSNumber * oauthProviderType = [ARLNetwork elggProviderByName:oauthProvider];
@@ -404,7 +404,7 @@
                 
                 
                 //            UIImage *tmp = [test lazyPicture];
-                // NSLog(@"%0.0f x %0.0f", tmp.size.width, tmp.size.height);
+                // DLog(@"Size: %0.0f x %0.0f", tmp.size.width, tmp.size.height);
             }
         }
     }
@@ -418,7 +418,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeInquiryUsers {
-    NSLog(@"[%s] inruiryId: %@", __func__, self.inquiryId);
+    DLog(@"InruiryId: %@", self.inquiryId);
     
     @autoreleasepool {
         Account * account = [ARLNetwork CurrentAccount];
@@ -455,7 +455,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeMessages{
-    NSLog(@"[%s] inquiryIdId=%@", __func__, self.inquiryId);
+    DLog(@"InquiryIdId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
     NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];

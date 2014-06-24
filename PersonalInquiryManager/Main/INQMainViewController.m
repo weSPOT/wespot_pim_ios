@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, tools) {
     /*!
      *  Badges.
      */
-    BADGES,
+    // BADGES,
     /*!
      *  Friends.
      */
@@ -164,8 +164,6 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)logoutButtonButtonTap:(id)sender {
     UIViewController *newViewController;
     
-    NSLog(@"[%s] %@",__func__, ARLAppDelegate.theLock);
-    
     ARLAppDelegate.SyncAllowed = NO;
     
     NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
@@ -272,7 +270,7 @@ typedef NS_ENUM(NSInteger, tools) {
         case MYMEDIA:
             return 1;
         case TOOLS:
-            return 3;
+            return numTools;
     }
     return 0;
 }
@@ -315,6 +313,7 @@ typedef NS_ENUM(NSInteger, tools) {
             }
         }
             break;
+            
         case MYMEDIA: {
             cell.textLabel.Text = @"My media";
             cell.imageView.image = [UIImage imageNamed:@"mymedia"];
@@ -342,16 +341,17 @@ typedef NS_ENUM(NSInteger, tools) {
             }
         }
             break;
+            
         case TOOLS:
             switch (indexPath.item) {
                 case PROFILE :
                     cell.textLabel.Text = @"Profile";
                     cell.imageView.image = [UIImage imageNamed:@"profile"];
                     break;
-                case BADGES :
-                    cell.textLabel.Text = @"Badges";
-                    cell.imageView.image = [UIImage imageNamed:@"badges"];
-                    break;
+                    //                case BADGES :
+                    //                    cell.textLabel.Text = @"Badges";
+                    //                    cell.imageView.image = [UIImage imageNamed:@"badges"];
+                    //                    break;
                 case FRIENDS :
                     cell.textLabel.Text = @"Friends";
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
@@ -419,9 +419,9 @@ typedef NS_ENUM(NSInteger, tools) {
                 case PROFILE :
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileView"];
                     break;
-                case BADGES :
-                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BadgesView"];
-                    break;
+                    //                case BADGES :
+                    //                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BadgesView"];
+                    //                    break;
                 case FRIENDS :
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"FriendsView"];
                     break;

@@ -150,15 +150,15 @@
     
     int statusCode = [httpResponse statusCode];
     
-    NSLog (@"HTTP status %d", statusCode);
+    DLog (@"HTTP status: %d", statusCode);
     
     // http statuscodes between 300 & 400 is a redirect ...
     if (httpResponse && statusCode >= 300 && statusCode < 400)
     {
-        NSLog(@"willSendRequest (from %@ to %@)", redirectResponse.URL, request.URL);
+        DLog(@"WillSendRequest: from %@ to %@", redirectResponse.URL, request.URL);
     }
     
-    NSLog(@"HTTP request %@", self.connection.originalRequest.URL);
+    DLog(@"HTTP request: %@", self.connection.originalRequest.URL);
     
     if (redirectResponse)
     {
@@ -174,8 +174,8 @@
             [alert show];
             
         } else {
-            NSLog (@"query to %@", newRequest.URL.query);
-            NSLog (@"redirected to %@", newRequest.URL);
+            DLog (@"Query to: %@", newRequest.URL.query);
+            DLog (@"Redirected to: %@", newRequest.URL);
             
             NSString *query = [request URL].query;
             NSArray *array = [query componentsSeparatedByString:@"&"];
@@ -192,7 +192,7 @@
     }
     else
     {
-        NSLog (@"original %@" , request.URL);
+        DLog (@"Original url: %@" , request.URL);
         
         return request;
     }
@@ -217,7 +217,7 @@
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     self.token = @"";
     
-    // NSLog(@"[%s] %@" , __func__, error);
+    ELog(error);
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.description delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
     [alert show];

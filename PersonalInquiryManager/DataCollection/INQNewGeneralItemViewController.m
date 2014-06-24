@@ -79,8 +79,6 @@
  */
 - (void) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)itemType {
     NSDictionary *result = [ARLNetwork createGeneralItem:title description:description type:itemType gameId:self.run.gameId];
-    
-    NSLog(@"[%s] %@", __func__, result);
 }
 
 /*!

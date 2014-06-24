@@ -93,7 +93,7 @@
         // Decrease the index by 1 to return
         self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] - 1];
         
-        NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
+        DLog(@"Showing Page: %@", self.currentPageIndex);
         
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);
@@ -109,7 +109,7 @@
     // Increase the index by 1 to return
     UIViewController *view = nil;
     
-    // ßNSLog(@"[%s] Old Index: %d", __func__, [self.viewControllers indexOfObject:viewController]);
+    // DLog(@"Old Index: %d", [self.viewControllers indexOfObject:viewController]);
     
     do {
         if ([self.currentPageIndex isEqualToNumber: [NSNumber numberWithUnsignedInteger:5]]) {
@@ -118,7 +118,7 @@
         
         self.currentPageIndex = [NSNumber numberWithUnsignedInteger:[self.currentPageIndex unsignedIntValue] + 1];
         
-        NSLog(@"[%s] Showing Page: %@",__func__, self.currentPageIndex);
+        DLog(@"Showing Page: %@", self.currentPageIndex);
         
         view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
     } while (!view);

@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
     
-    NSLog(@"[%s] runId: %@", __func__, inquiry.run.runId);
+    DLog(@"RunId: %@", inquiry.run.runId);
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, friends) {
         [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:inquiry.inquiryId];
     }
     
-    NSLog(@"[%s] Messages: %d", __func__, [[self.fetchedResultsController fetchedObjects] count]);
+    DLog(@"Messages: %d", [[self.fetchedResultsController fetchedObjects] count]);
 }
 
 - (void)contextChanged:(NSNotification*)notification
@@ -377,7 +377,7 @@ typedef NS_ENUM(NSInteger, friends) {
                 [cell setNeedsLayout];
                 [cell layoutIfNeeded];
                 
-                NSLog([NSString stringWithFormat:@"[%s] actual textview size: %f0.0 x %f0.0", __func__, textView.frame.size.width, textView.frame.size.height]);
+                DLog(@"Actual textview size: %f0.0 x %f0.0", textView.frame.size.width, textView.frame.size.height);
             }
         }
     }
@@ -421,10 +421,10 @@ typedef NS_ENUM(NSInteger, friends) {
             // Correct for left/right margins.
             CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 2*20.0, FLT_MAX)];
             
-            NSLog(@"TextView Height is :%f", size.height);
+            DLog(@"TextView Height:%f", size.height);
             
             
-            NSLog([NSString stringWithFormat:@"[%s] textview size: %f x %f", __func__, size.width, size.height]);
+            DLog(@"Textview size: %f x %f", size.width, size.height);
             
             
              // Correct for top/bottom margins.

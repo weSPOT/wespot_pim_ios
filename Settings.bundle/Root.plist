@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.0.166</string>
+			<string>1.0.167</string>
 			<key>Key</key>
 			<string>app_version</string>
 			<key>Title</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>ee87dac+</string>
+			<string>650a078+</string>
 			<key>Key</key>
 			<string>git_hash</string>
 			<key>Title</key>
@@ -101,6 +101,16 @@
 			<string>enable_proxy_mode</string>
 			<key>Title</key>
 			<string>Use Proxy</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>enable_logging</string>
+			<key>Title</key>
+			<string>Enable Logging</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>

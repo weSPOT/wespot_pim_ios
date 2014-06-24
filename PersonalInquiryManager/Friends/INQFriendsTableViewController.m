@@ -17,11 +17,11 @@ typedef NS_ENUM(NSInteger, friends) {
     /*!
      *  Add a Friend.
      */
-    ADD = 0,
+    // ADD = 0,
     /*!
      *  Friends.
      */
-    FRIENDS,
+    FRIENDS = 0,
     /*!
      *  Number of Inquires
      */
@@ -120,8 +120,8 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     // Return the number of rows in the section.
     switch (section) {
-        case ADD:
-            return 1;
+//        case ADD:
+//            return 1;
         case FRIENDS:
             return [[self.fetchedResultsController fetchedObjects] count];
     }
@@ -133,8 +133,8 @@ typedef NS_ENUM(NSInteger, friends) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
-        case ADD:
-            return @"";
+//        case ADD:
+//            return @"";
         case FRIENDS:
             return @"Friends";
     }
@@ -164,10 +164,10 @@ typedef NS_ENUM(NSInteger, friends) {
     // Configure the cell...
     
     switch (indexPath.section) {
-        case ADD:
-            cell.textLabel.text = @"Add friend";
-            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-            break;
+//        case ADD:
+//            cell.textLabel.text = @"Add friend";
+//            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+//            break;
         case FRIENDS:{
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             
@@ -206,15 +206,15 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case ADD: {
-            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
-            
-            if ([newViewController respondsToSelector:@selector(AllUsers)]) {
-                [newViewController performSelector:@selector(AllUsers) withObject:self.AllUsers];
-            }
-            
-            [self.navigationController pushViewController:newViewController animated:YES];
-        }
+//        case ADD: {
+//            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
+//            
+//            if ([newViewController respondsToSelector:@selector(AllUsers)]) {
+//                [newViewController performSelector:@selector(AllUsers) withObject:self.AllUsers];
+//            }
+//            
+//            [self.navigationController pushViewController:newViewController animated:YES];
+//        }
         case FRIENDS:
         {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];

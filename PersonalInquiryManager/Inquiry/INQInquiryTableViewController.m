@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, sections) {
     /*!
      *  Invite Friends.
      */
-    INVITE,
+//    INVITE,
     
     /*!
      *  NUmber of Sections.
@@ -235,8 +235,8 @@ typedef NS_ENUM(NSInteger, sections) {
             return 1;
         case PARTS :
             return numItems;
-        case INVITE :
-            return 1;
+//        case INVITE :
+//            return 1;
     }
     
     return 0;
@@ -263,9 +263,9 @@ typedef NS_ENUM(NSInteger, sections) {
             cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
-        case INVITE:
-            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
-            break;
+//        case INVITE:
+//            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+//            break;
     }
     
     // Configure the cell...
@@ -399,11 +399,11 @@ typedef NS_ENUM(NSInteger, sections) {
         }
             break;
             
-        case INVITE:
-            cell.textLabel.text = @"Invite friends";
-            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-            cell.detailTextLabel.text = @"";
-            break;
+//        case INVITE:
+//            cell.textLabel.text = @"Invite friends";
+//            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+//            cell.detailTextLabel.text = @"";
+//            break;
     }
     
     return cell;
@@ -416,8 +416,8 @@ typedef NS_ENUM(NSInteger, sections) {
             return 1.0f * (int)self.headerCellHeight;
         case PARTS:
             return tableView.rowHeight;
-        case INVITE:
-            return tableView.rowHeight;
+//        case INVITE:
+//            return tableView.rowHeight;
     }
     
     // Error
@@ -548,16 +548,16 @@ typedef NS_ENUM(NSInteger, sections) {
         }
             break;
             
-        case INVITE: {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InviteFriendTableViewController"];
-            
-            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
-                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
-            }
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
-            //            [alert show];
-        }
-            break;
+//        case INVITE: {
+//            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InviteFriendTableViewController"];
+//            
+//            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+//                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
+//            }
+//            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
+//            //            [alert show];
+//        }
+//            break;
     }
 
     if (newViewController) {

@@ -257,12 +257,7 @@ typedef NS_ENUM(NSInteger, friends) {
             // Fetch views by tag.
             UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
             UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-            UILabel *textLabel = (UILabel *)[cell.contentView viewWithTag:3];
-            UILabel *detailTextLabel = (UILabel *)[cell.contentView viewWithTag:4];
-            
-            // 1) Caption
-            textLabel.text = message.subject;
-            textLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            UILabel *detailTextLabel = (UILabel *)[cell.contentView viewWithTag:3];
             
             // 2) Icon (User Avatar)
             imageView.image = [UIImage imageNamed:@"profile"];
@@ -296,7 +291,9 @@ typedef NS_ENUM(NSInteger, friends) {
             textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
             textView.layer.borderWidth = 1.0f;
             textView.editable = NO;
-            textView.scrollEnabled = NO;
+            
+            // !!! Without this, the last line is missing !!!
+            textView.scrollEnabled = YES;
             
             NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:@{
@@ -318,58 +315,33 @@ typedef NS_ENUM(NSInteger, friends) {
             NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                              imageView,            @"icon",
                                              detailTextLabel,      @"details",
-                                             textLabel,            @"text",
                                              textView,             @"body",
                                              nil];
    
             [cell removeConstraints:cell.constraints];
             if (cell.imageView) {
-                // 1) Size ContentView (needed to get rid of selected cell trouble)
-//                //if (cell.contentView && !cell.isHidden) {
-//                [cell addConstraints:[NSLayoutConstraint
-//                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|[content(==%d)]", (int)self.messageCellHeight]
-//                                      options:NSLayoutFormatDirectionLeadingToTrailing
-//                                      metrics:nil
-//                                      views:viewsDictionary]];
-//                [cell addConstraints:[NSLayoutConstraint
-//                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|[content(==%0.0f)]", tableView.bounds.size.width]
-//                                      options:NSLayoutFormatDirectionLeadingToTrailing
-//                                      metrics:nil
-//                                      views:viewsDictionary]];
-                //}
-                
-                // 2) Size Icon and align it with text.
+                // 1) Size Icon and align it with text.
                 [cell addConstraints:[NSLayoutConstraint
                                       constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", tableView.rowHeight]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", tableView.rowHeight]
+                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[details]-|", tableView.rowHeight]
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
                 
-                // 3) Align details with text and icon.
+                // 2) Align body with icon.
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"V:|-[text]-[details]"
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"H:[icon]-[details]-|"
+                                      constraintsWithVisualFormat:@"H:[icon]-[body]-|"
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
                 
-                // 4) Align body with icon.
+                // 2) Align details with body.
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"H:|-[body]-|"
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"V:[icon]-[body]-|"
+                                      constraintsWithVisualFormat:@"V:|-[details]-[body]-|"
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
@@ -418,17 +390,14 @@ typedef NS_ENUM(NSInteger, friends) {
             //[textView sizeToFit];
             //[textView setScrollEnabled:NO];
             
-            // Correct for left/right margins.
-            CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 2*20.0, FLT_MAX)];
-            
-            DLog(@"TextView Height:%f", size.height);
-            
-            
-            DLog(@"Textview size: %f x %f", size.width, size.height);
-            
+            // Correct for left/right margins and icon.
+            CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 3*20.0 - tableView.rowHeight, FLT_MAX)];
+
+            //Log(@"Textview size: %f x %f", textView.frame.size.width, textView.frame.size.height);
+            //Log(@"Text size: %f x %f", size.width, size.height);
             
              // Correct for top/bottom margins.
-            return 1.0f * tableView.rowHeight + size.height + 2*20.0 + 10.0;
+            return 1.0f * tableView.rowHeight + size.height;
         }
     }
     

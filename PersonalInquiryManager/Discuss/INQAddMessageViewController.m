@@ -13,8 +13,6 @@
 @property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *view;
 @property (weak, nonatomic) IBOutlet UIImageView *background;
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UITextField *titleEdit;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
@@ -34,7 +32,6 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    self.titleEdit.delegate = self;
     self.descriptionEdit.delegate = self;
 
     [self addConstraints];
@@ -69,22 +66,12 @@
 
 - (void)addConstraints {
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                     self.titleLabel,           @"titleLabel",
-                                     self.titleEdit,            @"titleEdit",
                                      self.descriptionLabel,     @"descriptionLabel",
                                      self.descriptionEdit,      @"descriptionEdit",
                                      self.createButton,         @"createButton",
                                      self.view,                 @"view",
                                      self.background,           @"background",
                                      nil];
-    
-    // Fails
-    // for (UIView *view in [viewsDictionary keyEnumerator]) {
-    //   view.translatesAutoresizingMaskIntoConstraints = NO;
-    // }
-    
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleEdit.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.descriptionEdit.translatesAutoresizingMaskIntoConstraints = NO;
@@ -96,29 +83,13 @@
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
     
     // Align around vertical center.
     // see http://stackoverflow.com/questions/20020592/centering-view-with-visual-format-nslayoutconstraints?rq=1
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.titleLabel
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.titleEdit
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.descriptionLabel
                               attribute:NSLayoutAttributeCenterX
@@ -146,11 +117,6 @@
     
     // Fix Widths
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|-[titleEdit]-|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[descriptionEdit]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
@@ -176,8 +142,8 @@
 }
 
 - (IBAction)createInquiryTap:(id)sender {
-    if ([self.titleEdit.text length]>0 && [self.descriptionEdit.text length]>0) {
-        [self createDefaultThreadMessage:self.titleEdit.text description:self.descriptionEdit.text];
+    if ([self.descriptionEdit.text length]>0) {
+        [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply") description:self.descriptionEdit.text];
         
         if (ARLNetwork.networkAvailable) {
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];

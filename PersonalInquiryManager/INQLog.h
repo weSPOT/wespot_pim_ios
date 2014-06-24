@@ -37,6 +37,15 @@
  */
 #define CLog(fmt, ...) if (INQLog.LogOn) { CFShow((__bridge CFTypeRef)[NSString stringWithFormat:@"[%s:%d]| "fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__]); }
 
+/*!
+ *  Log message without date-time stamp using CFShow.
+ *
+ *  @param fmt The Format String
+ *  @param ... The Arguments.
+ */
+#define Log(fmt, ...) CFShow((__bridge CFTypeRef)[NSString stringWithFormat:@"[%s:%d]| "fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__]);
+
+
 @interface INQLog : NSObject
 
 + (BOOL *)LogOn;

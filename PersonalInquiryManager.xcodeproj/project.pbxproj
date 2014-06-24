@@ -252,7 +252,7 @@
 		8D1945FC18C0A54200C32EED /* INQFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQFriendsTableViewController.m; sourceTree = "<group>"; };
 		8D1945FF18C0A54D00C32EED /* INQHypothesisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQHypothesisViewController.h; sourceTree = "<group>"; };
 		8D19460018C0A54D00C32EED /* INQHypothesisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQHypothesisViewController.m; sourceTree = "<group>"; };
-		8D19460218C0A55800C32EED /* INQMyInquiriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQMyInquiriesTableViewController.h; sourceTree = "<group>"; };
+		8D19460218C0A55800C32EED /* INQMyInquiriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQMyInquiriesTableViewController.h; path = Inquiries/INQMyInquiriesTableViewController.h; sourceTree = "<group>"; };
 		8D19460318C0A55800C32EED /* INQMyInquiriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQMyInquiriesTableViewController.m; sourceTree = "<group>"; };
 		8D19460518C0A56300C32EED /* INQInquiryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInquiryTableViewController.h; sourceTree = "<group>"; };
 		8D19460618C0A56300C32EED /* INQInquiryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInquiryTableViewController.m; sourceTree = "<group>"; };
@@ -506,6 +506,7 @@
 				8D1945CC18C0A26E00C32EED /* Friends */,
 				8D1945CD18C0A28800C32EED /* Hypothesis */,
 				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
+				8D19460218C0A55800C32EED /* INQMyInquiriesTableViewController.h */,
 				8D1945CF18C0A2BB00C32EED /* Inquiries */,
 				8D1945D018C0A2DD00C32EED /* Inquiry */,
 				8D1945D118C0A2FD00C32EED /* Main */,
@@ -733,7 +734,6 @@
 		8D1945CF18C0A2BB00C32EED /* Inquiries */ = {
 			isa = PBXGroup;
 			children = (
-				8D19460218C0A55800C32EED /* INQMyInquiriesTableViewController.h */,
 				8D19460318C0A55800C32EED /* INQMyInquiriesTableViewController.m */,
 				8D4C36D718EC3F19000FCEA6 /* INQNewInquiryViewController.h */,
 				8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */,

@@ -328,6 +328,27 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
+/*!
+ *  Set Color of Table Sections to White.
+ *
+ *  @param tableView <#tableView description#>
+ *  @param view      <#view description#>
+ *  @param section   <#section description#>
+ */
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    // Background color
+    // view.tintColor = [UIColor blackColor];
+    
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    [header.textLabel setTextColor:[UIColor whiteColor]];
+    
+    // Another way to set the background color
+    // Note: does not preserve gradient effect of original header
+    // header.contentView.backgroundColor = [UIColor blackColor];
+}
+
 -(NSIndexPath *)tableIndexPathToCoreDataIndexPath:(NSIndexPath *)indexPath {
     return [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section-(int)self.sectionOffset];
 }

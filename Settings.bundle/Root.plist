@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.0.168</string>
+			<string>1.0.169</string>
 			<key>Key</key>
 			<string>app_version</string>
 			<key>Title</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>d512513+</string>
+			<string>c4251cd+</string>
 			<key>Key</key>
 			<string>git_hash</string>
 			<key>Title</key>
@@ -77,42 +77,6 @@
 				<integer>0</integer>
 				<integer>2</integer>
 			</array>
-		</dict>
-		<dict>
-			<key>Title</key>
-			<string>Server</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>enable_development_mode</string>
-			<key>Title</key>
-			<string>Development Mode</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<true/>
-			<key>Key</key>
-			<string>enable_proxy_mode</string>
-			<key>Title</key>
-			<string>Use Proxy</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>enable_logging</string>
-			<key>Title</key>
-			<string>Enable Logging</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

@@ -174,7 +174,7 @@
     
     if (ARLAppDelegate.SyncAllowed) {
         [self saveContext];
-        [NSThread sleepForTimeInterval:0.25];
+        [NSThread sleepForTimeInterval:0.1];
     }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

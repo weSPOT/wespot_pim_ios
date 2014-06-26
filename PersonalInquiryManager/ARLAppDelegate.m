@@ -281,7 +281,14 @@ static BOOL _syncAllowed = NO;
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
         
-        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        
+        // See http://stackoverflow.com/questions/22268854/updating-core-data-with-existing-sqlite-db
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+        options[NSMigratePersistentStoresAutomaticallyOption] = @YES;
+        options[NSInferMappingModelAutomaticallyOption] = @YES;
+        options[NSSQLitePragmasOption] = @{ @"journal_mode":@"DELETE" };
+        
+        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
             
             ELog(error);
 

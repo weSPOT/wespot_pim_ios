@@ -143,6 +143,7 @@
 		8D96FF221906ABAB00520DEF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF211906ABAB00520DEF /* Message.m */; };
 		8D96FF251906ABAC00520DEF /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF241906ABAC00520DEF /* Account.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
+		8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
 		8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */; };
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
@@ -380,6 +381,8 @@
 		8D96FF241906ABAC00520DEF /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
+		8DA8305B195C365B009E7E4E /* ARLDatabase 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase 2.xcdatamodel"; sourceTree = "<group>"; };
+		8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_1_to_2.xcmappingmodel; sourceTree = "<group>"; };
 		8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInviteFriendsViewController.h; sourceTree = "<group>"; };
 		8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInviteFriendsViewController.m; sourceTree = "<group>"; };
 		8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddMessageViewController.h; sourceTree = "<group>"; };
@@ -594,6 +597,7 @@
 				8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */,
 				8D4511D818E04F3A0012DEDF /* TestAccount.h */,
 				8D4511D918E04F3A0012DEDF /* TestAccount.m */,
+				8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1191,6 +1195,7 @@
 				34D422C217B670ED0051E84C /* GeneralItemData+Extra.m in Sources */,
 				8D1945F218C0A51200C32EED /* INQLoginViewController.m in Sources */,
 				8D96FF221906ABAB00520DEF /* Message.m in Sources */,
+				8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */,
 				8D4511E918E04F3B0012DEDF /* GeneralItemData.m in Sources */,
 				34D422C417B670ED0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m in Sources */,
 				8D4511E618E04F3B0012DEDF /* Run.m in Sources */,
@@ -1426,6 +1431,7 @@
 		34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8DA8305B195C365B009E7E4E /* ARLDatabase 2.xcdatamodel */,
 				34D4229117B670EC0051E84C /* ARLDatabase.xcdatamodel */,
 			);
 			currentVersion = 34D4229117B670EC0051E84C /* ARLDatabase.xcdatamodel */;

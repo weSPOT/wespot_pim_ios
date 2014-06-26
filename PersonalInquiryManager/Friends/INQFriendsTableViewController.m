@@ -68,9 +68,11 @@ typedef NS_ENUM(NSInteger, friends) {
 }
 
 - (void)getAllUsers {
-    NSDictionary *usersJson = [ARLNetwork getUsers];
-    
-    self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
+    // This should be async and only fired once.
+    //
+    //NSDictionary *usersJson = [ARLNetwork getUsers];
+    //
+    //self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
 }
 
 - (void)setupFetchedResultsController {

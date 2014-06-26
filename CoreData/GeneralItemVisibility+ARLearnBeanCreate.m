@@ -45,14 +45,16 @@
     giVis.status = [visDict objectForKey:@"status"] ;
     giVis.timeStamp =[visDict objectForKey:@"timeStamp"] ;
     
-    if ([giVis.timeStamp doubleValue] < ([[NSDate date] timeIntervalSince1970]*1000)) {
-        if ([giVis.timeStamp doubleValue] > ([[NSDate date] timeIntervalSince1970]*1000 - 5000)) {
-            if (newItemCreated && [(NSNumber*)giVis.status intValue]== 1) {
-                [[ARLNotificationPlayer sharedSingleton] playNotification];
-            }
-        }
-        
-    }
+    // veg 26-06-2014 disabled because notification api is disabled.
+    //    if ([giVis.timeStamp doubleValue] < ([[NSDate date] timeIntervalSince1970]*1000)) {
+    //        if ([giVis.timeStamp doubleValue] > ([[NSDate date] timeIntervalSince1970]*1000 - 5000)) {
+    //            if (newItemCreated && [(NSNumber*)giVis.status intValue]== 1) {
+    //                [[ARLNotificationPlayer sharedSingleton] playNotification];
+    //            }
+    //        }
+    //        
+    //    }
+    
     giVis.email =[visDict objectForKey:@"email"];
     
     NSError *error = nil;

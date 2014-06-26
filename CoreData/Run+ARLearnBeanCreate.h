@@ -8,6 +8,7 @@
 
 #import "Run.h"
 #import "SynchronizationBookKeeping+create.h"
+
 @interface Run (ARLearnBeanCreate)
 
 + (Run *) retrieveRun: (NSNumber *) runId inManagedObjectContext: (NSManagedObjectContext * ) context;

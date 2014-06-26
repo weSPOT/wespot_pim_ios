@@ -14,6 +14,7 @@
 #import "ARLCloudSynchronizer.h"
 #import "ARLAudioRecordButtons.h"
 #import "ARLAudioRecorderViewController.h"
+
 @class ARLAudioRecordButtons;
 @class ARLAudioRecorderViewController;
 

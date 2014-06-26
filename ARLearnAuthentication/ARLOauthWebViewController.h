@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ARLNotificationSubscriber.h"
+// veg 26-06-2014 disabled because notification api is disabled.
+//#import "ARLNotificationSubscriber.h"
 #import "INQMainViewController.h"
+#import "ARLCloudSynchronizer.h"
+#import "ARLAppDelegate.h"
 
 @class ARLOauthListViewController;
 

@@ -11,7 +11,8 @@
 #import "Run.h"
 #import "Game.h"
 #import "GeneralItem+ARLearnBeanCreate.h"
-#import "ARLNotificationPlayer.h"
+// veg 26-06-2014 disabled because notification api is disabled.
+// #import "ARLNotificationPlayer.h"
 #import "CurrentItemVisibility+Create.h"
 
 @interface GeneralItemVisibility (ARLearnBeanCreate)

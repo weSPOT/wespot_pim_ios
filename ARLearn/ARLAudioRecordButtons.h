@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ARLAudioRecorder.h"
+
 @class ARLAudioRecorder;
 
 @interface ARLAudioRecordButtons : UIView

@@ -116,9 +116,9 @@
             [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
             [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
             
-            NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-            
-            [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+            // veg 26-06-2014 disabled because notification api is disabled.
+            // NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+            // [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
         }
         
         [self close];

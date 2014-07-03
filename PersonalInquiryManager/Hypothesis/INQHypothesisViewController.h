@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "UIViewController+UI.h"
+
 @interface INQHypothesisViewController : UIViewController <UIWebViewDelegate>
 
 @property (strong, nonatomic) NSString *hypothesis;

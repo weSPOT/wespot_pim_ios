@@ -21,11 +21,6 @@
 - (IBAction)loginButtonAction:(UIButton *)sender;
 - (IBAction)backButtonAction:(UIBarButtonItem *)sender;
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-@property (readonly, nonatomic) CGFloat tabbarHeight;
-@property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
-
 @property (retain, nonatomic) NSURLConnection *connection;
 @property (retain, nonatomic) NSMutableData *receivedData;
 @property (retain, nonatomic) NSMutableURLRequest *originalRequest;
@@ -409,44 +404,6 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-}
-
-/*!
- *  Getter
- *
- *  @return The Status Bar Height.
- */
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
-
-/*!
- *  Getter
- *
- *  @return The Nav Bar Height.
- */
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
-/*!
- *  Getter
- *
- *  @return The Tab Bar Height.
- */
--(CGFloat) tabbarHeight {
-    return self.tabBarController.tabBar.bounds.size.height;
-}
-
-/*!
- *  Getter
- *
- *  @return The Current Orientation.
- */
--(UIInterfaceOrientation) interfaceOrientation {
-    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 /*!

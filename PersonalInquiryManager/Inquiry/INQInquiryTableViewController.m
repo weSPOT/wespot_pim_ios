@@ -76,8 +76,6 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @property (readonly, nonatomic) NSInteger *headerCellHeight;
 
-@property (readonly, nonatomic) CGFloat navbarWidth;
-
 @end
 
 @implementation INQInquiryTableViewController
@@ -85,15 +83,6 @@ typedef NS_ENUM(NSInteger, sections) {
 
 +(NSInteger) numParts {
     return numItems;
-}
-
-/*!
- *  Getter
- *
- *  @return The NavBar Width.
- */
--(CGFloat) navbarWidth {
-    return self.navigationController.navigationBar.bounds.size.width;
 }
 
 /*!

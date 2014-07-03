@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "UIViewController+UI.h"
+
 #import "Account+Create.h"
 #import "INQSplashContentViewController.h"
 #import "ARLNetwork+INQ.h"

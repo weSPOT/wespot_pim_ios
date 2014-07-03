@@ -17,11 +17,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-@property (readonly, nonatomic) CGFloat tabbarHeight;
-@property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
-
 @end
 
 @implementation INQAddMessageViewController
@@ -153,24 +148,6 @@
         
         [self.navigationController popViewControllerAnimated:YES];
     }
-}
-
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
-
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
--(CGFloat) tabbarHeight {
-    return self.tabBarController.tabBar.bounds.size.height;
-}
-
--(UIInterfaceOrientation) interfaceOrientation {
-    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 @end

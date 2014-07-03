@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
 //
 
+#import "UIViewController+UI.h"
+
 #import "ARLNetwork.h"
 #import "ARLCloudSynchronizer.h"
 #import "ARLAppDelegate.h"

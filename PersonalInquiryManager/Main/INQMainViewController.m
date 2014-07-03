@@ -113,6 +113,9 @@ typedef NS_ENUM(NSInteger, tools) {
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
     
     //    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
+
+    Account * account = ARLNetwork.CurrentAccount;
+    [ARLNetwork getUserBadges:account.localId];
     
     //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
     //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];

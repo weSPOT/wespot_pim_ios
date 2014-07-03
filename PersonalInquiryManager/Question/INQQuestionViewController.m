@@ -14,9 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-
 @end
 
 @implementation INQQuestionViewController
@@ -61,19 +58,6 @@
     [super didReceiveMemoryWarning];
     
     // Dispose of any resources that can be recreated.
-}
-
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
-- (IBAction)submit:(UIButton *)sender {
-}
-
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
 }
 
 @end

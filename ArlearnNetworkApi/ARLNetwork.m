@@ -40,6 +40,23 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
++ (id) executeOpenBadgesGetWithAuthorization: (NSString *) path {
+    NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", openbadgesUrl, path];
+    
+    // DLog(@"%@", urlString);
+    
+    NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
+    
+    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSError *error = nil;
+    
+    // [self dumpJsonData:jsonData url:urlString];
+    
+    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+}
 + (id) executeARLearnPostWithAuthorization: (NSString *) path
                                   postData:(NSData *) data
                            withContentType: (NSString *) ctValue {
@@ -130,8 +147,8 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/participate?from=%lld", [from longLongValue]]];
 }
 
-+ (NSDictionary *) runsWithId: (NSNumber *) id{
-    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/runId/%lld", [id longLongValue]]];
++ (NSDictionary *) runsWithId: (NSNumber *) runId{
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/runId/%lld", [runId longLongValue]]];
 }
 
 + (NSDictionary *) createRun: (NSNumber *) gameId withTitle: (NSString *) runTitle {
@@ -467,6 +484,10 @@
 
 + (NSDictionary *) getUserInfo: (NSNumber *) runId userId:(NSString *) userId providerId:(NSString *) providerId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"users/runId/%@/account/%@:%@", runId, providerId, userId]];
+}
+
++ (NSDictionary *) getUserBadges: (NSString *) userId {
+    return [self executeOpenBadgesGetWithAuthorization:[NSString stringWithFormat:@"badges/user/%@/awarded", userId ]];
 }
 
 @end

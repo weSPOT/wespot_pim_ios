@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "UIViewController+UI.h"
+
 #import "Account.h"
 #import "ARLOauthWebViewController.h"
 #import "ARLAccountDelegator.h"
 
-@interface INQLoginViewController : UIViewController  <UITextFieldDelegate, NSURLConnectionDataDelegate>
+@interface INQLoginViewController : UIViewController <UITextFieldDelegate, NSURLConnectionDataDelegate>
 
 /*!
  *  ID's and order of the cells.

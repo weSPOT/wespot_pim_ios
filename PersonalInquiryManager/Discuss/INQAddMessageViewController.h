@@ -10,6 +10,8 @@
 
 #import "TPKeyboardAvoidingScrollView.h"
 
+#import "UIViewController+UI.h"
+
 #import "ARLNetwork+INQ.h"
 
 @interface INQAddMessageViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>

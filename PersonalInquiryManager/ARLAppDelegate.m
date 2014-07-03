@@ -260,6 +260,9 @@ static BOOL _syncAllowed = NO;
 {
     if (!_managedObjectModel) {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
+    
+        Log(@"%@", modelURL);
+        
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     }
  

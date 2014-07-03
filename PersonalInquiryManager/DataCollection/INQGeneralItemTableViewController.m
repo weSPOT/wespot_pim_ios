@@ -30,9 +30,6 @@ typedef NS_ENUM(NSInteger, groups) {
     numGroups
 };
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (readonly, nonatomic) NSInteger *sectionOffset;
@@ -42,26 +39,6 @@ typedef NS_ENUM(NSInteger, groups) {
 @end
 
 @implementation INQGeneralItemTableViewController
-
-/*!
- *  Getter.
- *
- *  @return The Nav Bar Height.
- */
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
-/*!
- *  Getter.
- *
- *  @return The Status Bar Height.
- */
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
 
 /*!
  *  Getter.

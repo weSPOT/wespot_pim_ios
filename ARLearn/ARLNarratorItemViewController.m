@@ -37,11 +37,6 @@ typedef NS_ENUM(NSInteger, responses) {
 @property (strong, nonatomic) NSString *textDescription;
 @property (strong, nonatomic) NSString *valueDescription;
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-@property (readonly, nonatomic) CGFloat tabbarHeight;
-
-@property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
@@ -56,35 +51,6 @@ typedef NS_ENUM(NSInteger, responses) {
 @synthesize run = _run;
 @synthesize generalItem = _generalItem;
 @synthesize account = _account;
-
-/*!
- *  Getter
- *
- *  @return The StatusBar Heigth.
- */
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
-
-/*!
- *  Getter
- *
- *  @return The NavBar Heigth.
- */
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
-/*!
- *  Getter
- *
- *  @return The STabBar Heigth.
- */
--(CGFloat) tabbarHeight {
-    return self.tabBarController.tabBar.bounds.size.height;
-}
 
 /*!
  *  Getter
@@ -177,10 +143,6 @@ typedef NS_ENUM(NSInteger, responses) {
     UIGraphicsEndImageContext();
     
     return grayscaleImage;
-}
-
--(UIInterfaceOrientation) interfaceOrientation {
-    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 /*!

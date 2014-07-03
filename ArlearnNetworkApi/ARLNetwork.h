@@ -12,13 +12,16 @@
 //#define serviceUrl    @"http://192.168.1.8:8080"
 
 #define serviceUrl      @"http://streetlearn.appspot.com"
-#define textplain       @"text/plain"
+#define openbadgesUrl   @"http://openbadgesapi.appspot.com"
 
 #define accept          @"Accept"
 #define contenttype     @"Content-Type"
+
+#define textplain       @"text/plain"
 #define applicationjson @"application/json"
 #define textplain       @"text/plain"
 #define xwwformurlencode @"application/x-www-form-urlencoded"
+
 #define GET             @"GET"
 #define POST            @"POST"
 
@@ -31,7 +34,7 @@
 //Runs
 + (NSDictionary *) runsParticipate ;
 + (NSDictionary *) runsParticipateFrom: (NSNumber *) from;
-+ (NSDictionary *) runsWithId: (NSNumber *) id;
++ (NSDictionary *) runsWithId: (NSNumber *) runId;
 + (NSDictionary *) createRun: (NSNumber *) gameId withTitle: (NSString *) runTitle;
 
 //Users
@@ -85,6 +88,9 @@
 + (id) executeARLearnGetWithAuthorization: (NSString *) path;
 
 + (NSDictionary *) getUserInfo: (NSNumber *) runId userId:(NSString *) userId providerId:(NSString *) providerId;
+
+//OpenBadges Api
++ (NSDictionary *) getUserBadges: (NSString *) userId;
 
 @end
 

@@ -25,11 +25,8 @@
 
 - (IBAction)createInquiryTap:(id)sender;
 
-@property (readonly, nonatomic) CGFloat statusbarHeight;
-@property (readonly, nonatomic) CGFloat navbarHeight;
-@property (readonly, nonatomic) CGFloat tabbarHeight;
-@property (readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;
 @property (readonly, nonatomic) NSString *DefaultInquiryDescription;
+
 @end
 
 @implementation INQNewInquiryViewController
@@ -286,24 +283,6 @@
                                               otherButtonTitles:nil, nil];
         [alert show];
     }
-}
-
--(CGFloat) statusbarHeight
-{
-    // NOTE: Not always turned yet when we try to retrieve the height.
-    return MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
-}
-
--(CGFloat) navbarHeight {
-    return self.navigationController.navigationBar.bounds.size.height;
-}
-
--(CGFloat) tabbarHeight {
-    return self.tabBarController.tabBar.bounds.size.height;
-}
-
--(UIInterfaceOrientation) interfaceOrientation {
-    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 -(NSString *)DefaultInquiryDescription {

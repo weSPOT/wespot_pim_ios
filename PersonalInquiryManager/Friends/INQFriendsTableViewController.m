@@ -90,11 +90,70 @@ typedef NS_ENUM(NSInteger, friends) {
     
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
     
     self.fetchedResultsController.delegate = self;
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
+}
+
+- (void)contextChanged:(NSNotification*)notification
+{
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ([notification object] == appDelegate.managedObjectContext) {
+        return ;
+    }
+    
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        return;
+    }
+    
+    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+    for (NSManagedObject *obj in deletedObjects) {
+        if ([[obj entity].name isEqualToString:@"Account"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            // [self.tableView reloadData];
+            return;
+        }
+    }
+    
+    // See if there are any Inquiry objects added and if so, reload the tableView.
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+    
+    for (NSManagedObject *obj in insertedObjects) {
+        if ([[obj entity].name isEqualToString:@"Account"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            [self.tableView reloadData];
+            return;
+        }
+    }
+    
+    // If no Inquiry objecst are added, look for updates and refresh them.
+    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+    
+    for (NSManagedObject *obj in updatedObjects) {
+        if ([[obj entity].name isEqualToString:@"Account"]) {
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            [self.tableView reloadData];
+            return;
+        }
+    }
+}
+
+/*!
+ *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+ */
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source

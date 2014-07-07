@@ -228,6 +228,8 @@
         //Copied from ARLOauthWebViewController.m
         [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:@"auth"];
         
+        // Log("Creating new Account");
+        
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSDictionary *accountDetails = [ARLNetwork accountDetails];
         
@@ -247,21 +249,7 @@
  *  Handle the Back Button.
  */
 - (void)navigateBack {
-    if (ARLNetwork.isLoggedIn) {
-        UIViewController *mvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainNavigation"];
-        
-        if (ARLNetwork.isLoggedIn) {
-            UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
-            if ([appDelegate respondsToSelector:@selector(syncData)]) {
-                [appDelegate performSelector:@selector(syncData)];
-            }
-        }
-        
-        [self.navigationController presentViewController:mvc animated:YES completion:nil];
-        
-    } else {
-        [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:YES  completion:nil];
-    }
+    [self.navigationController presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"] animated:NO completion:nil];
 }
 
 /*!

@@ -68,8 +68,9 @@
             
             newViewController = nil;
             
+            // Log("Initial Sync at Startup");
+          
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-            
             if ([appDelegate respondsToSelector:@selector(syncData)]) {
                 [appDelegate performSelector:@selector(syncData)];
             }
@@ -80,6 +81,12 @@
     
     ARLAppDelegate.SyncAllowed = NO;
     
+    //Clear what's still in the tables.
+    // Log("Clearing Database");
+    
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
+
 	// Do any additional setup after loading the view, typically from a nib.
     
     // Create the data model

@@ -14,6 +14,7 @@
 #import "Account+Create.h"
 #import "INQSplashContentViewController.h"
 #import "ARLNetwork+INQ.h"
+#import "ARLAccountDelegator.h"
 
 @interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource, NSURLConnectionDataDelegate>
 

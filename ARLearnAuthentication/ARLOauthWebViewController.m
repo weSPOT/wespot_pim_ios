@@ -104,13 +104,12 @@
             
             listItems = [lastObject componentsSeparatedByString:@"&"];
             
+            // Log("Creating new Account");
+            
             [[NSUserDefaults standardUserDefaults] setObject:[listItems objectAtIndex:0] forKey:@"auth"];
             
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             NSDictionary *accountDetails = [ARLNetwork accountDetails];
-            
-            //Clear what's still in the tables.
-            [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
             
             [Account accountWithDictionary:accountDetails inManagedObjectContext:appDelegate.managedObjectContext];
             [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];

@@ -26,7 +26,9 @@
     Account *account = [Account retrieveFromDbWithLocalId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]
                                               accountType:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]                                       withManagedContext:context];
     
-    [context deleteObject:account];
+    if (account!=nil) {
+        [context deleteObject:account];
+    }
     
     NSError *error = nil;
     [context save:&error];

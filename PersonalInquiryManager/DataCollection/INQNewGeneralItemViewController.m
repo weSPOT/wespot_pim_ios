@@ -72,7 +72,7 @@
  *  @param description The description
  */
 - (void) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)itemType {
-    NSDictionary *result = [ARLNetwork createGeneralItem:title description:description type:itemType gameId:self.run.gameId];
+    /*NSDictionary *result =*/ [ARLNetwork createGeneralItem:title description:description type:itemType gameId:self.run.gameId];
 }
 
 /*!

@@ -46,14 +46,15 @@
     // DLog(@"%@", urlString);
     
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
+    //GoogleLogin auth=
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
-    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    [request setValue:badges_authorization_key forHTTPHeaderField:@"Authorization"];
     
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    // [self dumpJsonData:jsonData url:urlString];
+    [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -119,10 +120,21 @@
 }
 
 +(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    DLog(@"%@", url);
-    DLog(@"%@", jsonString);
+    //http://stackoverflow.com/questions/12603047/how-to-convert-nsdata-to-nsdictionary
+    //http://stackoverflow.com/questions/7097842/xcode-how-to-nslog-a-json
+    NSError *error = nil;
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:jsonData
+                          options:kNilOptions
+                          error:&error];
+    Log(@"[JSON]");
+    Log(@"URL: %@", url);
+    if (error==nil && json!=nil && json.count!=0) {
+        Log(@"JSON:\r%@", json);
+    } else {
+        NSString *errorString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        Log(@"ERROR: %@", errorString);
+    }
 }
 
 + (NSData *) stringToData: (NSString *) string {

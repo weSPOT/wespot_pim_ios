@@ -242,9 +242,7 @@
                                      self.linkedinButton,   @"linkedinButton",
                                      self.twitterButton,    @"twitterButton",
                                      nil];
-    
-#warning constraints for new login buttons are missing.
-    
+   
     // Fails
     // for (UIView *view in [viewsDictionary keyEnumerator]) {
     //   view.translatesAutoresizingMaskIntoConstraints = NO;

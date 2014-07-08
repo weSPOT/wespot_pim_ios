@@ -8,11 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+#import "PrivateData.h"
+
+// Note: PrivateData.h contains a defined with the openbadges
+//       Authorization key (as a String so just one define like:
+//
+//          #define badges_authorization_key @"<key>"
+//
+// Note: PrivateData.h is part of .gitignore preventing accidental checkin!
+//
+
 //#define serviceUrl    @"http://ar-learn.appspot.com"
 //#define serviceUrl    @"http://192.168.1.8:8080"
 
 #define serviceUrl      @"http://streetlearn.appspot.com"
-#define openbadgesUrl   @"http://openbadgesapi.appspot.com"
+#define openbadgesUrl   @"https://openbadgesapi.appspot.com"
 
 #define accept          @"Accept"
 #define contenttype     @"Content-Type"
@@ -64,15 +74,18 @@
 
 + (void) registerDevice: (NSString *) deviceToken withUID: (NSString *) deviceUniqueIdentifier withAccount: (NSString *) account withBundleId: (NSString *) bundleIdentifier;
 
+//Actions
 + (void) publishAction: (NSDictionary *) actionDict;
 + (void) publishAction: (NSNumber *) runId action: (NSString *) action itemId: (NSNumber *) itemId time: (NSNumber *) time itemType:(NSString *) itemType;
 
 + (void) publishResponse: (NSDictionary *) actionDict;
 + (void) publishResponse: (NSNumber *) runId responseValue: (NSString *) value itemId: (NSNumber *) generalItemId timeStamp: (NSNumber *) timeStamp;
 
+//Upload
 + (NSString *) requestUploadUrl: (NSString *) fileName withRun:(NSNumber *) runId;
 + (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName contentType:(NSString *) contentType withData:(NSData *) data;
 
+//Accounts Helpers
 + (NSDictionary *) anonymousLogin: (NSString *) account;
 + (NSDictionary *) accountDetails;
 

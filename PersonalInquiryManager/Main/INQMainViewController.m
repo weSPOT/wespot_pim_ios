@@ -114,8 +114,9 @@ typedef NS_ENUM(NSInteger, tools) {
     
     //    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
 
-    //    Account * account = ARLNetwork.CurrentAccount;
-    //    [ARLNetwork getUserBadges:account.localId];
+//    Account *account = ARLNetwork.CurrentAccount;
+//    NSString *userId = [NSString stringWithFormat:@"%@_%@", [[ARLNetwork elggProviderId:account.accountType] lowercaseString], account.localId];
+//    [ARLNetwork getUserBadges:userId];
     
     //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
     //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];

@@ -363,22 +363,15 @@ typedef NS_ENUM(NSInteger, friends) {
         case SEND:
             return tableView.rowHeight;
         case MESSAGES: {
-#warning ** Calculate the correct height here based on the message content!!
-            //UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
+            // Calculate the correct height here based on the message content!!
             
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
     
-            //UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
             UITextView *textView = [[UITextView alloc] init];
             
-            //CGRect frame = textView.frame;
-#warning not 100% correct (we ommit both margins).
-            //frame.size = CGSizeMake(tableView.frame.size.width - 20.0, 1.0);
-            //textView.frame = frame;
-            
-            //[textView setScrollEnabled:YES];
-            
+            // not 100% correct (we ommit both margins).
+
             NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:@{
                                                                                   NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
@@ -387,8 +380,6 @@ typedef NS_ENUM(NSInteger, friends) {
                                                              documentAttributes:nil
                                                                           error:nil];
             textView.attributedText = html;
-            //[textView sizeToFit];
-            //[textView setScrollEnabled:NO];
             
             // Correct for left/right margins and icon.
             CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 3*20.0 - tableView.rowHeight, FLT_MAX)];

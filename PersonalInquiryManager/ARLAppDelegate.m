@@ -81,9 +81,13 @@ static BOOL _syncAllowed = NO;
     NSString *appVersion =  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
-    DLog(@"Version String:  %@", appVersion);
-    DLog(@"Build Number:    %@", appBuild);
-    DLog(@"Git Commit Hash: %@", gitHash);
+    Log(@"Version String:  %@", appVersion);
+    Log(@"Build Number:    %@", appBuild);
+    Log(@"Git Commit Hash: %@", gitHash);
+    
+    // Log(@"deviceUniqueIdentifier: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
+    // Log(@"deviceToken:            %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
+    Log(@"bundleIdentifier:       %@", [[NSBundle mainBundle] bundleIdentifier]);
     
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -98,7 +102,7 @@ static BOOL _syncAllowed = NO;
                                 appVersion,                         APP_VERSION,
                                 
                                 nil];
-    
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
     // ERROR LOGGIN TEST CODE
     {
         DLog(@"Test: %@", @"Clog");
@@ -280,6 +284,8 @@ static BOOL _syncAllowed = NO;
         DLog(@"\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************");
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
+        
+        Log(@"%@", storeURL);
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

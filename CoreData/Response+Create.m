@@ -31,6 +31,7 @@
     response.run = run;
     response.synchronized = [NSNumber numberWithBool:NO];
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
+    response.account = [ARLNetwork CurrentAccount];
     
     NSError *error = nil;
     [context save:&error];
@@ -81,7 +82,8 @@
  *  @return The existing or newly created Response.
  */
 + (Response *) responseWithDictionary: (NSDictionary *) respDict
-               inManagedObjectContext: (NSManagedObjectContext *) context {
+               inManagedObjectContext: (NSManagedObjectContext *) context
+{
     Response *response = [self retrieveFromDb:respDict withManagedContext:context];
     
     // deleted = 0;
@@ -111,6 +113,13 @@
         response.responseId = [NSNumber numberWithLongLong:[[respDict objectForKey:@"responseId"] longLongValue]];
     }
     
+    if ([response.responseId isEqualToNumber:[NSNumber numberWithInt:0]] &&
+        [response.account.localId isEqualToString:[ARLNetwork CurrentAccount].localId] &&
+        [response.account.accountType isEqualToNumber:[ARLNetwork CurrentAccount].accountType]
+        ) {
+        response.responseId = [NSNumber numberWithLongLong:[[respDict objectForKey:@"responseId"] longLongValue]];
+    }
+    
     NSError *e = nil;
     NSData *data = [[respDict objectForKey:@"responseValue"] dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *valueDict = [NSJSONSerialization JSONObjectWithData:data
@@ -131,9 +140,11 @@
             response.fileName = [valueDict objectForKey:@"audioUrl"];
             response.contentType = @"audio/aac";
         } else if ([valueDict objectForKey:@"text"]) {
-#warning Implement Text
+            response.value = [valueDict objectForKey:@"text"];
+            // response.contentType = @"text/plain";
         } else if ([valueDict objectForKey:@"number"]) {
-#warning Implement Number
+            response.value = [valueDict objectForKey:@"number"];
+            // response.contentType = @"number/plain";
         }
     }
 
@@ -177,7 +188,30 @@
     ELog(error);
     
     if (!responsesFromDb || ([responsesFromDb count] != 1)) {
-        return nil;
+        
+        // NOTE:    If no record found, try matching on responseId = 0, timestamp + account
+        //          These will be the unsynced ones, where we do not know the responseId yet.
+        //
+        //          In responseWithDictionary the zero responseId will be replaced.
+        //
+        //          These records can only originate from us but an extra account check won't hurt!
+        //
+        NSFetchRequest *request2 = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+        request2.predicate = [NSPredicate predicateWithFormat:@"responseId = 0 and timeStamp = %lld && account.accountType = %d && account.localId = %@",
+                              [[giDict objectForKey:@"timestamp"] longLongValue],
+                              [[ARLNetwork CurrentAccount].accountType intValue],
+                              [ARLNetwork CurrentAccount].localId
+                              ];
+        
+        NSError *error2 = nil;
+        NSArray *responsesFromDb2 = [context executeFetchRequest:request2 error:&error2];
+        ELog(error2);
+        
+        if (!responsesFromDb2 || ([responsesFromDb2 count] != 1)) {
+            return nil;
+        } else {
+            return [responsesFromDb2 lastObject];
+        }
     } else {
         return [responsesFromDb lastObject];
     }
@@ -245,7 +279,7 @@
 /*!
  *  Create a Textual Response for a GeneralItem of a Run.
  *
- *  @param text        The Resoponse Text.
+ *  @param text        The Response Text.
  *  @param run         The Run.
  *  @param generalItem The GeneralItem.
  */
@@ -255,10 +289,29 @@
     NSDictionary *myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
                                  text, @"text", nil];
     
-    [Response initResponse:run forGeneralItem:generalItem
+    [Response initResponse:run
+            forGeneralItem:generalItem
                  withValue:[Response jsonString:myDictionary]
-     
-    inManagedObjectContext: generalItem.managedObjectContext];
+    inManagedObjectContext:generalItem.managedObjectContext];
+}
+
+/*!
+ *  Create a Numerical Response for a GeneralItem of a Run.
+ *
+ *  @param value       The Response Value.
+ *  @param run         The Run.
+ *  @param generalItem The GeneralItem.
+ */
++ (void) createValueResponse: (NSString *) value
+                    withRun: (Run *)run
+            withGeneralItem: (GeneralItem *) generalItem {
+    NSDictionary *myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 value, @"value", nil];
+    
+    [Response initResponse:run
+            forGeneralItem:generalItem
+                 withValue:[Response jsonString:myDictionary]
+    inManagedObjectContext:generalItem.managedObjectContext];
 }
 
 /*!
@@ -285,6 +338,7 @@
     response.height = height;
     response.contentType = @"application/jpg";
     response.fileName = @"jpg";
+    response.account = [ARLNetwork CurrentAccount];
 }
 
 /*!
@@ -305,6 +359,7 @@
     
     response.contentType = @"video/quicktime";
     response.fileName = @"mov";
+    response.account = [ARLNetwork CurrentAccount];
 }
 
 /*!
@@ -325,6 +380,7 @@
     
     response.contentType = @"audio/aac";
     response.fileName = @"m4a";
+    response.account = [ARLNetwork CurrentAccount];
 }
 
 @end

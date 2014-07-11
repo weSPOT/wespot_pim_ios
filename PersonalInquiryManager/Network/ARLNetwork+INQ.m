@@ -581,8 +581,6 @@
     return nil;
 }
 
-static NSRecursiveLock *_abortLock;
-
 + (void)ShowAbortMessage: (NSString *) title message:(NSString *) message {
     UIResponder *appDelegate = [[UIApplication sharedApplication] delegate];
     

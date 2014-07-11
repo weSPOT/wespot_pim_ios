@@ -435,16 +435,16 @@
 			children = (
 				8D5C668218D6F5CA003B79E5 /* ARLAudioRecordButtons.h */,
 				8D5C668318D6F5CA003B79E5 /* ARLAudioRecordButtons.m */,
-				8D5C667F18D6F5B9003B79E5 /* ARLAudioRecorderViewController.h */,
-				8D5C668018D6F5B9003B79E5 /* ARLAudioRecorderViewController.m */,
 				8D5C667C18D6F5B0003B79E5 /* ARLAudioRecorder.h */,
 				8D5C667D18D6F5B0003B79E5 /* ARLAudioRecorder.m */,
-				8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */,
-				8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */,
-				3454CCD817B3A72E00C0DFFC /* InfoPlist.strings */,
-				3454CCDA17B3A72E00C0DFFC /* Localizable.strings */,
+				8D5C667F18D6F5B9003B79E5 /* ARLAudioRecorderViewController.h */,
+				8D5C668018D6F5B9003B79E5 /* ARLAudioRecorderViewController.m */,
 				8D4C36BF18E2D2A9000FCEA6 /* ARLNarratorItemView.h */,
 				8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */,
+				8D5C667B18D6F58C003B79E5 /* ARLNarratorItemViewController.h */,
+				8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */,
+				3454CCD817B3A72E00C0DFFC /* InfoPlist.strings */,
+				3454CCDA17B3A72E00C0DFFC /* Localizable.strings */,
 			);
 			path = ARLearn;
 			sourceTree = "<group>";

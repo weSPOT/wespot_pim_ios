@@ -191,25 +191,10 @@ typedef NS_ENUM(NSInteger, responses) {
         if (self.withAudio){
             tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"audio/aac"]]];
         }
+        if (self.withText || self.withValue) {
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", nil]]];
+        }
 
-        // Nice, But fails with CoreData: Unknown predicate type for predicate: BLOCKPREDICATE
-        //        request.predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        //            Response *response = (Response *)evaluatedObject;
-        //
-        //            BOOL result = response.run.runId == self.run.runId;
-        //            if (result && self.withPicture)  {
-        //                result = [[response contentType] isEqualToString:@"application/jpg"];
-        //            }
-        //            if (result && self.withVideo)  {
-        //                result = [[response contentType] isEqualToString:@"video/quicktime"];
-        //            }
-        //            if (result && self.withAudio)  {
-        //                result = [[response contentType] isEqualToString:@"audio/aac"];
-        //            }
-        //
-        //            return result;
-        //        }];
-        
         // See http://stackoverflow.com/questions/4476026/add-additional-argument-to-an-existing-nspredicate
         NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tmp];
         NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld",[self.run.runId longLongValue], [self.generalItem.generalItemId longLongValue]];
@@ -386,8 +371,8 @@ typedef NS_ENUM(NSInteger, responses) {
         self.withAudio = YES;
         self.withPicture = YES;
         self.withVideo = YES;
-        //self.withText = YES;
-        //self.withValue = YES;
+        self.withText = YES;
+        self.withValue = YES;
     }
     
     [self setupFetchedResultsController];
@@ -409,10 +394,10 @@ typedef NS_ENUM(NSInteger, responses) {
             }
             
             if (self.withText) {
-                // TODO
+                // TODO Sync Text
             }
             if (self.withValue) {
-                // TODO
+                // TODO Sync Values
             }
         } else if (self.account) {
             [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"application/jpg"];
@@ -556,6 +541,10 @@ typedef NS_ENUM(NSInteger, responses) {
 //                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
                 } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
                     cell.imgView.image = [UIImage imageNamed:@"task-record"];
+                } else if (self.withText || self.withValue) {
+                
+#warning TODO Add rending of text/value (or link to a popup)?
+                    
                 }
             }
         }
@@ -616,6 +605,8 @@ typedef NS_ENUM(NSInteger, responses) {
         } else if ( [response.contentType isEqualToString:@"audio/aac"]) {
             controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
+        } else {
+            #warning TODO Add rending of text/value (or link to a popup)?
         }
         
         DLog(@"%@", response.fileName);
@@ -647,26 +638,46 @@ typedef NS_ENUM(NSInteger, responses) {
 /*!
  *  Request a Number.
  */
-- (void) collectNumber{
-    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.valueDescription message:NSLocalizedString(@"Not implemented yet",@"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+- (void) collectNumber
+{
+    UIAlertView *myAlertView = [[UIAlertView alloc]
+                                initWithTitle:self.valueDescription
+                                message:NSLocalizedString(@"Enter Number", @"Enter Number")
+                                delegate:self
+                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+   
+    //    self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
+    //    [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
+    //
+    //    [myAlertView addSubview:self.valueTextField];
     
-    self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
-    [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
+    myAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    myAlertView.tag = 1;
     
-    [myAlertView addSubview:self.valueTextField];
     [myAlertView show];
 }
 
 /*!
  *  Request Text.
  */
-- (void) collectText{
-    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.textDescription message:NSLocalizedString(@"Not implemented yet",@"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+- (void) collectText
+{
+    UIAlertView *myAlertView = [[UIAlertView alloc]
+                                initWithTitle:self.textDescription
+                                message:NSLocalizedString(@"Enter Text",@"Enter Text")
+                                delegate:self
+                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
     
-    self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
-    [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
+    myAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    myAlertView.tag = 2;
     
-    [myAlertView addSubview:self.valueTextField];
+    //self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
+    //[self.valueTextField setBackgroundColor:[UIColor whiteColor]];
+    // see http://stackoverflow.com/questions/9407338/xcode-how-to-uialertview-with-a-text-field-on-a-loop-until-correct-value-en
+    
+    //[myAlertView addSubview:self.valueTextField];
     [myAlertView show];
 }
 
@@ -681,7 +692,18 @@ typedef NS_ENUM(NSInteger, responses) {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
     if ([title isEqualToString:NSLocalizedString(@"OK", @"OK")]) {
-        [Response createTextResponse: self.valueTextField.text withRun:self.run withGeneralItem:self.generalItem ];
+        UITextField *alertTextField = [alertView textFieldAtIndex:0];
+        
+        switch (alertView.tag) {
+            case 1:
+#warning Test for numerical value.
+                [Response createValueResponse: alertTextField.text withRun:self.run withGeneralItem:self.generalItem ];
+                break;
+            case 2:
+                [Response createTextResponse: alertTextField.text withRun:self.run withGeneralItem:self.generalItem ];
+                break;
+        }
+        
         [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
         
         NSError *error = nil;
@@ -753,7 +775,11 @@ typedef NS_ENUM(NSInteger, responses) {
     
     if (image) {
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-        [Response createImageResponse:imageData width:[NSNumber numberWithFloat:image.size.width] height:[NSNumber numberWithFloat:image.size.height]  withRun:self.run withGeneralItem:self.generalItem];
+        [Response createImageResponse:imageData
+                                width:[NSNumber numberWithFloat:image.size.width]
+                               height:[NSNumber numberWithFloat:image.size.height]
+                              withRun:self.run
+                      withGeneralItem:self.generalItem];
     } else {
         id object = [info objectForKey:UIImagePickerControllerMediaURL];
         
@@ -761,9 +787,11 @@ typedef NS_ENUM(NSInteger, responses) {
         DLog(@"Object %@", [object class ]);
         
         NSData* videoData = [NSData dataWithContentsOfURL:object];
-        [Response createVideoResponse:videoData withRun:self.run withGeneralItem:self.generalItem];
+        [Response createVideoResponse:videoData
+                              withRun:self.run
+                      withGeneralItem:self.generalItem];
         
-        //      [picker dismissViewControllerAnimated:YES completion:NULL];
+        // [picker dismissViewControllerAnimated:YES completion:NULL];
     }
     
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];

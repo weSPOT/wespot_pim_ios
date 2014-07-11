@@ -317,7 +317,11 @@
         NSArray* actions =  [Action getUnsyncedActions:self.context];
         for (Action* action in actions) {
             if (ARLAppDelegate.SyncAllowed) {
-                [ARLNetwork publishAction:action.run.runId action:action.action itemId:action.generalItem.generalItemId time:action.time itemType:action.generalItem.type];
+                [ARLNetwork publishAction:action.run.runId
+                                   action:action.action
+                                   itemId:action.generalItem.generalItemId
+                                     time:action.time
+                                 itemType:action.generalItem.type];
                 action.synchronized = [NSNumber numberWithBool:YES];
             }
         }
@@ -337,7 +341,11 @@
             if (ARLAppDelegate.SyncAllowed) {
                 @autoreleasepool {
                     if (resp.value) {
-                        [ARLNetwork publishResponse:resp.run.runId responseValue:resp.value itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
+                        [ARLNetwork publishResponse:resp.run.runId
+                                      responseValue:resp.value
+                                             itemId:resp.generalItem.generalItemId
+                                          timeStamp:resp.timeStamp];
+                        
                         resp.synchronized = [NSNumber numberWithBool:YES];
                     } else {
                         u_int32_t random = arc4random();
@@ -347,7 +355,9 @@
                             NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
                             [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
                             
-                            NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@", serviceUrl, resp.run.runId,
+                            NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@",
+                                                   serviceUrl,
+                                                   resp.run.runId,
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
                             
@@ -373,7 +383,10 @@
                             
                             NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
                             
-                            [ARLNetwork publishResponse:resp.run.runId responseValue:jsonString itemId:resp.generalItem.generalItemId timeStamp:resp.timeStamp];
+                            [ARLNetwork publishResponse:resp.run.runId
+                                          responseValue:jsonString
+                                                 itemId:resp.generalItem.generalItemId
+                                              timeStamp:resp.timeStamp];
                             
                             resp.synchronized = [NSNumber numberWithBool:YES];
                             
@@ -384,6 +397,7 @@
             }
         }
     }
+    
     self.syncResponses = NO;
 }
 

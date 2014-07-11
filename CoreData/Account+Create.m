@@ -25,8 +25,25 @@
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
     }
     
-    account.localId = [dict objectForKey:@"localId"];
-    account.accountType = [dict objectForKey:@"accountType"];
+// Also support:
+//    {
+//        icon = "http://inquiry.wespot.net/mod/profile/icondirect.php?lastcache=1396854990&joindate=1396854975&guid=32309&size=medium"; -> ok
+//        name = "Stefaan Ternier";    -> ok
+//        oauthId = "stefaan.ternier"; -> email?
+//        oauthProvider = weSPOT;      -> ok
+//    }
+    
+    if ([dict objectForKey:@"accountType"]) {
+        account.localId = [dict objectForKey:@"localId"];
+    } else if ([dict objectForKey:@"oauthId"]) {
+        account.localId = [dict objectForKey:@"oauthId"];
+    }
+    
+    if ([dict objectForKey:@"accountType"]) {
+        account.accountType = [dict objectForKey:@"accountType"];
+    } else if ([dict objectForKey:@"oauthProvider"]) {
+        account.accountType = [ARLNetwork elggProviderByName:[dict objectForKey:@"oauthProvider"]];
+    }
     
     account.email = [dict objectForKey:@"email"];
     account.name= [dict objectForKey:@"name"];
@@ -34,7 +51,7 @@
     account.familyName = [dict objectForKey:@"familyName"];
     account.accountLevel= [dict objectForKey:@"accountLevel"];
     
-    NSURL  *url = [NSURL URLWithString:[dict objectForKey:@"picture"]];
+    NSURL *url = [NSURL URLWithString:[dict objectForKey:[dict objectForKey:@"picture"] ? @"picture": @"icon"]];
     NSData *urlData = [NSData dataWithContentsOfURL:url];
     if (urlData) {
         account.picture = urlData;

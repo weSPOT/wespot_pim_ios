@@ -697,20 +697,27 @@ typedef NS_ENUM(NSInteger, responses) {
         switch (alertView.tag) {
             case 1:
 #warning Test for numerical value.
-                [Response createValueResponse: alertTextField.text withRun:self.run withGeneralItem:self.generalItem ];
+                [Response createValueResponse: alertTextField.text
+                                      withRun:self.run
+                              withGeneralItem:self.generalItem ];
                 break;
             case 2:
-                [Response createTextResponse: alertTextField.text withRun:self.run withGeneralItem:self.generalItem ];
+                [Response createTextResponse: alertTextField.text
+                                     withRun:self.run
+                             withGeneralItem:self.generalItem ];
                 break;
         }
         
-        [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
+        [Action initAction:@"answer_given" forRun:self.run
+            forGeneralItem:self.generalItem
+    inManagedObjectContext:self.generalItem.managedObjectContext];
         
         NSError *error = nil;
         if (self.generalItem.managedObjectContext) {
             if ([self.generalItem.managedObjectContext hasChanges]){
                 if (![self.generalItem.managedObjectContext save:&error]) {
-                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
+                    [ARLNetwork ShowAbortMessage:error
+                                            func:[NSString stringWithFormat:@"%s",__func__]];
                 }
             }
         }

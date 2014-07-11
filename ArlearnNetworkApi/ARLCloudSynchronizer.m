@@ -227,10 +227,14 @@
     DLog(@"");
     
     @autoreleasepool {
-        NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItems" context:self.gameId];
+        NSNumber * lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
+                                                                                type:@"generalItems"
+                                                                             context:self.gameId];
  
-        NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId from:lastDate];
+        NSDictionary * gisDict = [ARLNetwork itemsForGameFrom:self.gameId
+                                                         from:lastDate];
         NSNumber * serverTime = [gisDict objectForKey:@"serverTime"];
+        
         Game * game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
         
         for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
@@ -240,6 +244,7 @@
             
             
         }
+        
         if (serverTime) {
             [SynchronizationBookKeeping createEntry:@"generalItems"
                                                time:serverTime

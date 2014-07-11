@@ -370,7 +370,7 @@
     
     @autoreleasepool {
         // Fetch Account default values for localId and withProviderId.
-        NSDictionary * dict = [ARLNetwork getFriends:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
+        NSDictionary *dict = [ARLNetwork getFriends:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"] withProviderId:[[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"]];
         
         for (NSDictionary *user in [dict objectForKey:@"result"]) {
             if ( [((NSObject *)[user objectForKey:@"oauthProvider"]) isKindOfClass: [NSString class]]) {
@@ -436,9 +436,14 @@
                     
                     // For non-existing users, download the full user info to create the Account record.
                     if (![Account retrieveFromDbWithLocalId:[user objectForKey:@"oauthId"] accountType:oauthProviderType withManagedContext:self.context]) {
-                        NSDictionary *userInfo = [ARLNetwork getUserInfo:inquiry.run.runId userId:[user objectForKey:@"oauthId"] providerId: oauthProviderType];
-                        
-                        [Account accountWithDictionary:userInfo inManagedObjectContext:self.context];
+                        NSDictionary *userInfo = [ARLNetwork getUserInfo:inquiry.run.runId
+                                                                  userId:[user objectForKey:@"oauthId"]
+                                                              providerId: oauthProviderType];
+                        if (userInfo) {
+                            [Account accountWithDictionary:userInfo inManagedObjectContext:self.context];
+                        } else {
+                            [Account accountWithDictionary:user inManagedObjectContext:self.context];
+                        }
                     }
                 }
             }

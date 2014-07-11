@@ -8,6 +8,8 @@
 
 #import "Account.h"
 
+#import "ARLNetwork+INQ.h"
+
 @interface Account (Create)
 
 + (Account *) accountWithDictionary: (NSDictionary *) dict inManagedObjectContext: (NSManagedObjectContext * ) context;

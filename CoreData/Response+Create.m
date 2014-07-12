@@ -140,11 +140,11 @@
             response.fileName = [valueDict objectForKey:@"audioUrl"];
             response.contentType = @"audio/aac";
         } else if ([valueDict objectForKey:@"text"]) {
-            response.value = [valueDict objectForKey:@"text"];
-            // response.contentType = @"text/plain";
+            NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            response.value = jsonString;//[valueDict objectForKey:@"text"];
         } else if ([valueDict objectForKey:@"number"]) {
-            response.value = [valueDict objectForKey:@"number"];
-            // response.contentType = @"number/plain";
+            NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            response.value = jsonString;//[valueDict objectForKey:@"number"];
         }
     }
 

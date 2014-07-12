@@ -640,12 +640,11 @@ typedef NS_ENUM(NSInteger, responses) {
  */
 - (void) collectNumber
 {
-    UIAlertView *myAlertView = [[UIAlertView alloc]
-                                initWithTitle:self.valueDescription
-                                message:NSLocalizedString(@"Enter Number", @"Enter Number")
-                                delegate:self
-                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.valueDescription
+                                                          message:NSLocalizedString(@"Enter Number", @"Enter Number")
+                                                         delegate:self
+                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
    
     //    self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
     //    [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
@@ -663,12 +662,11 @@ typedef NS_ENUM(NSInteger, responses) {
  */
 - (void) collectText
 {
-    UIAlertView *myAlertView = [[UIAlertView alloc]
-                                initWithTitle:self.textDescription
-                                message:NSLocalizedString(@"Enter Text",@"Enter Text")
-                                delegate:self
-                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:self.textDescription
+                                                          message:NSLocalizedString(@"Enter Text",@"Enter Text")
+                                                         delegate:self
+                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
     
     myAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     myAlertView.tag = 2;
@@ -694,21 +692,40 @@ typedef NS_ENUM(NSInteger, responses) {
     if ([title isEqualToString:NSLocalizedString(@"OK", @"OK")]) {
         UITextField *alertTextField = [alertView textFieldAtIndex:0];
         
+        NSString *trimmed = [alertTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
         switch (alertView.tag) {
-            case 1:
-#warning Test for numerical value.
-                [Response createValueResponse: alertTextField.text
-                                      withRun:self.run
-                              withGeneralItem:self.generalItem ];
+            case 1: {
+                
+                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                
+                NSNumber *number = [formatter numberFromString:trimmed];
+                
+                if (number != nil) {
+                    [Response createValueResponse: trimmed
+                                          withRun:self.run
+                                  withGeneralItem:self.generalItem ];
+                } else {
+                    // Invalid Number.
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                                    message:NSLocalizedString(@"Invalid Number",@"Invalid Numbber")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                          otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+            }
                 break;
             case 2:
-                [Response createTextResponse: alertTextField.text
+                [Response createTextResponse: trimmed
                                      withRun:self.run
                              withGeneralItem:self.generalItem ];
                 break;
         }
         
-        [Action initAction:@"answer_given" forRun:self.run
+        [Action initAction:@"answer_given"
+                    forRun:self.run
             forGeneralItem:self.generalItem
     inManagedObjectContext:self.generalItem.managedObjectContext];
         
@@ -740,7 +757,7 @@ typedef NS_ENUM(NSInteger, responses) {
         if([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
             self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         } else {
-            self.imagePickerController.cameraDevice =  UIImagePickerControllerCameraDeviceFront;
+            self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
         }
         
         // [self presentModalViewController:self.imagePickerController animated:YES];

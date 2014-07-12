@@ -60,6 +60,8 @@ typedef NS_ENUM(NSInteger, tools) {
 @property (strong, nonatomic) UIBarButtonItem *syncButton;
 @property (strong, nonatomic) UIBarButtonItem *logoutButton;
 
+@property (strong, nonatomic) NSArray *Friends;
+
 @end
 
 @implementation INQMainViewController
@@ -112,16 +114,20 @@ typedef NS_ENUM(NSInteger, tools) {
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
     
-    //    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
+    // [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
     
 #warning OPENBADGES TEST CODE AHEAD
     
-//    Account *account = ARLNetwork.CurrentAccount;
-//    NSString *userId = [NSString stringWithFormat:@"%@_%@", [[ARLNetwork elggProviderId:account.accountType] lowercaseString], account.localId];
-//    [ARLNetwork getUserBadges:userId];
+    //    Account *account = ARLNetwork.CurrentAccount;
+    //    NSString *userId = [NSString stringWithFormat:@"%@_%@", [[ARLNetwork elggProviderId:account.accountType] lowercaseString], account.localId];
+    //    [ARLNetwork getUserBadges:userId];
     
     //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
     //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    
+    if (!self.Friends) {
+        [self getMyFriends];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -139,6 +145,10 @@ typedef NS_ENUM(NSInteger, tools) {
     
     [self.navigationController setToolbarHidden:NO];
     
+    if (!self.Friends) {
+        [self getMyFriends];
+    }
+    
     [self.tableView reloadData];
 }
 
@@ -152,8 +162,8 @@ typedef NS_ENUM(NSInteger, tools) {
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
     
     
-//#warning TEST CODE FOR ABORT
-//    [ARLNetwork ShowAbortMessage:@"TEST" message:@"TEST MESSAGE"];
+    //#warning TEST CODE FOR ABORT
+    //    [ARLNetwork ShowAbortMessage:@"TEST" message:@"TEST MESSAGE"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -165,6 +175,30 @@ typedef NS_ENUM(NSInteger, tools) {
 
 -(void) dealloc {
     DLog(@"");
+}
+
+- (void)getMyFriends {
+    // This should be async and only fired once.
+    //
+    if (ARLNetwork.networkAvailable) {
+        Account *account = [ARLNetwork CurrentAccount];
+        
+        NSDictionary *usersJson = [ARLNetwork getFriends:account.localId withProviderId:account.accountType];
+        
+        //{
+        //    result =     (
+        //                  {
+        //                      icon = "http://inquiry.wespot.net/mod/profile/icondirect.php?lastcache=1396854990&joindate=1396854975&guid=32309&size=medium";
+        //                      name = "Stefaan Ternier";
+        //                      oauthId = "stefaan.ternier";
+        //                      oauthProvider = weSPOT;
+        //                  }
+        //                  );
+        //    status = 0;
+        //}
+        
+        self.Friends = (NSArray *)[usersJson objectForKey:@"result"];
+    }
 }
 
 -(void)logoutButtonButtonTap:(id)sender {
@@ -221,6 +255,10 @@ typedef NS_ENUM(NSInteger, tools) {
     if ([appDelegate respondsToSelector:@selector(syncData)]) {
         [appDelegate performSelector:@selector(syncData)];
     }
+    
+    [self getMyFriends];
+    
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -363,11 +401,11 @@ typedef NS_ENUM(NSInteger, tools) {
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
                     
                     @autoreleasepool {
-                        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-                        NSInteger count = [appDelegate entityCount:@"Account"];
+                        // ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+                        NSInteger count = [self.Friends count]; //[appDelegate entityCount:@"Account"];
                         
-                        if (count > 1) {
-                            NSString *value = [NSString stringWithFormat:@"%d", count - 1];
+                        if (count > 0) {
+                            NSString *value = [NSString stringWithFormat:@"%d", count];
                             NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                             NSRange range=[value rangeOfString:value];
                             
@@ -419,7 +457,7 @@ typedef NS_ENUM(NSInteger, tools) {
                     break;
             }
             break;
-
+            
         case TOOLS: {
             switch (indexPath. item) {
                 case PROFILE :
@@ -430,9 +468,14 @@ typedef NS_ENUM(NSInteger, tools) {
                     //                    break;
                 case FRIENDS :
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"FriendsView"];
+                    
+                    if ([newViewController respondsToSelector:@selector(setFriends:)]) {
+                        [newViewController performSelector:@selector(setFriends:) withObject:self.Friends];
+                    }
+                    
                     break;
             }
-            }
+        }
             break;
             
         default:
@@ -442,7 +485,7 @@ typedef NS_ENUM(NSInteger, tools) {
     if (newViewController) {
         [self.navigationController pushViewController:newViewController animated:YES];
         
-        newViewController = nil;
+        // newViewController = nil;
     }
 }
 

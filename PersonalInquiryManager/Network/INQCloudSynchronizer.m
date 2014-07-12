@@ -16,8 +16,6 @@
  *  @param context The Core Data Context.
  */
 + (void) syncUsers: (NSManagedObjectContext *) context {
-    DLog(@"");
-    
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
   
     [synchronizer createContext:context];
@@ -33,8 +31,6 @@
  *  @param context The Core Data Context.
  */
 + (void) syncInquiries: (NSManagedObjectContext *) context {
-    DLog(@"");
-    
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -45,8 +41,6 @@
 }
 
 + (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
-    DLog(@"");
-    
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -63,8 +57,6 @@
  *  @param context The Core Data Context.
  */
 + (void) syncMessages: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
-    DLog(@"");
-    
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -106,7 +98,8 @@
 - (void)saveContext {
     NSError *error = nil;
     
-    DLog(@"Saving NSManagedObjectContext");
+    CLog(@"Saving NSManagedObjectContext");
+    RawLog(@"");
     
     //#warning ABORT TEST CODE AHEAD
     //    NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : @"DESCRIPTION" };
@@ -139,12 +132,12 @@
  *  Runs on a separate thread in the background.
  */
 - (void) asyncExecution {
-    mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    //mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
     
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
     
      // DLog(@"Thread:0x%x - Start of INQ Synchronisation", machTID);
     
@@ -159,7 +152,7 @@
         } else if (self.syncMessages) {
             [self synchronizeMessages];
         } else if (self.syncInquiries) {
-            [self syncronizeInquiries];
+            [self synchronizeInquiries];
         } else {
             break;
         }
@@ -174,29 +167,29 @@
     
     [ARLAppDelegate.theLock unlock];
     
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
     // DLog(@"Thread:0x%x - End of INQ Synchronisation", machTID);
 }
 
 /*!
- *  Syncronize Inquiries with backend.
+ *  Synchronize Inquiries with backend.
  *
  *  Runs on a separate thread in the background.
  */
-- (void) syncronizeInquiries{
+- (void) synchronizeInquiries{
     @autoreleasepool {
         id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
         id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
         
-        DLog(@"UserId=%@ providerId=%@", localId, providerId);
+        CLog(@"%@:%@", providerId, localId);
         
         NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
         
         if ([dict objectForKey:@"errorCode"]) {
             DLog( @"%@ - %@: %@", NSLocalizedString(@"Error", @"Error"), [dict objectForKey:@"errorCode"], [dict objectForKey:@"error"]);
         } else {
-            //DLog(@"SyncronizeInquiries %@", [dict objectForKey:@"result"]);
+            //DLog(@"SynchronizeInquiries %@", [dict objectForKey:@"result"]);
             
             //******************************
             // Wipe records that no longer exist.
@@ -228,7 +221,7 @@
                                               inquiryId];
                     Inquiry *inquiry = [[ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry" predicate:predicate] lastObject];
                     
-                    DLog(@"Deleting Iqnquiry [%@] '%@'", inquiry.title, inquiry.inquiryId);
+                    DLog(@"Deleting Inquiry [%@] '%@'", inquiry.title, inquiry.inquiryId);
                     
 #warning Also Remove all associated stuff?
                     
@@ -345,7 +338,7 @@
         NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
         for (Inquiry *inquiry in inquiries) {
             if (ARLAppDelegate.SyncAllowed) {
-                [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+               [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
             } else {
                 break;
             }
@@ -361,12 +354,12 @@
 }
 
 /*!
- *  Syncronize Users (Friends) with backend.
+ *  Synchronize Users (Friends) with backend.
  *
  *  Runs on a separate thread in the background.
  */
 - (void) syncAllUsers {
-    DLog(@"");
+    CLog(@"");
     
     @autoreleasepool {
         // Fetch Account default values for localId and withProviderId.
@@ -418,7 +411,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeInquiryUsers {
-    DLog(@"InruiryId: %@", self.inquiryId);
+    CLog(@"InquiryId: %@", self.inquiryId);
     
     @autoreleasepool {
         Account * account = [ARLNetwork CurrentAccount];
@@ -460,7 +453,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeMessages{
-    DLog(@"InquiryIdId: %@", self.inquiryId);
+    CLog(@"InquiryId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
     NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];

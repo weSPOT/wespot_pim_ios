@@ -14,4 +14,6 @@
 
 @interface INQFriendsTableViewController :  UITableViewController <NSFetchedResultsControllerDelegate>
 
+@property (strong, nonatomic) NSArray *Friends;
+
 @end

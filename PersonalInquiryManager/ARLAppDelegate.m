@@ -102,31 +102,34 @@ static BOOL _syncAllowed = NO;
                                 appVersion,                         APP_VERSION,
                                 
                                 nil];
+ 
+#warning FORCING LOGGING.
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
+    
     // ERROR LOGGIN TEST CODE
     {
-        DLog(@"Test: %@", @"Clog");
+        // DLog(@"Test: %@", @"Clog");
     }
     
     {
-        DLog(@"Test: %@", @"Dlog");
+        // DLog(@"Test: %@", @"Dlog");
     }
     
     {
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          @"Test: ELog", NSLocalizedDescriptionKey,
-                          nil];
-    NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
-    ELog(error);
+        // NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+        //                       @"Test: ELog", NSLocalizedDescriptionKey,
+        //                       nil];
+        // NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
+        // ELog(error);
     }
     
     {
-    NSError *error = nil;
-    ELog(error);
+        // NSError *error = nil;
+        // ELog(error);
     }
     
     {
-    EELog();
+        // EELog();
     }
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
@@ -142,11 +145,13 @@ static BOOL _syncAllowed = NO;
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
     [reach startNotifier];
-    
-    _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
+
+    // Let the Reachabilty Notifier run for a second.
+    NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
+    [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
     
 #warning This Location code must be relocated to a better place!!
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
@@ -158,6 +163,8 @@ static BOOL _syncAllowed = NO;
         [self ShowAbortMessage:NSLocalizedString(@"Notice", @"Notice")
                        message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")];
     }
+    
+    _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
     
     return YES;
 }
@@ -388,7 +395,7 @@ static BOOL _syncAllowed = NO;
  */
 - (void) syncData {
     if (ARLNetwork.networkAvailable) {
-        DLog(@"%s", "Syncing Data\r\n*******************************************");
+        // DLog(@"%s", "Syncing Data\r\n*******************************************");
 
         // syncActions is also triggered by syncResponses!
         [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
@@ -396,6 +403,8 @@ static BOOL _syncAllowed = NO;
         
         [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
         [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+        
+        [ARLFileCloudSynchronizer syncGeneralItems:self.managedObjectContext];
     }
 }
 

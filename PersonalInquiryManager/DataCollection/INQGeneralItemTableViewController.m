@@ -265,7 +265,9 @@ typedef NS_ENUM(NSInteger, groups) {
             // Set Font to Bold if unread.
             cell.textLabel.text = generalItem.name;
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-            cell.detailTextLabel.text = generalItem.richText;
+            cell.detailTextLabel.text = [[generalItem.richText
+                                          stringByReplacingOccurrencesOfString:@"<p>" withString:@""]
+                                         stringByReplacingOccurrencesOfString:@"</p>" withString:@""];
             
             // If Read set Font to normal.
             for (Action * action in generalItem.actions) {

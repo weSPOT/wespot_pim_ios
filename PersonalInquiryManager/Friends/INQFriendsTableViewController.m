@@ -31,11 +31,14 @@ typedef NS_ENUM(NSInteger, friends) {
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (strong, nonatomic) NSArray *AllUsers;
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
+//@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
 @implementation INQFriendsTableViewController
+
+// @synthesize Friends = _Friends;
 
 -(NSString *) cellIdentifier {
     return  @"friendsCell";
@@ -48,112 +51,144 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [self.navigationController setToolbarHidden:YES];
     
-    [self setupFetchedResultsController];
-
-}
+#warning Disabled Database here.
+    // [self setupFetchedResultsController];
+ }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (!self.AllUsers) {
-        [self getAllUsers];
+    //    if (!self.AllUsers) {
+    //        [self getAllUsers];
+    //    }
+    
+    if (!self.Friends) {
+        [self getMyFriends];
     }
     
-    if (ARLNetwork.networkAvailable) {
-        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-            [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
-        });
-    }
+    [self.tableView reloadData];
+
+    //    if (ARLNetwork.networkAvailable) {
+    //        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+    //            [INQCloudSynchronizer syncUsers:appDelegate.managedObjectContext];
+    //        });
+    //    }
 }
 
 - (void)getAllUsers {
-    // This should be async and only fired once.
-    //
-    NSDictionary *usersJson = [ARLNetwork getUsers];
-    
-    self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
+    if (ARLNetwork.networkAvailable) {
+        // This should be async and only fired once.
+        //
+        NSDictionary *usersJson = [ARLNetwork getUsers];
+        
+        self.AllUsers = (NSArray *)[usersJson objectForKey:@"result"];
+    }
 }
 
-- (void)setupFetchedResultsController {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    
-    [request setFetchBatchSize:8];
-    
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
-    
-    NSNumber* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
-    request.predicate = [NSPredicate predicateWithFormat:
-                         @"accountType != %d or localId != %@",
-                         [accountType intValue],
-                         [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
-    
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-   
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-    
-    self.fetchedResultsController.delegate = self;
-    
-    NSError *error;
-    [self.fetchedResultsController performFetch:&error];
+- (void)getMyFriends {
+    if (ARLNetwork.networkAvailable) {
+        // This should be async and only fired once.
+        //
+        Account *account = [ARLNetwork CurrentAccount];
+        
+        NSDictionary *usersJson = [ARLNetwork getFriends:account.localId withProviderId:account.accountType];
+        
+        //{
+        //    result =     (
+        //                  {
+        //                      icon = "http://inquiry.wespot.net/mod/profile/icondirect.php?lastcache=1396854990&joindate=1396854975&guid=32309&size=medium";
+        //                      name = "Stefaan Ternier";
+        //                      oauthId = "stefaan.ternier";
+        //                      oauthProvider = weSPOT;
+        //                  }
+        //                  );
+        //    status = 0;
+        //}
+        
+        self.Friends = (NSArray *)[usersJson objectForKey:@"result"];
+    }
 }
 
-- (void)contextChanged:(NSNotification*)notification
-{
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
-        return;
-    }
-    
-    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
-    for (NSManagedObject *obj in deletedObjects) {
-        if ([[obj entity].name isEqualToString:@"Account"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
-            
-            // [self.tableView reloadData];
-            return;
-        }
-    }
-    
-    // See if there are any Inquiry objects added and if so, reload the tableView.
-    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-    
-    for (NSManagedObject *obj in insertedObjects) {
-        if ([[obj entity].name isEqualToString:@"Account"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
-            
-            [self.tableView reloadData];
-            return;
-        }
-    }
-    
-    // If no Inquiry objecst are added, look for updates and refresh them.
-    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-    
-    for (NSManagedObject *obj in updatedObjects) {
-        if ([[obj entity].name isEqualToString:@"Account"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
-            
-            [self.tableView reloadData];
-            return;
-        }
-    }
-}
+//- (void)setupFetchedResultsController {
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+//
+//    [request setFetchBatchSize:8];
+//
+//    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
+//
+//    NSNumber* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
+//    request.predicate = [NSPredicate predicateWithFormat:
+//                         @"accountType != %d or localId != %@",
+//                         [accountType intValue],
+//                         [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
+//
+//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+//
+//    self.fetchedResultsController.delegate = self;
+//
+//    NSError *error;
+//    [self.fetchedResultsController performFetch:&error];
+//}
+//
+//- (void)contextChanged:(NSNotification*)notification
+//{
+//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    if ([notification object] == appDelegate.managedObjectContext) {
+//        return ;
+//    }
+//
+//    if (![NSThread isMainThread]) {
+//        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+//        return;
+//    }
+//
+//    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+//    for (NSManagedObject *obj in deletedObjects) {
+//        if ([[obj entity].name isEqualToString:@"Account"]) {
+//            NSError *error = nil;
+//            [self.fetchedResultsController performFetch:&error];
+//
+//            // [self.tableView reloadData];
+//            return;
+//        }
+//    }
+//
+//    // See if there are any Inquiry objects added and if so, reload the tableView.
+//    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+//
+//    for (NSManagedObject *obj in insertedObjects) {
+//        if ([[obj entity].name isEqualToString:@"Account"]) {
+//            NSError *error = nil;
+//            [self.fetchedResultsController performFetch:&error];
+//
+//            [self.tableView reloadData];
+//            return;
+//        }
+//    }
+//
+//    // If no Inquiry objecst are added, look for updates and refresh them.
+//    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+//
+//    for (NSManagedObject *obj in updatedObjects) {
+//        if ([[obj entity].name isEqualToString:@"Account"]) {
+//            NSError *error = nil;
+//            [self.fetchedResultsController performFetch:&error];
+//
+//            [self.tableView reloadData];
+//            return;
+//        }
+//    }
+//}
 
 /*!
  *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
  */
 -(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -181,10 +216,12 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     // Return the number of rows in the section.
     switch (section) {
-//        case ADD:
-//            return 1;
+            // case ADD:
+            //   return 1;
         case FRIENDS:
-            return [[self.fetchedResultsController fetchedObjects] count];
+#warning Should be [self.Friends count]
+            // return [[self.fetchedResultsController fetchedObjects] count];
+            return [self.Friends count];
     }
     
     // Error
@@ -194,8 +231,8 @@ typedef NS_ENUM(NSInteger, friends) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
-//        case ADD:
-//            return @"";
+            //        case ADD:
+            //            return @"";
         case FRIENDS:
             return @"Friends";
     }
@@ -215,7 +252,7 @@ typedef NS_ENUM(NSInteger, friends) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
-   
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
@@ -225,39 +262,49 @@ typedef NS_ENUM(NSInteger, friends) {
     // Configure the cell...
     
     switch (indexPath.section) {
-//        case ADD:
-//            cell.textLabel.text = @"Add friend";
-//            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-//            break;
+            //        case ADD:
+            //            cell.textLabel.text = @"Add friend";
+            //            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+            //            break;
         case FRIENDS:{
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+            // NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             
-            Account *account = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
+#warning Should be self.Friends[]
             
-            cell.textLabel.text = account.name;
+            // Account *account = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            NSDictionary *account = [self.Friends objectAtIndex:indexPath.row];
+            
+            cell.textLabel.text = [account valueForKey:@"name"];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             cell.detailTextLabel.text = @"";
             cell.accessoryType = UITableViewCellAccessoryNone;
             
-            NSData* icon = [account picture];
-            if (icon) {
-                cell.imageView.image = [UIImage imageWithData:icon];
-            } else {
-                // Fixup for Friends Icons do not show immediately (icon property is empty).
-                // LocalId == oauthId
-                for (NSDictionary *dict in self.AllUsers) {
-                    if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId]) {
-                        @autoreleasepool {
-                            NSURL *imageURL   = [NSURL URLWithString:[dict objectForKey:@"icon"]];
-                   
-                            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                            if (imageData) {
-                                cell.imageView.image = [UIImage imageWithData:imageData];
-                            }
-                        }
-                        break;
+            //NSData* icon = [account picture];
+            //if (icon) {
+            //  cell.imageView.image = [UIImage imageWithData:icon];
+            //} else {
+            
+            // Fixup for Friends Icons do not show immediately (icon property is empty).
+            
+            // LocalId == oauthId
+            //for (NSDictionary *dict in self.AllUsers) {
+            //    if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId]) {
+            
+            if ([account objectForKey:@"icon"]) {
+                @autoreleasepool {
+                    NSURL *imageURL = [NSURL URLWithString:[account objectForKey:@"icon"]];
+                    
+                    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                    if (imageData) {
+                        cell.imageView.image = [UIImage imageWithData:imageData];
                     }
                 }
+                //break;
+                //}
+                //}
+                //}
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"profile"];
             }
         }
     }
@@ -267,21 +314,21 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-//        case ADD: {
-//            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
-//            
-//            if ([newViewController respondsToSelector:@selector(AllUsers)]) {
-//                [newViewController performSelector:@selector(AllUsers) withObject:self.AllUsers];
-//            }
-//            
-//            [self.navigationController pushViewController:newViewController animated:YES];
-//        }
+            //        case ADD: {
+            //            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
+            //
+            //            if ([newViewController respondsToSelector:@selector(setAllUsers:)]) {
+            //                [newViewController performSelector:@selector(setAllUsers:) withObject:self.AllUsers];
+            //            }
+            //
+            //            [self.navigationController pushViewController:newViewController animated:YES];
+            //        }
         case FRIENDS:
         {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             
             UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:ip];
-    
+            
             cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
         }
     }

@@ -18,8 +18,6 @@
 @synthesize syncResponses = _syncResponses;
 
 + (void) syncGeneralItems: (NSManagedObjectContext*) context {
-    DLog(@"");
-    
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -31,8 +29,6 @@
 
 + (void) syncResponseData: (NSManagedObjectContext*) context
               contentType: (NSString *) contentType {
-    DLog(@"");
-    
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
@@ -58,12 +54,12 @@
 }
 
 - (void) asyncExecution {
-    mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    //mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
     
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passing Lock", ARLAppDelegate.theLock);
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passing Lock", ARLAppDelegate.theLock);
     
      // DLog(@"Thread:0x%x - Start of File Synchronisation", machTID);
     
@@ -89,7 +85,7 @@
     
     [ARLAppDelegate.theLock unlock];
     
-    DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
     // DLog(@"Thread:0x%x - End of File Synchronisation", machTID);
 }
@@ -104,7 +100,10 @@
 - (void)saveContext
 {
     NSError *error = nil;
-    
+ 
+    CLog(@"Saving NSManagedObjectContext");
+    RawLog(@"");
+
     if (self.context) {
         if ([self.context hasChanges]){
             if (![self.context save:&error]) {
@@ -125,11 +124,16 @@
 }
 
 - (void) downloadGeneralItems {
+    CLog(@"");
+    
     for (GeneralItemData *giData in [GeneralItemData getUnsyncedData:self.context]) {
         // DLog(@"gidata url=%@ replicated=%@ error=%@", giData.url, giData.replicated, giData.error);
         
         if (ARLAppDelegate.SyncAllowed) {
             NSURL  *url = [NSURL URLWithString:giData.url];
+          
+            CLog(@"%@", [url lastPathComponent]);
+            
             NSData *urlData = [NSData dataWithContentsOfURL:url];
             if (urlData){
                 giData.data = urlData;
@@ -256,7 +260,7 @@
 //}
 
 - (void) downloadResponses {
-    DLog(@"** Checking for contentType=%@", self.contentType);
+    CLog(@"ContentType=%@", self.contentType);
     
     int cnt = 0;
     
@@ -271,12 +275,12 @@
                             
                             NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                             
-                            DLog(@"** Downloading url=%@", url);
+                            CLog(@"Downloading: %@", [url lastPathComponent]);
                             
                             NSData *urlData = [NSData dataWithContentsOfURL:url];
                             
                             if (urlData) {
-                                DLog(@"** Downloaded url=%@", url);
+                                CLog(@"Downloaded: %@", [url lastPathComponent]);
                                 
                                 // Create Thumbnails from Images to lower memory load.
                                 // UIImage *img = [UIImage imageWithData:urlData];
@@ -346,7 +350,7 @@
                             
                             NSURL *url = [NSURL URLWithString:response.fileName];
                             
-                            DLog(@"** Downloading url=%@", url);
+                            CLog(@"Downloading: %@", [url lastPathComponent]);
                             
                             //See http://stackoverflow.com/questions/8432246/ios-gamecenter-avasset-and-audio-streaming
                             
@@ -362,7 +366,7 @@
                             //
                             //                    [[NSData dataWithContentsOfURL:url] writeToFile:file atomically:NO];
                             
-                            DLog(@"** Thumbnailing url=%@", url);
+                            CLog(@"Thumbnailing: %@", [url lastPathComponent]);
                             
                             // 2) Create an AVAsset from it.
                             //                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
@@ -389,7 +393,7 @@
                             if (error) {
                                 DLog(@"Error==%@, RefImage==%@", error, refImg);
                             }
-                            //
+                          
                             UIImage *thumbImage= [[UIImage alloc] initWithCGImage:refImg];
                             
                             // 6) Save both original and thumbnail.
@@ -423,7 +427,7 @@
                             
                             NSURL *url = [NSURL URLWithString:response.fileName];
                             
-                            DLog(@"** Downloading url=%@", url);
+                            CLog(@"Downloading: %@", [url lastPathComponent]);
                             
                             response.data = [NSData dataWithContentsOfURL:url];
                         }
@@ -435,7 +439,7 @@
             }
         }
     }
-    DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
+    // DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
     
     self.syncResponses=NO;
 }

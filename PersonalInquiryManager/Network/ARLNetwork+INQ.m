@@ -402,7 +402,7 @@
 + (NSString *) dictionaryToUrl: (NSDictionary *)dict {
     NSString *url = [NSString stringWithFormat:@"%@?%@", ARLNetwork.elgBaseUrl, [ARLNetwork dictionaryToParmeters:dict]];
     
-    DLog(@"%@", url);
+    // DLog(@"%@", url);
     
     return url;
 }

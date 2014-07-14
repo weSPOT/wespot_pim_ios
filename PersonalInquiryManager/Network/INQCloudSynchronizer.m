@@ -98,7 +98,7 @@
 - (void)saveContext {
     NSError *error = nil;
     
-    CLog(@"Saving NSManagedObjectContext");
+    // CLog(@"Saving NSManagedObjectContext");
     // RawLog(@"");
     
     //#warning ABORT TEST CODE AHEAD
@@ -182,7 +182,7 @@
         id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
         id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
         
-        CLog(@"%@:%@", providerId, localId);
+        // CLog(@"%@:%@", providerId, localId);
         
         NSDictionary *dict = [ARLNetwork getInquiries:localId withProviderId:providerId];
         
@@ -359,7 +359,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) syncAllUsers {
-    CLog(@"");
+    // CLog(@"");
     
     @autoreleasepool {
         // Fetch Account default values for localId and withProviderId.
@@ -411,7 +411,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeInquiryUsers {
-    CLog(@"InquiryId: %@", self.inquiryId);
+    // CLog(@"InquiryId: %@", self.inquiryId);
     
     @autoreleasepool {
         Account * account = [ARLNetwork CurrentAccount];
@@ -453,7 +453,7 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeMessages{
-    CLog(@"InquiryId: %@", self.inquiryId);
+    // CLog(@"InquiryId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
     NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];

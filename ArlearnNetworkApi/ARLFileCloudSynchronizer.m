@@ -101,7 +101,7 @@
 {
     NSError *error = nil;
  
-    CLog(@"Saving NSManagedObjectContext");
+    // CLog(@"Saving NSManagedObjectContext");
     // RawLog(@"");
 
     if (self.context) {
@@ -124,7 +124,7 @@
 }
 
 - (void) downloadGeneralItems {
-    CLog(@"");
+    // CLog(@"");
     
     for (GeneralItemData *giData in [GeneralItemData getUnsyncedData:self.context]) {
         // DLog(@"gidata url=%@ replicated=%@ error=%@", giData.url, giData.replicated, giData.error);
@@ -132,7 +132,7 @@
         if (ARLAppDelegate.SyncAllowed) {
             NSURL  *url = [NSURL URLWithString:giData.url];
           
-            CLog(@"%@", [url lastPathComponent]);
+            // CLog(@"%@", [url lastPathComponent]);
             
             NSData *urlData = [NSData dataWithContentsOfURL:url];
             if (urlData){
@@ -152,7 +152,7 @@
 }
 
 - (void) downloadResponses {
-    CLog(@"ResponseType=%@", self.responseType);
+    // CLog(@"ResponseType=%@", self.responseType);
     
     int cnt = 0;
     
@@ -167,12 +167,12 @@
                                 
                                 NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                                 
-                                CLog(@"Downloading: %@", [url lastPathComponent]);
+                                // CLog(@"Downloading: %@", [url lastPathComponent]);
                                 
                                 NSData *urlData = [NSData dataWithContentsOfURL:url];
                                 
                                 if (urlData) {
-                                    CLog(@"Downloaded: %@", [url lastPathComponent]);
+                                    // CLog(@"Downloaded: %@", [url lastPathComponent]);
                                     
                                     response.thumb = urlData; //[UIImage imageWithData:urlData];
                                     
@@ -190,9 +190,9 @@
                                 
                                 NSURL *url = [NSURL URLWithString:response.fileName];
                                 
-                                CLog(@"Downloading: %@", [url lastPathComponent]);
+                                // CLog(@"Downloading: %@", [url lastPathComponent]);
                                 
-                                CLog(@"Thumbnailing: %@", [url lastPathComponent]);
+                                // CLog(@"Thumbnailing: %@", [url lastPathComponent]);
                                 
                                 // 2) Create an AVAsset from it.
                                 //                AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:url] options:nil];
@@ -258,7 +258,7 @@
                                     
                                     NSURL *url = [NSURL URLWithString:response.fileName];
                                     
-                                    CLog(@"Downloading: %@", [url lastPathComponent]);
+                                    // CLog(@"Downloading: %@", [url lastPathComponent]);
                                     
                                     response.data = [NSData dataWithContentsOfURL:url];
                                 }

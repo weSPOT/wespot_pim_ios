@@ -300,7 +300,7 @@
                                       withValue:[Response jsonString:myDictionary]
                          inManagedObjectContext:generalItem.managedObjectContext];
     
-    response.responseType = [NSNumber numberWithInt:NUMBER];
+    response.responseType = [NSNumber numberWithInt:TEXT];
 }
 
 /*!

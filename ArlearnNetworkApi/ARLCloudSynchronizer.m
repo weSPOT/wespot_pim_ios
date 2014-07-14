@@ -99,7 +99,7 @@
 {
     NSError *error = nil;
     
-    CLog(@"Saving NSManagedObjectContext");
+    // CLog(@"Saving NSManagedObjectContext");
     
     //RawLog(@"");
     
@@ -180,7 +180,7 @@
 }
 
 - (void) synchronizeRuns { //: (NSManagedObjectContext *) context
-    CLog(@"");
+    // CLog(@"");
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myRuns"];
@@ -198,7 +198,7 @@
 }
 
 - (void) synchronizeGames { //: (NSManagedObjectContext *) context{
-    CLog(@"");
+    // CLog(@"");
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"myGames"];
@@ -217,7 +217,7 @@
 }
 
 - (void) synchronizeGeneralItemsWithGame {
-    CLog(@"GameId: %@", self.gameId);
+    // CLog(@"GameId: %@", self.gameId);
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
@@ -248,7 +248,7 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements {
-    CLog(@"");
+    // CLog(@"");
     
     @autoreleasepool {
         Run *run = [Run retrieveRun:self.visibilityRunId inManagedObjectContext:self.context];
@@ -259,7 +259,7 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
-    CLog(@"Run:%@", run.runId);
+    // CLog(@"Run:%@", run.runId);
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
@@ -308,7 +308,7 @@
 }
 
 - (void) synchronizeActions {
-    CLog(@"");
+    // CLog(@"");
     
     @autoreleasepool {
         NSArray* actions =  [Action getUnsyncedActions:self.context];
@@ -328,7 +328,7 @@
 }
 
 - (void) synchronizeResponses {
-     CLog(@"");
+    // CLog(@"");
     
     //  BOOL uploads = NO;
     

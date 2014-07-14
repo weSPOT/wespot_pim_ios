@@ -37,8 +37,7 @@ typedef NS_ENUM(NSInteger, responses) {
 @property (strong, nonatomic) NSString *textDescription;
 @property (strong, nonatomic) NSString *valueDescription;
 
-@property (readonly, nonatomic) NSString *cellIdentifier1;
-@property (readonly, nonatomic) NSString *cellIdentifier2;
+@property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
@@ -58,17 +57,8 @@ typedef NS_ENUM(NSInteger, responses) {
  *
  *  @return The Cell Identifier.
  */
--(NSString *) cellIdentifier1 {
+-(NSString *) cellIdentifier {
     return  @"imageItemCell";
-}
-
-/*!
- *  Getter
- *
- *  @return The Cell Identifier.
- */
--(NSString *) cellIdentifier2 {
-    return  @"textItemCell";
 }
 
 /*!
@@ -510,7 +500,7 @@ typedef NS_ENUM(NSInteger, responses) {
 //}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ARLNarratorItemView *cell = (ARLNarratorItemView *)[cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier1
+    ARLNarratorItemView *cell = (ARLNarratorItemView *)[cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier
                                                                                      forIndexPath:indexPath];
     
     
@@ -580,8 +570,6 @@ typedef NS_ENUM(NSInteger, responses) {
                     cell.imgView.image = [UIImage imageNamed:@"task-record"];
                 }
                 
-                return cell;
-                
             } else {
                 if (response.value) {
                     if ((self.withText  && [response.responseType isEqualToNumber:[NSNumber numberWithInt:TEXT]]) ||
@@ -609,8 +597,6 @@ typedef NS_ENUM(NSInteger, responses) {
                         UIGraphicsEndImageContext();
                         
                         cell.imgView.image  = [self drawText:txt inImage:cell.imgView.image atPoint:CGPointZero];
-                        
-                        return cell;
                     }
                 }
             }
@@ -618,9 +604,7 @@ typedef NS_ENUM(NSInteger, responses) {
             break;
     }
     
-    // Should not happen.
-    return [cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier1
-                                         forIndexPath:indexPath];
+    return cell;
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

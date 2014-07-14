@@ -102,9 +102,9 @@ static BOOL _syncAllowed = NO;
                                 appVersion,                         APP_VERSION,
                                 
                                 nil];
- 
-#warning FORCING LOGGING.
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
+    
+    //#warning FORCING LOGGING.
+    //    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
     
     // ERROR LOGGIN TEST CODE
     {

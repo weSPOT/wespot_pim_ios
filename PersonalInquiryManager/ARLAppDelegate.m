@@ -81,13 +81,13 @@ static BOOL _syncAllowed = NO;
     NSString *appVersion =  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
-    Log(@"Version String:  %@", appVersion);
-    Log(@"Build Number:    %@", appBuild);
-    Log(@"Git Commit Hash: %@", gitHash);
+    // Log(@"Version String:  %@", appVersion);
+    // Log(@"Build Number:    %@", appBuild);
+    // Log(@"Git Commit Hash: %@", gitHash);
     
     // Log(@"deviceUniqueIdentifier: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
     // Log(@"deviceToken:            %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
-    Log(@"bundleIdentifier:       %@", [[NSBundle mainBundle] bundleIdentifier]);
+    // Log(@"bundleIdentifier:       %@", [[NSBundle mainBundle] bundleIdentifier]);
     
     // Register default preferences.
     NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -157,13 +157,15 @@ static BOOL _syncAllowed = NO;
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
     [self startStandardUpdates];
+    
     // Create Database Context etc here so we get an early error if database was updated.
     if (![self managedObjectContext]) {
         [self ShowAbortMessage:NSLocalizedString(@"Notice", @"Notice")
                        message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")];
     } else {
-        DLog(@"Updating ResponseType Start");
-        //Correct Responses.
+        // DLog(@"Updating ResponseType Start");
+        
+        // Correct Responses.
         
         NSPredicate *unknownTypes = [NSPredicate predicateWithFormat:@"(responseType = %@)",[NSNumber numberWithInt:UNKNOWN]];
         
@@ -201,7 +203,7 @@ static BOOL _syncAllowed = NO;
             [self.managedObjectContext save:&error];
         }
         
-        DLog(@"Updating ResponseType Finish");
+        // DLog(@"Updating ResponseType Finish");
     }
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
@@ -312,7 +314,7 @@ static BOOL _syncAllowed = NO;
     if (!_managedObjectModel) {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
     
-        Log(@"%@", modelURL);
+        // Log(@"%@", modelURL);
         
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     }
@@ -328,11 +330,11 @@ static BOOL _syncAllowed = NO;
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (!_persistentStoreCoordinator) {
-        DLog(@"\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************");
+        // DLog(@"\r\n*******************************************\r\nCreating a Persistent Store Coordinator\r\n*******************************************");
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
-        Log(@"%@", storeURL);
+        // Log(@"%@", storeURL);
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

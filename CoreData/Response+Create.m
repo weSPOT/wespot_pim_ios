@@ -259,7 +259,7 @@
     if (error) {
         ELog(error);
     } else {
-        DLog(@"Found %d Responses without Media or Thumbnail", unsyncedResponses.count);
+        // DLog(@"Found %d Responses without Media or Thumbnail", unsyncedResponses.count);
     }
     
     return unsyncedResponses;

@@ -147,9 +147,9 @@
             NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             response.value = jsonString;//[valueDict objectForKey:@"text"];
             response.responseType = [NSNumber numberWithInt:TEXT];
-        } else if ([valueDict objectForKey:@"number"]) {
+        } else if ([valueDict objectForKey:@"value"]) {
             NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            response.value = jsonString;//[valueDict objectForKey:@"number"];
+            response.value = jsonString;//[valueDict objectForKey:@"value"];
             response.responseType = [NSNumber numberWithInt:NUMBER];
         }
     }

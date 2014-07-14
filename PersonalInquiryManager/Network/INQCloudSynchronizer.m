@@ -99,7 +99,7 @@
     NSError *error = nil;
     
     CLog(@"Saving NSManagedObjectContext");
-    RawLog(@"");
+    // RawLog(@"");
     
     //#warning ABORT TEST CODE AHEAD
     //    NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : @"DESCRIPTION" };

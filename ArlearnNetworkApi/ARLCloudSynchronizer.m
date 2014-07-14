@@ -100,7 +100,8 @@
     NSError *error = nil;
     
     CLog(@"Saving NSManagedObjectContext");
-    RawLog(@"");
+    
+    //RawLog(@"");
     
     if (self.context) {
         if ([self.context hasChanges]){

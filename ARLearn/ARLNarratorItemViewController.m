@@ -456,26 +456,6 @@ typedef NS_ENUM(NSInteger, responses) {
     switch (section){
         case RESPONSES:
             count = [self.fetchedResultsController.fetchedObjects count];
-            
-            if (!self.withText) {
-                for (Response *resp in self.fetchedResultsController.fetchedObjects) {
-                    if (resp.value ) {
-                        if ([resp.value rangeOfString:@"{text:"].location != NSNotFound) {
-                            count--;
-                        }
-                    }
-                }
-            }
-            
-            if (!self.withValue) {
-                for (Response *resp in self.fetchedResultsController.fetchedObjects) {
-                    if (resp.value ) {
-                        if ([resp.value rangeOfString:@"{value:"].location != NSNotFound) {
-                            count--;
-                        }
-                    }
-                }
-            }
             break;
     }
     

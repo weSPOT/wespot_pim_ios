@@ -2,7 +2,7 @@
 //  Run.m
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/24/14.
+//  Created by Wim van der Vegt on 7/14/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 #import "Game.h"
 #import "GeneralItemVisibility.h"
 #import "Inquiry.h"
+#import "Message.h"
 #import "Response.h"
 
 
@@ -27,6 +28,7 @@
 @dynamic game;
 @dynamic inquiry;
 @dynamic itemVisibilityRules;
+@dynamic messages;
 @dynamic responses;
 
 @end

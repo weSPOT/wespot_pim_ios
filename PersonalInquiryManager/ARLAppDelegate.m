@@ -149,7 +149,7 @@ static BOOL _syncAllowed = NO;
     
     [reach startNotifier];
 
-    // Let the Reachabilty Notifier run for a second.
+    //!!!: Let the Reachabilty Notifier run for half a second, so we have more chance to performing the initial sync!
     NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
     [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
     
@@ -157,11 +157,51 @@ static BOOL _syncAllowed = NO;
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
     [self startStandardUpdates];
-    
     // Create Database Context etc here so we get an early error if database was updated.
     if (![self managedObjectContext]) {
         [self ShowAbortMessage:NSLocalizedString(@"Notice", @"Notice")
                        message:NSLocalizedString(@"The database has been changed. Please re-install the application",@"The database has been changed. Please re-install the application")];
+    } else {
+        DLog(@"Updating ResponseType Start");
+        //Correct Responses.
+        
+        NSPredicate *unknownTypes = [NSPredicate predicateWithFormat:@"(responseType = %@)",[NSNumber numberWithInt:UNKNOWN]];
+        
+        for (Response *response in [ARLAppDelegate retrievAllOfEntity:self.managedObjectContext enityName:@"Response" predicate:unknownTypes]) {
+            if ([response.responseType isEqualToNumber:[NSNumber numberWithInt:UNKNOWN]]) {
+                
+                if ([response.contentType isEqualToString:@"audio/aac"]) {
+                    response.responseType = [NSNumber numberWithInt:AUDIO];
+                } else if ([response.contentType isEqualToString:@"application/jpg"]) {
+                    response.responseType = [NSNumber numberWithInt:PHOTO];
+                } else if ([response.contentType isEqualToString:@"video/quicktime"]) {
+                    response.responseType = [NSNumber numberWithInt:VIDEO];
+                } else if (response.value) {
+                    NSError *error = nil;
+                    NSData *JSONdata = [response.value dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:JSONdata
+                                                                               options: NSJSONReadingMutableContainers
+                                                                                 error:&error];
+                    if ([dictionary valueForKey:@"text"]) {
+                        response.responseType = [NSNumber numberWithInt:TEXT];
+                    } else if ([dictionary valueForKey:@"value"]) {
+                        response.responseType = [NSNumber numberWithInt:NUMBER];
+                    } else {
+                        // response.responseType = [NSNumber numberWithInt:UNKNOWN];
+                    }
+                    
+                } else {
+                    // response.responseType = [NSNumber numberWithInt:UNKNOWN];
+                }
+            }
+        }
+        
+        if ([self.managedObjectContext hasChanges]) {
+            NSError *error = nil;
+            [self.managedObjectContext save:&error];
+        }
+        
+        DLog(@"Updating ResponseType Finish");
     }
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
@@ -381,6 +421,7 @@ static BOOL _syncAllowed = NO;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
     
     request.predicate = predicate;
+    request.fetchBatchSize = 8;
     
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];

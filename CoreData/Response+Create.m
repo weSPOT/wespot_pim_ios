@@ -10,6 +10,7 @@
 
 @implementation Response (Create)
 
+
 /*!
  *  Creates a new Response in Core Data.
  *
@@ -133,18 +134,23 @@
             response.width = [NSNumber numberWithInt:[[valueDict objectForKey:@"width"] integerValue]];
             response.fileName = [valueDict objectForKey:@"imageUrl"];
             response.contentType = @"application/jpg";
+            response.responseType = [NSNumber numberWithInt:PHOTO];
         } else if ([valueDict objectForKey:@"videoUrl"]) {
             response.fileName = [valueDict objectForKey:@"videoUrl"];
             response.contentType = @"video/quicktime";
+            response.responseType = [NSNumber numberWithInt:VIDEO];
         } else if ([valueDict objectForKey:@"audioUrl"]) {
             response.fileName = [valueDict objectForKey:@"audioUrl"];
             response.contentType = @"audio/aac";
+            response.responseType = [NSNumber numberWithInt:AUDIO];
         } else if ([valueDict objectForKey:@"text"]) {
             NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             response.value = jsonString;//[valueDict objectForKey:@"text"];
+            response.responseType = [NSNumber numberWithInt:TEXT];
         } else if ([valueDict objectForKey:@"number"]) {
             NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             response.value = jsonString;//[valueDict objectForKey:@"number"];
+            response.responseType = [NSNumber numberWithInt:NUMBER];
         }
     }
 
@@ -289,10 +295,12 @@
     NSDictionary *myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
                                  text, @"text", nil];
     
-    [Response initResponse:run
-            forGeneralItem:generalItem
-                 withValue:[Response jsonString:myDictionary]
-    inManagedObjectContext:generalItem.managedObjectContext];
+    Response *response = [Response initResponse:run
+                                 forGeneralItem:generalItem
+                                      withValue:[Response jsonString:myDictionary]
+                         inManagedObjectContext:generalItem.managedObjectContext];
+    
+    response.responseType = [NSNumber numberWithInt:NUMBER];
 }
 
 /*!
@@ -303,15 +311,17 @@
  *  @param generalItem The GeneralItem.
  */
 + (void) createValueResponse: (NSString *) value
-                    withRun: (Run *)run
-            withGeneralItem: (GeneralItem *) generalItem {
+                     withRun: (Run *)run
+             withGeneralItem: (GeneralItem *) generalItem {
     NSDictionary *myDictionary= [[NSDictionary alloc] initWithObjectsAndKeys:
                                  value, @"value", nil];
     
-    [Response initResponse:run
-            forGeneralItem:generalItem
-                 withValue:[Response jsonString:myDictionary]
-    inManagedObjectContext:generalItem.managedObjectContext];
+    Response *response = [Response initResponse:run
+                                 forGeneralItem:generalItem
+                                      withValue:[Response jsonString:myDictionary]
+                         inManagedObjectContext:generalItem.managedObjectContext];
+    
+    response.responseType = [NSNumber numberWithInt:NUMBER];
 }
 
 /*!
@@ -337,7 +347,9 @@
     response.width =width;
     response.height = height;
     response.contentType = @"application/jpg";
+    response.responseType = [NSNumber numberWithInt:PHOTO];
     response.fileName = @"jpg";
+    
     response.account = [ARLNetwork CurrentAccount];
 }
 
@@ -358,7 +370,9 @@
                          inManagedObjectContext:generalItem.managedObjectContext];
     
     response.contentType = @"video/quicktime";
+    response.responseType = [NSNumber numberWithInt:VIDEO];
     response.fileName = @"mov";
+    
     response.account = [ARLNetwork CurrentAccount];
 }
 
@@ -379,7 +393,9 @@
                          inManagedObjectContext:generalItem.managedObjectContext];
     
     response.contentType = @"audio/aac";
+    response.responseType = [NSNumber numberWithInt:AUDIO];
     response.fileName = @"m4a";
+    
     response.account = [ARLNetwork CurrentAccount];
 }
 

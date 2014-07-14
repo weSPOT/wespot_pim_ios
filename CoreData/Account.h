@@ -2,7 +2,7 @@
 //  Account.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 4/22/14.
+//  Created by Wim van der Vegt on 7/14/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 

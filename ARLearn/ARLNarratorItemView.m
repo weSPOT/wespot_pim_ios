@@ -8,9 +8,9 @@
 
 #import "ARLNarratorItemView.h"
 
-@interface ARLNarratorItemView ()
-
-@end
+//@interface ARLNarratorItemView ()
+//
+//@end
 
 @implementation ARLNarratorItemView
 

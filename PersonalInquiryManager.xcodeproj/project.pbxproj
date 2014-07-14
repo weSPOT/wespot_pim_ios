@@ -100,18 +100,8 @@
 		8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3F8B1B18ACE31900B233A6 /* INQPlanViewController.m */; };
 		8D40F3EC18C0AAE700F081AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D40F3EB18C0AAE700F081AE /* main.m */; };
 		8D4511DA18E04F3A0012DEDF /* TestAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511D918E04F3A0012DEDF /* TestAccount.m */; };
-		8D4511DD18E04F3B0012DEDF /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511DC18E04F3B0012DEDF /* Action.m */; };
-		8D4511E018E04F3B0012DEDF /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511DF18E04F3B0012DEDF /* Game.m */; };
-		8D4511E618E04F3B0012DEDF /* Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511E518E04F3B0012DEDF /* Run.m */; };
-		8D4511E918E04F3B0012DEDF /* GeneralItemData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511E818E04F3B0012DEDF /* GeneralItemData.m */; };
-		8D4511EC18E04F3B0012DEDF /* GeneralItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511EB18E04F3B0012DEDF /* GeneralItemVisibility.m */; };
-		8D4511EF18E04F3B0012DEDF /* Inquiry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511EE18E04F3B0012DEDF /* Inquiry.m */; };
-		8D4511F218E04F3C0012DEDF /* SynchronizationBookKeeping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511F118E04F3C0012DEDF /* SynchronizationBookKeeping.m */; };
-		8D4511F518E04F3C0012DEDF /* CurrentItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4511F418E04F3C0012DEDF /* CurrentItemVisibility.m */; };
-		8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36BD18E1C32E000FCEA6 /* Response.m */; };
 		8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */; };
 		8D4C36C718E46076000FCEA6 /* Message+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36C618E46076000FCEA6 /* Message+Create.m */; };
-		8D4C36D618E47E3B000FCEA6 /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */; };
 		8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */; };
 		8D4DF87C18A3C08B009CD9BA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4DF87B18A3C08B009CD9BA /* Images.xcassets */; };
 		8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C667718D6F559003B79E5 /* ARLNarratorItemViewController.m */; };
@@ -141,8 +131,19 @@
 		8D77DADF1958631400D84482 /* INQLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D77DADE1958631400D84482 /* INQLog.m */; };
 		8D81D5CD193F57E200D4C7B4 /* storyboard.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5CB193F57E200D4C7B4 /* storyboard.strings */; };
 		8D81D5D2193F587800D4C7B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5D0193F587800D4C7B4 /* Localizable.strings */; };
-		8D96FF221906ABAB00520DEF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF211906ABAB00520DEF /* Message.m */; };
-		8D96FF251906ABAC00520DEF /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D96FF241906ABAC00520DEF /* Account.m */; };
+		8D8B45B71973D063001FC6DF /* Model_2_to_3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */; };
+		8D8B45BA1973D58E001FC6DF /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45B91973D58E001FC6DF /* Response.m */; };
+		8D8B45BD1973D58F001FC6DF /* GeneralItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */; };
+		8D8B45C01973D58F001FC6DF /* SynchronizationBookKeeping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45BF1973D58F001FC6DF /* SynchronizationBookKeeping.m */; };
+		8D8B45C31973D58F001FC6DF /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45C21973D58F001FC6DF /* Account.m */; };
+		8D8B45C61973D58F001FC6DF /* GeneralItemData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45C51973D58F001FC6DF /* GeneralItemData.m */; };
+		8D8B45C91973D590001FC6DF /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45C81973D590001FC6DF /* Game.m */; };
+		8D8B45CC1973D590001FC6DF /* Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45CB1973D590001FC6DF /* Run.m */; };
+		8D8B45CF1973D590001FC6DF /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45CE1973D590001FC6DF /* Action.m */; };
+		8D8B45D21973D590001FC6DF /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45D11973D590001FC6DF /* GeneralItem.m */; };
+		8D8B45D51973D590001FC6DF /* Inquiry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45D41973D590001FC6DF /* Inquiry.m */; };
+		8D8B45D81973D590001FC6DF /* CurrentItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45D71973D590001FC6DF /* CurrentItemVisibility.m */; };
+		8D8B45DB1973D590001FC6DF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45DA1973D590001FC6DF /* Message.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
@@ -285,30 +286,10 @@
 		8D40F3EB18C0AAE700F081AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D4511D818E04F3A0012DEDF /* TestAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAccount.h; sourceTree = "<group>"; };
 		8D4511D918E04F3A0012DEDF /* TestAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAccount.m; sourceTree = "<group>"; };
-		8D4511DB18E04F3B0012DEDF /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
-		8D4511DC18E04F3B0012DEDF /* Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
-		8D4511DE18E04F3B0012DEDF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		8D4511DF18E04F3B0012DEDF /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
-		8D4511E418E04F3B0012DEDF /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
-		8D4511E518E04F3B0012DEDF /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Run.m; sourceTree = "<group>"; };
-		8D4511E718E04F3B0012DEDF /* GeneralItemData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemData.h; sourceTree = "<group>"; };
-		8D4511E818E04F3B0012DEDF /* GeneralItemData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemData.m; sourceTree = "<group>"; };
-		8D4511EA18E04F3B0012DEDF /* GeneralItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemVisibility.h; sourceTree = "<group>"; };
-		8D4511EB18E04F3B0012DEDF /* GeneralItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemVisibility.m; sourceTree = "<group>"; };
-		8D4511ED18E04F3B0012DEDF /* Inquiry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Inquiry.h; sourceTree = "<group>"; };
-		8D4511EE18E04F3B0012DEDF /* Inquiry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Inquiry.m; sourceTree = "<group>"; };
-		8D4511F018E04F3B0012DEDF /* SynchronizationBookKeeping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronizationBookKeeping.h; sourceTree = "<group>"; };
-		8D4511F118E04F3C0012DEDF /* SynchronizationBookKeeping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronizationBookKeeping.m; sourceTree = "<group>"; };
-		8D4511F318E04F3C0012DEDF /* CurrentItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentItemVisibility.h; sourceTree = "<group>"; };
-		8D4511F418E04F3C0012DEDF /* CurrentItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentItemVisibility.m; sourceTree = "<group>"; };
-		8D4C36BC18E1C32E000FCEA6 /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
-		8D4C36BD18E1C32E000FCEA6 /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
 		8D4C36BF18E2D2A9000FCEA6 /* ARLNarratorItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLNarratorItemView.h; sourceTree = "<group>"; };
 		8D4C36C018E2D2A9000FCEA6 /* ARLNarratorItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNarratorItemView.m; sourceTree = "<group>"; };
 		8D4C36C518E46076000FCEA6 /* Message+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Message+Create.h"; sourceTree = "<group>"; };
 		8D4C36C618E46076000FCEA6 /* Message+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Message+Create.m"; sourceTree = "<group>"; };
-		8D4C36D418E47E3B000FCEA6 /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
-		8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
 		8D4C36D718EC3F19000FCEA6 /* INQNewInquiryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewInquiryViewController.h; sourceTree = "<group>"; };
 		8D4C36D818EC3F19000FCEA6 /* INQNewInquiryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNewInquiryViewController.m; sourceTree = "<group>"; };
 		8D4DF87B18A3C08B009CD9BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -379,10 +360,32 @@
 		8D77DADE1958631400D84482 /* INQLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLog.m; sourceTree = "<group>"; };
 		8D81D5CC193F57E200D4C7B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/storyboard.strings; sourceTree = "<group>"; };
 		8D81D5D1193F587800D4C7B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8D96FF201906ABAB00520DEF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		8D96FF211906ABAB00520DEF /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
-		8D96FF231906ABAC00520DEF /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		8D96FF241906ABAC00520DEF /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v3.xcdatamodel"; sourceTree = "<group>"; };
+		8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_2_to_3.xcmappingmodel; sourceTree = "<group>"; };
+		8D8B45B81973D58E001FC6DF /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
+		8D8B45B91973D58E001FC6DF /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
+		8D8B45BB1973D58F001FC6DF /* GeneralItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemVisibility.h; sourceTree = "<group>"; };
+		8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemVisibility.m; sourceTree = "<group>"; };
+		8D8B45BE1973D58F001FC6DF /* SynchronizationBookKeeping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronizationBookKeeping.h; sourceTree = "<group>"; };
+		8D8B45BF1973D58F001FC6DF /* SynchronizationBookKeeping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronizationBookKeeping.m; sourceTree = "<group>"; };
+		8D8B45C11973D58F001FC6DF /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		8D8B45C21973D58F001FC6DF /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		8D8B45C41973D58F001FC6DF /* GeneralItemData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemData.h; sourceTree = "<group>"; };
+		8D8B45C51973D58F001FC6DF /* GeneralItemData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemData.m; sourceTree = "<group>"; };
+		8D8B45C71973D590001FC6DF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		8D8B45C81973D590001FC6DF /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
+		8D8B45CA1973D590001FC6DF /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
+		8D8B45CB1973D590001FC6DF /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Run.m; sourceTree = "<group>"; };
+		8D8B45CD1973D590001FC6DF /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		8D8B45CE1973D590001FC6DF /* Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
+		8D8B45D01973D590001FC6DF /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
+		8D8B45D11973D590001FC6DF /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
+		8D8B45D31973D590001FC6DF /* Inquiry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Inquiry.h; sourceTree = "<group>"; };
+		8D8B45D41973D590001FC6DF /* Inquiry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Inquiry.m; sourceTree = "<group>"; };
+		8D8B45D61973D590001FC6DF /* CurrentItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentItemVisibility.h; sourceTree = "<group>"; };
+		8D8B45D71973D590001FC6DF /* CurrentItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentItemVisibility.m; sourceTree = "<group>"; };
+		8D8B45D91973D590001FC6DF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		8D8B45DA1973D590001FC6DF /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
 		8DA8305B195C365B009E7E4E /* ARLDatabase v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v1.xcdatamodel"; sourceTree = "<group>"; };
@@ -552,58 +555,59 @@
 			children = (
 				34D4228817B670EC0051E84C /* Account+Create.h */,
 				34D4228917B670EC0051E84C /* Account+Create.m */,
-				8D96FF231906ABAC00520DEF /* Account.h */,
-				8D96FF241906ABAC00520DEF /* Account.m */,
 				34D4228C17B670EC0051E84C /* Action+Create.h */,
 				34D4228D17B670EC0051E84C /* Action+Create.m */,
-				8D4511DB18E04F3B0012DEDF /* Action.h */,
-				8D4511DC18E04F3B0012DEDF /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
+				8D8B45C11973D58F001FC6DF /* Account.h */,
+				8D8B45C21973D58F001FC6DF /* Account.m */,
+				8D8B45CD1973D590001FC6DF /* Action.h */,
+				8D8B45CE1973D590001FC6DF /* Action.m */,
+				8D8B45D91973D590001FC6DF /* Message.h */,
+				8D8B45DA1973D590001FC6DF /* Message.m */,
+				8D8B45D61973D590001FC6DF /* CurrentItemVisibility.h */,
+				8D8B45D71973D590001FC6DF /* CurrentItemVisibility.m */,
+				8D8B45D31973D590001FC6DF /* Inquiry.h */,
+				8D8B45D41973D590001FC6DF /* Inquiry.m */,
+				8D8B45D01973D590001FC6DF /* GeneralItem.h */,
+				8D8B45D11973D590001FC6DF /* GeneralItem.m */,
+				8D8B45CA1973D590001FC6DF /* Run.h */,
+				8D8B45CB1973D590001FC6DF /* Run.m */,
+				8D8B45C71973D590001FC6DF /* Game.h */,
+				8D8B45C81973D590001FC6DF /* Game.m */,
+				8D8B45C41973D58F001FC6DF /* GeneralItemData.h */,
+				8D8B45C51973D58F001FC6DF /* GeneralItemData.m */,
+				8D8B45BE1973D58F001FC6DF /* SynchronizationBookKeeping.h */,
+				8D8B45BF1973D58F001FC6DF /* SynchronizationBookKeeping.m */,
+				8D8B45BB1973D58F001FC6DF /* GeneralItemVisibility.h */,
+				8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */,
+				8D8B45B81973D58E001FC6DF /* Response.h */,
+				8D8B45B91973D58E001FC6DF /* Response.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
 				34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */,
-				8D4511F318E04F3C0012DEDF /* CurrentItemVisibility.h */,
-				8D4511F418E04F3C0012DEDF /* CurrentItemVisibility.m */,
 				34D4229817B670EC0051E84C /* Game+ARLearnBeanCreate.h */,
 				34D4229917B670EC0051E84C /* Game+ARLearnBeanCreate.m */,
-				8D4511DE18E04F3B0012DEDF /* Game.h */,
-				8D4511DF18E04F3B0012DEDF /* Game.m */,
 				34D4229C17B670EC0051E84C /* GeneralItem+ARLearnBeanCreate.h */,
 				34D4229D17B670EC0051E84C /* GeneralItem+ARLearnBeanCreate.m */,
-				8D4C36D418E47E3B000FCEA6 /* GeneralItem.h */,
-				8D4C36D518E47E3B000FCEA6 /* GeneralItem.m */,
 				34D422A017B670EC0051E84C /* GeneralItemData+Extra.h */,
 				34D422A117B670EC0051E84C /* GeneralItemData+Extra.m */,
-				8D4511E718E04F3B0012DEDF /* GeneralItemData.h */,
-				8D4511E818E04F3B0012DEDF /* GeneralItemData.m */,
 				34D422A417B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.h */,
 				34D422A517B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m */,
-				8D4511EA18E04F3B0012DEDF /* GeneralItemVisibility.h */,
-				8D4511EB18E04F3B0012DEDF /* GeneralItemVisibility.m */,
 				34D422CF17B671A60051E84C /* Inquiry+Create.h */,
 				34D422D017B671A60051E84C /* Inquiry+Create.m */,
-				8D4511ED18E04F3B0012DEDF /* Inquiry.h */,
-				8D4511EE18E04F3B0012DEDF /* Inquiry.m */,
 				8D4C36C518E46076000FCEA6 /* Message+Create.h */,
 				8D4C36C618E46076000FCEA6 /* Message+Create.m */,
-				8D96FF201906ABAB00520DEF /* Message.h */,
-				8D96FF211906ABAB00520DEF /* Message.m */,
+				8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */,
+				8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */,
 				34D422AA17B670EC0051E84C /* Response+Create.h */,
 				34D422AB17B670EC0051E84C /* Response+Create.m */,
-				8D4C36BC18E1C32E000FCEA6 /* Response.h */,
-				8D4C36BD18E1C32E000FCEA6 /* Response.m */,
 				34D422AE17B670EC0051E84C /* Run+ARLearnBeanCreate.h */,
 				34D422AF17B670EC0051E84C /* Run+ARLearnBeanCreate.m */,
-				8D4511E418E04F3B0012DEDF /* Run.h */,
-				8D4511E518E04F3B0012DEDF /* Run.m */,
 				34D422B217B670EC0051E84C /* SynchronizationBookKeeping+create.h */,
 				34D422B317B670EC0051E84C /* SynchronizationBookKeeping+create.m */,
-				8D4511F018E04F3B0012DEDF /* SynchronizationBookKeeping.h */,
-				8D4511F118E04F3C0012DEDF /* SynchronizationBookKeeping.m */,
 				8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */,
 				8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */,
 				8D4511D818E04F3A0012DEDF /* TestAccount.h */,
 				8D4511D918E04F3A0012DEDF /* TestAccount.m */,
-				8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1149,7 +1153,6 @@
 			files = (
 				8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */,
 				3477E6991769C9A000F3A5F3 /* ARLAppDelegate.m in Sources */,
-				8D4511DD18E04F3B0012DEDF /* Action.m in Sources */,
 				8D3F8B1C18ACE31900B233A6 /* INQPlanViewController.m in Sources */,
 				8D5C668118D6F5B9003B79E5 /* ARLAudioRecorderViewController.m in Sources */,
 				8D19460718C0A56300C32EED /* INQInquiryTableViewController.m in Sources */,
@@ -1157,9 +1160,9 @@
 				8D6E80C618D5B7AC0077D70E /* ARLAppearDisappearDelegator.m in Sources */,
 				8D6E80BB18D5B5DB0077D70E /* ARLCloudSynchronizer.m in Sources */,
 				8D6E80B118D5B5AA0077D70E /* ARLOauthWebViewController.m in Sources */,
+				8D8B45DB1973D590001FC6DF /* Message.m in Sources */,
 				8D1945CB18C0A24200C32EED /* INQDiscussViewController.m in Sources */,
-				8D4511F518E04F3C0012DEDF /* CurrentItemVisibility.m in Sources */,
-				8D4C36D618E47E3B000FCEA6 /* GeneralItem.m in Sources */,
+				8D8B45B71973D063001FC6DF /* Model_2_to_3.xcmappingmodel in Sources */,
 				8D5C668418D6F5CA003B79E5 /* ARLAudioRecordButtons.m in Sources */,
 				8D6E80BC18D5B5DB0077D70E /* ARLFileCloudSynchronizer.m in Sources */,
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,
@@ -1168,16 +1171,17 @@
 				8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */,
 				8D4511DA18E04F3A0012DEDF /* TestAccount.m in Sources */,
 				8D6AE1C818D5C5FE0094D911 /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				8D8B45CF1973D590001FC6DF /* Action.m in Sources */,
+				8D8B45D51973D590001FC6DF /* Inquiry.m in Sources */,
 				8D6E80AA18D5B5AA0077D70E /* ARLAccountDelegator.m in Sources */,
-				8D4511EF18E04F3B0012DEDF /* Inquiry.m in Sources */,
 				8DE646F61922162700CB8E67 /* INQNewGeneralItemViewController.m in Sources */,
 				8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */,
-				8D4511F218E04F3C0012DEDF /* SynchronizationBookKeeping.m in Sources */,
 				8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */,
 				8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */,
-				8D4511E018E04F3B0012DEDF /* Game.m in Sources */,
 				8D6AE1CA18D5C5FE0094D911 /* TPKeyboardAvoidingTableView.m in Sources */,
 				8D6E80C818D5B7AC0077D70E /* ARLNotificationSubscriber.m in Sources */,
+				8D8B45D21973D590001FC6DF /* GeneralItem.m in Sources */,
+				8D8B45BA1973D58E001FC6DF /* Response.m in Sources */,
 				8D1945FE18C0A54200C32EED /* INQFriendsTableViewController.m in Sources */,
 				8D4C36C718E46076000FCEA6 /* Message+Create.m in Sources */,
 				8D1945F518C0A52000C32EED /* INQBadgesViewController.m in Sources */,
@@ -1187,41 +1191,42 @@
 				8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */,
 				34D422B617B670ED0051E84C /* Account+Create.m in Sources */,
 				8D19460118C0A54D00C32EED /* INQHypothesisViewController.m in Sources */,
+				8D8B45C31973D58F001FC6DF /* Account.m in Sources */,
 				34D422B817B670ED0051E84C /* Action+Create.m in Sources */,
 				8D6E80CD18D5BA010077D70E /* Reachability.m in Sources */,
+				8D8B45C01973D58F001FC6DF /* SynchronizationBookKeeping.m in Sources */,
 				8D6F237C196592060063DFA8 /* UIViewController+UI.m in Sources */,
+				8D8B45D81973D590001FC6DF /* CurrentItemVisibility.m in Sources */,
 				34D422BA17B670ED0051E84C /* ARLDatabase.xcdatamodeld in Sources */,
-				8D4511EC18E04F3B0012DEDF /* GeneralItemVisibility.m in Sources */,
 				8D6AE1C918D5C5FE0094D911 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				8D6AE1CB18D5C5FE0094D911 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				8D1945F818C0A53100C32EED /* INQGeneralItemTableViewController.m in Sources */,
+				8D8B45CC1973D590001FC6DF /* Run.m in Sources */,
 				8D4C36C118E2D2A9000FCEA6 /* ARLNarratorItemView.m in Sources */,
 				34D422BC17B670ED0051E84C /* CurrentItemVisibility+Create.m in Sources */,
+				8D8B45C91973D590001FC6DF /* Game.m in Sources */,
 				34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */,
 				8D6E80C718D5B7AC0077D70E /* ARLNotificationPlayer.m in Sources */,
 				34D422C017B670ED0051E84C /* GeneralItem+ARLearnBeanCreate.m in Sources */,
 				34D422C217B670ED0051E84C /* GeneralItemData+Extra.m in Sources */,
 				8D1945F218C0A51200C32EED /* INQLoginViewController.m in Sources */,
-				8D96FF221906ABAB00520DEF /* Message.m in Sources */,
 				8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */,
-				8D4511E918E04F3B0012DEDF /* GeneralItemData.m in Sources */,
 				34D422C417B670ED0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m in Sources */,
-				8D4511E618E04F3B0012DEDF /* Run.m in Sources */,
-				8D4C36BE18E1C32E000FCEA6 /* Response.m in Sources */,
 				8D19461018C0A58D00C32EED /* INQCloudSynchronizer.m in Sources */,
 				34D422C717B670ED0051E84C /* Response+Create.m in Sources */,
 				8D19460418C0A55800C32EED /* INQMyInquiriesTableViewController.m in Sources */,
 				8D5C667E18D6F5B0003B79E5 /* ARLAudioRecorder.m in Sources */,
 				8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
-				8D96FF251906ABAC00520DEF /* Account.m in Sources */,
 				8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */,
 				8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,
 				8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */,
+				8D8B45C61973D58F001FC6DF /* GeneralItemData.m in Sources */,
 				8D77DADF1958631400D84482 /* INQLog.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,
 				8D1945FD18C0A54200C32EED /* INQAddFriendTableViewController.m in Sources */,
+				8D8B45BD1973D58F001FC6DF /* GeneralItemVisibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1439,10 +1444,11 @@
 		34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */,
 				8DA8305B195C365B009E7E4E /* ARLDatabase v1.xcdatamodel */,
 				34D4229117B670EC0051E84C /* ARLDatabase v2.xcdatamodel */,
 			);
-			currentVersion = 34D4229117B670EC0051E84C /* ARLDatabase v2.xcdatamodel */;
+			currentVersion = 8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */;
 			path = ARLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

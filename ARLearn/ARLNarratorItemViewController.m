@@ -37,7 +37,8 @@ typedef NS_ENUM(NSInteger, responses) {
 @property (strong, nonatomic) NSString *textDescription;
 @property (strong, nonatomic) NSString *valueDescription;
 
-@property (readonly, nonatomic) NSString *cellIdentifier;
+@property (readonly, nonatomic) NSString *cellIdentifier1;
+@property (readonly, nonatomic) NSString *cellIdentifier2;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
@@ -57,8 +58,17 @@ typedef NS_ENUM(NSInteger, responses) {
  *
  *  @return The Cell Identifier.
  */
--(NSString *) cellIdentifier {
-    return  @"responseItemCell";
+-(NSString *) cellIdentifier1 {
+    return  @"imageItemCell";
+}
+
+/*!
+ *  Getter
+ *
+ *  @return The Cell Identifier.
+ */
+-(NSString *) cellIdentifier2 {
+    return  @"textItemCell";
 }
 
 /*!
@@ -182,19 +192,23 @@ typedef NS_ENUM(NSInteger, responses) {
     
     if (self.run && self.run.runId) {
         NSMutableArray *tmp = [[NSMutableArray alloc] init];
+        
         if (self.withPicture){
-            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"application/jpg"]]];
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"responseType=%@", [NSNumber numberWithInt:PHOTO]]]];
         }
         if (self.self.withVideo){
-            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"video/quicktime"]]];
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"responseType=%@", [NSNumber numberWithInt:VIDEO]]]];
         }
         if (self.withAudio){
-            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", @"audio/aac"]]];
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"responseType=%@", [NSNumber numberWithInt:AUDIO]]]];
         }
-        if (self.withText || self.withValue) {
-            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"contentType=%@", nil]]];
+        if (self.withText) {
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"responseType=%@", [NSNumber numberWithInt:TEXT]]]];
         }
-
+        if (self.withValue) {
+            tmp = [NSMutableArray arrayWithArray:[tmp arrayByAddingObject:[NSPredicate predicateWithFormat:@"responseType=%@", [NSNumber numberWithInt:NUMBER]]]];
+        }
+        
         // See http://stackoverflow.com/questions/4476026/add-additional-argument-to-an-existing-nspredicate
         NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tmp];
         NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld",[self.run.runId longLongValue], [self.generalItem.generalItemId longLongValue]];
@@ -203,15 +217,15 @@ typedef NS_ENUM(NSInteger, responses) {
         request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:andPredicate, orPredicate, nil]];
         
         request.sortDescriptors = [NSArray arrayWithObjects:
-                                   [NSSortDescriptor sortDescriptorWithKey:@"contentType"
-                                                                 ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)],
+                                   [NSSortDescriptor sortDescriptorWithKey:@"responseType"
+                                                                 ascending:YES selector:@selector(compare:)],
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
                                                                  ascending:YES selector:@selector(compare:)],
                                    nil];
     } else if (self.account) {
         request.predicate = [NSPredicate predicateWithFormat:
-                             @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
-                             self.account.localId, self.account.accountType];
+                             @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND responseType!= %@",
+                             self.account.localId, self.account.accountType, [NSNumber numberWithInt:UNKNOWN]];
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
@@ -239,7 +253,7 @@ typedef NS_ENUM(NSInteger, responses) {
     self.fetchedResultsController.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-
+    
     [self.collectionView reloadData];
 }
 
@@ -296,7 +310,7 @@ typedef NS_ENUM(NSInteger, responses) {
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     for(NSManagedObject *obj in insertedObjects){
         if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-           
+            
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];
             
@@ -312,7 +326,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     NSArray *indexPaths = [[NSArray alloc] init];
     BOOL fetched = NO;
-
+    
     for(NSManagedObject *obj in updatedObjects){
         if ([[obj entity].name isEqualToString:@"Response"]) {
             if (!fetched) {
@@ -356,7 +370,7 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-       [super viewWillAppear:animated];
+    [super viewWillAppear:animated];
     
     if (self.run) {
         NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
@@ -383,16 +397,16 @@ typedef NS_ENUM(NSInteger, responses) {
     
     if (ARLNetwork.networkAvailable) {
         if (self.run) {
+            // Collected Data
             if (self.withPicture) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"application/jpg"];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:PHOTO]];
             }
             if (self.withVideo) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"video/quicktime"];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:VIDEO]];
             }
             if (self.withAudio) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext contentType:@"audio/aac"];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
             }
-            
             if (self.withText) {
                 // TODO Sync Text
             }
@@ -400,16 +414,17 @@ typedef NS_ENUM(NSInteger, responses) {
                 // TODO Sync Values
             }
         } else if (self.account) {
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"application/jpg"];
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"video/quicktime"];
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext contentType:@"audio/aac"];
+            // My Media
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:PHOTO]];
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:VIDEO]];
+            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
         }
     }
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    
     self.fetchedResultsController = nil;
 }
 
@@ -451,10 +466,29 @@ typedef NS_ENUM(NSInteger, responses) {
     switch (section){
         case RESPONSES:
             count = [self.fetchedResultsController.fetchedObjects count];
+            
+            if (!self.withText) {
+                for (Response *resp in self.fetchedResultsController.fetchedObjects) {
+                    if (resp.value ) {
+                        if ([resp.value rangeOfString:@"{text:"].location != NSNotFound) {
+                            count--;
+                        }
+                    }
+                }
+            }
+            
+            if (!self.withValue) {
+                for (Response *resp in self.fetchedResultsController.fetchedObjects) {
+                    if (resp.value ) {
+                        if ([resp.value rangeOfString:@"{value:"].location != NSNotFound) {
+                            count--;
+                        }
+                    }
+                }
+            }
             break;
     }
     
-    // Error
     return count;
 }
 
@@ -470,25 +504,28 @@ typedef NS_ENUM(NSInteger, responses) {
 //        case RESPONSES:
 //            return @"";
 //    }
-//    
+//
 //    // Error
 //    return @"";
 //}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ARLNarratorItemView *cell = (ARLNarratorItemView *)[cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    ARLNarratorItemView *cell = (ARLNarratorItemView *)[cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier1
+                                                                                     forIndexPath:indexPath];
+    
     
     cell.backgroundColor = [UIColor colorWithRed:(float)0xE6
                                            green:(float)0xE6
                                             blue:(float)0xFA
                                            alpha:1.0F];
-
+    
     switch (indexPath.section) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-
+            
             if (response.fileName) {
-                if (self.withPicture && [response.contentType isEqualToString:@"application/jpg"]) {
+                
+                if (self.withPicture && [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]]) {
                     if (response.thumb) {
                         cell.imgView.image = [UIImage imageWithData:response.thumb];
                     } else if (response.data) {
@@ -496,10 +533,10 @@ typedef NS_ENUM(NSInteger, responses) {
                     } else {
                         cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
                     }
-                } else if (self.withVideo && [response.contentType isEqualToString:@"video/quicktime"]) {
+                } else if (self.withVideo && [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
                     if (response.thumb) {
                         cell.imgView.image = [UIImage imageWithData:response.thumb];
-                
+                        
                         // rotate 90' Right (will al least make portrait videos right).
                         CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI / 2.0 );
                         [cell.imgView setTransform:rotate];
@@ -515,7 +552,7 @@ typedef NS_ENUM(NSInteger, responses) {
                         
                         // see http://stackoverflow.com/questions/8858404/uiimage-aspect-fit-when-using-drawinrect
                         CGFloat aspect = cell.imgView.image.size.width / cell.imgView.image.size.height;
-
+                        
                         CGPoint p = CGPointMake(cell.imgView.image.size.width, cell.imgView.image.size.height);
                         
                         if (ico.size.width / aspect <= ico.size.width) {
@@ -531,34 +568,64 @@ typedef NS_ENUM(NSInteger, responses) {
                         
                         // free the context
                         UIGraphicsEndImageContext();
-
+                        
                         cell.imgView.image = retImage;
-//                  } else if (response.data) {
-//                      cell.imgView.image = [UIImage imageWithData:response.data];
+                        //                  } else if (response.data) {
+                        //                      cell.imgView.image = [UIImage imageWithData:response.data];
                     } else {
                         cell.imgView.Image = [UIImage imageNamed:@"task-video"];
                     }
-//                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
+                    //                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
                 } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
                     cell.imgView.image = [UIImage imageNamed:@"task-record"];
-                } else if (self.withText || self.withValue) {
+                }
                 
-#warning TODO Add rending of text/value (or link to a popup)?
-                    
+                return cell;
+                
+            } else {
+                if (response.value) {
+                    if ((self.withText  && [response.responseType isEqualToNumber:[NSNumber numberWithInt:TEXT]]) ||
+                        (self.withValue && [response.responseType isEqualToNumber:[NSNumber numberWithInt:NUMBER]])) {
+                        
+                        NSString *txt;
+                        NSError * error = nil;
+                        NSData *JSONdata = [response.value dataUsingEncoding:NSUTF8StringEncoding];
+                        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:JSONdata
+                                                                                   options: NSJSONReadingMutableContainers
+                                                                                     error:&error];
+                        
+                        if ([dictionary valueForKey:@"text"]) {
+                            txt = [dictionary valueForKey:@"text"];
+                        }else if ([dictionary valueForKey:@"value"]) {
+                            txt = [dictionary valueForKey:@"value"];
+                        }else {
+                            txt = response.value;
+                        }
+                        
+                        // Log(@"%f x %F", [self getCellSize].width, [self getCellSize].height);
+                        
+                        UIGraphicsBeginImageContextWithOptions(CGSizeMake(100,100), NO, 0.0);
+                        cell.imgView.image = UIGraphicsGetImageFromCurrentImageContext();
+                        UIGraphicsEndImageContext();
+                        
+                        cell.imgView.image  = [self drawText:txt inImage:cell.imgView.image atPoint:CGPointZero];
+                        
+                        return cell;
+                    }
                 }
             }
         }
             break;
     }
     
-    return cell;
+    // Should not happen.
+    return [cv dequeueReusableCellWithReuseIdentifier:self.cellIdentifier1
+                                         forIndexPath:indexPath];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
 
-// 1
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-
+- (CGSize)getCellSize {
     // noColumns
     CGFloat w = self.collectionView.bounds.size.width - ((self.noColumns) * self.columnInset);
     w /= self.noColumns;
@@ -570,9 +637,14 @@ typedef NS_ENUM(NSInteger, responses) {
     return retval;
 }
 
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+   return [self getCellSize];
+}
+
 // 3
-- (UIEdgeInsets)collectionView:
-(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     
     return UIEdgeInsetsMake(self.columnInset, self.columnInset, self.columnInset, self.columnInset);
 }
@@ -606,19 +678,82 @@ typedef NS_ENUM(NSInteger, responses) {
             controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
         } else {
-            #warning TODO Add rending of text/value (or link to a popup)?
+#warning TODO Add rending of text/value (or link to a popup)?
         }
         
-        DLog(@"%@", response.fileName);
+        // DLog(@"%@", response.fileName);
         
         if (controller && controller.html) {
             [self.navigationController pushViewController:controller animated:TRUE];
         }
+    } else {
+#warning textarea does ot forward clicks.
+        // SEE http://iphonedevsdk.com/forum/iphone-sdk-development/82096-onclick-event-in-textfield.html
+        //  (void)textFieldDidBeginEditing:(UITextField *)textField
+        
+        if (response.value) {
+            NSError *error = nil;
+            NSData *JSONdata = [response.value dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:JSONdata
+                                                                       options: NSJSONReadingMutableContainers
+                                                                         error:&error];
+            NSString *msg;
+            
+            if ([dictionary valueForKey:@"text"]) {
+                msg = [dictionary valueForKey:@"text"];
+            }else if ([dictionary valueForKey:@"value"]) {
+                msg = [dictionary valueForKey:@"value"];
+            }else {
+                msg = response.value;
+            }
+            
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Value", @"Value")
+                                                                  message:msg
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                        otherButtonTitles:nil, nil];
+            [myAlertView show];
+        }
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath :(NSIndexPath *)indexPath {
     // TODO: Deselect item
+}
+
+-(UIImage *) drawText:(NSString*) text inImage:(UIImage*)image atPoint:(CGPoint)point
+{
+    //See http://stackoverflow.com/questions/4670851/nsstring-drawatpoint-blurry
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, 0.0);
+    
+    //See http://stackoverflow.com/questions/4670851/nsstring-drawatpoint-blurry
+    CGContextSetShouldAntialias(UIGraphicsGetCurrentContext(), true);
+    
+    //[image drawInRect:CGRectMake(0,0,image.size.width,image.size.height)];
+    CGRect rect = CGRectMake(point.x, point.y, image.size.width, image.size.height);
+    rect = CGRectInset(rect, 5, 5);
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    NSDictionary *attributes = @{
+                                 // UIFont, default Helvetica(Neue) 12
+                                 NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+                                 NSParagraphStyleAttributeName: paragraphStyle,
+                                 NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSBackgroundColorAttributeName: [UIColor whiteColor]
+                                 };
+    
+    //    NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
+    //    drawingContext.minimumScaleFactor = 0.5; // Half the font siz
+    
+    [text drawInRect:rect withAttributes:attributes]; //CGRectIntegral(rect)
+
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 #pragma mark Collect Methods.
@@ -645,7 +780,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                          delegate:self
                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                 otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-   
+    
     //    self.valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
     //    [self.valueTextField setBackgroundColor:[UIColor whiteColor]];
     //

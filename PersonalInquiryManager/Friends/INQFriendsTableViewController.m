@@ -262,33 +262,17 @@ typedef NS_ENUM(NSInteger, friends) {
     // Configure the cell...
     
     switch (indexPath.section) {
-            //        case ADD:
-            //            cell.textLabel.text = @"Add friend";
-            //            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-            //            break;
-        case FRIENDS:{
-            // NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-            
-#warning Should be self.Friends[]
-            
-            // Account *account = ((Account*)[self.fetchedResultsController objectAtIndexPath:ip]);
+            // case ADD:
+            //   cell.textLabel.text = @"Add friend";
+            //   cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+            // break;
+        case FRIENDS: {
             NSDictionary *account = [self.Friends objectAtIndex:indexPath.row];
             
             cell.textLabel.text = [account valueForKey:@"name"];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             cell.detailTextLabel.text = @"";
             cell.accessoryType = UITableViewCellAccessoryNone;
-            
-            //NSData* icon = [account picture];
-            //if (icon) {
-            //  cell.imageView.image = [UIImage imageWithData:icon];
-            //} else {
-            
-            // Fixup for Friends Icons do not show immediately (icon property is empty).
-            
-            // LocalId == oauthId
-            //for (NSDictionary *dict in self.AllUsers) {
-            //    if ([[dict objectForKey:@"oauthId"] isEqualToString:account.localId]) {
             
             if ([account objectForKey:@"icon"]) {
                 @autoreleasepool {
@@ -299,14 +283,11 @@ typedef NS_ENUM(NSInteger, friends) {
                         cell.imageView.image = [UIImage imageWithData:imageData];
                     }
                 }
-                //break;
-                //}
-                //}
-                //}
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"profile"];
             }
         }
+            break;
     }
     
     return cell;
@@ -314,15 +295,16 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-            //        case ADD: {
-            //            UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
+            // case ADD: {
+            //   UIViewController *newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddFriendsView"];
             //
-            //            if ([newViewController respondsToSelector:@selector(setAllUsers:)]) {
-            //                [newViewController performSelector:@selector(setAllUsers:) withObject:self.AllUsers];
-            //            }
+            //   if ([newViewController respondsToSelector:@selector(setAllUsers:)]) {
+            //     [newViewController performSelector:@selector(setAllUsers:) withObject:self.AllUsers];
+            //   }
             //
-            //            [self.navigationController pushViewController:newViewController animated:YES];
-            //        }
+            //   [self.navigationController pushViewController:newViewController animated:YES];
+            //  }
+            //  break;
         case FRIENDS:
         {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
@@ -331,6 +313,7 @@ typedef NS_ENUM(NSInteger, friends) {
             
             cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
         }
+            break;
     }
 }
 
@@ -354,6 +337,5 @@ typedef NS_ENUM(NSInteger, friends) {
     // Note: does not preserve gradient effect of original header
     // header.contentView.backgroundColor = [UIColor blackColor];
 }
-
 
 @end

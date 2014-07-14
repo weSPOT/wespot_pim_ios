@@ -14,6 +14,15 @@
 
 @interface Response (Create)
 
+typedef NS_ENUM (NSInteger, ResponseTypes) {
+    UNKNOWN = 0,
+    PHOTO   = 1,
+    VIDEO   = 2,
+    AUDIO   = 3,
+    TEXT    = 4,
+    NUMBER  = 5
+};
+
 + (Response *) responseWithDictionary: (NSDictionary *) respDict
                inManagedObjectContext: (NSManagedObjectContext *) context;
 

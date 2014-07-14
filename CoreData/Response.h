@@ -2,7 +2,7 @@
 //  Response.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/25/14.
+//  Created by Wim van der Vegt on 7/14/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -19,10 +19,11 @@
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * responseId;
 @property (nonatomic, retain) NSNumber * synchronized;
+@property (nonatomic, retain) NSData * thumb;
 @property (nonatomic, retain) NSNumber * timeStamp;
 @property (nonatomic, retain) NSString * value;
 @property (nonatomic, retain) NSNumber * width;
-@property (nonatomic, retain) NSData * thumb;
+@property (nonatomic, retain) NSNumber * responseType;
 @property (nonatomic, retain) Account *account;
 @property (nonatomic, retain) GeneralItem *generalItem;
 @property (nonatomic, retain) Run *run;

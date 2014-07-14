@@ -18,13 +18,13 @@
 
 @interface ARLFileCloudSynchronizer : NSObject
 
-@property (strong, nonatomic)  NSManagedObjectContext * context;
-@property (strong, nonatomic)  NSManagedObjectContext * parentContext;
+@property (strong, nonatomic)  NSManagedObjectContext *context;
+@property (strong, nonatomic)  NSManagedObjectContext *parentContext;
 
 @property (nonatomic, readwrite) BOOL syncGeneralItems;
 @property (nonatomic, readwrite) BOOL syncResponses;
 
-@property (strong, nonatomic)  NSString *contentType;
+@property (strong, nonatomic)  NSNumber *responseType;
 
 - (void) createContext: (NSManagedObjectContext*) mainContext;
 
@@ -32,6 +32,6 @@
 
 + (void) syncGeneralItems: (NSManagedObjectContext*) context;
 + (void) syncResponseData: (NSManagedObjectContext*) context
-              contentType: (NSString *) contentType;
+             responseType: (NSNumber *) responseType;
 
 @end

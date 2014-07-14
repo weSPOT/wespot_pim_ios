@@ -37,7 +37,7 @@
         }
         
         if (ARLNetwork.networkAvailable) {
-            [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext contentType:@"audio/aac"];
+            [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
             [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
         }
     }

@@ -2,14 +2,14 @@
 //  Run.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 3/24/14.
+//  Created by Wim van der Vegt on 7/14/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Action, CurrentItemVisibility, Game, GeneralItemVisibility, Inquiry, Response;
+@class Action, CurrentItemVisibility, Game, GeneralItemVisibility, Inquiry, Message, Response;
 
 @interface Run : NSManagedObject
 
@@ -23,6 +23,7 @@
 @property (nonatomic, retain) Game *game;
 @property (nonatomic, retain) Inquiry *inquiry;
 @property (nonatomic, retain) NSSet *itemVisibilityRules;
+@property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *responses;
 @end
 
@@ -42,6 +43,11 @@
 - (void)removeItemVisibilityRulesObject:(GeneralItemVisibility *)value;
 - (void)addItemVisibilityRules:(NSSet *)values;
 - (void)removeItemVisibilityRules:(NSSet *)values;
+
+- (void)addMessagesObject:(Message *)value;
+- (void)removeMessagesObject:(Message *)value;
+- (void)addMessages:(NSSet *)values;
+- (void)removeMessages:(NSSet *)values;
 
 - (void)addResponsesObject:(Response *)value;
 - (void)removeResponsesObject:(Response *)value;

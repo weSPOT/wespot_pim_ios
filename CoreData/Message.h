@@ -2,7 +2,7 @@
 //  Message.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 4/22/14.
+//  Created by Wim van der Vegt on 7/14/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSNumber * messageId;
 @property (nonatomic, retain) NSString * subject;
 @property (nonatomic, retain) NSNumber * threadId;
-@property (nonatomic, retain) Run *run;
 @property (nonatomic, retain) Account *account;
+@property (nonatomic, retain) Run *run;
 
 @end

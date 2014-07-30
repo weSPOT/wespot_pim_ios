@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, profile) {
     /*!
      *  Account Type.
      */
-    // TYPE,
+    TYPE,
     /*!
      *  Longitude.
      */
@@ -119,10 +119,10 @@ typedef NS_ENUM(NSInteger, profile) {
             cell.textLabel.text = account.email;
             break;
             
-            //        case TYPE:
-            //            cell.textLabel.text = [ARLNetwork elggProviderId:account.accountType];
-            //            break;
-            //
+        case TYPE:
+            cell.textLabel.text = [ARLNetwork elggProviderId:account.accountType];
+            break;
+
             //        case LONGITUDE:
             //            cell.textLabel.text = [NSString stringWithFormat:@"%+.6f", ARLAppDelegate.CurrentLocation.longitude];
             //            break;
@@ -143,8 +143,8 @@ typedef NS_ENUM(NSInteger, profile) {
             return @"Name";
         case EMAIL:
             return @"Email";
-            //        case TYPE:
-            //            return @"Type of account";
+        case TYPE:
+            return @"Type of account";
             //        case LONGITUDE:
             //            return @"Longitude";
             //        case LATITUDE:

@@ -373,7 +373,7 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.imageView.image = [UIImage imageNamed:@"analyze"];
                     break;
                 case DISCUSS:
-                    cell.textLabel.text = @"Discuss";
+                    cell.textLabel.text = @"Chat";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"discuss"];
                     break;

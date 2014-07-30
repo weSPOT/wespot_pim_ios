@@ -96,6 +96,7 @@
 + (NSDictionary *) geoSearch: (NSNumber *) distance withLat:(NSNumber *) lat withLng: (NSNumber *) lng;
 + (NSDictionary *) defaultThread: (NSNumber *) runId;
 + (NSDictionary *) defaultThreadMessages: (NSNumber *) runId;
++ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId from: (NSNumber *) from;
 + (NSDictionary *) addMessage: (NSString *) message;
 
 + (id) executeARLearnGetWithAuthorization: (NSString *) path;

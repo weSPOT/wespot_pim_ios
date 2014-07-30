@@ -39,7 +39,7 @@
 }
 
 - (void) createDefaultThreadMessage:(NSString *)title description:(NSString *)description {
-    NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
+    // NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
     
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -51,11 +51,19 @@
                              inquiry.run.runId,     @"runId",
                              threadId,              @"threadId",
                              title,                 @"subject",
-                             html,                  @"body",
+                             description,           @"body",
                              nil];
     
     NSDictionary *result= [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
 
+    [Message messageWithDictionary:result
+            inManagedObjectContext:appDelegate.managedObjectContext];
+    
+    if (appDelegate.managedObjectContext.hasChanges) {
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save:&error];
+    }
+    
     DLog(@"%@", result);
 }
 
@@ -136,15 +144,15 @@
                                views:viewsDictionary]];
 }
 
-- (IBAction)createInquiryTap:(id)sender {
+- (IBAction)createMessageTap:(id)sender {
     if ([self.descriptionEdit.text length]>0) {
         [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply") description:self.descriptionEdit.text];
         
-        if (ARLNetwork.networkAvailable) {
-            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-            
-            [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
-        }
+//        if (ARLNetwork.networkAvailable) {
+//            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//            
+//            [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+//        }
         
         [self.navigationController popViewControllerAnimated:YES];
     }

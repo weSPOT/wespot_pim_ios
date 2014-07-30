@@ -1148,7 +1148,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="createInquiryTap:" destination="wXZ-PW-eiy" eventType="touchUpInside" id="VYU-yO-E77"/>
+                                    <action selector="createMessageTap:" destination="wXZ-PW-eiy" eventType="touchUpInside" id="M9n-3Z-gFp"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tVq-4A-kHj">

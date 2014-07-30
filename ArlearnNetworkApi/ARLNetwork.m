@@ -491,6 +491,10 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default", runId ]];
 }
 
++ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId from: (NSNumber *) from {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default?from=%lld", runId, [from longLongValue]]];
+}
+
 + (NSDictionary *) addMessage: (NSString *) message {
     return [self executeARLearnPostWithAuthorization:@"messages/message" postData:[self stringToData:message] withContentType:applicationjson];
 }

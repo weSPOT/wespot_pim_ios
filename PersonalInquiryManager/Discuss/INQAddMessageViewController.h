@@ -14,6 +14,8 @@
 
 #import "ARLNetwork+INQ.h"
 
+#import "Message+Create.h"
+
 @interface INQAddMessageViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) NSNumber *inquiryId;

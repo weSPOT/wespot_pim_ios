@@ -453,15 +453,27 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeMessages{
+    NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"messages" context:self.inquiryId];
+    
     // CLog(@"InquiryId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
-    NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+    NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
     NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+    
+    NSNumber *serverTime = [tmDict objectForKey:@"serverTime"];
     
     for (NSDictionary *mDict in messages)
     {
         [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+    }
+
+    
+    if (serverTime) {
+        [SynchronizationBookKeeping createEntry:@"messages"
+                                           time:serverTime
+                                      idContext:self.inquiryId
+                         inManagedObjectContext:self.context];
     }
     
     NSError *error = nil;

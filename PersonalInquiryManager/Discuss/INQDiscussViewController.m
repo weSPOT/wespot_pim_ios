@@ -145,6 +145,8 @@ typedef NS_ENUM(NSInteger, friends) {
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+    
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -179,7 +181,7 @@ typedef NS_ENUM(NSInteger, friends) {
         case SEND:
             return @"";
         case MESSAGES:
-            return @"Messages";
+            return @"Chat";
     }
     
     // Error
@@ -289,28 +291,46 @@ typedef NS_ENUM(NSInteger, friends) {
             
             // 4) Message Body (can contain html).
             textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            textView.layer.borderWidth = 1.0f;
+            textView.layer.borderWidth = 0.0f;
             textView.editable = NO;
             
             // !!! Without this, the last line is missing !!!
             textView.scrollEnabled = YES;
             
-            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:@{
-                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
-                                                                                  }
-                                                             documentAttributes:nil
-                                                                          error:nil];
+            // Old Code...Fi
+            //            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
+            //                                                                        options:@{
+            //                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+            //                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
+            //                                                                                  }
+            //                                                             documentAttributes:nil
+            //                                                                          error:nil];
+            //            textView.attributedText = html;
             
-            textView.attributedText = html;
-       
+            // New Code...
+            NSString *body = message.body;
+            
+            //Remove Leading <p>
+            if ([body rangeOfString:@"<p>"].location == 0) {
+                body = [body substringFromIndex:3];
+            }
+            
+            //Remove Trailing </p>
+            if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
+                body = [body substringToIndex:body.length-1-3];
+            }
+            
+            //Remove WhiteSpace.
+            body = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            textView.text = body;
+            // ...end
+            
             CGRect frame = textView.frame;
             frame.size = CGSizeMake(frame.size.width, cell.frame.size.height - frame.origin.y);
             textView.frame = frame;
-            
             textView.translatesAutoresizingMaskIntoConstraints = NO;
-           
+            textView.scrollEnabled = NO;
+
             // 5) Add constraints.
             NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                              imageView,            @"icon",
@@ -341,7 +361,7 @@ typedef NS_ENUM(NSInteger, friends) {
                 
                 // 2) Align details with body.
                 [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"V:|-[details]-[body]-|"
+                                      constraintsWithVisualFormat:@"V:|-[details]-[body]-2-|"
                                       options:NSLayoutFormatDirectionLeadingToTrailing
                                       metrics:nil
                                       views:viewsDictionary]];
@@ -371,6 +391,20 @@ typedef NS_ENUM(NSInteger, friends) {
             UITextView *textView = [[UITextView alloc] init];
             
             // not 100% correct (we ommit both margins).
+            NSString *body = message.body;
+            
+            //Remove Leading <p>
+            if ([body rangeOfString:@"<p>"].location == 0) {
+                body = [body substringFromIndex:3];
+            }
+            
+            //Remove Trailing </p>
+            if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
+                body = [body substringToIndex:body.length-1-3];
+            }
+            
+            //Remove WhiteSpace.
+            body = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
             NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:@{
@@ -379,6 +413,7 @@ typedef NS_ENUM(NSInteger, friends) {
                                                                                   }
                                                              documentAttributes:nil
                                                                           error:nil];
+            
             textView.attributedText = html;
             
             // Correct for left/right margins and icon.
@@ -388,7 +423,7 @@ typedef NS_ENUM(NSInteger, friends) {
             //Log(@"Text size: %f x %f", size.width, size.height);
             
              // Correct for top/bottom margins.
-            return 1.0f * tableView.rowHeight + size.height;
+            return 1.0f * tableView.rowHeight + size.height + 4.0f;
         }
     }
     

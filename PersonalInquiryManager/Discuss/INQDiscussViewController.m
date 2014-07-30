@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, friends) {
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
-
+    
     if (ARLNetwork.networkAvailable) {
         [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:inquiry.inquiryId];
     }
@@ -104,7 +104,7 @@ typedef NS_ENUM(NSInteger, friends) {
     //    if (count != [self.fetchedResultsController.fetchedObjects count]) {
     //        [self.tableView reloadData];
     //    }
-
+    
     
     // See if there are any Inquiry objects added and if so, reload the tableView.
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
@@ -233,7 +233,7 @@ typedef NS_ENUM(NSInteger, friends) {
             break;
             
         case MESSAGES:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2 forIndexPath:indexPath]; // 
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2 forIndexPath:indexPath]; //
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
             }
@@ -252,124 +252,197 @@ typedef NS_ENUM(NSInteger, friends) {
             break;
             
         case MESSAGES:{
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-            
-            Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);
-            
-            // Fetch views by tag.
-            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
-            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-            UILabel *detailTextLabel = (UILabel *)[cell.contentView viewWithTag:3];
-            
-            // 2) Icon (User Avatar)
-            imageView.image = [UIImage imageNamed:@"profile"];
-            imageView.highlightedImage = [UIImage imageNamed:@"profile"];
-            if (message.account) {
-                NSData* icon = [message.account picture];
+            @autoreleasepool {
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
                 
-                if (icon) {
-                    imageView.image = [UIImage imageWithData:icon];
-                    imageView.highlightedImage = [UIImage imageWithData:icon];
+                Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);
+                
+                // Fetch views by tag.
+                UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
+                UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+                UILabel *detailTextLabel = (UILabel *)[cell.contentView viewWithTag:3];
+                
+                BOOL MyMessage =
+                [message.account.localId isEqualToString:[ARLNetwork CurrentAccount].localId] &&
+                [message.account.accountType isEqualToNumber:[ARLNetwork CurrentAccount].accountType];
+               
+                // 2) Icon (User Avatar)
+                imageView.image = [UIImage imageNamed:@"profile"];
+                imageView.highlightedImage = [UIImage imageNamed:@"profile"];
+                if (message.account) {
+                    NSData* icon = [message.account picture];
+                    
+                    if (icon) {
+                        imageView.image = [UIImage imageWithData:icon];
+                        imageView.highlightedImage = [UIImage imageWithData:icon];
+                    }
                 }
-            }
-            imageView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            // 3) Details (Date + User Name)
-            
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-            [dateFormatter setTimeStyle:kCFDateFormatterShortStyle];
-
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[message.date longLongValue]/1000.0];
-            
-            if (message.account) {
-                detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], message.account.name];
-            } else {
-                detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], @"unknown sender"];
-            }
-            detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            // 4) Message Body (can contain html).
-            textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            textView.layer.borderWidth = 0.0f;
-            textView.editable = NO;
-            
-            // !!! Without this, the last line is missing !!!
-            textView.scrollEnabled = YES;
-            
-            // Old Code...Fi
-            //            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
-            //                                                                        options:@{
-            //                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            //                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
-            //                                                                                  }
-            //                                                             documentAttributes:nil
-            //                                                                          error:nil];
-            //            textView.attributedText = html;
-            
-            // New Code...
-            NSString *body = message.body;
-            
-            //Remove Leading <p>
-            if ([body rangeOfString:@"<p>"].location == 0) {
-                body = [body substringFromIndex:3];
-            }
-            
-            //Remove Trailing </p>
-            if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
-                body = [body substringToIndex:body.length-1-3];
-            }
-            
-            //Remove WhiteSpace.
-            body = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            textView.text = body;
-            // ...end
-            
-            CGRect frame = textView.frame;
-            frame.size = CGSizeMake(frame.size.width, cell.frame.size.height - frame.origin.y);
-            textView.frame = frame;
-            textView.translatesAutoresizingMaskIntoConstraints = NO;
-            textView.scrollEnabled = NO;
-
-            // 5) Add constraints.
-            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                             imageView,            @"icon",
-                                             detailTextLabel,      @"details",
-                                             textView,             @"body",
-                                             nil];
-   
-            [cell removeConstraints:cell.constraints];
-            if (cell.imageView) {
-                // 1) Size Icon and align it with text.
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", tableView.rowHeight]
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[details]-|", tableView.rowHeight]
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
+                imageView.translatesAutoresizingMaskIntoConstraints = NO;
                 
-                // 2) Align body with icon.
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"H:[icon]-[body]-|"
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
+                // 3) Details (Date + User Name)
                 
-                // 2) Align details with body.
-                [cell addConstraints:[NSLayoutConstraint
-                                      constraintsWithVisualFormat:@"V:|-[details]-[body]-2-|"
-                                      options:NSLayoutFormatDirectionLeadingToTrailing
-                                      metrics:nil
-                                      views:viewsDictionary]];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+                [dateFormatter setTimeStyle:kCFDateFormatterShortStyle];
                 
-                [cell setNeedsLayout];
-                [cell layoutIfNeeded];
+                NSDate *date = [NSDate dateWithTimeIntervalSince1970:[message.date longLongValue]/1000.0];
                 
-                DLog(@"Actual textview size: %f0.0 x %f0.0", textView.frame.size.width, textView.frame.size.height);
+                if (message.account) {
+                    detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], message.account.name];
+                } else {
+                    detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], @"unknown sender"];
+                }
+                // detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+                
+                // 4) Message Body (can contain html).
+                textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                textView.layer.borderWidth = 1.0f;
+                textView.editable = NO;
+  
+                detailTextLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                detailTextLabel.layer.borderWidth = 1.0f;
+          
+                imageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                imageView.layer.borderWidth = 1.0f;
+                
+                // !!! Without this, the last line is missing !!!
+                textView.scrollEnabled = YES;
+                
+                // Old Code...Fi
+                //            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
+                //                                                                        options:@{
+                //                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                //                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
+                //                                                                                  }
+                //                                                             documentAttributes:nil
+                //                                                                          error:nil];
+                //            textView.attributedText = html;
+                
+                // New Code...
+                NSString *body = message.body;
+                
+                //Remove Leading <p>
+                if ([body rangeOfString:@"<p>"].location == 0) {
+                    body = [body substringFromIndex:3];
+                }
+                
+                //Remove Trailing </p>
+                if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
+                    body = [body substringToIndex:body.length-1-3];
+                }
+                
+                //Remove WhiteSpace.
+                textView.text = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                // ...end
+                
+                //            CGRect frame = textView.frame;
+                //            frame.size = CGSizeMake(frame.size.width, cell.frame.size.height - frame.origin.y);
+                //            textView.frame = frame;
+                //  textView.translatesAutoresizingMaskIntoConstraints = NO;
+                float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
+                
+                CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
+                
+                switch(MyMessage) {
+                    case TRUE: {
+                        imageView.frame = CGRectMake(
+                                                     cell.frame.size.width - imageView.frame.size.width - 8.0f,
+                                                     imageView.frame.origin.y,
+                                                     tableView.rowHeight,
+                                                     tableView.rowHeight);
+                        {
+                            CGRect frame = detailTextLabel.frame;
+                            
+                            frame.origin = CGPointMake(8.0f, 8.0f);
+                            frame.size = CGSizeMake(tableView.frame.size.width - tableView.rowHeight - 3*8.0f, frame.size.height);
+                            
+                            detailTextLabel.frame = frame;
+                            detailTextLabel.textAlignment = NSTextAlignmentRight;
+                        }
+                        
+                        {
+                            CGRect frame = detailTextLabel.frame;
+                            frame.origin =  CGPointMake(8.0f,
+                                                        detailTextLabel.frame.origin.y + detailTextLabel.frame.size.height + 8.0f);
+                            frame.size = CGSizeMake(detailTextLabel.frame.size.width,
+                                                    size.height);
+                            textView.frame = frame;
+                            textView.textAlignment = NSTextAlignmentRight;
+                        }
+                    }
+                        break;
+                    case FALSE: {
+                        imageView.frame = CGRectMake(
+                                                     8.0f,
+                                                     imageView.frame.origin.y,
+                                                     tableView.rowHeight,
+                                                     tableView.rowHeight);
+                        {
+                            CGRect frame = detailTextLabel.frame;
+                            
+                            frame.origin = CGPointMake(imageView.frame.origin.x + imageView.frame.size.width + 8.0f,
+                                                       8.0f);
+                            frame.size = CGSizeMake(tableView.frame.size.width - tableView.rowHeight - 3*8.0f, frame.size.height);
+                            
+                            detailTextLabel.frame = frame;
+                            detailTextLabel.textAlignment = NSTextAlignmentLeft;
+                        }
+                        
+                        {
+                            CGRect frame = detailTextLabel.frame;
+                            
+                            frame.origin =  CGPointMake(detailTextLabel.frame.origin.x,
+                                                        detailTextLabel.frame.origin.y + detailTextLabel.frame.size.height + 8.0f);
+                            frame.size = CGSizeMake(detailTextLabel.frame.size.width,
+                                                    size.height);
+                            
+                            textView.frame = frame;
+                            textView.textAlignment = NSTextAlignmentLeft;
+                        }
+                    }
+                        break;
+                }
+                
+                // 5) Add constraints.
+                //            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                //                                             imageView,            @"icon",
+                //                                             detailTextLabel,      @"details",
+                //                                             textView,             @"body",
+                //                                             nil];
+                
+                //            [cell removeConstraints:cell.constraints];
+                //            if (cell.imageView) {
+                //                // 1) Size Icon and align it with text.
+                //                [cell addConstraints:[NSLayoutConstraint
+                //                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", tableView.rowHeight]
+                //                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                //                                      metrics:nil
+                //                                      views:viewsDictionary]];
+                //                [cell addConstraints:[NSLayoutConstraint
+                //                                      constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[details]-|", tableView.rowHeight]
+                //                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                //                                      metrics:nil
+                //                                      views:viewsDictionary]];
+                //
+                //                // 2) Align body with icon.
+                //                [cell addConstraints:[NSLayoutConstraint
+                //                                      constraintsWithVisualFormat:@"H:[icon]-[body]-|"
+                //                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                //                                      metrics:nil
+                //                                      views:viewsDictionary]];
+                //
+                //                // 2) Align details with body.
+                //                [cell addConstraints:[NSLayoutConstraint
+                //                                      constraintsWithVisualFormat:@"V:|-[details]-[body]-2-|"
+                //                                      options:NSLayoutFormatDirectionLeadingToTrailing
+                //                                      metrics:nil
+                //                                      views:viewsDictionary]];
+                //
+                //                [cell setNeedsLayout];
+                //                [cell layoutIfNeeded];
+                //
+                //                DLog(@"Actual textview size: %f0.0 x %f0.0", textView.frame.size.width, textView.frame.size.height);
+                // }
             }
         }
     }
@@ -387,8 +460,11 @@ typedef NS_ENUM(NSInteger, friends) {
             
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
-    
+            
             UITextView *textView = [[UITextView alloc] init];
+            
+            // !!! Without this, the last line is missing !!!
+            textView.scrollEnabled = YES;
             
             // not 100% correct (we ommit both margins).
             NSString *body = message.body;
@@ -404,26 +480,20 @@ typedef NS_ENUM(NSInteger, friends) {
             }
             
             //Remove WhiteSpace.
-            body = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-            NSAttributedString *html = [[NSAttributedString alloc] initWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:@{
-                                                                                  NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                             NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
-                                                                                  }
-                                                             documentAttributes:nil
-                                                                          error:nil];
+            textView.text = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];;
             
-            textView.attributedText = html;
+            float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
             
             // Correct for left/right margins and icon.
-            CGSize size = [textView sizeThatFits:CGSizeMake(tableView.frame.size.width - 3*20.0 - tableView.rowHeight, FLT_MAX)];
-
+            CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
+            
+            // textView.frame = CGRectMake(tableView.frame.size.width - (8.0f + 66.0f + 8.0f), 0.0f, textView.frame.size.width, size.height);
+            
             //Log(@"Textview size: %f x %f", textView.frame.size.width, textView.frame.size.height);
             //Log(@"Text size: %f x %f", size.width, size.height);
             
-             // Correct for top/bottom margins.
-            return 1.0f * tableView.rowHeight + size.height + 4.0f;
+            // Correct for top/bottom margins.
+            return 1.0f * tableView.rowHeight + size.height + 3*8.0f;
         }
     }
     

@@ -123,17 +123,15 @@ typedef NS_ENUM(NSInteger, friends) {
 /*!
  *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
  */
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//-(void) dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-    
-    [self setupFetchedResultsController];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -146,7 +144,14 @@ typedef NS_ENUM(NSInteger, friends) {
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
     
+    [self setupFetchedResultsController];
+
     [self.tableView reloadData];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning

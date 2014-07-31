@@ -79,7 +79,7 @@ static BOOL _syncAllowed = NO;
 {
     NSString *gitHash =     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
     NSString *appVersion =  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    // NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
     // Log(@"Version String:  %@", appVersion);
     // Log(@"Build Number:    %@", appBuild);

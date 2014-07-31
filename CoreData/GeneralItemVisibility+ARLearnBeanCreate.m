@@ -38,7 +38,7 @@
         newItemCreated = true;
     }
     giVis.correspondingRun = run;
-    //    giVis.generalItem = generalItem;
+    //giVis.generalItem = generalItem;
     giVis.timeStamp = [visDict objectForKey:@"title"] ;
     giVis.generalItemId = [visDict objectForKey:@"generalItemId"] ;
     giVis.runId = [visDict objectForKey:@"runId"] ;

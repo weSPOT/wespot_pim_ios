@@ -651,7 +651,7 @@ typedef NS_ENUM(NSInteger, responses) {
             [self.navigationController pushViewController:controller animated:TRUE];
         }
     } else {
-#warning textarea does ot forward clicks.
+#warning textarea does not forward clicks.
         // SEE http://iphonedevsdk.com/forum/iphone-sdk-development/82096-onclick-event-in-textfield.html
         //  (void)textFieldDidBeginEditing:(UITextField *)textField
         

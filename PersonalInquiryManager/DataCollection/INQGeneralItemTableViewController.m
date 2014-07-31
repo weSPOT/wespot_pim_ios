@@ -359,9 +359,9 @@ typedef NS_ENUM(NSInteger, groups) {
             
         case DATA: {
             GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
-#warning debug code.
-            NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
-            Log(@"%@", jsonDict);
+
+            //NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+            //Log(@"%@", jsonDict);
             
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectedDataView"];
             

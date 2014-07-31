@@ -161,11 +161,11 @@ typedef NS_ENUM(NSInteger, groups) {
  *
  *  @param animated <#animated description#>
  */
--(void)viewDidAppear:(BOOL)animated    {
-    [super viewDidAppear:animated];
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    //    NSError *error = nil;
+    //    [self.fetchedResultsController performFetch:&error];
     
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
@@ -179,7 +179,16 @@ typedef NS_ENUM(NSInteger, groups) {
 
     [self.navigationController setToolbarHidden:NO];
     
+    [self setupFetchedResultsController];
+    
     [self.tableView reloadData];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /*!
@@ -349,7 +358,10 @@ typedef NS_ENUM(NSInteger, groups) {
             break;
             
         case DATA: {
-            GeneralItem * generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+#warning debug code.
+            NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
+            Log(@"%@", jsonDict);
             
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectedDataView"];
             

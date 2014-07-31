@@ -54,7 +54,7 @@
                              description,           @"body",
                              nil];
     
-    NSDictionary *result= [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
+    NSDictionary *result = [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
 
     [Message messageWithDictionary:result
             inManagedObjectContext:appDelegate.managedObjectContext];

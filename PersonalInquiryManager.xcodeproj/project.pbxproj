@@ -144,6 +144,7 @@
 		8D8B45D51973D590001FC6DF /* Inquiry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45D41973D590001FC6DF /* Inquiry.m */; };
 		8D8B45D81973D590001FC6DF /* CurrentItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45D71973D590001FC6DF /* CurrentItemVisibility.m */; };
 		8D8B45DB1973D590001FC6DF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45DA1973D590001FC6DF /* Message.m */; };
+		8D9B21B2198A90140018DBA4 /* MultiSelectSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D9B21B1198A90140018DBA4 /* MultiSelectSegmentedControl.m */; };
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
@@ -386,6 +387,8 @@
 		8D8B45D71973D590001FC6DF /* CurrentItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentItemVisibility.m; sourceTree = "<group>"; };
 		8D8B45D91973D590001FC6DF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		8D8B45DA1973D590001FC6DF /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		8D9B21B0198A90140018DBA4 /* MultiSelectSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectSegmentedControl.h; sourceTree = "<group>"; };
+		8D9B21B1198A90140018DBA4 /* MultiSelectSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectSegmentedControl.m; sourceTree = "<group>"; };
 		8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TestAccount+Lazy.m"; sourceTree = "<group>"; };
 		8DA0C01418BF873D006858E1 /* TestAccount+Lazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestAccount+Lazy.h"; sourceTree = "<group>"; };
 		8DA8305B195C365B009E7E4E /* ARLDatabase v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v1.xcdatamodel"; sourceTree = "<group>"; };
@@ -846,7 +849,7 @@
 		8D6E80BE18D5B6100077D70E /* External */ = {
 			isa = PBXGroup;
 			children = (
-				8D72B216194885A600012B8C /* AJNotificationView */,
+				8D9B21AF198A90140018DBA4 /* MultiSelectSegmentedControl */,
 				8D6AE1BF18D5C5FE0094D911 /* TPKeyboardAvoiding */,
 				8D6E80CA18D5BA010077D70E /* Reachability */,
 				8D6E80CE18D5BAFA0077D70E /* ZBarSDK */,
@@ -940,13 +943,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		8D72B216194885A600012B8C /* AJNotificationView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AJNotificationView;
-			sourceTree = "<group>";
-		};
 		8D750DC718D74BEB0005C41D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,6 +961,15 @@
 				8D81D5CB193F57E200D4C7B4 /* storyboard.strings */,
 			);
 			name = en.lproj;
+			sourceTree = "<group>";
+		};
+		8D9B21AF198A90140018DBA4 /* MultiSelectSegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				8D9B21B0198A90140018DBA4 /* MultiSelectSegmentedControl.h */,
+				8D9B21B1198A90140018DBA4 /* MultiSelectSegmentedControl.m */,
+			);
+			path = MultiSelectSegmentedControl;
 			sourceTree = "<group>";
 		};
 		8DA9643018BF3085006C736D /* Libraries */ = {
@@ -1166,6 +1171,7 @@
 				8D5C668418D6F5CA003B79E5 /* ARLAudioRecordButtons.m in Sources */,
 				8D6E80BC18D5B5DB0077D70E /* ARLFileCloudSynchronizer.m in Sources */,
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,
+				8D9B21B2198A90140018DBA4 /* MultiSelectSegmentedControl.m in Sources */,
 				8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */,
 				8D19461D18C0A5B000C32EED /* INQSplashViewController.m in Sources */,
 				8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */,

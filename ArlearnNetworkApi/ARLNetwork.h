@@ -39,69 +39,101 @@
 
 @interface ARLNetwork : NSObject
 
-+ (NSString *) requestAuthToken: (NSString *) username password: (NSString *) password;
++ (NSString *) requestAuthToken:(NSString *)username
+                       password:(NSString *)password;
 
 //Runs
 + (NSDictionary *) runsParticipate ;
-+ (NSDictionary *) runsParticipateFrom: (NSNumber *) from;
-+ (NSDictionary *) runsWithId: (NSNumber *) runId;
-+ (NSDictionary *) createRun: (NSNumber *) gameId withTitle: (NSString *) runTitle;
++ (NSDictionary *) runsParticipateFrom:(NSNumber *)from;
++ (NSDictionary *) runsWithId:(NSNumber *)runId;
++ (NSDictionary *) createRun:(NSNumber *)gameId
+                   withTitle:(NSString *)runTitle;
 
 //Users
-+ (NSDictionary *) createUser: (NSNumber *) runId
-                   accountType: (NSNumber *) accountType
-                 withLocalId:(NSString *) localId;
++ (NSDictionary *) createUser:(NSNumber *)runId
+                  accountType:(NSNumber *)accountType
+                  withLocalId:(NSString *)localId;
 
 //Games
 + (NSDictionary *) gamesParticipate;
-+ (NSDictionary *) gamesParticipateFrom: (NSNumber *) from;
-+ (NSDictionary *) game: (NSNumber *) gameId;
-+ (NSDictionary *) createGame: (NSString *) gameTitle;
++ (NSDictionary *) gamesParticipateFrom:(NSNumber *)from;
++ (NSDictionary *) game:(NSNumber *)gameId;
++ (NSDictionary *) createGame:(NSString *)gameTitle;
 
 //Runs
-+ (NSDictionary *) itemsForRun: (int64_t) runId;
-+ (NSDictionary *) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from;
++ (NSDictionary *) itemsForRun:(int64_t)runId;
++ (NSDictionary *) itemsForGameFrom:(NSNumber *)gameId
+                               from:(NSNumber *)from;
 
 //Responses
-+ (NSDictionary *) responsesForRun: (NSNumber *) runId;
++ (NSDictionary *) responsesForRun:(NSNumber *)runId;
 
 //GeneralItems
-+ (id) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)type gameId:(NSNumber *)gameId;
++ (id) createGeneralItem:(NSString *)title
+             description:(NSString *)description
+             withPicture:(BOOL)withPicture
+               withVideo:(BOOL)withVideo
+               withAudio:(BOOL)withAudio
+                withText:(BOOL)withText
+               withValue:(BOOL)withValue
+                  gameId:(NSNumber *)gameId;
 
 //ItemVisibility
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId;
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from ;
++ (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId;
++ (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId
+                                   from:(NSNumber *)from;
 
-+ (void) registerDevice: (NSString *) deviceToken withUID: (NSString *) deviceUniqueIdentifier withAccount: (NSString *) account withBundleId: (NSString *) bundleIdentifier;
++ (void) registerDevice:(NSString *)deviceToken
+                withUID:(NSString *)deviceUniqueIdentifier
+            withAccount:(NSString *)account
+           withBundleId:(NSString *)bundleIdentifier;
 
 //Actions
-+ (void) publishAction: (NSDictionary *) actionDict;
-+ (void) publishAction: (NSNumber *) runId action: (NSString *) action itemId: (NSNumber *) itemId time: (NSNumber *) time itemType:(NSString *) itemType;
++ (void) publishAction:(NSDictionary *)actionDict;
++ (void) publishAction:(NSNumber *)runId
+                action:(NSString *)action
+                itemId:(NSNumber *)itemId
+                  time:(NSNumber *)time
+              itemType:(NSString *)itemType;
 
-+ (void) publishResponse: (NSDictionary *) actionDict;
-+ (void) publishResponse: (NSNumber *) runId responseValue: (NSString *) value itemId: (NSNumber *) generalItemId timeStamp: (NSNumber *) timeStamp;
++ (void) publishResponse:(NSDictionary *)actionDict;
++ (void) publishResponse:(NSNumber *)runId
+           responseValue:(NSString *)value
+                  itemId:(NSNumber *)generalItemId
+               timeStamp:(NSNumber *)timeStamp;
 
 //Upload
-+ (NSString *) requestUploadUrl: (NSString *) fileName withRun:(NSNumber *) runId;
-+ (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName contentType:(NSString *) contentType withData:(NSData *) data;
++ (NSString *) requestUploadUrl:(NSString *)fileName
+                        withRun:(NSNumber *)runId;
+
++ (void) perfomUpload:(NSString *)uploadUrl
+         withFileName:(NSString *)fileName
+          contentType:(NSString *)contentType
+             withData:(NSData *)data;
 
 //Accounts Helpers
-+ (NSDictionary *) anonymousLogin: (NSString *) account;
++ (NSDictionary *) anonymousLogin:(NSString *)account;
+
 + (NSDictionary *) accountDetails;
 
 + (NSDictionary *) oauthInfo;
 
-+ (NSDictionary *) search: (NSString *) query;
++ (NSDictionary *) search:(NSString *)query;
 + (NSDictionary *) featured;
-+ (NSDictionary *) geoSearch: (NSNumber *) distance withLat:(NSNumber *) lat withLng: (NSNumber *) lng;
-+ (NSDictionary *) defaultThread: (NSNumber *) runId;
-+ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId;
-+ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId from: (NSNumber *) from;
-+ (NSDictionary *) addMessage: (NSString *) message;
++ (NSDictionary *) geoSearch:(NSNumber *)distance
+                     withLat:(NSNumber *)lat
+                     withLng: (NSNumber *)lng;
++ (NSDictionary *) defaultThread:(NSNumber *)runId;
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId;
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
+                                    from:(NSNumber *)from;
++ (NSDictionary *) addMessage:(NSString *)message;
 
-+ (id) executeARLearnGetWithAuthorization: (NSString *) path;
++ (id) executeARLearnGetWithAuthorization:(NSString *)path;
 
-+ (NSDictionary *) getUserInfo: (NSNumber *) runId userId:(NSString *) userId providerId:(NSString *) providerId;
++ (NSDictionary *) getUserInfo:(NSNumber *)runId
+                        userId:(NSString *)userId
+                    providerId:(NSString *)providerId;
 
 //OpenBadges Api
 + (NSDictionary *) getUserBadges: (NSString *) userId;

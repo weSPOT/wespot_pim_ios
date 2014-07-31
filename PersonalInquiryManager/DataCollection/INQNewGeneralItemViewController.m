@@ -17,10 +17,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegments;
-@property (weak, nonatomic) IBOutlet UIButton *createButton;
+@property (weak, nonatomic) IBOutlet MultiSelectSegmentedControl *typeSegments;
+
+@property (strong, nonatomic) UIBarButtonItem *spacerButton;
+@property (strong, nonatomic) UIBarButtonItem *createButton;
 
 - (IBAction)createTap:(UIButton *)sender;
+
 
 @end
 
@@ -42,7 +45,7 @@
     self.typeSegments.apportionsSegmentWidthsByContent = YES;
     
     self.typeSegments.selectedSegmentIndex = 0;
-    
+
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [UIColor whiteColor], NSForegroundColorAttributeName,
                                 nil];
@@ -53,6 +56,15 @@
     }
     
     [self addConstraints];
+}
+
+
+- (void) viewWillAppear:(BOOL)animated  {
+    if (!self.spacerButton) {
+        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(createTap:)];
+    }
+    self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.createButton,nil];
 }
 
 /*!
@@ -71,8 +83,35 @@
  *  @param title       The title
  *  @param description The description
  */
-- (void) createGeneralItem:(NSString *)title description:(NSString *)description type:(NSNumber *)itemType {
-    /*NSDictionary *result =*/ [ARLNetwork createGeneralItem:title description:description type:itemType gameId:self.run.gameId];
+- (void) createGeneralItem:(NSString *)title
+               description:(NSString *)description
+               withPicture:(BOOL)withPicture
+                 withVideo:(BOOL)withVideo
+                 withAudio:(BOOL)withAudio
+                  withText:(BOOL)withText
+                 withValue:(BOOL)withValue {
+    
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSDictionary *result = [ARLNetwork createGeneralItem:title
+                                             description:description
+                                             withPicture:withPicture
+                                               withVideo:withVideo
+                                               withAudio:withAudio
+                                                withText:withText
+                                               withValue:withValue
+                                                  gameId:self.run.gameId];
+    
+    Game *game = [Game retrieveGame:[result objectForKey:@"gameId"] inManagedObjectContext:appDelegate.managedObjectContext];
+    
+    [GeneralItem generalItemWithDictionary:result withGame:game inManagedObjectContext:appDelegate.managedObjectContext];
+    
+    if (appDelegate.managedObjectContext.hasChanges) {
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save:&error];
+    }
+    
+    // Log(@"%@", result);
 }
 
 /*!
@@ -82,7 +121,25 @@
  */
 - (IBAction)createTap:(UIButton *)sender {
     if ([self.titleEdit.text length]>0) {
-        [self createGeneralItem:self.titleEdit.text description:self.descriptionEdit.text type:[NSNumber numberWithInt:self.typeSegments.selectedSegmentIndex]];
+        
+        //see https://github.com/yonat/MultiSelectSegmentedControl/blob/master/MultiSelectSegmentedControl.m
+        
+        [self createGeneralItem:self.titleEdit.text
+                    description:self.descriptionEdit.text
+                    withPicture:[self.typeSegments.selectedSegmentIndexes containsIndex:0]
+                      withVideo:[self.typeSegments.selectedSegmentIndexes containsIndex:1]
+                      withAudio:[self.typeSegments.selectedSegmentIndexes containsIndex:2]
+                       withText:[self.typeSegments.selectedSegmentIndexes containsIndex:3]
+                      withValue:[self.typeSegments.selectedSegmentIndexes containsIndex:4]
+         ];
+        
+        //[self createGeneralItem:self.titleEdit.text
+        //            description:self.descriptionEdit.text
+        //            withPicture:self.typeSegments.selectedSegmentIndex==0
+        //              withVideo:self.typeSegments.selectedSegmentIndex==1
+        //              withAudio:self.typeSegments.selectedSegmentIndex==2
+        //               withText:self.typeSegments.selectedSegmentIndex==3
+        //              withValue: self.typeSegments.selectedSegmentIndex==4];
         
         if (ARLNetwork.networkAvailable) {
             [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];
@@ -104,7 +161,6 @@
                                      self.descriptionEdit,      @"descriptionEdit",
                                      self.typeLabel,            @"typeLabel",
                                      self.typeSegments,         @"typeSegments",
-                                     self.createButton,         @"createButton",
                                      nil];
     
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,12 +171,10 @@
     
     self.typeLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.typeSegments.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit]-[typeLabel]-[typeSegments]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit]-[typeLabel]-[typeSegments]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -151,15 +205,7 @@
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1
                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.createButton
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
-    
+
     // Fix Widths
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[titleLabel]-|"
@@ -194,11 +240,7 @@
                                metrics:nil
                                views:viewsDictionary]];
 
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:[createButton(==200)]"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
+    
 }
 
 @end

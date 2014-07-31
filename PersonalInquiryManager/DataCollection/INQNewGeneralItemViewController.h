@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "TPKeyboardAvoidingScrollView.h"
+#import "MultiSelectSegmentedControl.h"
 
 #import "UIViewController+UI.h"
 

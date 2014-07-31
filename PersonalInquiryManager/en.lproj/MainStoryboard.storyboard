@@ -706,7 +706,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Z4i-wv-Auj">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Z4i-wv-Auj" customClass="MultiSelectSegmentedControl">
                                 <rect key="frame" x="20" y="226" width="280" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
@@ -717,22 +717,10 @@
                                     <segment title="Number"/>
                                 </segments>
                             </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWf-9R-2t7">
-                                <rect key="frame" x="126" y="262" width="69" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Create">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="createTap:" destination="Vd5-v9-n8b" eventType="touchUpInside" id="K7e-Np-eb2"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="createButton" destination="UWf-9R-2t7" id="kSQ-LR-ghM"/>
                         <outlet property="descriptionEdit" destination="HW0-DR-INw" id="6CM-2W-OXQ"/>
                         <outlet property="descriptionLabel" destination="dTZ-wo-qDh" id="JIw-ph-VZs"/>
                         <outlet property="titleEdit" destination="g5y-mf-Wgr" id="jza-X0-AZI"/>

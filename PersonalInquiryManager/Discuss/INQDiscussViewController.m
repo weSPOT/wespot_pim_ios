@@ -134,9 +134,8 @@ typedef NS_ENUM(NSInteger, friends) {
 	// Do any additional setup after loading the view.
 }
 
--(void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -145,12 +144,14 @@ typedef NS_ENUM(NSInteger, friends) {
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
     
     [self setupFetchedResultsController];
-
+    
     [self.tableView reloadData];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -301,7 +302,7 @@ typedef NS_ENUM(NSInteger, friends) {
                 } else {
                     detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", [dateFormatter stringFromDate:date], @"unknown sender"];
                 }
-               
+                
                 textView.editable = NO;
                 
                 // !!! Without this, the last line is missing !!!

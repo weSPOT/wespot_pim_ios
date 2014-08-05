@@ -172,16 +172,16 @@ typedef NS_ENUM(NSInteger, groups) {
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
+    // self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
     
     self.navigationController.title = @"Collect Data";
     self.navigationController.navigationBar.translucent= NO;
 
-    [self.navigationController setToolbarHidden:NO];
-    
     [self setupFetchedResultsController];
     
     [self.tableView reloadData];
+
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void) viewWillDisappear:(BOOL)animated

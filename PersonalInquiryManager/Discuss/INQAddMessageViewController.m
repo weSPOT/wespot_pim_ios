@@ -14,8 +14,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *background;
 
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet UITextView *descriptionEdit;
-@property (weak, nonatomic) IBOutlet UIButton *createButton;
+@property (retain, nonatomic) IBOutlet UITextView *descriptionEdit;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sendMessageButton;
+
+- (IBAction)sendMessageButtonAction:(UIBarButtonItem *)sender;
 
 @end
 
@@ -27,20 +30,33 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    self.descriptionEdit.delegate = self;
-
+    // IB self.descriptionEdit.delegate = self;
+    
     [self addConstraints];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setToolbarHidden:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
 - (void) createDefaultThreadMessage:(NSString *)title description:(NSString *)description {
-    // NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
-    
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
@@ -60,8 +76,7 @@
             inManagedObjectContext:appDelegate.managedObjectContext];
     
     if (appDelegate.managedObjectContext.hasChanges) {
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save:&error];
+        [appDelegate.managedObjectContext save:nil];
     }
     
     DLog(@"%@", result);
@@ -71,22 +86,17 @@
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                      self.descriptionLabel,     @"descriptionLabel",
                                      self.descriptionEdit,      @"descriptionEdit",
-                                     self.createButton,         @"createButton",
                                      self.view,                 @"view",
                                      self.background,           @"background",
                                      nil];
     
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.descriptionEdit.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.background.translatesAutoresizingMaskIntoConstraints = NO;
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[descriptionLabel]-[descriptionEdit(100)]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[descriptionLabel]-[descriptionEdit(100)]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -109,24 +119,10 @@
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1
                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.createButton
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
     
     // Fix Widths
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[descriptionEdit]-|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:[createButton(==200)]"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -144,17 +140,22 @@
                                views:viewsDictionary]];
 }
 
-- (IBAction)createMessageTap:(id)sender {
+- (IBAction)sendMessageButtonAction:(UIBarButtonItem *)sender {
     if ([self.descriptionEdit.text length]>0) {
-        [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply") description:self.descriptionEdit.text];
+        NSString *body = [self.descriptionEdit.text
+                          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-//        if (ARLNetwork.networkAvailable) {
-//            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-//            
-//            [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
-//        }
-        
-        [self.navigationController popViewControllerAnimated:YES];
+        if ([body length]>0) {
+            [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply")
+                                 description:body];
+            
+            //        if (ARLNetwork.networkAvailable) {
+            //            ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            //
+            //            [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+            //        }
+            
+            [self.navigationController popViewControllerAnimated:YES];}
     }
 }
 

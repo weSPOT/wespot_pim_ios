@@ -24,7 +24,6 @@
 
 - (IBAction)createTap:(UIButton *)sender;
 
-
 @end
 
 @implementation INQNewGeneralItemViewController

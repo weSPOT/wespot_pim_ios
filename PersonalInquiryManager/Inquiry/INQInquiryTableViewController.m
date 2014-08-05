@@ -519,12 +519,13 @@ typedef NS_ENUM(NSInteger, sections) {
                 }
                     break;
                     
-                case DISCUSS:
+                case DISCUSS: {
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    self.navigationController.toolbarHidden = NO;
+                }
                     break;
                     
                 case COMMUNICATE: {
-                    
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Not implemented yet", @"Not implemented yet") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
                     [alert show];
                 }
@@ -535,6 +536,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 [newViewController performSelector:@selector(initWithInitialPage:) withObject:[NSNumber numberWithInteger:indexPath.item]];
             }
         }
+            
             break;
             
 //        case INVITE: {

@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
+        return;
     }
     
     if (![NSThread isMainThread]) {
@@ -96,7 +96,7 @@ typedef NS_ENUM(NSInteger, friends) {
         return;
     }
     
-    //    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    //NSInteger count = [self.fetchedResultsController.fetchedObjects count];
     //
     //    NSError *error = nil;
     //    [self.fetchedResultsController performFetch:&error];
@@ -120,9 +120,9 @@ typedef NS_ENUM(NSInteger, friends) {
     }
 }
 
-/*!
- *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
- */
+///*!
+// *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
+// */
 //-(void) dealloc {
 //    [[NSNotificationCenter defaultCenter] removeObserver:self];
 //}
@@ -130,29 +130,39 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+   
 	// Do any additional setup after loading the view.
+    
+    //[self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    //
+    //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.tableView.opaque = NO;
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
-    
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
-    
     [self setupFetchedResultsController];
     
     [self.tableView reloadData];
+    
+    [self.navigationController setToolbarHidden:NO];
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+    
+    self.navigationController.view.backgroundColor = [UIColor clearColor];}
 
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -535,5 +545,17 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.tableView reloadData];
 }
+
+- (void)syncData {    
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+}
+
+//- (void)refreshTable
+//{
+//    [self syncData];
+//    [self.refreshControl endRefreshing];
+//}
 
 @end

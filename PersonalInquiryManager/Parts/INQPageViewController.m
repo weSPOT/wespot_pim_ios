@@ -13,6 +13,10 @@
 @property (strong, nonatomic) UIBarButtonItem *buttonFF;
 @property (strong, nonatomic) UIBarButtonItem *buttonFB;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+
+- (IBAction)refreshButtonAction:(UIBarButtonItem *)sender;
+
 @end
 
 @implementation INQPageViewController
@@ -43,6 +47,8 @@
     
     self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+    
+    //    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -73,7 +79,7 @@
     
     // Ask the InqueryViewController to create and initialize the requested ViewController.
     if ([inquiryViewController respondsToSelector:@selector(CreateInquiryPartViewController:)]) {
-          newViewController =  [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
+        newViewController = [inquiryViewController performSelector:@selector(CreateInquiryPartViewController:) withObject:[NSNumber numberWithUnsignedInteger:index]];
     }
     
     self.currentPageIndex = [NSNumber numberWithInteger:index];
@@ -102,6 +108,8 @@
     self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
+    [self.navigationController setToolbarHidden:NO];
+    
     return view;
 }
 
@@ -126,6 +134,8 @@
     
     self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
+    
+    [self.navigationController setToolbarHidden:NO];
     
     return view;
 }
@@ -172,6 +182,17 @@
         
         [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     }
+}
+
+- (IBAction)refreshButtonAction:(UIBarButtonItem *)sender {
+    DLog(@"");
+    
+    UIViewController *view = [self viewControllerAtIndex:[self.currentPageIndex unsignedIntValue]];
+    
+    if (view && [view respondsToSelector:@selector(syncData)]) {
+        [view performSelector:@selector(syncData)];
+    }
+    
 }
 
 @end

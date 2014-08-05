@@ -415,6 +415,8 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void) viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    self.navigationController.toolbarHidden = YES;
+    
     self.fetchedResultsController = nil;
 }
 

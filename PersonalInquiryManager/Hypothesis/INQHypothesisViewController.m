@@ -25,6 +25,12 @@
     [super viewDidLoad];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setToolbarHidden:YES];
+}
+
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -41,6 +47,7 @@
         [web loadHTMLString:self.hypothesis baseURL:[[NSBundle mainBundle] bundleURL]];
     }
 }
+
 
 /*!
  *  Low Memory Warning.

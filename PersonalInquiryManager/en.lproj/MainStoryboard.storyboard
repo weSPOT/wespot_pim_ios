@@ -155,19 +155,6 @@
                                     <segment title="Open membership"/>
                                 </segments>
                             </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cjy-1T-u9U">
-                                <rect key="frame" x="123" y="399" width="69" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Create">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="createInquiryTap:" destination="6bi-5g-X0m" eventType="touchUpInside" id="qgx-ta-seC"/>
-                                    <action selector="loginButtonAction:" destination="C65-w6-g4e" eventType="touchUpInside" id="EC9-SK-uov"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visibility" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TTN-sH-kev">
                                 <rect key="frame" x="8" y="269" width="300" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -189,7 +176,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="background" destination="2Ew-FR-8ha" id="xs6-gl-mLb"/>
-                        <outlet property="createButton" destination="cjy-1T-u9U" id="hoY-Ud-p1b"/>
                         <outlet property="descriptionEdit" destination="Ube-5d-lKp" id="FUF-Y8-XVz"/>
                         <outlet property="descriptionLabel" destination="GB6-K7-6k3" id="rLf-BS-0DM"/>
                         <outlet property="membershipLabel" destination="34b-Qo-frC" id="hhy-Va-B6h"/>
@@ -736,6 +722,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
                     <connections>
                         <outlet property="descriptionEdit" destination="HW0-DR-INw" id="6CM-2W-OXQ"/>
                         <outlet property="descriptionLabel" destination="dTZ-wo-qDh" id="JIw-ph-VZs"/>
@@ -1134,12 +1121,13 @@
             <objects>
                 <viewController storyboardIdentifier="AddMessageController" title="New inquiy" id="wXZ-PW-eiy" userLabel="Add Message View Controller" customClass="INQAddMessageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9o1-N7-75D" customClass="TPKeyboardAvoidingScrollView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main" id="x44-L0-Eoh">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="EvM-md-PzQ">
                                 <rect key="frame" x="9" y="104" width="303" height="140"/>
@@ -1162,6 +1150,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="5YZ-Je-KBK"/>
                         <barButtonItem title="Send" id="9tX-KN-IA4">
@@ -1170,7 +1159,8 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="background" destination="x44-L0-Eoh" id="Yhm-hg-mwQ"/>

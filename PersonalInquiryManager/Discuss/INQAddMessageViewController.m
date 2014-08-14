@@ -31,6 +31,7 @@
     
     // Do any additional setup after loading the view.
     // IB self.descriptionEdit.delegate = self;
+    [self.background setContentMode:UIViewContentModeScaleAspectFill];
     
     [self addConstraints];
 }

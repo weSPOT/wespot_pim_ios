@@ -1375,7 +1375,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PersonalInquiryManager/PersonalInquiryManager-Prefix.pch";
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1384,7 +1384,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1407,7 +1407,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PersonalInquiryManager/PersonalInquiryManager-Prefix.pch";
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1417,7 +1417,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5CF4AC90-C41C-4A43-969E-68CE7C9D6610";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

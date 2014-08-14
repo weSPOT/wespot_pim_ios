@@ -17,11 +17,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *titleEdit;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionEdit;
-@property (weak, nonatomic) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *visibilitySegments;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *membershipSegments;
 @property (weak, nonatomic) IBOutlet UILabel *visibilityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *membershipLabel;
+
+@property (strong, nonatomic) UIBarButtonItem *spacerButton;
+@property (strong, nonatomic) UIBarButtonItem *createButton;
 
 - (IBAction)createInquiryTap:(id)sender;
 
@@ -50,7 +52,6 @@
     
     self.descriptionEdit.text = self.DefaultInquiryDescription;
     
-    
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [UIColor whiteColor], NSForegroundColorAttributeName,
                                 nil];
@@ -65,7 +66,20 @@
         [self.membershipSegments setTitleTextAttributes:attributes forState:UIControlStateSelected];
     }
     
+    [self.background setContentMode:UIViewContentModeScaleAspectFill];
+    
     [self addConstraints];
+}
+
+- (void) viewWillAppear:(BOOL)animated  {
+    [self.navigationController setToolbarHidden:NO animated:NO];
+    
+    if (!self.spacerButton) {
+        self.spacerButton= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(createInquiryTap:)];
+    }
+    
+    self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.createButton,nil];
 }
 
 /*!
@@ -132,7 +146,6 @@
                                      self.visibilitySegments,   @"visibilitySegments",
                                      self.membershipLabel,      @"membershipLabel",
                                      self.membershipSegments,   @"memberhipSegments",
-                                     self.createButton,         @"createButton",
                                      nil];
     
     // Fails
@@ -146,8 +159,6 @@
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.descriptionEdit.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.createButton.translatesAutoresizingMaskIntoConstraints = NO;
-    
     self.background.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.visibilitySegments.translatesAutoresizingMaskIntoConstraints = NO;
@@ -158,7 +169,7 @@
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(==80)]-[visibilityLabel]-[visibilitySegments]-[membershipLabel]-[memberhipSegments]-[createButton]",0 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[titleLabel]-[titleEdit]-[descriptionLabel]-[descriptionEdit(==80)]-[visibilityLabel]-[visibilitySegments]-[membershipLabel]-[memberhipSegments]",0 + self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -176,14 +187,6 @@
                               constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.descriptionEdit
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                              constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:self.createButton
                               attribute:NSLayoutAttributeCenterX
                               relatedBy:NSLayoutRelationEqual
                               toItem:self.view
@@ -218,13 +221,6 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:[createButton(==200)]"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:viewsDictionary]];
-    
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:|-[visibilitySegments]-|"
                                options:NSLayoutFormatDirectionLeadingToTrailing

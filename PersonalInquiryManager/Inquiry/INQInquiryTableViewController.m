@@ -296,32 +296,37 @@ typedef NS_ENUM(NSInteger, sections) {
                                              webView, @"description",
                                              nil];
             
-            [cell.contentView addConstraints:[NSLayoutConstraint
-                                              constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]-[text]-|", image.size.width]
-                                              options:NSLayoutFormatDirectionLeadingToTrailing
-                                              metrics:nil
-                                              views:viewsDictionary]];
-            
             [cell addConstraints:[NSLayoutConstraint
                                   constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
                                   options:NSLayoutFormatDirectionLeadingToTrailing
                                   metrics:nil
                                   views:viewsDictionary]];
-            
-            [cell.contentView addConstraints:[NSLayoutConstraint
-                                              constraintsWithVisualFormat:@"V:|-[text(==icon)]"
-                                              options:NSLayoutFormatDirectionLeadingToTrailing
-                                              metrics:nil
-                                              views:viewsDictionary]];
-            
+
             [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"H:|-[description]-|"
+                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]", image.size.width]
                                   options:NSLayoutFormatDirectionLeadingToTrailing
                                   metrics:nil
                                   views:viewsDictionary]];
             
+            [cell.contentView addConstraints:[NSLayoutConstraint
+                                              constraintsWithVisualFormat:@"H:[icon]-[text]-|"
+                                              options:NSLayoutFormatDirectionLeadingToTrailing
+                                              metrics:nil
+                                              views:viewsDictionary]];
+            
+            
+            float tw = tableView.frame.size.width - image.size.width - 3*8.0f;
+            
+            CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
+            
             [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[icon]-[description(==%0.0f)]", (int)self.headerCellHeight - image.size.height - 2*20]
+                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[text(==%f)]-[description]-|", size.height]
+                                  options:NSLayoutFormatDirectionLeadingToTrailing
+                                  metrics:nil
+                                  views:viewsDictionary]];
+
+            [cell addConstraints:[NSLayoutConstraint
+                                  constraintsWithVisualFormat:@"H:[icon]-[description]-|"
                                   options:NSLayoutFormatDirectionLeadingToTrailing
                                   metrics:nil
                                   views:viewsDictionary]];

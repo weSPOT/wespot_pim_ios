@@ -494,6 +494,8 @@ typedef NS_ENUM(NSInteger, responses) {
     switch (indexPath.section) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+            Log(@"%@ - %@ %@", response.fileName, response.value, response.contentType);
             
             if (response.fileName) {
                 
@@ -548,10 +550,10 @@ typedef NS_ENUM(NSInteger, responses) {
                         cell.imgView.Image = [UIImage imageNamed:@"task-video"];
                     }
                     //                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
-                } else if (self.withAudio && [response.contentType isEqualToString:@"audio/aac"]) {
+                    
+                } else if (self.withAudio && [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]]) {
                     cell.imgView.image = [UIImage imageNamed:@"task-record"];
                 }
-                
             } else {
                 if (response.value) {
                     if ((self.withText  && [response.responseType isEqualToNumber:[NSNumber numberWithInt:TEXT]]) ||
@@ -567,7 +569,7 @@ typedef NS_ENUM(NSInteger, responses) {
                         if ([dictionary valueForKey:@"text"]) {
                             txt = [dictionary valueForKey:@"text"];
                         }else if ([dictionary valueForKey:@"value"]) {
-                            txt = [dictionary valueForKey:@"value"];
+                            txt = [[dictionary valueForKey:@"value"] stringValue];
                         }else {
                             txt = response.value;
                         }
@@ -635,7 +637,7 @@ typedef NS_ENUM(NSInteger, responses) {
         INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
         
         if ([response.contentType isEqualToString:@"application/jpg"]) {
-            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
+            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@?thumbnail=1600z&crop=true' style='width:100%%;' /></body></html>",
                                response.fileName];
         } else if ( [response.contentType isEqualToString:@"video/quicktime"]) {
             controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
@@ -650,7 +652,7 @@ typedef NS_ENUM(NSInteger, responses) {
         // DLog(@"%@", response.fileName);
         
         if (controller && controller.html) {
-            [self.navigationController pushViewController:controller animated:TRUE];
+            [self.navigationController pushViewController:controller animated:FALSE];
         }
     } else {
 #warning textarea does not forward clicks.
@@ -668,7 +670,7 @@ typedef NS_ENUM(NSInteger, responses) {
             if ([dictionary valueForKey:@"text"]) {
                 msg = [dictionary valueForKey:@"text"];
             }else if ([dictionary valueForKey:@"value"]) {
-                msg = [dictionary valueForKey:@"value"];
+                msg = [[dictionary valueForKey:@"value"] stringValue];
             }else {
                 msg = response.value;
             }

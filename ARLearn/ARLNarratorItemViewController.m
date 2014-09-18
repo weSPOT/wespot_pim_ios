@@ -495,7 +495,7 @@ typedef NS_ENUM(NSInteger, responses) {
         case RESPONSES:{
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-            Log(@"%@ - %@ %@", response.fileName, response.value, response.contentType);
+//            Log(@"%@ - %@ %@", response.fileName, response.value, response.contentType);
             
             if (response.fileName) {
                 
@@ -636,18 +636,20 @@ typedef NS_ENUM(NSInteger, responses) {
         
         INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
         
-        if ([response.contentType isEqualToString:@"application/jpg"]) {
-            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><img src='%@?thumbnail=1600z&crop=true' style='width:100%%;' /></body></html>",
+        if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]] ) {
+            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
                                response.fileName];
-        } else if ( [response.contentType isEqualToString:@"video/quicktime"]) {
-            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
+        } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
+            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
-        } else if ( [response.contentType isEqualToString:@"audio/aac"]) {
-            controller.html = [NSString stringWithFormat:@"<!doctype html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
+        } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]] ) {
+            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
         } else {
 #warning TODO Add rending of text/value (or link to a popup)?
         }
+        
+        Log(@"%@", controller.html);
         
         // DLog(@"%@", response.fileName);
         

@@ -649,7 +649,7 @@ typedef NS_ENUM(NSInteger, responses) {
 #warning TODO Add rending of text/value (or link to a popup)?
         }
         
-        Log(@"%@", controller.html);
+        // Log(@"%@", controller.html);
         
         // DLog(@"%@", response.fileName);
         

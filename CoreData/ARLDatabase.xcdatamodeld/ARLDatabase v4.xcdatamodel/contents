@@ -64,7 +64,6 @@
     </entity>
     <entity name="GeneralItemVisibility" representedClassName="GeneralItemVisibility" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="generalItemId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="runId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -132,7 +131,7 @@
         <element name="Game" positionX="-3332" positionY="-687" width="128" height="165"/>
         <element name="GeneralItem" positionX="-2736" positionY="-1122" width="128" height="285"/>
         <element name="GeneralItemData" positionX="-2538" positionY="-1017" width="128" height="135"/>
-        <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="150"/>
+        <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="135"/>
         <element name="Inquiry" positionX="-3314" positionY="-958" width="128" height="163"/>
         <element name="Message" positionX="-2826" positionY="-711" width="128" height="148"/>
         <element name="Response" positionX="-2189" positionY="-1338" width="128" height="255"/>

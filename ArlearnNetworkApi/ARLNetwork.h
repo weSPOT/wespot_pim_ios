@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #import "PrivateData.h"
+//#import "ARLAppDelegate.h"
+
+#import "GeneralItem+ARLearnBeanCreate.h"
 
 // Note: PrivateData.h contains a defined with the openbadges
 //       Authorization key (as a String so just one define like:
@@ -76,7 +79,9 @@
                withAudio:(BOOL)withAudio
                 withText:(BOOL)withText
                withValue:(BOOL)withValue
-                  gameId:(NSNumber *)gameId;
+                  run:(Run *)run;
+
++ (id)postGeneralItemWithDict:(NSDictionary *)dict;
 
 //ItemVisibility
 + (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId;

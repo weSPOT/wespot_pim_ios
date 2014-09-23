@@ -90,27 +90,29 @@
                  withVideo:(BOOL)withVideo
                  withAudio:(BOOL)withAudio
                   withText:(BOOL)withText
-                 withValue:(BOOL)withValue {
+                 withValue:(BOOL)withValue
+{
     
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    NSDictionary *result = [ARLNetwork createGeneralItem:title
+    // ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    //#pragma warn MUST BE ONLINE FOR THESE?
+    /* NSDictionary *result =*/ [ARLNetwork createGeneralItem:title
                                              description:description
                                              withPicture:withPicture
                                                withVideo:withVideo
                                                withAudio:withAudio
                                                 withText:withText
                                                withValue:withValue
-                                                  gameId:self.run.gameId];
+                                                  run:self.run];
     
-    Game *game = [Game retrieveGame:[result objectForKey:@"gameId"] inManagedObjectContext:appDelegate.managedObjectContext];
+//    Game *game = [Game retrieveGame:[result objectForKey:@"gameId"] inManagedObjectContext:appDelegate.managedObjectContext];
     
-    [GeneralItem generalItemWithDictionary:result withGame:game inManagedObjectContext:appDelegate.managedObjectContext];
+//    [GeneralItem generalItemWithDictionary:result withGame:game inManagedObjectContext:appDelegate.managedObjectContext];
     
-    if (appDelegate.managedObjectContext.hasChanges) {
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save:&error];
-    }
+//    if (appDelegate.managedObjectContext.hasChanges) {
+//        NSError *error = nil;
+//        [appDelegate.managedObjectContext save:&error];
+//    }
     
     // Log(@"%@", result);
 }
@@ -124,7 +126,7 @@
     if ([self.titleEdit.text length]>0) {
         
         //see https://github.com/yonat/MultiSelectSegmentedControl/blob/master/MultiSelectSegmentedControl.m
-        
+
         [self createGeneralItem:self.titleEdit.text
                     description:self.descriptionEdit.text
                     withPicture:[self.typeSegments.selectedSegmentIndexes containsIndex:0]
@@ -133,14 +135,6 @@
                        withText:[self.typeSegments.selectedSegmentIndexes containsIndex:3]
                       withValue:[self.typeSegments.selectedSegmentIndexes containsIndex:4]
          ];
-        
-        //[self createGeneralItem:self.titleEdit.text
-        //            description:self.descriptionEdit.text
-        //            withPicture:self.typeSegments.selectedSegmentIndex==0
-        //              withVideo:self.typeSegments.selectedSegmentIndex==1
-        //              withAudio:self.typeSegments.selectedSegmentIndex==2
-        //               withText:self.typeSegments.selectedSegmentIndex==3
-        //              withValue: self.typeSegments.selectedSegmentIndex==4];
         
         if (ARLNetwork.networkAvailable) {
             [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];

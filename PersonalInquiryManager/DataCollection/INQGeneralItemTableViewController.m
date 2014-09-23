@@ -132,6 +132,16 @@ typedef NS_ENUM(NSInteger, groups) {
     }
 }
 
+- (void)refreshTable
+{
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch:&error];
+    
+    [self.tableView reloadData];
+    
+    [self.refreshControl endRefreshing];
+}
+
 /*!
  *  Remove the Notification. Dealloc is the closest to ViewDidLoad.
  *

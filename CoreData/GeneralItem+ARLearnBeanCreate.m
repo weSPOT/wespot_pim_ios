@@ -25,7 +25,7 @@
                                  withGameId: (NSNumber *) gameId
                      inManagedObjectContext: (NSManagedObjectContext *) context {
     
-    Game * game = [Game retrieveGame:gameId inManagedObjectContext:context];
+    Game *game = [Game retrieveGame:gameId inManagedObjectContext:context];
     
     return [self generalItemWithDictionary:giDict withGame:game inManagedObjectContext:context];
 }
@@ -57,7 +57,13 @@
                                            inManagedObjectContext:context];
     }
     
-    gi.generalItemId = [giDict objectForKey:@"id"] ;
+#pragma warn VEG CREATE GI here with a local id of 0 if missing in dictionary.
+    
+    if ([giDict objectForKey:@"id"]) {
+        gi.generalItemId = [giDict objectForKey:@"id"];
+    } else {
+        gi.generalItemId = 0;
+    }
     gi.ownerGame = game;
     gi.gameId = [giDict objectForKey:@"gameId"];
     gi.lat = [giDict objectForKey:@"lat"];
@@ -67,9 +73,12 @@
     gi.sortKey = [giDict objectForKey:@"sortKey"] ;
     gi.type = [giDict objectForKey:@"type"];
     gi.json = [NSKeyedArchiver archivedDataWithRootObject:giDict];
-    [self setCorrespondingVisibilityItems:gi];
     
-    [self downloadCorrespondingData:giDict withGeneralItem:gi inManagedObjectContext:context];
+    if ( gi.generalItemId != 0) {
+        [self setCorrespondingVisibilityItems:gi];
+        
+        [self downloadCorrespondingData:giDict withGeneralItem:gi inManagedObjectContext:context];
+    }
     
     NSError *error = nil;
     [context save:&error];
@@ -107,7 +116,7 @@
 + (void) setCorrespondingVisibilityItems: (GeneralItem *) gi {
     NSManagedObjectContext * context = gi.managedObjectContext;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItemVisibility"];
-    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId == %lld", [gi.generalItemId longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"generalItem == %@", gi];
     
     NSError *error = nil;
     NSArray *allVisibilityStatements = [context executeFetchRequest:request error:&error];
@@ -157,8 +166,11 @@
 + (GeneralItem *) retrieveFromDb: (NSDictionary *) giDict withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [[giDict objectForKey:@"id"] longLongValue]];
-    
+    if ([giDict objectForKey:@"id"]) {
+        request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [[giDict objectForKey:@"id"] longLongValue]];
+    } else {
+#warning VEG Retrieve Correct Item Here...
+    }
     NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];
     ELog(error);

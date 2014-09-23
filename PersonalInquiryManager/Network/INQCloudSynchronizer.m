@@ -146,17 +146,23 @@
     while (ARLAppDelegate.SyncAllowed) {
 
         if (self.syncUsers) {
+            Log(@"syncAllUsers");
             [self syncAllUsers];
         } else if (self.syncInquiryUsers) {
+            Log(@"synchronizeInquiryUsers");
             [self synchronizeInquiryUsers];
         } else if (self.syncMessages) {
+            Log(@"synchronizeMessages");
             [self synchronizeMessages];
         } else if (self.syncInquiries) {
+            Log(@"synchronizeInquiries");
             [self synchronizeInquiries];
         } else {
             break;
         }
     }
+
+    Log(@"Ready");
 
     if (ARLAppDelegate.SyncAllowed) {
         [self saveContext];

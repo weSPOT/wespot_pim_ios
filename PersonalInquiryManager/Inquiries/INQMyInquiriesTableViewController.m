@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Inquiry"];
     
     [request setFetchBatchSize:8];
-    
+
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
                                                                                      ascending:YES
                                                                                       selector:@selector(localizedCaseInsensitiveCompare:)]];

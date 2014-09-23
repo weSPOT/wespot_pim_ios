@@ -19,7 +19,7 @@
 + (void) updateVisibility : (NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
 + (void) updateVisibility : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext *) context;
 
-+ (CurrentItemVisibility *) retrieve: (NSNumber *) itemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
++ (CurrentItemVisibility *) retrieve: (GeneralItem *) item  runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
 
 + (NSArray *) retrieveVisibleFor: (NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context;
 

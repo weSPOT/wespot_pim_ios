@@ -7,6 +7,7 @@
 //
 
 #import "ARLNetwork.h"
+#import "ARLAppDelegate.h"
 
 @implementation ARLNetwork
 
@@ -232,50 +233,8 @@
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
 }
 
-+ (id) createGeneralItem:(NSString *)title
-             description:(NSString *)description
-             withPicture:(BOOL)withPicture
-             withVideo:(BOOL)withVideo
-             withAudio:(BOOL)withAudio
-             withText:(BOOL)withText
-             withValue:(BOOL)withValue
-                  gameId:(NSNumber *)gameId
++ (id)postGeneralItemWithDict:(NSDictionary *)dict
 {
-    //Minimal ex openQuestion:
-    //    {
-    //        "type": "org.celstec.arlearn2.beans..generalItem.NarratorItem",
-    //        "gameId": 0,
-    //        "name": "Item name",
-    //        "description": "Item description",
-    //        "richText": "<p>Item description</p>"
-    //        "openQuestion": {
-    //            "withPicture": true,
-    //            "withText": true,
-    //            "withValue": true,
-    //            "withAudio": true,
-    //            "withVideo": true,
-    //            "valueDescription": "voer temp in",
-    //            "textDescription": "voer text in"
-    //        },
-    //    }
-    
-    NSDictionary *openQuestion = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                  withPicture?@"true":@"false",         @"withPicture",
-                                  withVideo?@"true":@"false",           @"withVideo",
-                                  withAudio?@"true":@"false",           @"withAudio",
-                                  withText?@"true":@"false",            @"withText",
-                                  withValue?@"true":@"false",           @"withValue",
-                                  nil];
-    
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
-                          gameId,                                                   @"gameId",
-                          title,                                                    @"name",
-                          description,                                              @"description",
-                          description,                                              @"richText",
-                          openQuestion,                                             @"openQuestion",
-                          nil];
-    
     NSData *postData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     
     //Full/Return value:
@@ -305,8 +264,93 @@
     //        },
     //        "roles": []
     //    }
+#pragma warn MUST BE ONLINE FOR THIS!!!
+    NSDictionary *result = [self executeARLearnPostWithAuthorization:@"generalItems" postData:postData withContentType:applicationjson ];
+   
+//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    return [self executeARLearnPostWithAuthorization:@"generalItems" postData:postData withContentType:applicationjson ];
+    return result;
+}
+
++ (id) createGeneralItem:(NSString *)title
+             description:(NSString *)description
+             withPicture:(BOOL)withPicture
+               withVideo:(BOOL)withVideo
+               withAudio:(BOOL)withAudio
+                withText:(BOOL)withText
+               withValue:(BOOL)withValue
+                     run:(Run *)run
+{
+    //Minimal ex openQuestion:
+    //    {
+    //        "type": "org.celstec.arlearn2.beans.generalItem.NarratorItem",
+    //        "gameId": 0,
+    //        "name": "Item name",
+    //        "description": "Item description",
+    //        "richText": "<p>Item description</p>"
+    //        "openQuestion": {
+    //            "withPicture": true,
+    //            "withText": true,
+    //            "withValue": true,
+    //            "withAudio": true,
+    //            "withVideo": true,
+    //            "valueDescription": "voer temp in",
+    //            "textDescription": "voer text in"
+    //        },
+    //    }
+    
+    NSDictionary *openQuestion = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  withPicture?@"true":@"false",         @"withPicture",
+                                  withVideo?@"true":@"false",           @"withVideo",
+                                  withAudio?@"true":@"false",           @"withAudio",
+                                  withText?@"true":@"false",            @"withText",
+                                  withValue?@"true":@"false",           @"withValue",
+                                  nil];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
+                          run.gameId,                                               @"gameId",
+                          title,                                                    @"name",
+                          description,                                              @"description",
+                          description,                                              @"richText",
+                          openQuestion,                                             @"openQuestion",
+                          nil];
+    
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    GeneralItem* gi = [GeneralItem generalItemWithDictionary:dict withGameId:run.gameId inManagedObjectContext:appDelegate.managedObjectContext];
+
+    CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
+    visibility.visible = [NSNumber numberWithBool:YES];
+    
+    double localCurrentTimeMillis = [[NSDate date] timeIntervalSince1970]*1000;
+    NSString *account = [NSString stringWithFormat:@"%@:%@", appDelegate.CurrentAccount.accountType, appDelegate.CurrentAccount.localId];
+    
+    NSDictionary *visDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             @"false",                                             @"deleted",
+                             run.runId,                                            @"runId",
+                             [NSNumber numberWithInt:1],                           @"status",
+                             [NSNumber numberWithDouble:localCurrentTimeMillis],   @"timeStamp",
+                             account,                                              @"email",
+                             nil];
+    
+    [GeneralItemVisibility visibilityWithDictionary:visDict withRun:run withGeneralItem:gi];
+    
+    NSError *error = nil;
+    [appDelegate.managedObjectContext save:&error];
+    
+    if (ARLNetwork.networkAvailable) {
+        NSDictionary *result = [self postGeneralItemWithDict:dict];
+        if (gi.generalItemId==0) {
+            gi.generalItemId = [result objectForKey:@"id"];
+            
+            NSError *error = nil;
+            [appDelegate.managedObjectContext save:&error];
+        }
+        return  result;
+    } else {
+        return dict;
+    }
 }
 
 #pragma mark - Responses
@@ -374,7 +418,8 @@
 + (void) publishResponse: (NSNumber *) runId
            responseValue: (NSString *) value
                   itemId: (NSNumber*) generalItemId
-               timeStamp: (NSNumber*) timeStamp{
+               timeStamp: (NSNumber*) timeStamp
+{
     NSString* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     NSString* accountLocalId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
     NSString* account = [NSString stringWithFormat:@"%@:%@", accountType, accountLocalId];

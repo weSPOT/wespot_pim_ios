@@ -133,7 +133,6 @@
 		8D81D5D2193F587800D4C7B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5D0193F587800D4C7B4 /* Localizable.strings */; };
 		8D8B45B71973D063001FC6DF /* Model_2_to_3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */; };
 		8D8B45BA1973D58E001FC6DF /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45B91973D58E001FC6DF /* Response.m */; };
-		8D8B45BD1973D58F001FC6DF /* GeneralItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */; };
 		8D8B45C01973D58F001FC6DF /* SynchronizationBookKeeping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45BF1973D58F001FC6DF /* SynchronizationBookKeeping.m */; };
 		8D8B45C31973D58F001FC6DF /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45C21973D58F001FC6DF /* Account.m */; };
 		8D8B45C61973D58F001FC6DF /* GeneralItemData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B45C51973D58F001FC6DF /* GeneralItemData.m */; };
@@ -153,6 +152,7 @@
 		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 		8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */; };
 		8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */; };
+		8DDE2D2419D1AB2900EC9230 /* GeneralItemVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DDE2D2319D1AB2900EC9230 /* GeneralItemVisibility.m */; };
 		8DE646F61922162700CB8E67 /* INQNewGeneralItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -365,8 +365,6 @@
 		8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_2_to_3.xcmappingmodel; sourceTree = "<group>"; };
 		8D8B45B81973D58E001FC6DF /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
 		8D8B45B91973D58E001FC6DF /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
-		8D8B45BB1973D58F001FC6DF /* GeneralItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemVisibility.h; sourceTree = "<group>"; };
-		8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemVisibility.m; sourceTree = "<group>"; };
 		8D8B45BE1973D58F001FC6DF /* SynchronizationBookKeeping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronizationBookKeeping.h; sourceTree = "<group>"; };
 		8D8B45BF1973D58F001FC6DF /* SynchronizationBookKeeping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronizationBookKeeping.m; sourceTree = "<group>"; };
 		8D8B45C11973D58F001FC6DF /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
@@ -403,6 +401,9 @@
 		8DC3AA5D192CB9AC00C16A31 /* INQQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQQuestionViewController.h; path = Question/INQQuestionViewController.h; sourceTree = "<group>"; };
 		8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQQuestionViewController.m; path = Question/INQQuestionViewController.m; sourceTree = "<group>"; };
 		8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8DDE2D2119D1AA9D00EC9230 /* ARLDatabase v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v4.xcdatamodel"; sourceTree = "<group>"; };
+		8DDE2D2219D1AB2900EC9230 /* GeneralItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemVisibility.h; sourceTree = "<group>"; };
+		8DDE2D2319D1AB2900EC9230 /* GeneralItemVisibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItemVisibility.m; sourceTree = "<group>"; };
 		8DE646F41922162700CB8E67 /* INQNewGeneralItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewGeneralItemViewController.h; sourceTree = "<group>"; };
 		8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNewGeneralItemViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -565,6 +566,8 @@
 				8D8B45CD1973D590001FC6DF /* Action.h */,
 				8D8B45CE1973D590001FC6DF /* Action.m */,
 				34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */,
+				8DDE2D2219D1AB2900EC9230 /* GeneralItemVisibility.h */,
+				8DDE2D2319D1AB2900EC9230 /* GeneralItemVisibility.m */,
 				34D4229417B670EC0051E84C /* CurrentItemVisibility+Create.h */,
 				34D4229517B670EC0051E84C /* CurrentItemVisibility+Create.m */,
 				8D8B45D61973D590001FC6DF /* CurrentItemVisibility.h */,
@@ -583,8 +586,6 @@
 				8D8B45C51973D58F001FC6DF /* GeneralItemData.m */,
 				34D422A417B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.h */,
 				34D422A517B670EC0051E84C /* GeneralItemVisibility+ARLearnBeanCreate.m */,
-				8D8B45BB1973D58F001FC6DF /* GeneralItemVisibility.h */,
-				8D8B45BC1973D58F001FC6DF /* GeneralItemVisibility.m */,
 				34D422CF17B671A60051E84C /* Inquiry+Create.h */,
 				34D422D017B671A60051E84C /* Inquiry+Create.m */,
 				8D8B45D31973D590001FC6DF /* Inquiry.h */,
@@ -1232,7 +1233,7 @@
 				8D77DADF1958631400D84482 /* INQLog.m in Sources */,
 				34D422D117B671A60051E84C /* Inquiry+Create.m in Sources */,
 				8D1945FD18C0A54200C32EED /* INQAddFriendTableViewController.m in Sources */,
-				8D8B45BD1973D58F001FC6DF /* GeneralItemVisibility.m in Sources */,
+				8DDE2D2419D1AB2900EC9230 /* GeneralItemVisibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1450,11 +1451,12 @@
 		34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8DDE2D2119D1AA9D00EC9230 /* ARLDatabase v4.xcdatamodel */,
 				8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */,
 				8DA8305B195C365B009E7E4E /* ARLDatabase v1.xcdatamodel */,
 				34D4229117B670EC0051E84C /* ARLDatabase v2.xcdatamodel */,
 			);
-			currentVersion = 8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */;
+			currentVersion = 8DDE2D2119D1AA9D00EC9230 /* ARLDatabase v4.xcdatamodel */;
 			path = ARLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

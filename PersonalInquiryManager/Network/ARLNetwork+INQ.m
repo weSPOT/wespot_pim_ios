@@ -633,10 +633,11 @@
     }
    
     if (result) {
-        return result == [NSNumber numberWithBool:YES];
+#warning DEBUG CODE (Change to NO for debugging off-line code).
+        return YES;//result == [NSNumber numberWithBool:YES];
     }
     
-    return YES;
+    return NO;
 }
 
 @end

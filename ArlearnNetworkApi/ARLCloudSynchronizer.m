@@ -149,21 +149,28 @@
     
     while (ARLAppDelegate.SyncAllowed) {
         if (self.syncRuns) {
+            Log(@"synchronizeRuns");
             [self synchronizeRuns];
         } else if (self.syncGames) {
+            Log(@"synchronizeGames");
             [self synchronizeGames];
         } else if (self.gameId) {
+            Log(@"synchronizeGeneralItemsWithGame");
             [self synchronizeGeneralItemsWithGame];
         } else if (self.visibilityRunId) {
+            Log(@"synchronizeGeneralItemsAndVisibilityStatements");
             [self synchronizeGeneralItemsAndVisibilityStatements];
         } else if (self.syncResponses){
+            Log(@"synchronizeResponses");
             [self synchronizeResponses];
         } else if (self.syncActions){
+            Log(@"synchronizeActions");
             [self synchronizeActions];
         } else {
             break;
         }
     }
+    Log(@"Ready");
     
     if (ARLAppDelegate.SyncAllowed) {
         [self saveContext];
@@ -221,9 +228,43 @@
     
     @autoreleasepool {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
-                                                                                type:@"generalItems"
-                                                                             context:self.gameId];
- 
+                                                                               type:@"generalItems"
+                                                                            context:self.gameId];
+        
+        // Select and Push all GeneralItems for this game with genralItemId =0 and update the id on return!
+        // !!!!! Fails on == 0 !!!!!
+        //NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(generalItemId = %@) AND (gameId = %lld)", [NSNumber numberWithInt:0], [self.gameId longLongValue]];
+      NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
+        
+        Log(@"%@", localgis);
+        
+        NSArray *gis = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"GeneralItem" predicate:localgis];
+        
+        for (GeneralItem *gi in gis) {
+            if (gi.generalItemId!=0) {
+                continue;
+            }
+            NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
+            NSDictionary *openQuestion = [jsonDict objectForKey:@"openQuestion"];
+            
+            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
+                                  self.gameId,                                              @"gameId",
+                                  gi.name,                                                  @"name",
+                                  gi.richText,                                              @"description",
+                                  gi.richText,                                              @"richText",
+                                  openQuestion,                                             @"openQuestion",
+                                  nil];
+            
+            NSDictionary *result = [ARLNetwork postGeneralItemWithDict:dict];
+            
+            gi.generalItemId = [NSNumber numberWithLongLong:[[result objectForKey:@"id"] longLongValue]];
+        }
+        
+        NSError *error = nil;
+        [self.context save:&error];
+        ELog(error);
+        
         NSDictionary *gisDict = [ARLNetwork itemsForGameFrom:self.gameId
                                                          from:lastDate];
         NSNumber *serverTime = [gisDict objectForKey:@"serverTime"];
@@ -266,18 +307,6 @@
         
         NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
         
-        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
-        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
-        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
-        
-        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
-            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
-                [GeneralItemVisibility visibilityWithDictionary:viStatement withRun:run];
-            }
-        }
-        
         //    {
         //        deleted = 0;
         //        responses =     (
@@ -291,6 +320,21 @@
         //                             type = "org.celstec.arlearn2.beans.run.Response";
         //                             userEmail = "2:101754523769925754305";
         //                         },
+        //
+        //     }
+        
+        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
+        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
+        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
+        
+        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
+            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
+                [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
+            }
+        }
+
         @autoreleasepool {
             NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
             

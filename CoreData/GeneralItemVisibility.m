@@ -2,7 +2,7 @@
 //  GeneralItemVisibility.m
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 7/14/14.
+//  Created by Wim van der Vegt on 9/23/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @implementation GeneralItemVisibility
 
 @dynamic email;
-@dynamic generalItemId;
 @dynamic runId;
 @dynamic status;
 @dynamic timeStamp;

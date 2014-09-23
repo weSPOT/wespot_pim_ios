@@ -2,7 +2,7 @@
 //  GeneralItemVisibility.h
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 7/14/14.
+//  Created by Wim van der Vegt on 9/23/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @interface GeneralItemVisibility : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) NSNumber * generalItemId;
 @property (nonatomic, retain) NSNumber * runId;
 @property (nonatomic, retain) NSNumber * status;
 @property (nonatomic, retain) NSNumber * timeStamp;

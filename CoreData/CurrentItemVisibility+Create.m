@@ -108,10 +108,10 @@
  *
  *  @return The requested CurrentItemVisibility.
  */
-+ (CurrentItemVisibility *) retrieve: (NSNumber *) itemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context{
++ (CurrentItemVisibility *) retrieve: (GeneralItem *) item runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
 
-    request.predicate = [NSPredicate predicateWithFormat:@"item.generalItemId = %lld and run.runId = %lld", [itemId longLongValue], [runId longLongValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"item = %@ and run.runId = %lld", item, [runId longLongValue]];
     NSError *error = nil;
     
     NSArray *currentItemVisibility = [context executeFetchRequest:request error:&error];

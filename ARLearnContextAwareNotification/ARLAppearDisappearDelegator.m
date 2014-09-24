@@ -42,8 +42,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [CurrentItemVisibility updateVisibility:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentRun"] withManagedContext:appDelegate.managedObjectContext];
-        [appDelegate.managedObjectContext save:nil];
-        for (CurrentItemVisibility* vis in [CurrentItemVisibility retrieveVisibleFor: [NSNumber numberWithLongLong:3457078]withManagedContext: appDelegate.managedObjectContext]) {
+        
+        [INQLog SaveNLog:appDelegate.managedObjectContext];
+        
+#warning MAGIC NUMBER !!
+       for (CurrentItemVisibility* vis in [CurrentItemVisibility retrieveVisibleFor: [NSNumber numberWithLongLong:3457078]withManagedContext: appDelegate.managedObjectContext]) {
             DLog(@"Visibility Statement %@", vis.item.name);
         }
     });

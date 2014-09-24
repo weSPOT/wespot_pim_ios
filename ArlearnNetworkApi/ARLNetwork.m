@@ -321,7 +321,7 @@
     GeneralItem* gi = [GeneralItem generalItemWithDictionary:dict withGameId:run.gameId inManagedObjectContext:appDelegate.managedObjectContext];
 
     CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
-    visibility.visible = [NSNumber numberWithBool:YES];
+    //visibility.visible = [NSNumber numberWithBool:YES];
     
     [INQLog SaveNLog:appDelegate.managedObjectContext];
     

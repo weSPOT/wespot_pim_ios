@@ -71,8 +71,12 @@
             // Log("Initial Sync at Startup");
           
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            
             if ([appDelegate respondsToSelector:@selector(syncData)]) {
-                [appDelegate performSelector:@selector(syncData)];
+                NSInteger *count = [appDelegate entityCount:@"Inquiry"];
+                if (!count) {
+                    [appDelegate performSelector:@selector(syncData)];
+                }
             }
         }
 

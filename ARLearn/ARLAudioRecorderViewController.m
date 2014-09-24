@@ -22,7 +22,8 @@
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
     [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
-    if ([self.generalItem.managedObjectContext.parentContext) {
+    
+    if (self.generalItem.managedObjectContext.parentContext) {
         [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
         
         if (ARLNetwork.networkAvailable) {

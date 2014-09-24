@@ -552,10 +552,4 @@ typedef NS_ENUM(NSInteger, friends) {
     [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
 }
 
-//- (void)refreshTable
-//{
-//    [self syncData];
-//    [self.refreshControl endRefreshing];
-//}
-
 @end

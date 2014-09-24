@@ -76,9 +76,7 @@
     [Message messageWithDictionary:result
             inManagedObjectContext:appDelegate.managedObjectContext];
     
-    if (appDelegate.managedObjectContext.hasChanges) {
-        [appDelegate.managedObjectContext save:nil];
-    }
+    [INQLog SaveNLog:appDelegate.managedObjectContext];
     
     DLog(@"%@", result);
 }

@@ -120,14 +120,14 @@
  *  Runs on a separate thread in the background.
  */
 - (void) asyncExecution {
-    //mach_port_t machTID = pthread_mach_thread_np(pthread_self());
-    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
+    // mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+    // DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
     
     [ARLAppDelegate.theLock lock];
     
-    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
+    // DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passed Lock", ARLAppDelegate.theLock);
     
-     // DLog(@"Thread:0x%x - Start of INQ Synchronisation", machTID);
+    // DLog(@"Thread:0x%x - Start of INQ Synchronisation", machTID);
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -161,7 +161,7 @@
     
     [ARLAppDelegate.theLock unlock];
     
-    //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
+    // DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
     // DLog(@"Thread:0x%x - End of INQ Synchronisation", machTID);
 }
@@ -237,7 +237,7 @@
             }
             
             if (dbIds.count>0) {
-                [self.context save:nil];
+                [INQLog SaveNLog:self.context];
             }
             
             //******************************

@@ -26,8 +26,7 @@
     visibility.item = generalItem;
     visibility.run = run;
     
-    NSError *error = nil;
-    [run.managedObjectContext save:&error];
+    [INQLog SaveNLog:run.managedObjectContext];
     
     return visibility;
 }

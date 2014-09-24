@@ -66,9 +66,7 @@
     
     [self setCorrespondingRuns:game];
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return game;
 }

@@ -79,9 +79,7 @@
         [self setGame:run inManagedObjectContext:context];
     }
     
-    error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return run;
 }

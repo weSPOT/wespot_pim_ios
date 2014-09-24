@@ -62,10 +62,8 @@
             giData.error = [NSNumber numberWithBool:NO];
         }
     }
-    
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+
+    [INQLog SaveNLog:context];
 }
 
 /*!

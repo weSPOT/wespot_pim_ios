@@ -323,6 +323,8 @@
     CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
     visibility.visible = [NSNumber numberWithBool:YES];
     
+    [INQLog SaveNLog:appDelegate.managedObjectContext];
+    
     double localCurrentTimeMillis = [[NSDate date] timeIntervalSince1970]*1000;
     NSString *account = [NSString stringWithFormat:@"%@:%@", appDelegate.CurrentAccount.accountType, appDelegate.CurrentAccount.localId];
     
@@ -336,16 +338,14 @@
     
     [GeneralItemVisibility visibilityWithDictionary:visDict withRun:run withGeneralItem:gi];
     
-    NSError *error = nil;
-    [appDelegate.managedObjectContext save:&error];
+    [INQLog SaveNLog:appDelegate.managedObjectContext];
     
     if (ARLNetwork.networkAvailable) {
         NSDictionary *result = [self postGeneralItemWithDict:dict];
         if (gi.generalItemId==0) {
             gi.generalItemId = [result objectForKey:@"id"];
             
-            NSError *error = nil;
-            [appDelegate.managedObjectContext save:&error];
+            [INQLog SaveNLog:appDelegate.managedObjectContext];
         }
         return  result;
     } else {

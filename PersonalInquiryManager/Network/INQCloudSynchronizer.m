@@ -108,22 +108,10 @@
     //
     //[ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
     
-    if (self.context) {
-        if ([self.context hasChanges]){
-            if (![self.context save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
-        
-        if ([self.parentContext hasChanges]){
-            [self.parentContext performBlock:^{
-                NSError *error = nil;
-                if (![self.parentContext save:&error]) {
-                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-                }
-            }];
-        }
-    }
+    [INQLog SaveNLogAbort:self.context func:[NSString stringWithFormat:@"%s",__func__]];
+    [self.parentContext performBlock:^{
+        [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+    }];
 }
 
 /*!
@@ -334,8 +322,7 @@
                     //            }
                     //        }
                     
-                    NSError *error = nil;
-                    [self.context save:&error];
+                    [INQLog SaveNLog:self.context];
                 }
             }
         }
@@ -351,8 +338,7 @@
         }
         
         if (ARLAppDelegate.SyncAllowed) {
-            NSError *error = nil;
-            [self.context save:&error];
+            [INQLog SaveNLog:self.context];
         }
     }
     
@@ -482,8 +468,7 @@
                          inManagedObjectContext:self.context];
     }
     
-    NSError *error = nil;
-    [self.context save:&error];
+    [INQLog SaveNLog:self.context];
     
     self.syncMessages = NO;
 }

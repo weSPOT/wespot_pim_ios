@@ -21,29 +21,17 @@
    
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
-    if (self.generalItem.managedObjectContext) {
-        if ([self.generalItem.managedObjectContext hasChanges]) {
-            NSError *error = nil;
-            if (![self.generalItem.managedObjectContext save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
-        
-        if ([self.generalItem.managedObjectContext.parentContext hasChanges]) {
-            NSError *error = nil;
-            if (![self.generalItem.managedObjectContext save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
+    [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
+    if ([self.generalItem.managedObjectContext.parentContext) {
+        [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
         
         if (ARLNetwork.networkAvailable) {
             [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
             [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
         }
     }
-    
+       
     [self.navigationController popViewControllerAnimated:YES];
-
 }
 
 - (void)viewDidLoad

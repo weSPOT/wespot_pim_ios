@@ -834,15 +834,8 @@ typedef NS_ENUM(NSInteger, responses) {
             forGeneralItem:self.generalItem
     inManagedObjectContext:self.generalItem.managedObjectContext];
         
-        NSError *error = nil;
-        if (self.generalItem.managedObjectContext) {
-            if ([self.generalItem.managedObjectContext hasChanges]){
-                if (![self.generalItem.managedObjectContext save:&error]) {
-                    [ARLNetwork ShowAbortMessage:error
-                                            func:[NSString stringWithFormat:@"%s",__func__]];
-                }
-            }
-        }
+        [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
+        
         if (ARLNetwork.networkAvailable) {
             [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
         }
@@ -926,20 +919,13 @@ typedef NS_ENUM(NSInteger, responses) {
     [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    NSError *error = nil;
+    
     if (self.generalItem.managedObjectContext) {
-        if ([self.generalItem.managedObjectContext hasChanges]){
-            if (![self.generalItem.managedObjectContext save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
-        if (self.generalItem.managedObjectContext.parentContext) {
-            if ([self.generalItem.managedObjectContext.parentContext hasChanges]){
-                if (![self.generalItem.managedObjectContext.parentContext save:&error]) {
-                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-                }
-            }
-        }
+        [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
+        
+        [self.generalItem.managedObjectContext.parentContext performBlock:^{
+            [INQLog SaveNLogAbort:self.generalItem.managedObjectContext.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+        }];
         
         if (ARLNetwork.networkAvailable) {
             [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];

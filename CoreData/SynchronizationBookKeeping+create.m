@@ -55,8 +55,7 @@
         
         //[[ARLCloudSynchronizer syncDates] setObject:bookKeeping forKey:key];
         
-        [managedContext save:&error];
-        ELog(error);
+        [INQLog SaveNLog:managedContext];
         
         return bookKeeping.lastSynchronization;
     }
@@ -119,9 +118,7 @@
     
     bkItem.lastSynchronization = time;
    
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return bkItem;
 }

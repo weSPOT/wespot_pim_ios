@@ -32,10 +32,7 @@
     action.time = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     action.synchronized = [NSNumber numberWithBool:NO];
     
-    NSError *error = nil;
-    [context save:&error];
-
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return action;
 }

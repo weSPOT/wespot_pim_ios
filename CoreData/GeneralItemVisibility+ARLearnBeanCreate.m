@@ -62,8 +62,7 @@
     
     giVis.email =[visDict objectForKey:@"email"];
     
-    NSError *error = nil;
-    [run.managedObjectContext save:&error];
+    [INQLog SaveNLog:run.managedObjectContext];
     
     return giVis;
 }
@@ -95,8 +94,7 @@
         [generalItem addVisibilityObject:vis];
         [CurrentItemVisibility updateVisibility:generalItem.generalItemId runId:run.runId withManagedContext:run.managedObjectContext];
         
-        NSError *error = nil;
-        [run.managedObjectContext save:&error];
+        [INQLog SaveNLog:run.managedObjectContext];
         
         return vis;
     }

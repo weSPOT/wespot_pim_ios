@@ -198,10 +198,7 @@ static BOOL _syncAllowed = NO;
             }
         }
         
-        if ([self.managedObjectContext hasChanges]) {
-            NSError *error = nil;
-            [self.managedObjectContext save:&error];
-        }
+        [INQLog SaveNLog:self.managedObjectContext];
         
         // DLog(@"Updating ResponseType Finish");
     }
@@ -346,7 +343,11 @@ static BOOL _syncAllowed = NO;
         options[NSInferMappingModelAutomaticallyOption] = @YES;
         options[NSSQLitePragmasOption] = @{ @"journal_mode":@"DELETE" };
         
-        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                       configuration:nil
+                                                                 URL:storeURL
+                                                             options:options
+                                                               error:&error]) {
             
             ELog(error);
 
@@ -396,7 +397,7 @@ static BOOL _syncAllowed = NO;
         [context deleteObject:entity];
     }
     
-    [context save:&error];
+    [INQLog SaveNLog:context];
 }
 
 /*!
@@ -427,7 +428,6 @@ static BOOL _syncAllowed = NO;
     
     NSError *error = nil;
     NSArray *unsyncedData = [context executeFetchRequest:request error:&error];
- 
     ELog(error);
     
     return unsyncedData;
@@ -476,13 +476,7 @@ static BOOL _syncAllowed = NO;
  *  Save NSManagedObjectContext.
  */
 - (void) saveContext {
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-           [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-        }
-    }
+    [INQLog SaveNLogAbort:self.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
 }
 
 /*!

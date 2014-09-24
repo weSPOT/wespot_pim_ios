@@ -57,11 +57,7 @@
         account.picture = urlData;
     }
     
-    NSError *error = nil;
-    [context save:&error];
-    if (error) {
-        ELog(error);
-    }
+    [INQLog SaveNLog:context];
     
     return account;
 }

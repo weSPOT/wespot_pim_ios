@@ -69,12 +69,12 @@
     self.domain = [[NSURL URLWithString:authenticateUrl] host];
     
     @autoreleasepool {
-//        [self.webView loadHTMLString:[NSString stringWithFormat:@"<h1>Connecting to %@.</h1>", name] baseURL:nil];
-//        
-       [CATransaction flush];
+        // [self.webView loadHTMLString:[NSString stringWithFormat:@"<h1>Connecting to %@.</h1>", name] baseURL:nil];
+        //
+        [CATransaction flush];
         
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:authenticateUrl]]];
-        //cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60.0]];
+        // cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60.0]];
     }
 }
 

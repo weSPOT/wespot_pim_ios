@@ -34,9 +34,7 @@
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     response.account = [ARLNetwork CurrentAccount];
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return response;
 }
@@ -65,9 +63,7 @@
     response.synchronized = [NSNumber numberWithBool:NO];
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return response;
 }
@@ -169,9 +165,7 @@
     // Set TimeStamp.
     response.timeStamp = [NSNumber numberWithLongLong:[[respDict objectForKey:@"timestamp"] longLongValue]];
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
 
     return response;
 }

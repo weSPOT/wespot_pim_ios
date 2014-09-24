@@ -29,12 +29,8 @@
     if (account!=nil) {
         [context deleteObject:account];
     }
-    
-    NSError *error = nil;
-    [context save:&error];
-  
-    ELog(error);
 
+    [INQLog SaveNLog:context];
 }
 
 /*!
@@ -71,14 +67,7 @@
 }
 
 + (void) saveChanges : (NSManagedObjectContext *) context {
-    NSError *error = nil;
-    if (context) {
-        if ([context hasChanges]){
-            if (![context save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
-    }
+    [INQLog SaveNLogAbort:context func:[NSString stringWithFormat:@"%s",__func__]];
 }
 
 /*!
@@ -100,7 +89,7 @@
         [context deleteObject:entity];
     }
     
-    [context save:&error];
+    [INQLog SaveNLog:context];
 }
 
 @end

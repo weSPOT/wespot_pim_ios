@@ -94,25 +94,23 @@
 {
     
     // ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     //#pragma warn MUST BE ONLINE FOR THESE?
-    /* NSDictionary *result =*/ [ARLNetwork createGeneralItem:title
-                                             description:description
-                                             withPicture:withPicture
-                                               withVideo:withVideo
-                                               withAudio:withAudio
-                                                withText:withText
-                                               withValue:withValue
-                                                  run:self.run];
+    /* NSDictionary *result =*/
+    [ARLNetwork createGeneralItem:title
+                      description:description
+                      withPicture:withPicture
+                        withVideo:withVideo
+                        withAudio:withAudio
+                         withText:withText
+                        withValue:withValue
+                              run:self.run];
     
-//    Game *game = [Game retrieveGame:[result objectForKey:@"gameId"] inManagedObjectContext:appDelegate.managedObjectContext];
+    // Game *game = [Game retrieveGame:[result objectForKey:@"gameId"] inManagedObjectContext:appDelegate.managedObjectContext];
     
-//    [GeneralItem generalItemWithDictionary:result withGame:game inManagedObjectContext:appDelegate.managedObjectContext];
+    // [GeneralItem generalItemWithDictionary:result withGame:game inManagedObjectContext:appDelegate.managedObjectContext];
     
-//    if (appDelegate.managedObjectContext.hasChanges) {
-//        NSError *error = nil;
-//        [appDelegate.managedObjectContext save:&error];
-//    }
+    // [INQLog SaveNLog:appDelegate.managedObjectContext];
     
     // Log(@"%@", result);
 }

@@ -103,29 +103,10 @@
     
     //RawLog(@"");
     
-    if (self.context) {
-        if ([self.context hasChanges]){
-            if (![self.context save:&error]) {
-                [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-            }
-        }
-        
-        if ([self.parentContext hasChanges]) {
-            [self.parentContext performBlock:^{
-                // DLog(@"Saving Parent NSManagedObjectContext");
-                NSError *error = nil;
-                if (![self.parentContext save:&error]) {
-                    [ARLNetwork ShowAbortMessage:error func:[NSString stringWithFormat:@"%s",__func__]];
-                }
-                
-#warning Was Called to often here, moved to synData (see ARLFileCloudSynchronizer.downloadGeneralItems)!!!
-                
-//                if (ARLNetwork.networkAvailable) {
-//                    [ARLFileCloudSynchronizer syncGeneralItems:self.parentContext];
-//                }
-            }];
-        }
-    }
+    [INQLog SaveNLogAbort:self.context func:[NSString stringWithFormat:@"%s",__func__]];
+    [self.parentContext performBlock:^{
+        [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+    }];
 }
 
 - (void) createContext: (NSManagedObjectContext*) mainContext {
@@ -261,9 +242,7 @@
             gi.generalItemId = [NSNumber numberWithLongLong:[[result objectForKey:@"id"] longLongValue]];
         }
         
-        NSError *error = nil;
-        [self.context save:&error];
-        ELog(error);
+        [INQLog SaveNLog:self.context];
         
         NSDictionary *gisDict = [ARLNetwork itemsForGameFrom:self.gameId
                                                          from:lastDate];

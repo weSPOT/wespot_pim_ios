@@ -56,6 +56,11 @@
 @interface INQLog : NSObject
 
 + (BOOL *)LogOn;
+
 //+ (void)setLogOn:(BOOL *)value;
+
++ (BOOL *)SaveNLog:(NSManagedObjectContext *)context;
+
++ (BOOL *)SaveNLogAbort:(NSManagedObjectContext *)managedObjectContext func:(NSString *)func;
 
 @end

@@ -80,9 +80,7 @@
         [self downloadCorrespondingData:giDict withGeneralItem:gi inManagedObjectContext:context];
     }
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return gi;
 }
@@ -126,9 +124,7 @@
         giv.generalItem = gi;
     }
     
-    error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
 }
 
 /*!

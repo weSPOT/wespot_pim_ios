@@ -76,9 +76,7 @@ UIImage * cachedPicture;
     account.accountLevel= [acDict objectForKey:@"accountLevel"];
     account.picture = [acDict objectForKey:@"picture"];
 
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
     
     return account;
 }

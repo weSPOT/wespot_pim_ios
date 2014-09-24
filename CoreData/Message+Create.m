@@ -53,9 +53,7 @@
     // Set TimeStamp.
     message.date = [NSNumber numberWithLongLong:[[dict objectForKey:@"date"] longLongValue]];
     
-    NSError *error = nil;
-    [context save:&error];
-    ELog(error);
+    [INQLog SaveNLog:context];
 
     return message;
 }

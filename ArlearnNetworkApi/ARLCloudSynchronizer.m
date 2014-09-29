@@ -356,7 +356,7 @@
     //  BOOL uploads = NO;
     
     @autoreleasepool {
-        NSArray* responses =  [Response getUnsyncedReponses:self.context];
+        NSArray* responses = [Response getUnsyncedReponses:self.context];
         for (Response* resp in responses) {
             if (ARLAppDelegate.SyncAllowed) {
                 @autoreleasepool {
@@ -368,6 +368,7 @@
                         
                         resp.synchronized = [NSNumber numberWithBool:YES];
                     } else {
+                        // VEG NOT neccesay anymore as the filename already has a random number prepended.
                         u_int32_t random = arc4random();
                         NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
                         

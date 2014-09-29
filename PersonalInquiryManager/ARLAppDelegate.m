@@ -145,8 +145,10 @@ static BOOL _syncAllowed = NO;
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    Reachability *reach = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
+#warning was @"www.google.com", better use arlearn as it needs to be reachable anyway.
+
+    Reachability *reach = [Reachability reachabilityWithHostname:serviceUrl];
+
     [reach startNotifier];
 
     //!!!: Let the Reachabilty Notifier run for half a second, so we have more chance to performing the initial sync!
@@ -548,16 +550,18 @@ static BOOL _syncAllowed = NO;
 {
     Reachability *reach = [note object];
     
-//    DLog(@"Reachability Changed");
-//    DLog(@"From: %@", _networkAvailable);
+#warning DEBUG LOGGING.
+    
+    DLog(@"Reachability Changed");
+    DLog(@"From: %@", _networkAvailable);
     
     _networkAvailable = [NSNumber numberWithBool:[reach isReachable]];
-
-//    DLog(@"To: %@", _networkAvailable);
-//    
-//    DLog(@" All:  %d", [reach isReachable]);
-//    DLog(@" Wifi: %d", [reach isReachableViaWiFi]);
-//    DLog(@" WWan: %d", [reach isReachableViaWWAN]);
+    
+    DLog(@"To: %@", _networkAvailable);
+    
+    DLog(@" All:  %d", [reach isReachable]);
+    DLog(@" Wifi: %d", [reach isReachableViaWiFi]);
+    DLog(@" WWan: %d", [reach isReachableViaWWAN]);
 }
 
 /*!

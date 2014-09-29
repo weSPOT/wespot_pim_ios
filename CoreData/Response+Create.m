@@ -327,7 +327,7 @@
  *  @param run         The Run.
  *  @param generalItem The GeneralItem.
  */
-+ (void) createImageResponse:(NSData *) data
++ (void) createImageResponse: (NSData *) data
                        width: (NSNumber *) width
                       height: (NSNumber *) height
                      withRun: (Run *)run
@@ -342,7 +342,13 @@
     response.height = height;
     response.contentType = @"application/jpg";
     response.responseType = [NSNumber numberWithInt:PHOTO];
-    response.fileName = @"jpg";
+    
+    u_int32_t random = arc4random();
+    response.fileName =[NSString stringWithFormat:@"%u.%@", random, @"jpg"];
+    
+//    // Create thumb here...
+    UIImage *img = [[UIImage alloc] initWithData:data];
+    response.thumb = UIImageJPEGRepresentation([img thumbnailImage:320 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationDefault], 1.0);
     
     response.account = [ARLNetwork CurrentAccount];
 }
@@ -365,7 +371,9 @@
     
     response.contentType = @"video/quicktime";
     response.responseType = [NSNumber numberWithInt:VIDEO];
-    response.fileName = @"mov";
+
+    u_int32_t random = arc4random();
+    response.fileName =[NSString stringWithFormat:@"%u.%@", random, @"mov"];
     
     response.account = [ARLNetwork CurrentAccount];
 }
@@ -388,7 +396,9 @@
     
     response.contentType = @"audio/aac";
     response.responseType = [NSNumber numberWithInt:AUDIO];
-    response.fileName = @"m4a";
+    
+    u_int32_t random = arc4random();
+    response.fileName =[NSString stringWithFormat:@"%u.%@", random, @"m4a"];
     
     response.account = [ARLNetwork CurrentAccount];
 }

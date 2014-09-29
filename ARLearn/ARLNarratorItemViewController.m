@@ -569,9 +569,9 @@ typedef NS_ENUM(NSInteger, responses) {
                         if ([dictionary valueForKey:@"text"]) {
                             txt = [dictionary valueForKey:@"text"];
                         }else if ([dictionary valueForKey:@"value"]) {
-                            txt = [[dictionary valueForKey:@"value"] stringValue];
+                            txt = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
                         }else {
-                            txt = response.value;
+                            txt = [NSString stringWithFormat:@"%@", response.value];
                         }
                         
                         // Log(@"%f x %F", [self getCellSize].width, [self getCellSize].height);
@@ -631,22 +631,36 @@ typedef NS_ENUM(NSInteger, responses) {
     Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     if (response.fileName) {
+        BOOL http =
+        
+        [[response.fileName lowercaseString] hasPrefix:@"http://"] ||
+        [[response.fileName lowercaseString] hasPrefix:@"https://"] ;
+        
+        // if (http) {
         CGSize size = [[UIScreen mainScreen] bounds].size;
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         
         INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
         
         if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]] ) {
-            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
-                               response.fileName];
+            if (http && ARLNetwork.networkAvailable /*&& !response.thumb*/) {
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
+                                   response.fileName];
+            } else {
+                // NSString *strEncoded = [Base64 encode:data];
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='data:%@;base64,%@' style='width:100%%;' /></body></html>",
+                                   response.contentType,
+                                   [INQUtils base64forData:response.thumb]];
+            }
+            
+// See http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri
+            
         } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
             controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
         } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]] ) {
             controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
                                response.fileName, size.width * screenScale, size.height * screenScale];
-        } else {
-#warning TODO Add rending of text/value (or link to a popup)?
         }
         
         // Log(@"%@", controller.html);
@@ -655,7 +669,15 @@ typedef NS_ENUM(NSInteger, responses) {
         
         if (controller && controller.html) {
             [self.navigationController pushViewController:controller animated:FALSE];
+        } else {
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+                                                                  message:NSLocalizedString(@"NotSynced", @"NotSynced")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                        otherButtonTitles:nil, nil];
+            [myAlertView show];
         }
+        
     } else {
 #warning textarea does not forward clicks.
         // SEE http://iphonedevsdk.com/forum/iphone-sdk-development/82096-onclick-event-in-textfield.html
@@ -672,9 +694,9 @@ typedef NS_ENUM(NSInteger, responses) {
             if ([dictionary valueForKey:@"text"]) {
                 msg = [dictionary valueForKey:@"text"];
             }else if ([dictionary valueForKey:@"value"]) {
-                msg = [[dictionary valueForKey:@"value"] stringValue];
+                msg = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
             }else {
-                msg = response.value;
+                msg = [NSString stringWithFormat:@"%@", response.value];
             }
             
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Value", @"Value")
@@ -894,6 +916,17 @@ typedef NS_ENUM(NSInteger, responses) {
  */
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+//    NSString *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+
+//    DLog(@"Image Url: %@", url);
+    
+    // see http://stackoverflow.com/questions/3837115/display-image-from-url-retrieved-from-alasset-in-iphone
+    // see http://stackoverflow.com/questions/8085267/load-an-image-to-uiimage-from-a-file-path-to-the-asset-library
+    
+    // url = assets-library://asset/asset.JPG?id=A4ECA96B-4B7B-43B7-B3A0-3D83FDEC68B6&ext=JPG
+    
+#warning xxx keep on disk only xxx ??
     
     if (image) {
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);

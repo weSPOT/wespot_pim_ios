@@ -72,14 +72,16 @@
           
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
-            if ([appDelegate respondsToSelector:@selector(syncData)]) {
-                NSInteger *count = [appDelegate entityCount:@"Inquiry"];
-                if (!count) {
-                    [appDelegate performSelector:@selector(syncData)];
-                }
+            // if ([appDelegate respondsToSelector:@selector(syncData)]) {
+            NSInteger *count = [appDelegate entityCount:@"Inquiry"];
+            if (count) {
+                //
+            } else {
+                [appDelegate syncData];
             }
+            // }
         }
-
+        
         return;
     }
     

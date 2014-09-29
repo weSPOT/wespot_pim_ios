@@ -4,7 +4,9 @@
 
 #import <Availability.h>
 
+#import "INQUtils.h"
 #import "INQLog.h"
+#import "UIImage+Resize.h"
 
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."

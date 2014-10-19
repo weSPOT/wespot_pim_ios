@@ -48,12 +48,23 @@
     self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enterForeground:)
+                                                 name:@"UIApplicationWillEnterForegroundNotification"
+                                               object:nil];
+    
     //    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    self.refreshButton.enabled = ARLNetwork.networkAvailable;
+
     // see http://stackoverflow.com/questions/22098493/uipageviewcontroller-disable-swipe-gesture
     for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
         recognizer.enabled = NO;
@@ -66,6 +77,15 @@
 
 - (void)initWithInitialPage:(NSNumber *)index {
     self.currentPageIndex = index;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    Log(@"%@", @"viewWillDisappear");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
@@ -193,6 +213,28 @@
         [view performSelector:@selector(syncData)];
     }
     
+}
+
+/*!
+ *  Enable or Disable Sync Button depending on Network availability.
+ *
+ *  @param note
+ */
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability *reach = [note object];
+    
+    self.refreshButton.enabled = [reach isReachable];
+}
+
+/*!
+ *  Enable or Disable Sync Button depending on Network availability.
+ *
+ *  @param app <#note description#>
+ */
+-(void)enterForeground:(UIApplication*)app
+{
+    self.refreshButton.enabled = ARLNetwork.networkAvailable;
 }
 
 @end

@@ -16,9 +16,9 @@
 #import "ARLNetwork+INQ.h"
 #import "ARLAccountDelegator.h"
 
-@interface INQSplashViewController : UIViewController <UIPageViewControllerDataSource, NSURLConnectionDataDelegate>
+@interface INQSplashViewController : UIViewController </*UIPageViewControllerDataSource,*/ NSURLConnectionDataDelegate>
 
-@property (strong, nonatomic) UIPageViewController *pageViewController;
+//@property (strong, nonatomic) UIPageViewController *pageViewController;
 
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;

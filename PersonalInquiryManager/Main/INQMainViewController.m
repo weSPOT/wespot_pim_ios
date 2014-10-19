@@ -56,9 +56,12 @@ typedef NS_ENUM(NSInteger, tools) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
-@property (strong, nonatomic) UIBarButtonItem *spacerButton;
-@property (strong, nonatomic) UIBarButtonItem *syncButton;
-@property (strong, nonatomic) UIBarButtonItem *logoutButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *spacerButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *logoutButton;
+
+- (IBAction)syncButtonAction:(UIBarButtonItem *)sender;
+- (IBAction)logoutButtonAction:(UIBarButtonItem *)sender;
 
 @property (strong, nonatomic) NSArray *Friends;
 
@@ -94,22 +97,34 @@ typedef NS_ENUM(NSInteger, tools) {
     }
    
     [self.tableView reloadData];
-    
-//    NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:0 inSection:MYINQUIRES], nil];
-//    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-//    
-//    NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:0 inSection:TOOLS], nil];
-//    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
+
+//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//{
+//    Log(@"%@", @"initWithNibName");
+//
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    Log(@"%@", @"viewDidLoad");
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enterForeground:)
+                                                 name:@"UIApplicationWillEnterForegroundNotification"
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
@@ -133,15 +148,12 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.logoutButton) {
-        self.spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.syncButton = [[UIBarButtonItem alloc] initWithTitle:@"Sync" style:UIBarButtonItemStyleBordered target:self action:@selector(syncButtonButtonTap:)];
-        self.logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonButtonTap:)];
+    Log(@"%@", @"viewWillAppear");
+    
+    [self adjustLoginButton];
 
-        self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.syncButton, self.logoutButton,nil];
-        
-        [self adjustLoginButton];
-    }
+    self.syncButton.enabled = ARLNetwork.networkAvailable;
+    self.logoutButton.enabled = ARLNetwork.networkAvailable;
     
     [self.navigationController setToolbarHidden:NO];
     
@@ -155,12 +167,13 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    Log(@"%@", @"viewDidAppear");
+    
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.toolbar.backgroundColor = [UIColor clearColor];
-    
     
     //#warning TEST CODE FOR ABORT
     //[ARLNetwork ShowAbortMessage:@"TEST" message:@"TEST MESSAGE"];
@@ -169,6 +182,8 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    Log(@"%@", @"viewWillDisappear");
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -199,66 +214,6 @@ typedef NS_ENUM(NSInteger, tools) {
         
         self.Friends = (NSArray *)[usersJson objectForKey:@"result"];
     }
-}
-
--(void)logoutButtonButtonTap:(id)sender {
-    UIViewController *newViewController;
-    
-    ARLAppDelegate.SyncAllowed = NO;
-    
-    NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
-    
-    while (YES) {
-        if ([ARLAppDelegate.theLock tryLock]) {
-            [ARLAppDelegate.theLock unlock];
-            break;
-        }
-        [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    }
-    
-    //    if (![ARLAppDelegate.theLock tryLock]) {
-    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-    //        [alert show];
-    //    } else {
-    if (ARLNetwork.isLoggedIn) {
-        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate LogOut];
-        
-        //#warning not enough to toggle isLoggedIn.
-        [self adjustLoginButton];
-        
-        if (ARLNetwork.isLoggedIn) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Could not log-out",@"Could not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-            [alert show];
-        } else {
-            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
-        }
-    } else {
-        newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
-    }
-    
-    if (newViewController) {
-        // Move to another UINavigationController or UITabBarController etc.
-        // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
-        [self.navigationController presentViewController:newViewController animated:NO completion:nil];
-        
-        newViewController=nil;
-    }
-    
-    //        [ARLAppDelegate.theLock unlock];
-    //    }
-}
-
-- (void)syncButtonButtonTap:(id)sender {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-   
-    if ([appDelegate respondsToSelector:@selector(syncData)]) {
-        [appDelegate performSelector:@selector(syncData)];
-    }
-    
-    [self getMyFriends];
-    
-    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -528,8 +483,79 @@ typedef NS_ENUM(NSInteger, tools) {
     Reachability *reach = [note object];
     
     self.syncButton.enabled = [reach isReachable];
-    self.logoutButton.enabled = YES;
+    self.logoutButton.enabled = [reach isReachable];
 }
 
+/*!
+ *  Enable or Disable Sync Button depending on Network availability.
+ *
+ *  @param app <#note description#>
+ */
+-(void)enterForeground:(UIApplication*)app
+{
+    self.syncButton.enabled = ARLNetwork.networkAvailable;
+    self.logoutButton.enabled = ARLNetwork.networkAvailable;
+}
+
+- (IBAction)syncButtonAction:(UIBarButtonItem *)sender {
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if ([appDelegate respondsToSelector:@selector(syncData)]) {
+        [appDelegate performSelector:@selector(syncData)];
+    }
+    
+    [self getMyFriends];
+    
+    [self.tableView reloadData];
+}
+
+- (IBAction)logoutButtonAction:(UIBarButtonItem *)sender {
+    UIViewController *newViewController;
+    
+    ARLAppDelegate.SyncAllowed = NO;
+    
+    NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
+    
+    while (YES) {
+        if ([ARLAppDelegate.theLock tryLock]) {
+            [ARLAppDelegate.theLock unlock];
+            break;
+        }
+        [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    }
+    
+    // if (![ARLAppDelegate.theLock tryLock]) {
+    // UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Synchronization in progress, logout not possible", @"Synchronization in progress, logout not possible") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    // [alert show];
+    // } else {
+    
+    if (ARLNetwork.isLoggedIn) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate LogOut];
+        
+        //#warning not enough to toggle isLoggedIn.
+        [self adjustLoginButton];
+        
+        if (ARLNetwork.isLoggedIn) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Could not log-out",@"Could not log-out") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+            [alert show];
+        } else {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SplashNavigation"];
+        }
+    } else {
+        newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginNavigation"];
+    }
+    
+    if (newViewController) {
+        // Move to another UINavigationController or UITabBarController etc.
+        // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
+        [self.navigationController presentViewController:newViewController animated:NO completion:nil];
+        
+        newViewController=nil;
+    }
+    
+    // [ARLAppDelegate.theLock unlock];
+    // }
+}
 
 @end

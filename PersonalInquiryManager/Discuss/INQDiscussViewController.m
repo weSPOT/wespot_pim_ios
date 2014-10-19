@@ -546,10 +546,12 @@ typedef NS_ENUM(NSInteger, friends) {
     [self.tableView reloadData];
 }
 
-- (void)syncData {    
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+- (void)syncData {
+    if (ARLNetwork.networkAvailable) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+    }
 }
 
 @end

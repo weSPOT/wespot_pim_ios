@@ -38,7 +38,10 @@ typedef NS_ENUM (NSInteger, ResponseTypes) {
 
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext *) context;
 
-+ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context;
++ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context
+                        generalItemId:(NSNumber *) generalItemId;
+
++ (NSArray *) getMyReponsesWithoutMedia: (NSManagedObjectContext *) context;
 
 + (void) createTextResponse: (NSString *) text
                     withRun: (Run*)run

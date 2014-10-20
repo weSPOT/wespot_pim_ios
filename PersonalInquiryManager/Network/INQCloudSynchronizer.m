@@ -40,6 +40,17 @@
     [synchronizer sync];
 }
 
++ (void) syncInquiry: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
+    INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.inquiryId = inquiryId;
+    synchronizer.syncInquiry = YES;
+    
+    [synchronizer sync];
+}
+
 + (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId {
     INQCloudSynchronizer *synchronizer = [[INQCloudSynchronizer alloc] init];
     
@@ -96,8 +107,6 @@
  *  Runs on a separate thread in the background.
  */
 - (void)saveContext {
-    NSError *error = nil;
-    
     // CLog(@"Saving NSManagedObjectContext");
     // RawLog(@"");
     
@@ -132,10 +141,12 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     while (ARLAppDelegate.SyncAllowed) {
-
         if (self.syncUsers) {
             Log(@"syncAllUsers");
             [self syncAllUsers];
+        } else if (self.syncInquiry) {
+            Log(@"synchronizeInquiry");
+            [self synchronizeInquiry];
         } else if (self.syncInquiryUsers) {
             Log(@"synchronizeInquiryUsers");
             [self synchronizeInquiryUsers];
@@ -151,9 +162,10 @@
     }
 
     Log(@"Ready");
-
+    
     if (ARLAppDelegate.SyncAllowed) {
-        [self saveContext];
+        [INQLog SaveNLog:self.context];
+        //[self saveContext];
         [NSThread sleepForTimeInterval:0.1];
     }
     
@@ -171,7 +183,7 @@
  *
  *  Runs on a separate thread in the background.
  */
-- (void) synchronizeInquiries{
+- (void) synchronizeInquiries {
     @autoreleasepool {
         id localId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
         id providerId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
@@ -252,20 +264,21 @@
                     
                     Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
                     
-                    // DLog(@"InquiryId=%@", newInquiry.inquiryId);
+                    Log(@">InquiryId=%@", newInquiry.inquiryId);
                     
-                    // REST CALL (costs time)!
-                    id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
-                    if (hypDict) {
-                        
-                        if ([hypDict count] != 0) {
-                            //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
-                            NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
-                            if (hypString) {
-                                newInquiry.hypothesis = hypString;
-                            }
-                        }
-                    }
+                    // REST CALL (costs time)
+                    // MOVED TO SYNCINQUIRY
+//                    id hypDict =[[ARLNetwork getHypothesis:newInquiry.inquiryId] objectForKey:@"result"];
+//                    if (hypDict) {
+//                        
+//                        if ([hypDict count] != 0) {
+//                            //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
+//                            NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+//                            if (hypString) {
+//                                newInquiry.hypothesis = hypString;
+//                            }
+//                        }
+//                    }
                     
                     //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
                     //        if (refDict) {
@@ -327,15 +340,16 @@
             }
         }
         
+        //MOVED TO SYNCINQUIRY
         // Sync ItemVisibility for inquiry
-        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
-        for (Inquiry *inquiry in inquiries) {
-            if (ARLAppDelegate.SyncAllowed) {
-               [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
-            } else {
-                break;
-            }
-        }
+//        NSArray *inquiries = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"Inquiry"];
+//        for (Inquiry *inquiry in inquiries) {
+//            if (ARLAppDelegate.SyncAllowed) {
+//               [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+//            } else {
+//                break;
+//            }
+//        }
         
         if (ARLAppDelegate.SyncAllowed) {
             [INQLog SaveNLog:self.context];
@@ -392,9 +406,59 @@
                 // DLog(@"Size: %0.0f x %0.0f", tmp.size.width, tmp.size.height);
             }
         }
+        
+        if (ARLAppDelegate.SyncAllowed) {
+            [INQLog SaveNLog:self.context];
+        }
     }
     
     self.syncUsers = NO;
+}
+
+/*!
+ *  Synchronize Inquiry with backend.
+ *
+ *  Runs on a separate thread in the background.
+ */
+- (void) synchronizeInquiry {
+    @autoreleasepool {
+        Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
+
+        // Get Hyptothesis
+        id hypDict =[[ARLNetwork getHypothesis:inquiry.inquiryId] objectForKey:@"result"];
+        if (hypDict) {
+            
+            if ([hypDict count] != 0) {
+                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
+                NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+                if (hypString) {
+                    inquiry.hypothesis = hypString;
+                }
+            }
+        }
+        
+        //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
+        //        if (refDict) {
+        //
+        //            if ([refDict count] != 0) {
+        //                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
+        //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+        //                if (refString) {
+        //                    newInquiry.reflection = refString;
+        //                }
+        //            }
+        //        }
+        
+        //if (ARLAppDelegate.SyncAllowed) {
+        // [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+        //}
+        
+        if (ARLAppDelegate.SyncAllowed) {
+            [INQLog SaveNLog:self.context];
+        }
+    }
+    
+    self.syncInquiry = NO;
 }
 
 /*!
@@ -433,6 +497,10 @@
                 }
             }
         }
+        
+        if (ARLAppDelegate.SyncAllowed) {
+            [INQLog SaveNLog:self.context];
+        }
     }
     
     self.syncInquiryUsers = NO;
@@ -468,7 +536,9 @@
                          inManagedObjectContext:self.context];
     }
     
-    [INQLog SaveNLog:self.context];
+    if (ARLAppDelegate.SyncAllowed) {
+        [INQLog SaveNLog:self.context];
+    }
     
     self.syncMessages = NO;
 }

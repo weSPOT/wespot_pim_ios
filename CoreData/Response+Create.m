@@ -243,10 +243,37 @@
  *
  *  @return An array of Responses.
  */
-+ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context {
++ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context generalItemId:(NSNumber *) generalItemId {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"(data = %@ AND thumb = %@) AND fileName != %@", NULL, NULL, NULL];
+    request.predicate = [NSPredicate predicateWithFormat:@"(generalItem.generalItemId = %@ AND data = %@ AND thumb = %@) AND fileName != %@", generalItemId, NULL, NULL, NULL];
+    
+    NSError *error = nil;
+    NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
+    if (error) {
+        ELog(error);
+    } else {
+        // DLog(@"Found %d Responses without Media or Thumbnail", unsyncedResponses.count);
+    }
+    
+    return unsyncedResponses;
+}
+
+/*!
+ *  Get all Responses where no media is downloaded (where data is NULL but fileName is !NULL).
+ *
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of Responses.
+ */
++ (NSArray *) getMyReponsesWithoutMedia: (NSManagedObjectContext *) context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+    
+    Account *account = ARLNetwork.CurrentAccount;
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"(data = %@ AND thumb = %@) AND fileName != %@ AND account.localId = %@ AND account.accountType = %@",
+                         NULL, NULL, NULL,
+                         account.localId, account.accountType];
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];

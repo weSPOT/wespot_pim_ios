@@ -23,6 +23,8 @@
 
 @property (nonatomic, readwrite) BOOL syncGeneralItems;
 @property (nonatomic, readwrite) BOOL syncResponses;
+@property (nonatomic, readwrite) BOOL syncMyResponses;
+@property (nonatomic, readwrite) NSNumber *generalItemId;
 
 @property (strong, nonatomic)  NSNumber *responseType;
 
@@ -30,8 +32,10 @@
 
 - (void) sync;
 
-+ (void) syncGeneralItems: (NSManagedObjectContext*) context;
-+ (void) syncResponseData: (NSManagedObjectContext*) context
++ (void) syncGeneralItems: (NSManagedObjectContext *) context;
++ (void) syncResponseData: (NSManagedObjectContext *) context
+            generalItemId: (NSNumber *) generalItemId
              responseType: (NSNumber *) responseType;
-
++ (void) syncMyResponseData: (NSManagedObjectContext *) context
+               responseType: (NSNumber *) responseType;
 @end

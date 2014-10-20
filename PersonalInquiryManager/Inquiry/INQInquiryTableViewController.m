@@ -141,8 +141,12 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    
+//    if (ARLNetwork.networkAvailable && self.inquiry.run) {
+//        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    }
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -161,9 +165,11 @@ typedef NS_ENUM(NSInteger, sections) {
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        [INQCloudSynchronizer syncInquiryUsers:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
+        [INQCloudSynchronizer syncInquiry:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
         
         [ARLCloudSynchronizer syncVisibilityForInquiry:appDelegate.managedObjectContext run:self.inquiry.run];
+
+        [INQCloudSynchronizer syncInquiryUsers:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
     }
 }
 

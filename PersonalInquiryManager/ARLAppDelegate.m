@@ -257,7 +257,10 @@ static BOOL _syncAllowed = NO;
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
-    Log(@"%@", @"applicationWillResignActive");
+    //    Log(@"%@", @"applicationWillResignActive");
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    [INQLog SaveNLog:appDelegate.managedObjectContext];
 }
 
 /*!
@@ -272,7 +275,7 @@ static BOOL _syncAllowed = NO;
     
     // 2) PRESSING HOME.
     
-    Log(@"%@", @"applicationDidEnterBackground");
+    //    Log(@"%@", @"applicationDidEnterBackground");
 }
 
 /*!
@@ -287,17 +290,18 @@ static BOOL _syncAllowed = NO;
     // 3) REACTIVATIONS #1.
     _networkAvailable = [NSNumber numberWithBool:[self connected] && [self serverok]];
     
-    Log(@"Reachability (connected): %d", [self connected]);
-    Log(@"Reachability (serverok): %d", [self serverok]);
-    Log(@"Reachability: %@", _networkAvailable);
-    
-    Log(@"%@", @"applicationWillEnterForeground");
+    if (![_networkAvailable isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        // Upload any stuff still pending.
+        if (self.managedObjectContext) {
+            [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
+        }
+    }
 }
 
 /*!
  *  See SDK.
  *
- *  @param application <#application description#>
+ *  @param application
  */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -575,7 +579,7 @@ static BOOL _syncAllowed = NO;
  *  @return If TRUE the user is logged-in.
  */
 - (NSNumber *)networkAvailable {
-    Log(@"networkAvailable: %@", _networkAvailable);
+    // Log(@"networkAvailable: %@", _networkAvailable);
     
     return _networkAvailable;
 }

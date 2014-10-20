@@ -97,8 +97,6 @@
  */
 - (void)saveContext
 {
-    NSError *error = nil;
-    
     // CLog(@"Saving NSManagedObjectContext");
     
     //RawLog(@"");
@@ -311,16 +309,21 @@
         if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
             for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
                 [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
+                
+                [INQLog SaveNLog:self.context];
             }
         }
-
+        
         @autoreleasepool {
             NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
             
             for (NSDictionary *response in [respDict objectForKey:@"responses"] ) {
                 [Response responseWithDictionary:response inManagedObjectContext:self.context];
+                
+                [INQLog SaveNLog:self.context];
             }
         }
+        
         if (serverTime) {
             [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
                                                time:serverTime
@@ -328,6 +331,8 @@
                              inManagedObjectContext:self.context];
         }
     }
+    
+    self.visibilityRunId = nil;
 }
 
 - (void) synchronizeActions {
@@ -382,7 +387,7 @@
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
                             
-                            DLog(@"Uploaded: %@", serverUrl);
+                            Log(@"Uploaded: %@", serverUrl);
                             
                             NSDictionary *myDictionary;
                             

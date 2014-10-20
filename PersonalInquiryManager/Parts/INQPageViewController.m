@@ -48,6 +48,12 @@
     self.buttonFF.enabled = [self.currentPageIndex unsignedIntValue] < INQInquiryTableViewController.numParts - 1;
     self.buttonFB.enabled = [self.currentPageIndex unsignedIntValue] != 0;
     
+    //    self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
@@ -56,12 +62,6 @@
                                              selector:@selector(enterForeground:)
                                                  name:@"UIApplicationWillEnterForegroundNotification"
                                                object:nil];
-    
-    //    self.automaticallyAdjustsScrollViewInsets = NO;
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
     self.refreshButton.enabled = ARLNetwork.networkAvailable;
 

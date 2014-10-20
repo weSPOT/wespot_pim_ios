@@ -260,6 +260,53 @@ typedef NS_ENUM(NSInteger, responses) {
     }
     
     // Existing Code...
+    @autoreleasepool {
+        NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+        
+        for (NSManagedObject *obj in deletedObjects){
+            @autoreleasepool {
+                if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
+                    GeneralItem* changedObject = (GeneralItem*) obj;
+                    if (self.generalItem == changedObject) {
+                        
+                        DLog(@"little less easy... I was deleted");
+                        
+                        [self.navigationController popViewControllerAnimated:NO];
+                        [self dismissViewControllerAnimated:TRUE completion:nil];
+                    }
+                }
+            }
+        }
+    }
+    
+    // New Code.
+    //    if ([ARLAppDelegate.theLock tryLock]) {
+    //        [ARLAppDelegate.theLock unlock];
+    
+    // See if there are any Inquiry objects added and if so, reload the collectionView.
+    @autoreleasepool {
+        NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+        
+        for (NSManagedObject *obj in insertedObjects){
+            @autoreleasepool {
+                if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+                    
+                    NSError *error = nil;
+                    [self.fetchedResultsController performFetch:&error];
+                    
+                    ELog(error);
+                    
+                    [self.collectionView reloadData];
+                    
+                    return;
+                }
+            }
+        }
+    }
+    
+    [self.fetchedResultsController fetchRequest];
+    
+    // Existing Code...
     NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
     
     for(NSManagedObject *obj in updatedObjects){
@@ -270,79 +317,50 @@ typedef NS_ENUM(NSInteger, responses) {
                 
                 DLog(@"TEXT='%@'", self.generalItem.richText);
                 
-#warning Replace the the TableView top Section.
+                // warning Replace the the TableView top Section.
                 // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
             }
         }
     }
-    
-    // Existing Code...
-    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
-    
-    for (NSManagedObject *obj in deletedObjects){
-        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-            GeneralItem* changedObject = (GeneralItem*) obj;
-            if (self.generalItem == changedObject) {
-                
-                DLog(@"little less easy... I was deleted");
-                
-                [self.navigationController popViewControllerAnimated:NO];
-                [self dismissViewControllerAnimated:TRUE completion:nil];
-            }
-        }
-    }
-    
-    // New Code.
-    //    if ([ARLAppDelegate.theLock tryLock]) {
-    //        [ARLAppDelegate.theLock unlock];
-    
-    // See if there are any Inquiry objects added and if so, reload the collectionView.
-    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-    for(NSManagedObject *obj in insertedObjects){
-        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-            
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
-            
-            ELog(error);
-            
-            [self.collectionView reloadData];
-            
-            return;
-        }
-    }
-    
-    [self.fetchedResultsController fetchRequest];
-    
-    NSArray *indexPaths = [[NSArray alloc] init];
-    BOOL fetched = NO;
-    
-    for(NSManagedObject *obj in updatedObjects){
-        if ([[obj entity].name isEqualToString:@"Response"]) {
-            if (!fetched) {
-                NSError *error = nil;
-                [self.fetchedResultsController performFetch:&error];
-                fetched=YES;
-            }
-            
-            Response *updated = (Response *)obj;
-            
-            //workaround for indexPathForObject:obj not working.
-            for (Response *response in self.fetchedResultsController.fetchedObjects) {
-                if ([response.objectID isEqual:updated.objectID]) {
-                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
-                    if (indexPath) {
-                        indexPaths = [indexPaths arrayByAddingObject:indexPath];
+
+    @autoreleasepool {
+        NSArray *indexPaths = [[NSArray alloc] init];
+        BOOL fetched = NO;
+        
+        for(NSManagedObject *obj in updatedObjects) {
+            @autoreleasepool {
+                if ([[obj entity].name isEqualToString:@"Response"]) {
+                    if (!fetched) {
+                        NSError *error = nil;
+                        [self.fetchedResultsController performFetch:&error];
+                        fetched=YES;
                     }
-                    break;
+                    
+                    Response *updated = (Response *)obj;
+                    
+                    // workaround for indexPathForObject:obj not working.
+                    for (Response *response in self.fetchedResultsController.fetchedObjects) {
+                        if ([response.objectID isEqual:updated.objectID]) {
+                            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
+                            if (indexPath) {
+                                indexPaths = [indexPaths arrayByAddingObject:indexPath];
+                            }
+                            break;
+                        }
+                    }
                 }
             }
         }
+        
+        
+        if (indexPaths.count != 0) {
+            [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
+        }
     }
     
-    if (indexPaths.count != 0) {
-        [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
-    }
+    //    [self.fetchedResultsController fetchRequest];
+    //
+    //    [self.collectionView reloadData];
 }
 
 /*!
@@ -387,15 +405,20 @@ typedef NS_ENUM(NSInteger, responses) {
     
     if (ARLNetwork.networkAvailable) {
         if (self.run) {
-            // Collected Data
             if (self.withPicture) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:PHOTO]];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                                             generalItemId:self.generalItem.generalItemId
+                                              responseType:[NSNumber numberWithInt:PHOTO]];
             }
             if (self.withVideo) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:VIDEO]];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                                             generalItemId:self.generalItem.generalItemId
+                                              responseType:[NSNumber numberWithInt:VIDEO]];
             }
             if (self.withAudio) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
+                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                                             generalItemId:self.generalItem.generalItemId
+                                              responseType:[NSNumber numberWithInt:AUDIO]];
             }
             if (self.withText) {
                 // TODO Sync Text
@@ -405,9 +428,12 @@ typedef NS_ENUM(NSInteger, responses) {
             }
         } else if (self.account) {
             // My Media
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:PHOTO]];
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:VIDEO]];
-            [ARLFileCloudSynchronizer syncResponseData:self.account.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
+            [ARLFileCloudSynchronizer syncMyResponseData:self.account.managedObjectContext
+                                          responseType:[NSNumber numberWithInt:PHOTO]];
+            [ARLFileCloudSynchronizer syncMyResponseData:self.account.managedObjectContext
+                                          responseType:[NSNumber numberWithInt:VIDEO]];
+            [ARLFileCloudSynchronizer syncMyResponseData:self.account.managedObjectContext
+                                          responseType:[NSNumber numberWithInt:AUDIO]];
         }
     }
 }
@@ -491,101 +517,113 @@ typedef NS_ENUM(NSInteger, responses) {
                                             blue:(float)0xFA
                                            alpha:1.0F];
     
-    switch (indexPath.section) {
-        case RESPONSES:{
-            Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-//            Log(@"%@ - %@ %@", response.fileName, response.value, response.contentType);
-            
-            if (response.fileName) {
+    @autoreleasepool {
+        switch (indexPath.section) {
+            case RESPONSES:{
+                Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
                 
-                if (self.withPicture && [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]]) {
-                    if (response.thumb) {
-                        cell.imgView.image = [UIImage imageWithData:response.thumb];
-                    } else if (response.data) {
-                        cell.imgView.image = [UIImage imageWithData:response.data];
-                    } else {
-                        cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
-                    }
-                } else if (self.withVideo && [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
-                    if (response.thumb) {
-                        cell.imgView.image = [UIImage imageWithData:response.thumb];
-                        
-                        // rotate 90' Right (will al least make portrait videos right).
-                        CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI / 2.0 );
-                        [cell.imgView setTransform:rotate];
-                        
-                        // create a new bitmap image context
-                        UIGraphicsBeginImageContext(cell.imgView.image.size);
-                        
-                        // draw original image into the context
-                        [cell.imgView.image drawAtPoint:CGPointZero];
-                        
-                        // draw icon
-                        UIImage *ico = [UIImage imageNamed:@"task-video-overlay"];
-                        
-                        // see http://stackoverflow.com/questions/8858404/uiimage-aspect-fit-when-using-drawinrect
-                        CGFloat aspect = cell.imgView.image.size.width / cell.imgView.image.size.height;
-                        
-                        CGPoint p = CGPointMake(cell.imgView.image.size.width, cell.imgView.image.size.height);
-                        
-                        if (ico.size.width / aspect <= ico.size.width) {
-                            CGSize s = CGSizeMake(ico.size.width, ico.size.width/(aspect));
-                            [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
-                        }else {
-                            CGSize s = CGSizeMake(ico.size.height*aspect, ico.size.height);
-                            [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
-                        }
-                        
-                        // make image out of bitmap context
-                        UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
-                        
-                        // free the context
-                        UIGraphicsEndImageContext();
-                        
-                        cell.imgView.image = retImage;
-                        //                  } else if (response.data) {
-                        //                      cell.imgView.image = [UIImage imageWithData:response.data];
-                    } else {
-                        cell.imgView.Image = [UIImage imageNamed:@"task-video"];
-                    }
-                    //                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
+                //            Log(@"%@ - %@ %@", response.fileName, response.value, response.contentType);
+                
+                if (response.fileName) {
                     
-                } else if (self.withAudio && [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]]) {
-                    cell.imgView.image = [UIImage imageNamed:@"task-record"];
-                }
-            } else {
-                if (response.value) {
-                    if ((self.withText  && [response.responseType isEqualToNumber:[NSNumber numberWithInt:TEXT]]) ||
-                        (self.withValue && [response.responseType isEqualToNumber:[NSNumber numberWithInt:NUMBER]])) {
+                    if (self.withPicture && [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]]) {
                         
-                        NSString *txt;
-                        NSError * error = nil;
-                        NSData *JSONdata = [response.value dataUsingEncoding:NSUTF8StringEncoding];
-                        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:JSONdata
-                                                                                   options: NSJSONReadingMutableContainers
-                                                                                     error:&error];
+                        cell.imgView.frame = CGRectMake(0,0,
+                                                        cell.frame.size.width,
+                                                        cell.frame.size.height);
                         
-                        if ([dictionary valueForKey:@"text"]) {
-                            txt = [dictionary valueForKey:@"text"];
-                        }else if ([dictionary valueForKey:@"value"]) {
-                            txt = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
-                        }else {
-                            txt = [NSString stringWithFormat:@"%@", response.value];
+                        if (response.thumb) {
+                            cell.imgView.image = [UIImage imageWithData:response.thumb];
+                        } else if (response.data) {
+                            cell.imgView.image = [UIImage imageWithData:response.data];
+                        } else {
+                            cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
                         }
+                    } else if (self.withVideo && [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
                         
-                        // Log(@"%f x %F", [self getCellSize].width, [self getCellSize].height);
+                        cell.imgView.frame = CGRectMake(0,0,
+                                                        cell.frame.size.width,
+                                                        cell.frame.size.height);     
                         
-                        UIGraphicsBeginImageContextWithOptions(CGSizeMake(100,100), NO, 0.0);
-                        cell.imgView.image = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
+                        if (response.thumb) {
+                            cell.imgView.image = [UIImage imageWithData:response.thumb];
+                            
+                            // rotate 90' Right (will al least make portrait videos right).
+                            CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI / 2.0 );
+                            [cell.imgView setTransform:rotate];
+                            
+                            // create a new bitmap image context
+                            UIGraphicsBeginImageContext(cell.imgView.image.size);
+                            
+                            // draw original image into the context
+                            [cell.imgView.image drawAtPoint:CGPointZero];
+                            
+                            // draw icon
+                            UIImage *ico = [UIImage imageNamed:@"task-video-overlay"];
+                            
+                            // see http://stackoverflow.com/questions/8858404/uiimage-aspect-fit-when-using-drawinrect
+                            CGFloat aspect = cell.imgView.image.size.width / cell.imgView.image.size.height;
+                            
+                            CGPoint p = CGPointMake(cell.imgView.image.size.width, cell.imgView.image.size.height);
+                            
+                            if (ico.size.width / aspect <= ico.size.width) {
+                                CGSize s = CGSizeMake(ico.size.width, ico.size.width/(aspect));
+                                [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
+                            }else {
+                                CGSize s = CGSizeMake(ico.size.height*aspect, ico.size.height);
+                                [ico drawInRect:CGRectMake(p.x-s.width-2, 2, s.width, s.height)];
+                            }
+                            
+                            // make image out of bitmap context
+                            UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
+                            
+                            // free the context
+                            UIGraphicsEndImageContext();
+                            
+                            cell.imgView.image = retImage;
+                            //                  } else if (response.data) {
+                            //                      cell.imgView.image = [UIImage imageWithData:response.data];
+                        } else {
+                            cell.imgView.Image = [UIImage imageNamed:@"task-video"];
+                        }
+                        //                  cell.imgView.image = [UIImage imageNamed:@"task-video"];
                         
-                        cell.imgView.image  = [self drawText:txt inImage:cell.imgView.image atPoint:CGPointZero];
+                    } else if (self.withAudio && [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]]) {
+                        cell.imgView.image = [UIImage imageNamed:@"task-record"];
+                    }
+                } else {
+                    if (response.value) {
+                        if ((self.withText  && [response.responseType isEqualToNumber:[NSNumber numberWithInt:TEXT]]) ||
+                            (self.withValue && [response.responseType isEqualToNumber:[NSNumber numberWithInt:NUMBER]])) {
+                            
+                            NSString *txt;
+                            NSError * error = nil;
+                            NSData *JSONdata = [response.value dataUsingEncoding:NSUTF8StringEncoding];
+                            NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:JSONdata
+                                                                                       options: NSJSONReadingMutableContainers
+                                                                                         error:&error];
+                            
+                            if ([dictionary valueForKey:@"text"]) {
+                                txt = [dictionary valueForKey:@"text"];
+                            }else if ([dictionary valueForKey:@"value"]) {
+                                txt = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
+                            }else {
+                                txt = [NSString stringWithFormat:@"%@", response.value];
+                            }
+                            
+                            // Log(@"%f x %F", [self getCellSize].width, [self getCellSize].height);
+                            
+                            UIGraphicsBeginImageContextWithOptions(CGSizeMake(100,100), NO, 0.0);
+                            cell.imgView.image = UIGraphicsGetImageFromCurrentImageContext();
+                            UIGraphicsEndImageContext();
+                            
+                            cell.imgView.image  = [self drawText:txt inImage:cell.imgView.image atPoint:CGPointZero];
+                        }
                     }
                 }
             }
+                break;
         }
-            break;
     }
     
     return cell;

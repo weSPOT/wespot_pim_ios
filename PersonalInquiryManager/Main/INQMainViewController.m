@@ -116,16 +116,6 @@ typedef NS_ENUM(NSInteger, tools) {
     
     Log(@"%@", @"viewDidLoad");
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(enterForeground:)
-                                                 name:@"UIApplicationWillEnterForegroundNotification"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
     
@@ -150,6 +140,17 @@ typedef NS_ENUM(NSInteger, tools) {
     
     Log(@"%@", @"viewWillAppear");
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enterForeground:)
+                                                 name:@"UIApplicationWillEnterForegroundNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+
     [self adjustLoginButton];
 
     self.syncButton.enabled = ARLNetwork.networkAvailable;

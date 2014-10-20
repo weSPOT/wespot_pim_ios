@@ -21,6 +21,7 @@
 
 @property (nonatomic, readwrite) BOOL syncUsers;
 @property (nonatomic, readwrite) BOOL syncInquiries;
+@property (nonatomic, readwrite) BOOL syncInquiry;
 @property (nonatomic, readwrite) BOOL syncInquiryUsers;
 @property (nonatomic, readwrite) BOOL syncMessages;
 
@@ -31,6 +32,7 @@
 
 + (void) syncUsers: (NSManagedObjectContext *) context;
 + (void) syncInquiries: (NSManagedObjectContext *) context;
++ (void) syncInquiry: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId;
 + (void) syncInquiryUsers: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId;
 + (void) syncMessages: (NSManagedObjectContext *) context inquiryId:(NSNumber *) inquiryId;
 

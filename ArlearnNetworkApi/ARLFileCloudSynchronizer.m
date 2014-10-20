@@ -16,6 +16,7 @@
 
 @synthesize syncGeneralItems = _syncGeneralItems;
 @synthesize syncResponses = _syncResponses;
+@synthesize syncMyResponses = _syncMyResponses;
 
 + (void) syncGeneralItems: (NSManagedObjectContext*) context {
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
@@ -28,14 +29,27 @@
 }
 
 + (void) syncResponseData: (NSManagedObjectContext*) context
-              responseType: (NSNumber *) responseType {
+            generalItemId: (NSNumber *) generalItemId
+             responseType: (NSNumber *) responseType {
     ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
     
     [synchronizer createContext:context];
     
     synchronizer.responseType = responseType;
-    
+    synchronizer.generalItemId = generalItemId;
     synchronizer.syncResponses = YES;
+    
+    [synchronizer sync];
+}
+
++ (void) syncMyResponseData: (NSManagedObjectContext*) context
+               responseType: (NSNumber *) responseType {
+    ARLFileCloudSynchronizer* synchronizer = [[ARLFileCloudSynchronizer alloc] init];
+    
+    [synchronizer createContext:context];
+    
+    synchronizer.responseType = responseType;
+    synchronizer.syncMyResponses = YES;
     
     [synchronizer sync];
 }
@@ -61,7 +75,7 @@
     
     //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Passing Lock", ARLAppDelegate.theLock);
     
-     // DLog(@"Thread:0x%x - Start of File Synchronisation", machTID);
+    // DLog(@"Thread:0x%x - Start of File Synchronisation", machTID);
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -71,6 +85,8 @@
             [self downloadGeneralItems];
         } else if (self.syncResponses) {
             [self downloadResponses];
+        } else if (self.syncMyResponses) {
+            [self downloadMyResponses];
         } else {
             break;
         }
@@ -109,63 +125,64 @@
     for (GeneralItemData *giData in [GeneralItemData getUnsyncedData:self.context]) {
         // DLog(@"gidata url=%@ replicated=%@ error=%@", giData.url, giData.replicated, giData.error);
         
-        if (ARLAppDelegate.SyncAllowed) {
-            NSURL  *url = [NSURL URLWithString:giData.url];
-          
-            // CLog(@"%@", [url lastPathComponent]);
-            
-            NSData *urlData = [NSData dataWithContentsOfURL:url];
-            if (urlData){
-                giData.data = urlData;
-                giData.replicated = [NSNumber numberWithBool:YES];
-            } else {
-                DLog(@"Could not fetch url");
+        @autoreleasepool {
+            if (ARLAppDelegate.SyncAllowed) {
+                NSURL  *url = [NSURL URLWithString:giData.url];
+                
+                // CLog(@"%@", [url lastPathComponent]);
+                
+                NSData *urlData = [NSData dataWithContentsOfURL:url];
+                if (urlData){
+                    giData.data = urlData;
+                    giData.replicated = [NSNumber numberWithBool:YES];
+                } else {
+                    DLog(@"Could not fetch url");
+                }
+                
+                [INQLog SaveNLog:self.context];
             }
-            
-            [INQLog SaveNLog:self.context];
         }
     }
     
     self.syncGeneralItems=NO;
 }
 
-- (void) downloadResponses {
-    // CLog(@"ResponseType=%@", self.responseType);
-    
-    int cnt = 0;
-    
-    for (Response *response in [Response getReponsesWithoutMedia:self.context]) {
+- (void)downloadResponse:(Response *)response {
+    @autoreleasepool {
         if (ARLAppDelegate.SyncAllowed) {
             @autoreleasepool {
                 if ([response.responseType isEqualToNumber:self.responseType]) {
                     if (response.data == nil && response.thumb == nil) {
-                        switch ((int)response.responseType) {
+                        
+                        if (self.generalItemId) {
+                            Log(@"Downloading Collected ResponseId: %@ for %@ type %@", response.responseId, self.generalItemId, response.responseType);
+                        }else {
+                            Log(@"Downloading Collected ResponseId: %@ type %@", response.responseId, response.responseType);
+                        }
+                        
+                        switch ([response.responseType intValue]) {
                             case PHOTO: {
-                                cnt++;
-                                
                                 NSURL *url = [NSURL URLWithString:[response.fileName stringByAppendingString:@"?thumbnail=320&crop=true"]];
                                 
                                 // CLog(@"Downloading: %@", [url lastPathComponent]);
                                 
                                 NSData *urlData = [NSData dataWithContentsOfURL:url];
                                 
-                                if (urlData) {
-                                    // CLog(@"Downloaded: %@", [url lastPathComponent]);
-                                    
-                                    response.thumb = urlData; //[UIImage imageWithData:urlData];
-                                    
-                                    urlData = nil;
-                                    
-                                    // DLog(@"Image:%d Thumb:%d", [response.data length], [response.thumb length]);
-                                } else {
-                                    DLog(@"Error Could not fetch url=%@", response.fileName);
+                                @autoreleasepool {
+                                    if (urlData) {
+                                        // CLog(@"Downloaded: %@", [url lastPathComponent]);
+                                        
+                                        response.thumb = urlData; //[UIImage imageWithData:urlData];
+                                        
+                                        // DLog(@"Image:%d Thumb:%d", [response.data length], [response.thumb length]);
+                                    } else {
+                                        DLog(@"Error Could not fetch url=%@", response.fileName);
+                                    }
                                 }
                             }
                                 break;
-                            
-                            case VIDEO: {
-                                cnt++;
                                 
+                            case VIDEO: {
                                 NSURL *url = [NSURL URLWithString:response.fileName];
                                 
                                 // CLog(@"Downloading: %@", [url lastPathComponent]);
@@ -198,7 +215,7 @@
                                     DLog(@"Error==%@, RefImage==%@", error, refImg);
                                 }
                                 
-                                UIImage *thumbImage= [[UIImage alloc] initWithCGImage:refImg];
+                                UIImage *thumbImage = [[UIImage alloc] initWithCGImage:refImg];
                                 
                                 // 6) Save both original and thumbnail.
                                 // response.data = urlData;
@@ -229,11 +246,9 @@
                                 // Nothing to download
                             }
                                 break;
-                            
+                                
                             default: {
                                 if (response.fileName) {
-                                    cnt++;
-                                    
                                     NSURL *url = [NSURL URLWithString:response.fileName];
                                     
                                     // CLog(@"Downloading: %@", [url lastPathComponent]);
@@ -243,17 +258,41 @@
                             }
                                 break;
                         }
-                       
-                        [INQLog SaveNLog:self.context];
+                        
                     }
                 }
             }
+            
+            [INQLog SaveNLog:self.context];
+            
+            if (self.context.parentContext) {
+                [INQLog SaveNLog:self.context.parentContext];
+            }
         }
+    }
+}
+
+- (void) downloadResponses {
+    // CLog(@"ResponseType=%@", self.responseType);
+    
+    for (Response *response in [Response getReponsesWithoutMedia:self.context
+                                                   generalItemId:self.generalItemId]) {
+        [self downloadResponse:response];
     }
     
     // DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
     
     self.syncResponses=NO;
+}
+
+- (void) downloadMyResponses {
+    for (Response *response in [Response getMyReponsesWithoutMedia:self.context]) {
+        [self downloadResponse:response];
+    }
+    
+    // DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
+    
+    self.syncMyResponses=NO;
 }
 
 @end

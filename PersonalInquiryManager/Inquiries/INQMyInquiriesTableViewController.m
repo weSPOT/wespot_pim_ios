@@ -197,6 +197,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
+        [ARLCloudSynchronizer syncResponses:appDelegate.managedObjectContext];
     }
     
     [self.navigationController setToolbarHidden:YES];

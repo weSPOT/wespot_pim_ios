@@ -154,7 +154,8 @@ typedef NS_ENUM(NSInteger, friends) {
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
-    self.navigationController.view.backgroundColor = [UIColor clearColor];}
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+}
 
 - (void) viewWillDisappear:(BOOL)animated
 {

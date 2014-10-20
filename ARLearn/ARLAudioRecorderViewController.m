@@ -14,7 +14,6 @@
 
 @implementation ARLAudioRecorderViewController
 
-
 - (void) clickedSaveButton: (NSData*) audioData{
     
     [Response createAudioResponse:audioData withRun:self.run withGeneralItem:self.generalItem];
@@ -23,15 +22,17 @@
     
     [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
     
-    if (self.generalItem.managedObjectContext.parentContext) {
-        [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
-        
-        if (ARLNetwork.networkAvailable) {
-            [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext responseType:[NSNumber numberWithInt:AUDIO]];
-            [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
-        }
+    [self.generalItem.managedObjectContext.parentContext performBlock:^{
+        [INQLog SaveNLogAbort:self.generalItem.managedObjectContext.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+    }];
+    
+    if (ARLNetwork.networkAvailable) {
+        [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext
+                                     generalItemId:self.generalItem.generalItemId
+                                      responseType:[NSNumber numberWithInt:AUDIO]];
+        [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
     }
-       
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

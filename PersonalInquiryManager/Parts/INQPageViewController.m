@@ -83,8 +83,6 @@
 {
     [super viewWillDisappear:animated];
     
-    Log(@"%@", @"viewWillDisappear");
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

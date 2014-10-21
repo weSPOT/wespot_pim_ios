@@ -128,28 +128,28 @@
     
     while (ARLAppDelegate.SyncAllowed) {
         if (self.syncRuns) {
-            Log(@"synchronizeRuns");
+            // Log(@"synchronizeRuns");
             [self synchronizeRuns];
         } else if (self.syncGames) {
-            Log(@"synchronizeGames");
+            // Log(@"synchronizeGames");
             [self synchronizeGames];
         } else if (self.gameId) {
-            Log(@"synchronizeGeneralItemsWithGame");
+            // Log(@"synchronizeGeneralItemsWithGame");
             [self synchronizeGeneralItemsWithGame];
         } else if (self.visibilityRunId) {
-            Log(@"synchronizeGeneralItemsAndVisibilityStatements");
+            // Log(@"synchronizeGeneralItemsAndVisibilityStatements");
             [self synchronizeGeneralItemsAndVisibilityStatements];
         } else if (self.syncResponses){
-            Log(@"synchronizeResponses");
+            // Log(@"synchronizeResponses");
             [self synchronizeResponses];
         } else if (self.syncActions){
-            Log(@"synchronizeActions");
+            // Log(@"synchronizeActions");
             [self synchronizeActions];
         } else {
             break;
         }
     }
-    Log(@"Ready");
+    // Log(@"Ready");
     
     if (ARLAppDelegate.SyncAllowed) {
         [self saveContext];
@@ -218,7 +218,7 @@
         
         NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
         
-        Log(@"%@", localgis);
+        // Log(@"%@", localgis);
         
         NSArray *gis = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"GeneralItem" predicate:localgis];
         
@@ -390,7 +390,7 @@
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
                             
-                            Log(@"Uploaded: %@", serverUrl);
+                            // Log(@"Uploaded: %@", serverUrl);
                             
                             NSDictionary *myDictionary;
                             

@@ -142,26 +142,26 @@
     
     while (ARLAppDelegate.SyncAllowed) {
         if (self.syncUsers) {
-            Log(@"syncAllUsers");
+            // Log(@"syncAllUsers");
             [self syncAllUsers];
         } else if (self.syncInquiry) {
-            Log(@"synchronizeInquiry");
+            // Log(@"synchronizeInquiry");
             [self synchronizeInquiry];
         } else if (self.syncInquiryUsers) {
-            Log(@"synchronizeInquiryUsers");
+            // Log(@"synchronizeInquiryUsers");
             [self synchronizeInquiryUsers];
         } else if (self.syncMessages) {
-            Log(@"synchronizeMessages");
+            // Log(@"synchronizeMessages");
             [self synchronizeMessages];
         } else if (self.syncInquiries) {
-            Log(@"synchronizeInquiries");
+            // Log(@"synchronizeInquiries");
             [self synchronizeInquiries];
         } else {
             break;
         }
     }
 
-    Log(@"Ready");
+    // Log(@"Ready");
     
     if (ARLAppDelegate.SyncAllowed) {
         [INQLog SaveNLog:self.context];

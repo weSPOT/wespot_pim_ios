@@ -148,7 +148,7 @@
         self.usernameEdit.text:
         [NSString stringWithFormat:@"%@_%@",_pickerData[row][0], self.usernameEdit.text];
     
-        Log(@"Username: %@", username);
+        // Log(@"Username: %@", username);
         
         //initialize a post data
         NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",
@@ -500,7 +500,7 @@
     // This method is triggered whenever the user makes a change to the picker selection.
     // The parameter named row and component represents what was selected.
     
-    Log(@"Picked: %@ - %@", _pickerData[row][0], _pickerData[row][1]);
+    // Log(@"Picked: %@ - %@", _pickerData[row][0], _pickerData[row][1]);
 }
 
 @end

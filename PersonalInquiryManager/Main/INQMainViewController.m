@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     [super viewDidLoad];
     
-    Log(@"%@", @"viewDidLoad");
+    // Log(@"%@", @"viewDidLoad");
     
     
     //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
@@ -138,7 +138,7 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    Log(@"%@", @"viewWillAppear");
+    // Log(@"%@", @"viewWillAppear");
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    Log(@"%@", @"viewDidAppear");
+    // Log(@"%@", @"viewDidAppear");
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -184,7 +184,7 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     [super viewWillDisappear:animated];
     
-    Log(@"%@", @"viewWillDisappear");
+    // Log(@"%@", @"viewWillDisappear");
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

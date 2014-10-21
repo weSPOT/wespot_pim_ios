@@ -68,7 +68,7 @@
  */
 -(void) viewDidDisappear:(BOOL)animated
 {
-     [super viewWillDisappear:animated];
+     [super viewDidDisappear:animated];
 }
 
 /*!

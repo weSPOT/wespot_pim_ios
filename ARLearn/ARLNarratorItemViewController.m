@@ -517,6 +517,10 @@ typedef NS_ENUM(NSInteger, responses) {
                                             blue:(float)0xFA
                                            alpha:1.0F];
     
+    cell.imgView.frame = CGRectMake(0,0,
+                                    cell.frame.size.width,
+                                    cell.frame.size.height);
+    
     @autoreleasepool {
         switch (indexPath.section) {
             case RESPONSES:{
@@ -528,10 +532,6 @@ typedef NS_ENUM(NSInteger, responses) {
                     
                     if (self.withPicture && [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]]) {
                         
-                        cell.imgView.frame = CGRectMake(0,0,
-                                                        cell.frame.size.width,
-                                                        cell.frame.size.height);
-                        
                         if (response.thumb) {
                             cell.imgView.image = [UIImage imageWithData:response.thumb];
                         } else if (response.data) {
@@ -540,10 +540,6 @@ typedef NS_ENUM(NSInteger, responses) {
                             cell.imgView.Image = [UIImage imageNamed:@"task-photo"];
                         }
                     } else if (self.withVideo && [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
-                        
-                        cell.imgView.frame = CGRectMake(0,0,
-                                                        cell.frame.size.width,
-                                                        cell.frame.size.height);     
                         
                         if (response.thumb) {
                             cell.imgView.image = [UIImage imageWithData:response.thumb];

@@ -429,6 +429,15 @@
 }
 
 /*!
+ *  Return the Schools.
+ *
+ *  @return The Schools as JSON.
+ */
++ (id) getSchools {
+    return [self returnJson:@"https://wespot-arlearn.appspot.com/oauth/school/schools"];
+}
+
+/*!
  *  Convert oauth provider id to a NSString.
  *
  *  @param oauthProvider the oauth provider id.

@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameEdit;
 @property (weak, nonatomic) IBOutlet UITextField *passwordEdit;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIPickerView *schoolPicker;
 @property (weak, nonatomic) IBOutlet UIImageView *background;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -39,7 +40,37 @@
 {
     [super viewDidLoad];
     
-	// Do any additional setup after loading the view.
+    // See http://codewithchris.com/uipickerview-example/
+    
+    // Initialize Picker Data as 2D Array.
+    _pickerData = [NSMutableArray arrayWithObject:[NSArray arrayWithObjects:@"0", @"No School", nil]];
+    
+    if ([ARLNetwork networkAvailable]) {
+        // Fetch schools.
+        NSArray *schools = [ARLNetwork getSchools];
+        
+        // Sort schools.
+        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        
+        NSArray *sortDescriptors = @[nameDescriptor];
+        
+        NSArray *sortedSchools = [schools sortedArrayUsingDescriptors:sortDescriptors];
+        
+        // Add schools.
+        for (NSDictionary* school in sortedSchools) {
+            NSArray *schoolArr = [NSArray arrayWithObjects:[school objectForKey:@"id"], [school objectForKey:@"name"], nil];
+            _pickerData =  [NSMutableArray arrayWithArray:[_pickerData arrayByAddingObject:schoolArr]];
+        }
+    }
+    
+    // Connect picker data and delegate.
+    self.schoolPicker.dataSource = self;
+    self.schoolPicker.delegate = self;
+    
+    // Select correct/top picker ow (No school for now).
+    [self.schoolPicker selectRow:0 inComponent:0 animated:NO];
+    
+    // Do any additional setup after loading the view.
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonAction:)];
     
@@ -110,8 +141,19 @@
         //set http method
         [request setHTTPMethod:@"POST"];
         
+        NSInteger row = [self.schoolPicker selectedRowInComponent:0];
+        // NSNumber *schoolId = [NSNumber numberWithLongLong:[_pickerData[(int)row][0] longLongValue]];
+        
+        NSString *username = [_pickerData[row][0] isEqualToString:@"0"]?
+        self.usernameEdit.text:
+        [NSString stringWithFormat:@"%@_%@",_pickerData[row][0], self.usernameEdit.text];
+    
+        Log(@"Username: %@", username);
+        
         //initialize a post data
-        NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit", self.usernameEdit.text, self.passwordEdit.text];
+        NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",
+                               username,
+                               self.passwordEdit.text];
         
         //set request content type we MUST set this value.
         [request setValue:@"text/html; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
@@ -267,11 +309,12 @@
 - (void) addConstraints {
     NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
         self.wespotLabel,   @"wespot",
+        self.schoolPicker,  @"school",
         self.usernameEdit,  @"username",
         self.passwordEdit,  @"password",
         self.loginButton,   @"login",
         self.view,          @"view",
-        self.scrollView,    @"scroll",
+        //self.scrollView,    @"scroll",
         self.background,    @"background",
         nil];
     
@@ -281,6 +324,7 @@
     // }
     
     self.wespotLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.schoolPicker.translatesAutoresizingMaskIntoConstraints = NO;
     self.usernameEdit.translatesAutoresizingMaskIntoConstraints = NO;
     self.passwordEdit.translatesAutoresizingMaskIntoConstraints = NO;
     self.loginButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -288,42 +332,42 @@
     self.background.translatesAutoresizingMaskIntoConstraints = NO;
  
     // Size UIScrollView to View.
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeWidth
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeWidth
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeTop
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeTop
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeHeight
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeHeight
-                               multiplier:1.0
-                               constant:0]];
-    [self.view addConstraint: [NSLayoutConstraint
-                               constraintWithItem:self.scrollView
-                               attribute:NSLayoutAttributeLeft
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeLeft
-                               multiplier:1.0
-                               constant:0]];
+//    [self.view addConstraint: [NSLayoutConstraint
+//                               constraintWithItem:self.scrollView
+//                               attribute:NSLayoutAttributeWidth
+//                               relatedBy:NSLayoutRelationEqual
+//                               toItem:self.view
+//                               attribute:NSLayoutAttributeWidth
+//                               multiplier:1.0
+//                               constant:0]];
+//    [self.view addConstraint: [NSLayoutConstraint
+//                               constraintWithItem:self.scrollView
+//                               attribute:NSLayoutAttributeTop
+//                               relatedBy:NSLayoutRelationEqual
+//                               toItem:self.view
+//                               attribute:NSLayoutAttributeTop
+//                               multiplier:1.0
+//                               constant:0]];
+//    [self.view addConstraint: [NSLayoutConstraint
+//                               constraintWithItem:self.scrollView
+//                               attribute:NSLayoutAttributeHeight
+//                               relatedBy:NSLayoutRelationEqual
+//                               toItem:self.view
+//                               attribute:NSLayoutAttributeHeight
+//                               multiplier:1.0
+//                               constant:0]];
+//    [self.view addConstraint: [NSLayoutConstraint
+//                               constraintWithItem:self.scrollView
+//                               attribute:NSLayoutAttributeLeft
+//                               relatedBy:NSLayoutRelationEqual
+//                               toItem:self.view
+//                               attribute:NSLayoutAttributeLeft
+//                               multiplier:1.0
+//                               constant:0]];
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[wespot(84)]-[username]-[password]-[login]",10 + self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[wespot(64)][school][username]-[password]-[login]",/*10 + */ self.navbarHeight]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
@@ -338,6 +382,14 @@
                                 attribute:NSLayoutAttributeCenterX
                                 multiplier:1
                                 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.schoolPicker
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                              constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
                               constraintWithItem:self.usernameEdit
                               attribute:NSLayoutAttributeCenterX
@@ -365,6 +417,12 @@
 
     // Fix Widths
     [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[school]-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:viewsDictionary]];
+    
+    [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:[username(==300)]"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
@@ -375,6 +433,7 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
+    
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat:@"H:[login(==200)]"
                                options:NSLayoutFormatDirectionLeadingToTrailing
@@ -411,6 +470,37 @@
     }
     
     return YES;
+}
+
+#pragma mark UIPickerViewDataSource
+
+// The number of columns of data
+- (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+// The number of rows of data
+- (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return _pickerData.count;
+}
+
+// The data to return for the row and component (column) that's being passed in
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return _pickerData[row][1];
+}
+
+#pragma mark UIPickerViewDelegate
+
+// Catpure the picker view selection
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // This method is triggered whenever the user makes a change to the picker selection.
+    // The parameter named row and component represents what was selected.
+    
+    Log(@"Picked: %@ - %@", _pickerData[row][0], _pickerData[row][1]);
 }
 
 @end

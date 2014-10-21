@@ -13,8 +13,13 @@
 #import "Account.h"
 #import "ARLOauthWebViewController.h"
 #import "ARLAccountDelegator.h"
+#import "ComboBox.h"
+#import "ARLNetwork+INQ.h"
 
-@interface INQLoginViewController : UIViewController <UITextFieldDelegate, NSURLConnectionDataDelegate>
+@interface INQLoginViewController : UIViewController <UITextFieldDelegate, NSURLConnectionDataDelegate,UIPickerViewDataSource, UIPickerViewDelegate> {
+    
+    NSArray *_pickerData;
+}
 
 /*!
  *  ID's and order of the cells.

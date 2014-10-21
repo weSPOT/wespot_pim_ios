@@ -34,6 +34,7 @@
 + (id) getReflection:  (NSNumber *) inquiryId;
 + (id) getNotes: (NSNumber *) inquiryId;
 + (id) getFiles: (NSNumber *) inquiryId;
++ (id) getSchools;
 
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider;
 + (NSNumber *) elggProviderByName: (NSString  *) oauthProvider;

@@ -48,6 +48,13 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
+
+    [self.weSpotButton setHidden:YES];
+    [self.orLabel setHidden:YES];
+    [self.googleButton setHidden:YES];
+    [self.facebookButton setHidden:YES];
+    [self.linkedinButton setHidden:YES];
+    [self.twitterButton setHidden:YES];
     
     [self initOauthUrls];
     
@@ -78,9 +85,16 @@
             }
             // }
         }
-        
+
         return;
     }
+    
+    [self.weSpotButton setHidden:NO];
+    [self.orLabel setHidden:NO];
+    [self.googleButton setHidden:NO];
+    [self.facebookButton setHidden:NO];
+    // [self.linkedinButton setHidden:NO];
+    // [self.twitterButton setHidden:NO];
     
     ARLAppDelegate.SyncAllowed = NO;
     

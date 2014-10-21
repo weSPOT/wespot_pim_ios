@@ -155,9 +155,9 @@
                     if (response.data == nil && response.thumb == nil) {
                         
                         if (self.generalItemId) {
-                            Log(@"Downloading Collected ResponseId: %@ for %@ type %@", response.responseId, self.generalItemId, response.responseType);
+                            // Log(@"Downloading Collected ResponseId: %@ for %@ type %@", response.responseId, self.generalItemId, response.responseType);
                         }else {
-                            Log(@"Downloading Collected ResponseId: %@ type %@", response.responseId, response.responseType);
+                            // Log(@"Downloading Collected ResponseId: %@ type %@", response.responseId, response.responseType);
                         }
                         
                         switch ([response.responseType intValue]) {

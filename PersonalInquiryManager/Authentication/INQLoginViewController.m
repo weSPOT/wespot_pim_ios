@@ -367,7 +367,7 @@
 
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[wespot(64)][school][username]-[password]-[login]",/*10 + */ self.navbarHeight]
+                               constraintsWithVisualFormat: [NSString stringWithFormat:@"V:|-%f-[wespot(64)]-(-10)-[school]-(-10)-[username]-[password]-[login]",10.0 /*+ self.navbarHeight*/]
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];

@@ -57,7 +57,7 @@
 + (void) updateVisibility : (NSNumber *) itemId runId:(NSNumber*) runId withManagedContext: (NSManagedObjectContext *) context{
     NSNumber *timeDelta = [[NSUserDefaults standardUserDefaults] objectForKey:@"timDelta"];
     
-    CurrentItemVisibility *visibility = [self retrieve:itemId runId:runId withManagedContext:context];
+    CurrentItemVisibility *visibility = [self retrieveWithId:itemId runId:runId withManagedContext:context];
     
     double localCurrentTimeMillis = [[NSDate date] timeIntervalSince1970]*1000;
     double currentTimeMillis = localCurrentTimeMillis - timeDelta.longLongValue* 1000;
@@ -115,6 +115,33 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
 
     request.predicate = [NSPredicate predicateWithFormat:@"item = %@ and run.runId = %lld", item, [runId longLongValue]];
+    NSError *error = nil;
+    
+    NSArray *currentItemVisibility = [context executeFetchRequest:request error:&error];
+    
+    ELog(error);
+    
+    if (!currentItemVisibility || ([currentItemVisibility count] != 1)) {
+        return nil;
+    } else {
+        return [currentItemVisibility lastObject];
+    }
+}
+
+/*!
+ *  Fetch a CurrentItemVisibility from Core Data.
+ *
+ *  @param itemId  The GeneralItemId.
+ *  @param runId   The RunId.
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return The requested CurrentItemVisibility.
+ */
++ (CurrentItemVisibility *) retrieveWithId: (NSNumber *) generalItemId runId:(NSNumber *) runId withManagedContext: (NSManagedObjectContext *) context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"item.generalItemId = %lld and run.runId = %lld", [generalItemId longLongValue], [runId longLongValue]];
     NSError *error = nil;
     
     NSArray *currentItemVisibility = [context executeFetchRequest:request error:&error];

@@ -62,7 +62,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
+}
+
+- (IBAction)submit:(UIButton *)sender
+{
     //TODO: Implement submitting a Question.
 }
 

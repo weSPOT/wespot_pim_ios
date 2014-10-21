@@ -51,7 +51,8 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [self.navigationController setToolbarHidden:YES];
     
-#warning Disabled Database here.
+    //WARNING: Warning Disabled Database here.
+    
     // [self setupFetchedResultsController];
  }
 
@@ -219,8 +220,6 @@ typedef NS_ENUM(NSInteger, friends) {
             // case ADD:
             //   return 1;
         case FRIENDS:
-#warning Should be [self.Friends count]
-            // return [[self.fetchedResultsController fetchedObjects] count];
             return [self.Friends count];
     }
     

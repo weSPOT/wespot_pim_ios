@@ -55,7 +55,7 @@
     for (NSUInteger i = 0; i < self.numberOfSegments; ++i) {
         [self.sortedSegments[i] setSelected:[self.selectedIndexes containsIndex:i]];
     }
-    // TODO: bug = deselect all, when the last tapped segment has a selected segment on its right - right edge of the last tapped segment stays selected
+    // WARNING: Deselect all, when the last tapped segment has a selected segment on its right - right edge of the last tapped segment stays selected
     // in fact, deselecting a single segment that has a selected segment on its right - causes the right segment to widen left
 }
 

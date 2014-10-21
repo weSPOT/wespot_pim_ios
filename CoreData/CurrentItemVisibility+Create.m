@@ -23,7 +23,8 @@
     CurrentItemVisibility *visibility = [NSEntityDescription insertNewObjectForEntityForName:@"CurrentItemVisibility"
                                               inManagedObjectContext:run.managedObjectContext];
 
-#warning default CurrentItemVisibility.visible was NO. But it's not retrieved anywhere from the server except ini ARLAppearDisappearDelegator which seems unused and contains a hardcoded runId.
+    
+    //WARNING: Default CurrentItemVisibility.visible was NO. But it's not retrieved anywhere from the server except ini ARLAppearDisappearDelegator which seems unused and contains a hardcoded runId.
     
     visibility.visible = [NSNumber numberWithBool:YES];
     visibility.item = generalItem;

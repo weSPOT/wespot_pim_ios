@@ -594,7 +594,7 @@
     // Lock the Condition
     [ARLAppDelegate.theAbortLock lock];
     
-    // Only do this if not the MainThread!!!!
+    //WARNING: Only do this if not the MainThread.
     if (![NSThread isMainThread]) {
         
         // We wait until OK on the UIAlertView is tapped and provides a Signal to continue.
@@ -633,8 +633,8 @@
     }
    
     if (result && [result boolValue]) {
-#warning DEBUG CODE (Change to NO for debugging off-line code).
-        return YES;//result == [NSNumber numberWithBool:YES];
+        //WARNING: DEBUG CODE (Change to NO for debugging off-line code).
+        return YES;
     }
     
     return NO;

@@ -63,11 +63,7 @@
 {
     [super didReceiveMemoryWarning];
     
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)submit:(UIButton *)sender{
-#warning Implement submitting a Question.
+    //TODO: Implement submitting a Question.
 }
 
 @end

@@ -211,9 +211,12 @@
                                                                             context:self.gameId];
         
         // Select and Push all GeneralItems for this game with genralItemId =0 and update the id on return!
-        // !!!!! Fails on == 0 !!!!!
+        
+        //WARNING: Fails on == 0
+        
         //NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(generalItemId = %@) AND (gameId = %lld)", [NSNumber numberWithInt:0], [self.gameId longLongValue]];
-      NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
+        
+        NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
         
         Log(@"%@", localgis);
         

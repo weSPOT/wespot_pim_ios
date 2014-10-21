@@ -165,7 +165,8 @@
     if ([giDict objectForKey:@"id"]) {
         request.predicate = [NSPredicate predicateWithFormat:@"generalItemId = %lld", [[giDict objectForKey:@"id"] longLongValue]];
     } else {
-#warning VEG Retrieve Correct Item Here...
+        
+        //TODO: Retrieve Correct Item Here...
     }
     NSError *error = nil;
     NSArray *generalItemsFromDb = [context executeFetchRequest:request error:&error];

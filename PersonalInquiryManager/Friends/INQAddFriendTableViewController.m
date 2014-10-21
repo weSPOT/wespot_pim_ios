@@ -50,7 +50,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-
+    
     // Dispose of any resources that can be recreated.
 }
 
@@ -125,7 +125,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-
+    
     // Configure the cell...
     NSDictionary *user = (NSDictionary *)self.AllUsers[indexPath.item];
     
@@ -160,12 +160,12 @@
     UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.accessoryType == UITableViewCellAccessoryNone) {
-//        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to become a Friend?", @"Invite %@ to become a Friend?"), cell.textLabel.text];
+        //        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to become a Friend?", @"Invite %@ to become a Friend?"), cell.textLabel.text];
         
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
-//        [alert show];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
+        //        [alert show];
         
-#warning Implement sending a Friend Request.
+        //TODO Implement sending a Friend Request.
         
     } else {
         NSString *message = [NSString stringWithFormat:NSLocalizedString(@"%@ is already a Friend!", @"%@ is already a Friend!"), cell.textLabel.text];

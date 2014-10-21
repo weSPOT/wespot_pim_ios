@@ -45,7 +45,7 @@
         
         [INQLog SaveNLog:appDelegate.managedObjectContext];
         
-#warning MAGIC NUMBER !!
+       //WARNING: Warning MAGIC NUMBER !!
        for (CurrentItemVisibility* vis in [CurrentItemVisibility retrieveVisibleFor: [NSNumber numberWithLongLong:3457078]withManagedContext: appDelegate.managedObjectContext]) {
             DLog(@"Visibility Statement %@", vis.item.name);
         }

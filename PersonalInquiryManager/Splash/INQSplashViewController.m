@@ -48,7 +48,7 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-
+    
     [self.weSpotButton setHidden:YES];
     [self.orLabel setHidden:YES];
     [self.googleButton setHidden:YES];
@@ -73,7 +73,7 @@
             newViewController = nil;
             
             // Log("Initial Sync at Startup");
-          
+            
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             // if ([appDelegate respondsToSelector:@selector(syncData)]) {
@@ -85,7 +85,7 @@
             }
             // }
         }
-
+        
         return;
     }
     
@@ -103,11 +103,11 @@
     
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     [ARLAccountDelegator resetAccount:appDelegate.managedObjectContext];
-
-	// Do any additional setup after loading the view, typically from a nib.
-
-#warning Disabled the NSPageViewController for now (no decent content).
-
+    
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    //WARNING: Disabled the NSPageViewController for now (no decent content).
+    
     // Create the data model
     //    self.pageTitles = @[@"1-Over 200 Tips and Tricks", @"2-Discover Hidden Features", @"3-Bookmark Favorite Tip", @"4-Free Regular Update"];
     //    self.pageImages = @[@"page1", @"page2", @"page3", @"page4"];
@@ -128,7 +128,7 @@
     //    // Change the size of page view controller
     //    self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 30);
     
-#warning Disabled the NSPageViewController for now (no decent content).
+    //WARNING: Disabled the NSPageViewController for now (no decent content).
     //[self addChildViewController:_pageViewController];
     //[self.view addSubview:_pageViewController.view];
     
@@ -183,30 +183,30 @@
 //- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 //{
 //    NSUInteger index = ((INQSplashContentViewController *)viewController).pageIndex;
-//    
+//
 //    if ((index == 0) || (index == NSNotFound)) {
 //        return nil;
 //    }
-//    
+//
 //    index--;
-//    
+//
 //    return [self.pages objectAtIndex:index]; //[self viewControllerAtIndex:index];
 //}
 //
 //- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 //{
 //    NSUInteger index = ((INQSplashContentViewController *)viewController).pageIndex;
-//    
+//
 //    if (index == NSNotFound) {
 //        return nil;
 //    }
-//    
+//
 //    index++;
-//   
+//
 //    if (index == [self.pageTitles count]) {
 //        return nil;
 //    }
-//    
+//
 //    return [self.pages objectAtIndex:index]; //[self viewControllerAtIndex:index];
 //}
 //
@@ -228,7 +228,7 @@
 //            // Move to another UINavigationController or UITabBarController etc.
 //            // See http://stackoverflow.com/questions/14746407/presentmodalviewcontroller-in-ios6
 //            [self.navigationController presentViewController:newViewController animated:YES  completion:nil];
-//            
+//
 //            newViewController = nil;
 //        }
 //    } else {
@@ -247,7 +247,7 @@
                                      self.linkedinButton,   @"linkedinButton",
                                      self.twitterButton,    @"twitterButton",
                                      nil];
-   
+    
     // Fails
     // for (UIView *view in [viewsDictionary keyEnumerator]) {
     //   view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -261,7 +261,7 @@
     self.googleButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.linkedinButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.twitterButton.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     // Order vertically
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat: @"V:[weSpotButton]-[orLabel]-[facebookButton]-[googleButton]-[linkedinButton]-[twitterButton]-|"
@@ -346,7 +346,7 @@
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
                                views:viewsDictionary]];
-
+    
     // Background
     [self.view addConstraints:[NSLayoutConstraint
                                constraintsWithVisualFormat: @"V:|[background]|"
@@ -368,7 +368,7 @@
 //-(void)reachabilityChanged:(NSNotification*)note
 //{
 //    Reachability *reach = [note object];
-//    
+//
 //    self.loginButton.enabled=[reach isReachable];
 //}
 
@@ -395,7 +395,7 @@
  *  @param sender <#sender description#>
  */
 - (IBAction)googleButtonAction:(UIButton *)sender {
-       [self performLogin:GOOGLE];
+    [self performLogin:GOOGLE];
 }
 
 /*!
@@ -404,7 +404,7 @@
  *  @param sender <#sender description#>
  */
 - (IBAction)facebookButtonAction:(UIButton *)sender {
-        [self performLogin:FACEBOOK];
+    [self performLogin:FACEBOOK];
 }
 
 /*!
@@ -422,7 +422,7 @@
  *  @param sender <#sender description#>
  */
 - (IBAction)twitterButtonAction:(UIButton *)sender {
-        [self performLogin:TWITTER];
+    [self performLogin:TWITTER];
 }
 
 /*!

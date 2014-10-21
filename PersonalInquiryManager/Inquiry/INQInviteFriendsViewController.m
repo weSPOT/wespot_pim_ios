@@ -196,12 +196,12 @@ typedef NS_ENUM(NSInteger, profile) {
     UITableViewCell *cell = (UITableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.accessoryType == UITableViewCellAccessoryNone) {
-//        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to join this Inquiry?", @"Invite %@ to join this Inquiry?"), cell.textLabel.text];
-//        
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
-//        [alert show];
+        // NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Invite %@ to join this Inquiry?", @"Invite %@ to join this Inquiry?"), cell.textLabel.text];
+        //
+        // UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"YES", @"YES") otherButtonTitles:NSLocalizedString(@"NO", @"NO"), nil];
+        //        [alert show];
         
-#warning Implement Invite to Join Inquiry.
+        //WARNING: Implement Invite to Join Inquiry.
     }
 }
 

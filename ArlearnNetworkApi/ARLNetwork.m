@@ -264,10 +264,11 @@
     //        },
     //        "roles": []
     //    }
-#pragma warn MUST BE ONLINE FOR THIS!!!
+    
+    //WARNING: MUST BE ONLINE FOR THIS
     NSDictionary *result = [self executeARLearnPostWithAuthorization:@"generalItems" postData:postData withContentType:applicationjson ];
-   
-//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    // ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     return result;
 }
@@ -320,8 +321,8 @@
     
     GeneralItem* gi = [GeneralItem generalItemWithDictionary:dict withGameId:run.gameId inManagedObjectContext:appDelegate.managedObjectContext];
 
-    CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
-    //visibility.visible = [NSNumber numberWithBool:YES];
+    // CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
+    // visibility.visible = [NSNumber numberWithBool:YES];
     
     [INQLog SaveNLog:appDelegate.managedObjectContext];
     

@@ -713,7 +713,9 @@ typedef NS_ENUM(NSInteger, responses) {
         }
         
     } else {
-#warning textarea does not forward clicks.
+        
+        //TODO: Textarea does not forward clicks.
+        
         // SEE http://iphonedevsdk.com/forum/iphone-sdk-development/82096-onclick-event-in-textfield.html
         //  (void)textFieldDidBeginEditing:(UITextField *)textField
         
@@ -841,7 +843,7 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 /*!
- *  TODO
+ *  Click At Button Handler.
  *
  *  @param alertView   <#alertView description#>
  *  @param buttonIndex <#buttonIndex description#>
@@ -959,8 +961,6 @@ typedef NS_ENUM(NSInteger, responses) {
     // see http://stackoverflow.com/questions/8085267/load-an-image-to-uiimage-from-a-file-path-to-the-asset-library
     
     // url = assets-library://asset/asset.JPG?id=A4ECA96B-4B7B-43B7-B3A0-3D83FDEC68B6&ext=JPG
-    
-#warning xxx keep on disk only xxx ??
     
     if (image) {
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);

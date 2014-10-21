@@ -23,7 +23,8 @@
 + (GeneralItemVisibility *) visibilityWithDictionary: (NSDictionary *) visDict withRun: (Run *) run withGeneralItem: (GeneralItem *) generalItem {
     GeneralItemVisibility *giVis = [self retrieveFromDb:visDict generalItem:generalItem withManagedContext:run.managedObjectContext];
     
-#warning since generalItem parameter is unused this method is identical to the one below. Seems a private method.
+    
+    //WARNING: Since generalItem parameter is unused this method is identical to the one below. Seems a private method.
     
     BOOL newItemCreated = false;
     if ([[visDict objectForKey:@"deleted"] boolValue]) {
@@ -43,7 +44,7 @@
     
     //giVis.title = [visDict objectForKey:@"title"];
     
-#warning VEG Dangerous field if generalItemId can be 0 and is not unique!
+    //WARNING: Dangerous (generalItemId) field if generalItemId can be 0 and is not unique!
     
     //giVis.generalItemId = generalItem.generalItemId;
     giVis.runId = [visDict objectForKey:@"runId"];

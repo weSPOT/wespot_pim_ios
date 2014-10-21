@@ -145,17 +145,15 @@ static BOOL _syncAllowed = NO;
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-#warning was @"www.google.com", better use arlearn as it needs to be reachable anyway.
-
     Reachability *reach = [Reachability reachabilityWithHostname:serviceUrl];
 
     [reach startNotifier];
 
-    //!!!: Let the Reachabilty Notifier run for half a second, so we have more chance to performing the initial sync!
+    //WARNING: Let the Reachabilty Notifier run for half a second, so we have more chance to performing the initial sync!
     NSRunLoop* myRunLoop = [NSRunLoop currentRunLoop];
     [myRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
     
-#warning This Location code must be relocated to a better place!!
+    //WARNING: Warning This Location code must be relocated to a better place!!
     currentCoordinates =  CLLocationCoordinate2DMake(0.0f, 0.0f);
     
     [self startStandardUpdates];
@@ -257,7 +255,7 @@ static BOOL _syncAllowed = NO;
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
-    //    Log(@"%@", @"applicationWillResignActive");
+    // Log(@"%@", @"applicationWillResignActive");
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [INQLog SaveNLog:appDelegate.managedObjectContext];
@@ -275,7 +273,7 @@ static BOOL _syncAllowed = NO;
     
     // 2) PRESSING HOME.
     
-    //    Log(@"%@", @"applicationDidEnterBackground");
+    // Log(@"%@", @"applicationDidEnterBackground");
 }
 
 /*!
@@ -594,7 +592,7 @@ static BOOL _syncAllowed = NO;
 {
     Reachability *reach = [note object];
     
-#warning DEBUG LOGGING.
+    //WARNING: DEBUG LOGGING.
     
     DLog(@"Reachability Changed");
     DLog(@"From: %@", _networkAvailable);

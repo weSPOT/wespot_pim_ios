@@ -316,7 +316,7 @@ typedef NS_ENUM(NSInteger, friends) {
                 
                 textView.editable = NO;
                 
-                // !!! Without this, the last line is missing !!!
+                //WARNING: Without this, the last line is missing.
                 textView.scrollEnabled = NO;
                 
                 // Old Code...Fi

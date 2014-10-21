@@ -13,7 +13,6 @@
 #import "Account.h"
 #import "ARLOauthWebViewController.h"
 #import "ARLAccountDelegator.h"
-#import "ComboBox.h"
 #import "ARLNetwork+INQ.h"
 
 @interface INQLoginViewController : UIViewController <UITextFieldDelegate, NSURLConnectionDataDelegate,UIPickerViewDataSource, UIPickerViewDelegate> {

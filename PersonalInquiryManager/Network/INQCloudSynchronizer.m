@@ -264,7 +264,7 @@
                     
                     Inquiry *newInquiry = [Inquiry inquiryWithDictionary:inquiryDict inManagedObjectContext:self.context];
                     
-                    Log(@">InquiryId=%@", newInquiry.inquiryId);
+                    // Log(@">InquiryId=%@", newInquiry.inquiryId);
                     
                     // REST CALL (costs time)
                     // MOVED TO SYNCINQUIRY

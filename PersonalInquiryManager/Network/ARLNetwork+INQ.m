@@ -33,25 +33,31 @@
  *  @return the correct base Url for calling json methods.
  */
 +(NSString *) elgBaseUrl {
+    NSString *Result = @"http://streetlearn.appspot.com/rest/ElggProxy";
     switch (self.elgUseProxy) {
         case TRUE:
             switch (self.elgDeveloperMode) {
                 case TRUE:
-                    return @"http://streetlearn.appspot.com/rest/ElggProxy/dev";
+                    Result = @"http://streetlearn.appspot.com/rest/ElggProxy/dev";
+                    break;
                 case FALSE:
-                    return @"http://streetlearn.appspot.com/rest/ElggProxy";
+                     Result = @"http://streetlearn.appspot.com/rest/ElggProxy";
+                    break;
             }
+            break;
         case FALSE:
-            
             switch (self.elgDeveloperMode) {
                 case TRUE:
-                    return @"http://dev.inquiry.wespot.net/services/api/rest/json/";
+                    Result = @"http://dev.inquiry.wespot.net/services/api/rest/json/";
+                    break;
                 case FALSE:
-                    return @"http://inquiry.wespot.net/services/api/rest/json/";
+                    Result = @"http://inquiry.wespot.net/services/api/rest/json/";
+                    break;
             }
+            break;
     }
     
-    return @"http://streetlearn.appspot.com/rest/ElggProxy";
+    return Result;
 }
 
 +(BOOL) elgDeveloperMode {

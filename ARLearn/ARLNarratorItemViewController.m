@@ -625,6 +625,37 @@ typedef NS_ENUM(NSInteger, responses) {
     return cell;
 }
 
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        if (self.run) {
+            ARLNarratorItemHeaderViewController *headerView = [collectionView
+                                                               dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                               withReuseIdentifier:@"NarratorHeader"
+                                                               forIndexPath:indexPath];
+            
+            [headerView.headerText setText:self.generalItem.richText];
+            
+            //        NSString *title = [[NSString alloc]initWithFormat:@"Recipe Group #%i", indexPath.section + 1];
+            //        headerView.title.text = title;
+            //        UIImage *headerImage = [UIImage imageNamed:@"header_banner.png"];
+            //        headerView.backgroundImage.image = headerImage;
+            
+            reusableview = headerView;
+        }
+    }
+
+//    if (kind == UICollectionElementKindSectionFooter) {
+//        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+//        
+//        reusableview = footerview;
+//    }
+    
+    return reusableview;
+}
+
 #pragma mark – UICollectionViewDelegateFlowLayout
 
 - (CGSize)getCellSize {

@@ -21,6 +21,7 @@
 #import "ARLAppDelegate.h"
 #import "ARLNarratorItemView.h"
 #import "INQWebViewController.h"
+#import "ARLNarratorItemHeaderViewController.h"
 
 @interface ARLNarratorItemViewController : UICollectionViewController
 <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate>

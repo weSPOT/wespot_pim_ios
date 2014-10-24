@@ -62,6 +62,8 @@
         theHtml = [theHtml substringToIndex:theHtml.length-1-3];
     }
     
+    theHtml = [[INQUtils htmlToAttributedString:theHtml] string];
+    
     //Remove WhiteSpace.
     return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

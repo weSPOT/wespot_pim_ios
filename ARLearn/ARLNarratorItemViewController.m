@@ -630,24 +630,22 @@ typedef NS_ENUM(NSInteger, responses) {
     UICollectionReusableView *reusableview = nil;
     
     if (kind == UICollectionElementKindSectionHeader) {
+        ARLNarratorItemHeaderViewController *headerView = [collectionView
+                                                           dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                           withReuseIdentifier:@"NarratorHeader"
+                                                           forIndexPath:indexPath];
+        
         if (self.run) {
-            ARLNarratorItemHeaderViewController *headerView = [collectionView
-                                                               dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                               withReuseIdentifier:@"NarratorHeader"
-                                                               forIndexPath:indexPath];
-            
             [headerView.headerText setText:[INQUtils cleanHtml:self.generalItem.richText]];
+        } else {
+            [headerView.headerText setText: NSLocalizedString(@"My contributed items", @"My contributed items")];
 
-             //        NSString *title = [[NSString alloc]initWithFormat:@"Recipe Group #%i", indexPath.section + 1];
-            //        headerView.title.text = title;
-            //        UIImage *headerImage = [UIImage imageNamed:@"header_banner.png"];
-            //        headerView.backgroundImage.image = headerImage;
-            
-            reusableview = headerView;
         }
+        
+        reusableview = headerView;
     }
-
-//    if (kind == UICollectionElementKindSectionFooter) {
+    
+    //    if (kind == UICollectionElementKindSectionFooter) {
 //        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
 //        
 //        reusableview = footerview;

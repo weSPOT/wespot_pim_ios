@@ -12,4 +12,8 @@
 
 + (NSString *)base64forData:(NSData*)theData;
 
++ (NSAttributedString *)htmlToAttributedString:(NSString *)theHtml;
+
++ (NSString *)cleanHtml:(NSString *)theHtml;
+
 @end

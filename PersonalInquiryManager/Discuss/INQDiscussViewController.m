@@ -330,21 +330,7 @@ typedef NS_ENUM(NSInteger, friends) {
                 // textView.attributedText = html;
                 
                 // New Code...
-                NSString *body = message.body;
-                
-                //Remove Leading <p>
-                if ([body rangeOfString:@"<p>"].location == 0) {
-                    body = [body substringFromIndex:3];
-                }
-                
-                //Remove Trailing </p>
-                if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
-                    body = [body substringToIndex:body.length-1-3];
-                }
-                
-                //Remove WhiteSpace.
-                textView.text = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                // ...end
+                textView.text = [INQUtils cleanHtml:message.body];
                 
                 float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
                 
@@ -456,20 +442,7 @@ typedef NS_ENUM(NSInteger, friends) {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
             Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
             
-            NSString *body = message.body;
-            
-            //Remove Leading <p>
-            if ([body rangeOfString:@"<p>"].location == 0) {
-                body = [body substringFromIndex:3];
-            }
-            
-            //Remove Trailing </p>
-            if ([body rangeOfString:@"</p>"].location == body.length-1-3) {
-                body = [body substringToIndex:body.length-1-3];
-            }
-            
-            //Remove WhiteSpace.
-            body = [body stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];;
+            NSString *body = [INQUtils cleanHtml:message.body];
             
             float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
             

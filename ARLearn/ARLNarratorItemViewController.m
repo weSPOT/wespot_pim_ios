@@ -636,9 +636,9 @@ typedef NS_ENUM(NSInteger, responses) {
                                                                withReuseIdentifier:@"NarratorHeader"
                                                                forIndexPath:indexPath];
             
-            [headerView.headerText setText:self.generalItem.richText];
-            
-            //        NSString *title = [[NSString alloc]initWithFormat:@"Recipe Group #%i", indexPath.section + 1];
+            [headerView.headerText setText:[INQUtils cleanHtml:self.generalItem.richText]];
+
+             //        NSString *title = [[NSString alloc]initWithFormat:@"Recipe Group #%i", indexPath.section + 1];
             //        headerView.title.text = title;
             //        UIImage *headerImage = [UIImage imageNamed:@"header_banner.png"];
             //        headerView.backgroundImage.image = headerImage;

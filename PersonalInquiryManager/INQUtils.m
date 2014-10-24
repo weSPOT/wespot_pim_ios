@@ -41,4 +41,29 @@
     
     return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 }
+
++ (NSAttributedString *)htmlToAttributedString:(NSString *)theHtml {
+    return[[NSAttributedString alloc] initWithData:[theHtml dataUsingEncoding:NSUTF8StringEncoding]
+                                           options:@{
+                                                     NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                     NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
+                                                     }
+                                documentAttributes:nil
+                                             error:nil];
+}
+
++ (NSString *)cleanHtml:(NSString *)theHtml {
+    if ([theHtml rangeOfString:@"<p>"].location == 0) {
+        theHtml = [theHtml substringFromIndex:3];
+    }
+    
+    //Remove Trailing </p>
+    if ([theHtml rangeOfString:@"</p>"].location == theHtml.length-1-3) {
+        theHtml = [theHtml substringToIndex:theHtml.length-1-3];
+    }
+    
+    //Remove WhiteSpace.
+    return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 @end

@@ -99,7 +99,7 @@
  *  @param description <#description description#>
  */
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
-    NSString *html = [NSString stringWithFormat:@"<p>%@</p>", description];
+    NSString *html = description; //[NSString stringWithFormat:@"<p>%@</p>", description];
    
     NSNumber *visibility =  [NSNumber numberWithInt:self.visibilitySegments.selectedSegmentIndex];
     NSNumber *membership = [NSNumber numberWithInt:2 *self.membershipSegments.selectedSegmentIndex];

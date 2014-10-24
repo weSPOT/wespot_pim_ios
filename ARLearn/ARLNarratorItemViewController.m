@@ -636,10 +636,14 @@ typedef NS_ENUM(NSInteger, responses) {
                                                            forIndexPath:indexPath];
         
         if (self.run) {
-            [headerView.headerText setText:[INQUtils cleanHtml:self.generalItem.richText]];
+            NSString *description = [INQUtils cleanHtml:self.generalItem.richText];
+            if ([description length] == 0) {
+                [headerView.headerText setText:self.generalItem.name];
+            } else {
+                [headerView.headerText setText:description];
+            }
         } else {
             [headerView.headerText setText: NSLocalizedString(@"My contributed items", @"My contributed items")];
-
         }
         
         reusableview = headerView;

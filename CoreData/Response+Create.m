@@ -63,6 +63,9 @@
     response.synchronized = [NSNumber numberWithBool:NO];
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     
+    response.lat = [NSNumber numberWithDouble:(double)(ARLAppDelegate.CurrentLocation.latitude)];
+    response.lng = [NSNumber numberWithDouble:(double)(ARLAppDelegate.CurrentLocation.longitude)];
+    
     [INQLog SaveNLog:context];
     
     return response;
@@ -91,6 +94,8 @@
     // timestamp = 1395396382116;
     // type = "org.celstec.arlearn2.beans.run.Response";
     // userEmail = "2:101754523769925754305";
+    // lat
+    // lng
     
     if ([[respDict objectForKey:@"deleted"] boolValue]) {
         if (response) {

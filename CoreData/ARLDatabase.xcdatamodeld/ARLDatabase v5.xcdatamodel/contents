@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="v2" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="v5" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="Account" syncable="YES">
         <attribute name="accountLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="accountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -64,7 +64,6 @@
     </entity>
     <entity name="GeneralItemVisibility" representedClassName="GeneralItemVisibility" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="generalItemId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="runId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -95,7 +94,10 @@
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lng" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="responseId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="responseType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="thumb" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -131,10 +133,10 @@
         <element name="Game" positionX="-3332" positionY="-687" width="128" height="165"/>
         <element name="GeneralItem" positionX="-2736" positionY="-1122" width="128" height="285"/>
         <element name="GeneralItemData" positionX="-2538" positionY="-1017" width="128" height="135"/>
-        <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="150"/>
+        <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="135"/>
         <element name="Inquiry" positionX="-3314" positionY="-958" width="128" height="163"/>
         <element name="Message" positionX="-2826" positionY="-711" width="128" height="148"/>
-        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="238"/>
+        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="285"/>
         <element name="Run" positionX="-3116" positionY="-1008" width="128" height="223"/>
         <element name="SynchronizationBookKeeping" positionX="-3116" positionY="-1134" width="128" height="90"/>
     </elements>

@@ -308,6 +308,9 @@
                                   withValue?@"true":@"false",           @"withValue",
                                   nil];
     
+    NSNumber *lat = [NSNumber numberWithDouble:ARLAppDelegate.CurrentLocation.latitude];
+    NSNumber *lng = [NSNumber numberWithDouble:ARLAppDelegate.CurrentLocation.longitude];
+
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
                           run.gameId,                                               @"gameId",
@@ -315,11 +318,15 @@
                           description,                                              @"description",
                           description,                                              @"richText",
                           openQuestion,                                             @"openQuestion",
+                          lat,                                                      @"lat",
+                          lng,                                                      @"lng",
                           nil];
     
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    GeneralItem* gi = [GeneralItem generalItemWithDictionary:dict withGameId:run.gameId inManagedObjectContext:appDelegate.managedObjectContext];
+    GeneralItem* gi = [GeneralItem generalItemWithDictionary:dict
+                                                  withGameId:run.gameId
+                                      inManagedObjectContext:appDelegate.managedObjectContext];
 
     // CurrentItemVisibility *visibility =[CurrentItemVisibility create:gi withRun:run];
     // visibility.visible = [NSNumber numberWithBool:YES];

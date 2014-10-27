@@ -2,7 +2,7 @@
 //  Run.m
 //  PersonalInquiryManager
 //
-//  Created by Wim van der Vegt on 7/14/14.
+//  Created by G.W. van der Vegt on 27/10/14.
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 

@@ -353,9 +353,14 @@ static BOOL _syncAllowed = NO;
     if (!_managedObjectModel) {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
     
-        // Log(@"Model Location: %@", modelURL);
+        Log(@"Model Location: %@", modelURL);
         
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+
+        //_managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil] ;
+        
+        Log(@"Model Version: %@", _managedObjectModel.versionIdentifiers);
+
     }
  
     return _managedObjectModel;
@@ -373,7 +378,7 @@ static BOOL _syncAllowed = NO;
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
-        // Log(@"Database Location: %@", storeURL);
+        Log(@"Database Location: %@", storeURL);
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

@@ -11,7 +11,6 @@
 
 @implementation GeneralItem (ARLearnBeanCreate)
 
-
 /*!
  *  Create or Retrieve a GeneralItem given a NSDictionay.
  *

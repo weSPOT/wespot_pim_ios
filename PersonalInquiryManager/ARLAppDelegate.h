@@ -59,4 +59,3 @@
 @property (readonly, strong, nonatomic) Account *CurrentAccount;
 
 @end
- 

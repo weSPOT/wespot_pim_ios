@@ -21,6 +21,7 @@
 #define INQUIRY_MEMBERSHIP  @"inquiry_membership"
 #define GIT_HASH            @"git_hash"
 #define APP_VERSION         @"app_version"
+#define MODEL_VERSION       @"model_version"
 #define ENABLE_LOGGING      @"enable_logging"
 
 @interface ARLAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>

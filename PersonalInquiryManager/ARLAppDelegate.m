@@ -77,66 +77,6 @@ static BOOL _syncAllowed = NO;
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSString *gitHash =     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
-    NSString *appVersion =  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    // NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    
-    // Log(@"Version String:  %@", appVersion);
-    // Log(@"Build Number:    %@", appBuild);
-    // Log(@"Git Commit Hash: %@", gitHash);
-    
-    // Log(@"deviceUniqueIdentifier: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
-    // Log(@"deviceToken:            %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
-    // Log(@"bundleIdentifier:       %@", [[NSBundle mainBundle] bundleIdentifier]);
-    
-    // Register default preferences.
-    NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSNumber numberWithBool:NO],       DEVELOPMENT_MODE,
-                                [NSNumber numberWithBool:YES],      PROXY_MODE,
-                                [NSNumber numberWithBool:NO],       ENABLE_LOGGING,
-
-                                [NSNumber numberWithInt:1],         INQUIRY_VISIBILITY,
-                                [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
-                                
-                                gitHash,                            GIT_HASH,
-                                appVersion,                         APP_VERSION,
-                                
-                                nil];
-    
-    //#warning FORCING LOGGING.
-    //    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
-    
-    // ERROR LOGGIN TEST CODE
-    {
-        // DLog(@"Test: %@", @"Clog");
-    }
-    
-    {
-        // DLog(@"Test: %@", @"Dlog");
-    }
-    
-    {
-        // NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-        //                       @"Test: ELog", NSLocalizedDescriptionKey,
-        //                       nil];
-        // NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
-        // ELog(error);
-    }
-    
-    {
-        // NSError *error = nil;
-        // ELog(error);
-    }
-    
-    {
-        // EELog();
-    }
-    
-    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
-    
-    // Synchronize preferences.
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     // Override point for customization after application launch.
     _networkAvailable = NO;
     
@@ -204,7 +144,71 @@ static BOOL _syncAllowed = NO;
     }
 
     _networkAvailable = [NSNumber numberWithBool:[self connected] && [self serverok]];
+
+    // Get preferences Data.
+    NSString *gitHash =      [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
+    NSString *appVersion =   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *modelVersion = [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0];
     
+    // NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    
+    Log(@"Version String:  %@", appVersion);
+    // Log(@"Build Number:    %@", appBuild);
+    Log(@"Git Commit Hash: %@", gitHash);
+    Log(@"Model Version: %@",   modelVersion);
+    
+    // Log(@"deviceUniqueIdentifier: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
+    // Log(@"deviceToken:            %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
+    // Log(@"bundleIdentifier:       %@", [[NSBundle mainBundle] bundleIdentifier]);
+    
+    // Register default preferences.
+    NSDictionary *appDefault = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSNumber numberWithBool:NO],       DEVELOPMENT_MODE,
+                                [NSNumber numberWithBool:YES],      PROXY_MODE,
+                                [NSNumber numberWithBool:NO],       ENABLE_LOGGING,
+                                
+                                [NSNumber numberWithInt:1],         INQUIRY_VISIBILITY,
+                                [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
+                                
+                                gitHash,                            GIT_HASH,
+                                modelVersion,                       MODEL_VERSION,
+                                appVersion,                         APP_VERSION,
+                                nil];
+    
+    //#warning FORCING LOGGING.
+    //    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:TRUE] forKey:ENABLE_LOGGING];
+    
+    // ERROR LOGGIN TEST CODE
+    {
+        // DLog(@"Test: %@", @"Clog");
+    }
+    
+    {
+        // DLog(@"Test: %@", @"Dlog");
+    }
+    
+    {
+        // NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+        //                       @"Test: ELog", NSLocalizedDescriptionKey,
+        //                       nil];
+        // NSError *error = [[NSError alloc] initWithDomain:@"DOMAIN" code:15 userInfo:dict];
+        // ELog(error);
+    }
+    
+    {
+        // NSError *error = nil;
+        // ELog(error);
+    }
+    
+    {
+        // EELog();
+    }
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
+    
+    // Synchronize preferences.
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     return YES;
 }
 
@@ -359,8 +363,7 @@ static BOOL _syncAllowed = NO;
 
         //_managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil] ;
         
-        Log(@"Model Version: %@", _managedObjectModel.versionIdentifiers);
-
+        Log(@"Model Version: %@", [[_managedObjectModel.versionIdentifiers allObjects] objectAtIndex:0]);
     }
  
     return _managedObjectModel;
@@ -400,6 +403,8 @@ static BOOL _syncAllowed = NO;
 
             return nil;
         }
+        
+        Log(@"Model Version: %@", [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]);
     }
 
     return _persistentStoreCoordinator;

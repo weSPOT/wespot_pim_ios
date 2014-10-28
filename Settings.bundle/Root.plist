@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.0.230</string>
+			<string>1.0.232</string>
 			<key>Key</key>
 			<string>app_version</string>
 			<key>Title</key>
@@ -22,11 +22,21 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>6f51e67+</string>
+			<string>ca1b376+</string>
 			<key>Key</key>
 			<string>git_hash</string>
 			<key>Title</key>
 			<string>Git hash</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>n/a</string>
+			<key>Key</key>
+			<string>model_version</string>
+			<key>Title</key>
+			<string>Model version</string>
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
 		</dict>

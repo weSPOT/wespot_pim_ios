@@ -31,6 +31,7 @@ static NSCondition *_theAbortLock;
 
 static CLLocationManager *locationManager;
 static CLLocationCoordinate2D currentCoordinates;
+static NSString *modelVersion;
 
 static BOOL _syncAllowed = NO;
 
@@ -148,7 +149,7 @@ static BOOL _syncAllowed = NO;
     // Get preferences Data.
     NSString *gitHash =      [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
     NSString *appVersion =   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *modelVersion = [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0];
+    modelVersion = [NSString stringWithString:[[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]];
     
     // NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     

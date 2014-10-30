@@ -91,7 +91,7 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+ (id) executeARLearnPOST: (NSString *) path
++ (id) executeARLearnPost: (NSString *) path
                  postData: (NSData *) data
                withAccept: (NSString *) acceptValue
           withContentType: (NSString *) ctValue
@@ -104,6 +104,9 @@
 
     }
     NSMutableURLRequest *request = [self prepareRequest:@"POST" requestWithUrl:urlString];
+
+    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
 
     [request setHTTPBody:data];
     if (ctValue) [request setValue:ctValue forHTTPHeaderField:contenttype];
@@ -382,7 +385,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:apnRegistrationBean options:0 error:nil];
     
-    [self executeARLearnPOST:@"notifications/apn" postData:postData withAccept:nil withContentType:applicationjson ];
+    [self executeARLearnPost:@"notifications/apn" postData:postData withAccept:nil withContentType:applicationjson ];
     
 }
 
@@ -420,7 +423,9 @@
 + (void) publishResponse: (NSDictionary *) responseDict {
     NSData *postData = [NSJSONSerialization dataWithJSONObject:responseDict options:0 error:nil];
     
-    [self executeARLearnPostWithAuthorization:@"response" postData:postData withContentType:applicationjson];
+    [self executeARLearnPostWithAuthorization:@"response"
+                                     postData:postData
+                              withContentType:applicationjson];
 }
 
 + (void) publishResponse: (NSNumber *) runId
@@ -458,10 +463,10 @@
                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],fileName];
     
-    id response = [self executeARLearnPOST:[NSString stringWithFormat: @"/uploadServiceWithUrl"]
-                                  postData:[str dataUsingEncoding:NSUTF8StringEncoding]
-                                withAccept:textplain
-                           withContentType:xwwformurlencode];
+    id response = [self executeARLearnPost:[NSString stringWithFormat: @"/uploadServiceWithUrl"]
+                                                   postData:[str dataUsingEncoding:NSUTF8StringEncoding]
+                                                 withAccept:textplain
+                                            withContentType:xwwformurlencode];
     
     return (NSString *) response;
 }

@@ -149,6 +149,7 @@
         [NSString stringWithFormat:@"%@_%@",_pickerData[row][0], self.usernameEdit.text];
     
         // Log(@"Username: %@", username);
+#pragma warn The school parameter should be passed again (and username without the schoolid prefixed).
         
         //initialize a post data
         NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",

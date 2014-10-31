@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger, responses) {
 @property (readonly, nonatomic) CGFloat noColumns;
 @property (readonly, nonatomic) CGFloat columnInset;
 
+@property (readwrite, nonatomic) UIImagePickerControllerCameraCaptureMode mode;
+
 @end
 
 @implementation ARLNarratorItemViewController
@@ -937,19 +939,22 @@ typedef NS_ENUM(NSInteger, responses) {
  *  Record Video.
  */
 - (void) collectVideo {
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.imagePickerController = [[UIImagePickerController alloc] init];
         self.imagePickerController.delegate = self;
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        // self.imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModeVideo;
+        self.mode = UIImagePickerControllerCameraCaptureModeVideo;
+        
+        self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
         self.imagePickerController.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         
         if([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
-            self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            self.imagePickerController.cameraDevice= UIImagePickerControllerCameraDeviceRear;
         } else {
             self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
         }
         
-        // [self presentModalViewController:self.imagePickerController animated:YES];
         [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
     }
 }
@@ -961,11 +966,13 @@ typedef NS_ENUM(NSInteger, responses) {
     if (!self.imagePickerController) {
         self.imagePickerController = [[UIImagePickerController alloc] init];
         
+        // self.imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+        self.mode = UIImagePickerControllerCameraCaptureModePhoto;
+
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            [self.imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
-        }else
-        {
-            [self.imagePickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        } else {
+            self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         }
         
         // image picker needs a delegate so we can respond to its messages
@@ -1032,5 +1039,104 @@ typedef NS_ENUM(NSInteger, responses) {
         }
     }
 }
+
+// See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
+- (void) navigationController: (UINavigationController *) navigationController  willShowViewController: (UIViewController *) viewController animated: (BOOL) animated {
+    
+    // 1) video/photo
+    // 2) video -> front/back (standard user-ineterface)
+    // 3) photo -> camera/roll/library front/back (not available as the navigationbar obscures the default interface!)
+    
+    // Camera Available.
+    switch (self.mode) {
+            
+            // Photo
+        case UIImagePickerControllerCameraCaptureModePhoto:
+            
+            switch (self.imagePickerController.sourceType) {
+                    
+                    // Library
+                case UIImagePickerControllerSourceTypePhotoLibrary: {
+                    UIBarButtonItem* cancelbutton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelBtn:)];
+                    
+                    viewController.toolbarItems = [NSArray arrayWithObject:cancelbutton];
+                    
+                    viewController.navigationController.toolbarHidden = NO;
+                    
+                    UIBarButtonItem* cambutton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(showCamera:)];
+                    UIBarButtonItem* rollbutton = [[UIBarButtonItem alloc] initWithTitle:@"Roll" style:UIBarButtonItemStylePlain target:self action:@selector(showRoll:)];
+                    
+                    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                        viewController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:cambutton, rollbutton, nil];
+                    } else {
+                        viewController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: rollbutton, nil];
+                    }
+                }
+                    break;
+                    
+                    // Camera
+                case UIImagePickerControllerSourceTypeCamera:
+                {
+                    viewController.navigationController.toolbarHidden = YES;
+                    
+                    UIBarButtonItem* libbutton = [[UIBarButtonItem alloc] initWithTitle:@"Library" style:UIBarButtonItemStylePlain target:self action:@selector(showLibrary:)];
+                    UIBarButtonItem* rollbutton = [[UIBarButtonItem alloc] initWithTitle:@"Roll" style:UIBarButtonItemStylePlain target:self action:@selector(showRoll:)];
+                    
+                    viewController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:libbutton, rollbutton, nil];
+                    
+                    viewController.navigationItem.title = @"Take Photo";
+                    viewController.navigationController.navigationBarHidden = NO;
+                }
+                    break;
+                    
+                    // Saved Photo's.
+                case UIImagePickerControllerSourceTypeSavedPhotosAlbum: {
+                    UIBarButtonItem* cancelbutton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelBtn:)];
+                    
+                    viewController.toolbarItems = [NSArray arrayWithObject:cancelbutton];
+                    
+                    viewController.navigationController.toolbarHidden = NO;
+                    
+                    UIBarButtonItem* cambutton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(showCamera:)];
+                    UIBarButtonItem* libbutton = [[UIBarButtonItem alloc] initWithTitle:@"Library" style:UIBarButtonItemStylePlain target:self action:@selector(showLibrary:)];
+                    
+                    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                        viewController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:cambutton, libbutton, nil];
+                    } else {
+                        viewController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: libbutton, nil];
+                    }
+                }
+                    break;
+            }
+            break;
+            
+            // Video
+        case UIImagePickerControllerCameraCaptureModeVideo:
+            //
+            break;
+    }
+}
+
+// See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
+- (void) showCamera: (id) sender {
+    self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+}
+
+// See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
+- (void) showLibrary: (id) sender {
+    self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+}
+
+// See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
+- (void) showRoll: (id) sender {
+    self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+}
+
+// See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
+- (void) cancelBtn: (id) sender {
+    // self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    [self.imagePickerController dismissViewControllerAnimated:YES completion:NULL];
+}
+
 
 @end

@@ -160,7 +160,7 @@
                                self.usernameEdit.text,
                                self.passwordEdit.text];
 #endif
-        Log(@"%@", postData);
+        // Log(@"%@", postData);
         
         //initialize a request from url
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

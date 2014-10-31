@@ -81,23 +81,19 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
    
     NSString *urlAsString =request.URL.description;
-  
+    
+    Log(@"%@", urlAsString);
+    
     if (!urlAsString)
     {
         return YES;
     }
     
-    if (!([urlAsString rangeOfString:@"twitter?denied="].location == NSNotFound)) {
+    if ([urlAsString rangeOfString:@"twitter?denied="].location != NSNotFound) {
         [self close];
-        return YES;
-    }
-
-    if (!([urlAsString rangeOfString:@"error=access_denied"].location == NSNotFound)) {
+    } else if ([urlAsString rangeOfString:@"error=access_denied"].location != NSNotFound) {
         [self close];
-        return YES;
-    }
-    
-    if (!([urlAsString rangeOfString:@"oauth.html?accessToken="].location == NSNotFound)) {
+    } else if ([urlAsString rangeOfString:@"oauth.html?accessToken="].location != NSNotFound) {
         @autoreleasepool {
             NSArray *listItems = [urlAsString componentsSeparatedByString:@"accessToken="];
             NSString *lastObject =[listItems lastObject];
@@ -121,37 +117,34 @@
         }
         
         [self close];
-        return YES;
-        
-    } else if (!([urlAsString rangeOfString:@"about:blank"].location == NSNotFound)) {
-        return YES;
-        
-    } else if (!([urlAsString rangeOfString:@"accounts.google.com/o/oauth2/approval?"].location == NSNotFound)) {
-        return YES;
-        
-    } else if (!([urlAsString rangeOfString:@"google?code="].location == NSNotFound)) {
-        return YES;
-        
-    } else if (!([urlAsString rangeOfString:@"o/oauth2/auth?redirect_uri"].location == NSNotFound)) {
-        return YES;
-        
-    } else if (!([urlAsString rangeOfString:@"appspot.com/oauth"].location == NSNotFound)) {
-        return YES;
-        
-    }else if (!([urlAsString rangeOfString:@"authenticate?oauth_token="].location == NSNotFound)) {
-        return YES;
-        
-    }else if (!([urlAsString rangeOfString:@"oauth/twitter?oauth_token="].location == NSNotFound)) {
-        return YES;
-        
-    }else if (!([urlAsString rangeOfString:@"https://api.twitter.com/oauth/authenticate"].location == NSNotFound)) {
-        return YES;
-        
-    }else if (!([urlAsString rangeOfString:@"dialog/oauth"].location == NSNotFound)) {
-        return YES;
-        
-    }else {
-        return YES;
+//    } else if ([urlAsString rangeOfString:@"about:blank"].location != NSNotFound) {
+//        return YES;
+//        
+//    } else if ([urlAsString rangeOfString:@"accounts.google.com/o/oauth2/approval?"].location != NSNotFound) {
+//        return YES;
+//        
+//    } else if ([urlAsString rangeOfString:@"google?code="].location != NSNotFound) {
+//        return YES;
+//        
+//    } else if ([urlAsString rangeOfString:@"o/oauth2/auth?redirect_uri"].location != NSNotFound) {
+//        return YES;
+//        
+//    } else if ([urlAsString rangeOfString:@"appspot.com/oauth"].location != NSNotFound) {
+//        return YES;
+//        
+//    }else if ([urlAsString rangeOfString:@"authenticate?oauth_token="].location != NSNotFound) {
+//        return YES;
+//        
+//    }else if ([urlAsString rangeOfString:@"oauth/twitter?oauth_token="].location != NSNotFound) {
+//        return YES;
+//        
+//    }else if ([urlAsString rangeOfString:@"https://api.twitter.com/oauth/authenticate"].location != NSNotFound) {
+//        return YES;
+//        
+//    }else if ([urlAsString rangeOfString:@"dialog/oauth"].location != NSNotFound) {
+//        return YES;
+//    }else {
+//        return YES;
     }
     
     return YES;

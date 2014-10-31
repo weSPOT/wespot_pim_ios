@@ -131,8 +131,36 @@
         NSMutableData *data = [[NSMutableData alloc] init];
         self.receivedData = data;
         
-        //initialize url that is going to be fetched.
+        NSInteger row = [self.schoolPicker selectedRowInComponent:0];
+        
+#define combinedschoolandusername
+#ifdef combinedschoolandusername
+        // Existing Code with combined schoolId and username using authenticateFw.
+        //
+        // initialize url that is going to be fetched.
         NSURL *url = [NSURL URLWithString:@"http://wespot-arlearn.appspot.com/oauth/account/authenticateFw"];
+        
+        NSString *username = [_pickerData[row][0] isEqualToString:@"0"]?
+        self.usernameEdit.text:
+        [NSString stringWithFormat:@"%@_%@",_pickerData[row][0], self.usernameEdit.text];
+        
+        //initialize a post data
+        NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",
+                               username,
+                               self.passwordEdit.text];
+#else
+        // New Code with separate schoolId and username using authenticateFwAndroid.
+        //
+        // initialize url that is going to be fetched.
+        NSURL *url = [NSURL URLWithString:@"http://wespot-arlearn.appspot.com/oauth/account/authenticateFwAndroid"];
+        
+        // initialize a post data
+        NSString *postData =  [NSString stringWithFormat:@"school=%@&username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",
+                               _pickerData[(int)row][0],
+                               self.usernameEdit.text,
+                               self.passwordEdit.text];
+#endif
+        Log(@"%@", postData);
         
         //initialize a request from url
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -140,21 +168,6 @@
         
         //set http method
         [request setHTTPMethod:@"POST"];
-        
-        NSInteger row = [self.schoolPicker selectedRowInComponent:0];
-        // NSNumber *schoolId = [NSNumber numberWithLongLong:[_pickerData[(int)row][0] longLongValue]];
-        
-        NSString *username = [_pickerData[row][0] isEqualToString:@"0"]?
-        self.usernameEdit.text:
-        [NSString stringWithFormat:@"%@_%@",_pickerData[row][0], self.usernameEdit.text];
-    
-        // Log(@"Username: %@", username);
-#pragma warn The school parameter should be passed again (and username without the schoolid prefixed).
-        
-        //initialize a post data
-        NSString *postData =  [NSString stringWithFormat:@"username=%@&password=%@&originalPage=MobileLogin.html&Login=Submit",
-                               username,
-                               self.passwordEdit.text];
         
         //set request content type we MUST set this value.
         [request setValue:@"text/html; charset=utf-8" forHTTPHeaderField:@"Content-Type"];

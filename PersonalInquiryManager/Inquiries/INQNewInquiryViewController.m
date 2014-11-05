@@ -22,7 +22,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *visibilityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *membershipLabel;
 
-@property (strong, nonatomic) UIBarButtonItem *spacerButton;
 @property (strong, nonatomic) UIBarButtonItem *createButton;
 
 - (IBAction)createInquiryTap:(id)sender;
@@ -72,14 +71,13 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated  {
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    // [self.navigationController setToolbarHidden:NO animated:NO];
     
-    if (!self.spacerButton) {
-        self.spacerButton= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(createInquiryTap:)];
+    if (!self.createButton) {
+        self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonSystemItemAction target:self action:@selector(createInquiryTap:)];
     }
     
-    self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.createButton,nil];
+    self.navigationItem.rightBarButtonItem = self.createButton;
 }
 
 /*!

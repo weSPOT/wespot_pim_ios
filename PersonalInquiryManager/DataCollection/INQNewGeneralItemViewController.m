@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet MultiSelectSegmentedControl *typeSegments;
 
-@property (strong, nonatomic) UIBarButtonItem *spacerButton;
 @property (strong, nonatomic) UIBarButtonItem *createButton;
 
 - (IBAction)createTap:(UIButton *)sender;
@@ -58,14 +57,13 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated  {
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    // [self.navigationController setToolbarHidden:NO animated:NO];
     
-    if (!self.spacerButton) {
-        self.spacerButton= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(createTap:)];
+    if (!self.createButton) {
+       self.createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(createTap:)];
     }
     
-    self.toolbarItems = [NSArray arrayWithObjects:self.spacerButton, self.createButton,nil];
+    self.navigationItem.rightBarButtonItem = self.createButton;
 }
 
 /*!

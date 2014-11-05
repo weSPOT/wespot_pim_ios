@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.0.237</string>
+			<string>1.0.238</string>
 			<key>Key</key>
 			<string>app_version</string>
 			<key>Title</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>5fde40f+</string>
+			<string>01f3284+</string>
 			<key>Key</key>
 			<string>git_hash</string>
 			<key>Title</key>

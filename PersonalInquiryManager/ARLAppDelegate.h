@@ -59,4 +59,6 @@
 
 @property (readonly, strong, nonatomic) Account *CurrentAccount;
 
+@property (readonly, nonatomic) NSString *modelVersion;
+
 @end

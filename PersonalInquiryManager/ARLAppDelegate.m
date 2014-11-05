@@ -26,12 +26,13 @@
 
 @synthesize CurrentAccount = _CurrentAccount;
 
+@synthesize modelVersion = _modelVersion;
+
 static NSRecursiveLock *_theLock;
 static NSCondition *_theAbortLock;
 
 static CLLocationManager *locationManager;
 static CLLocationCoordinate2D currentCoordinates;
-static NSString *modelVersion;
 
 static BOOL _syncAllowed = NO;
 
@@ -149,14 +150,14 @@ static BOOL _syncAllowed = NO;
     // Get preferences Data.
     NSString *gitHash =      [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleBuildVersion"];
     NSString *appVersion =   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    modelVersion = [NSString stringWithString:[[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]];
+    _modelVersion = [NSString stringWithString:[[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]];
     
     // NSString *appBuild =    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
     Log(@"Version String:  %@", appVersion);
     // Log(@"Build Number:    %@", appBuild);
     Log(@"Git Commit Hash: %@", gitHash);
-    Log(@"Model Version: %@",   modelVersion);
+    Log(@"Model Version: %@",   self.modelVersion);
     
     // Log(@"deviceUniqueIdentifier: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
     // Log(@"deviceToken:            %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
@@ -172,7 +173,7 @@ static BOOL _syncAllowed = NO;
                                 [NSNumber numberWithInt:2],         INQUIRY_MEMBERSHIP,
                                 
                                 gitHash,                            GIT_HASH,
-                                modelVersion,                       MODEL_VERSION,
+                                self.modelVersion,                  MODEL_VERSION,
                                 appVersion,                         APP_VERSION,
                                 nil];
     

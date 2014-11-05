@@ -39,6 +39,10 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    UIBarButtonItem* rollbutton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonSystemItemAction target:self action:@selector(sendMessageButtonAction:)];
+    
+    self.navigationItem.rightBarButtonItem = rollbutton;//[NSArray arrayWithObjects:rollbutton, rollbutton, nil];
+        
     [self.navigationController setToolbarHidden:NO];
 }
 

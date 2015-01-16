@@ -15,8 +15,10 @@
 @interface ARLAudioRecorderViewController : UIViewController
 
 @property (nonatomic, weak) GeneralItem* generalItem;
-@property (nonatomic, weak) Run* run;
+@property (nonatomic, weak) Inquiry* inquiry;
+
 @property (strong, nonatomic ) ARLAudioRecorder * recorder;
+@property (strong, nonatomic) AVAudioSession *session;
 
 @property (nonatomic, strong) UILabel *countField;
 @property (nonatomic, strong) UIButton *saveButton;

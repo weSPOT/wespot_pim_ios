@@ -279,7 +279,7 @@
     self.visibilityRunId = nil;
 }
 
-- (void) synchronizeGeneralItemsAndVisibilityStatements: (Run *) run {
+- (void) synchronizeGeneralItemsAndVisibilityStatements:(Run *) run {
     // CLog(@"Run:%@", run.runId);
     
     @autoreleasepool {
@@ -382,13 +382,19 @@
                         
                         if (resp.run.runId) {
                             NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
-                            [ARLNetwork perfomUpload: uploadUrl withFileName:imageName contentType:resp.contentType withData:resp.data];
+                           
+                            [ARLNetwork perfomUpload:uploadUrl
+                                        withFileName:imageName
+                                         contentType:resp.contentType
+                                            withData:resp.data];
                             
                             NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@",
                                                    serviceUrl,
                                                    resp.run.runId,
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                                                    [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
+                            
+                            resp.fileName = serverUrl;
                             
                             // Log(@"Uploaded: %@", serverUrl);
                             
@@ -418,8 +424,6 @@
                                               timeStamp:resp.timeStamp];
                             
                             resp.synchronized = [NSNumber numberWithBool:YES];
-                            
-                            //              uploads=YES;
                         }
                     }
                 }

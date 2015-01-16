@@ -16,6 +16,6 @@
 
 @interface INQGeneralItemTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) Run *run;
+@property (nonatomic, strong) Inquiry *inquiry;
 
 @end

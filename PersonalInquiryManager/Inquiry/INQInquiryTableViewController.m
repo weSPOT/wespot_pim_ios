@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Question.
      */
-    QUESTION = 100,
+    QUESTION = 1,
     /*!
      *  Plan
      */
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECTION = 1,
+    DATACOLLECTION = 2,
     /*!
      *  Analysis.
      */
@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Discussion.
      */
-    DISCUSS = 2,
+    DISCUSS = 3,
     /*!
      *  Communication.
      */
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Number of items in this NS_ENUM.
      */
-    numItems = 3,
+    numItems = 4,
 };
 
 /*!
@@ -460,7 +460,7 @@ typedef NS_ENUM(NSInteger, sections) {
             
             // Pass the parameters to render.
             if (self.inquiry.run) {
-                [newViewController performSelector:@selector(setRun:) withObject:self.inquiry.run];
+                [newViewController performSelector:@selector(setInquiry:) withObject:self.inquiry];
             }
         }
             break;
@@ -521,6 +521,10 @@ typedef NS_ENUM(NSInteger, sections) {
                     break;
                     
                 case DATACOLLECTION:
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    break;
+                    
+                case QUESTION:
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
                     break;
                     

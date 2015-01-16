@@ -514,7 +514,7 @@
     // uploadUrl = [uploadUrl stringByReplacingOccurrencesOfString:@"localhost:8888" withString:@"192.168.1.8:8080"];
     [request setURL:[NSURL URLWithString: uploadUrl]];
     
-    [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    [NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 
     DLog(@"Uploaded %@ - %@", contentTypeIn, fileName);
 }

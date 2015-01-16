@@ -62,14 +62,14 @@ typedef NS_ENUM(NSInteger, groups) {
  *  Setup the NSFetchedResultsController.
  */
 - (void)setupFetchedResultsController {
-    if (self.run.runId) {
+    if (self.inquiry.run.runId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
         
         [request setFetchBatchSize:8];
         
         request.predicate = [NSPredicate predicateWithFormat:
                              @"visible = 1 and run.runId = %lld",
-                             [self.run.runId longLongValue]];
+                             [self.inquiry.run.runId longLongValue]];
         // As sortKey seems to be 0, we need to keep the order stable.
         NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
         NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
@@ -80,7 +80,7 @@ typedef NS_ENUM(NSInteger, groups) {
         [request setSortDescriptors:sortDescriptors];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                            managedObjectContext:self.run.managedObjectContext
+                                                                            managedObjectContext:self.inquiry.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
         
@@ -96,10 +96,10 @@ typedef NS_ENUM(NSInteger, groups) {
 /*!
  *  Getter
  *
- *  @param run The Run.
+ *  @param inquiry The Inquiry.
  */
-- (void) setRun: (Run *) run {
-    _run = run;
+- (void) setInquiry:(Inquiry *)inquiry  {
+    _inquiry = inquiry;
     
     [self setupFetchedResultsController];
 }
@@ -288,7 +288,7 @@ typedef NS_ENUM(NSInteger, groups) {
             
             // If Read set Font to normal.
             for (Action * action in generalItem.actions) {
-                if (action.run == self.run) {
+                if (action.run == self.inquiry.run) {
                     if ([action.action isEqualToString:@"read"]) {
                         cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
                     }
@@ -360,7 +360,7 @@ typedef NS_ENUM(NSInteger, groups) {
         case ADDTASK: {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewGeneralItemView"];
             if ([newViewController respondsToSelector:@selector(setRun:)]) {
-                [newViewController performSelector:@selector(setRun:) withObject:self.run];
+                [newViewController performSelector:@selector(setRun:) withObject:self.inquiry.run];
             }
         }
             break;
@@ -376,8 +376,9 @@ typedef NS_ENUM(NSInteger, groups) {
             if ([newViewController respondsToSelector:@selector(setGeneralItem:)]) {
                 [newViewController performSelector:@selector(setGeneralItem:) withObject:generalItem];
             }
-            if ([newViewController respondsToSelector:@selector(setRun:)]) {
-                [newViewController performSelector:@selector(setRun:) withObject:self.run];
+            
+            if ([newViewController respondsToSelector:@selector(setInquiry:)]) {
+                [newViewController performSelector:@selector(setInquiry:) withObject:self.inquiry];
             }
             
             // Mark TableItem as Read.
@@ -385,11 +386,14 @@ typedef NS_ENUM(NSInteger, groups) {
             cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
             
             if (![Action checkAction:@"read"
-                              forRun:self.run
+                              forRun:self.inquiry.run
                       forGeneralItem:generalItem
               inManagedObjectContext:generalItem.managedObjectContext]) {
                 if (ARLNetwork.networkAvailable) {
-                    [Action initAction:@"read" forRun:self.run forGeneralItem:generalItem inManagedObjectContext:generalItem.managedObjectContext];
+                    [Action initAction:@"read"
+                                forRun:self.inquiry.run
+                        forGeneralItem:generalItem
+                inManagedObjectContext:generalItem.managedObjectContext];
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
                         [ARLCloudSynchronizer syncActions:generalItem.managedObjectContext];

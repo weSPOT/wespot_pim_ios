@@ -67,6 +67,25 @@
     }];
 }
 
+/*!
+ *  Save the Core Data Context.
+ *
+ *  See http://www.cocoanetics.com/2012/07/multi-context-coredata/
+ *
+ *  Runs on a separate thread in the background.
+ */
+- (void)saveContext
+{
+    // CLog(@"Saving NSManagedObjectContext");
+    
+    //RawLog(@"");
+    
+    [INQLog SaveNLogAbort:self.context func:[NSString stringWithFormat:@"%s",__func__]];
+//    [self.parentContext performBlock:^{
+    [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+//    }];
+}
+
 - (void) asyncExecution {
     //mach_port_t machTID = pthread_mach_thread_np(pthread_self());
     //DLog(@"Thread:0x%x - %@ - %@", machTID, @"Checking Lock", ARLAppDelegate.theLock);
@@ -94,6 +113,7 @@
     
     if (ARLAppDelegate.SyncAllowed) {
         [self saveContext];
+
         [NSThread sleepForTimeInterval:0.1];
     }
     
@@ -104,19 +124,6 @@
     // DLog(@"Thread:0x%x - %@ - %@", machTID, @"Exit Lock", ARLAppDelegate.theLock);
     
     // DLog(@"Thread:0x%x - End of File Synchronisation", machTID);
-}
-
-/*!
- *  Save the Core Data Context.
- *
- *  See http://www.cocoanetics.com/2012/07/multi-context-coredata/
- *
- *  Runs on a separate thread in the background.
- */
-- (void)saveContext
-{
-    [INQLog SaveNLogAbort:self.context func:[NSString stringWithFormat:@"%s",__func__]];
-    [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
 }
 
 - (void) downloadGeneralItems {
@@ -139,7 +146,7 @@
                     DLog(@"Could not fetch url");
                 }
                 
-                [INQLog SaveNLog:self.context];
+                [self saveContext];
             }
         }
     }
@@ -156,7 +163,7 @@
                         
                         if (self.generalItemId) {
                             // Log(@"Downloading Collected ResponseId: %@ for %@ type %@", response.responseId, self.generalItemId, response.responseType);
-                        }else {
+                        } else {
                             // Log(@"Downloading Collected ResponseId: %@ type %@", response.responseId, response.responseType);
                         }
                         
@@ -234,6 +241,13 @@
                                 
                             case AUDIO: {
                                 // Nothing to download/thumbnail
+                                if (response.fileName) {
+                                    NSURL *url = [NSURL URLWithString:response.fileName];
+                                    
+                                    // CLog(@"Downloading: %@", [url lastPathComponent]);
+                                    
+                                    response.data = [NSData dataWithContentsOfURL:url];
+                                }
                             }
                                 break;
                                 
@@ -248,13 +262,14 @@
                                 break;
                                 
                             default: {
-                                if (response.fileName) {
-                                    NSURL *url = [NSURL URLWithString:response.fileName];
-                                    
-                                    // CLog(@"Downloading: %@", [url lastPathComponent]);
-                                    
-                                    response.data = [NSData dataWithContentsOfURL:url];
-                                }
+                                // Should not happen.
+                                //                                if (response.fileName) {
+                                //                                    NSURL *url = [NSURL URLWithString:response.fileName];
+                                //
+                                //                                    // CLog(@"Downloading: %@", [url lastPathComponent]);
+                                //
+                                //                                    response.data = [NSData dataWithContentsOfURL:url];
+                                //                                }
                             }
                                 break;
                         }
@@ -263,11 +278,7 @@
                 }
             }
             
-            [INQLog SaveNLog:self.context];
-            
-            if (self.context.parentContext) {
-                [INQLog SaveNLog:self.context.parentContext];
-            }
+            [self saveContext];
         }
     }
 }

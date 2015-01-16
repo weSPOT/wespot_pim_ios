@@ -1,3 +1,4 @@
+
 //
 //  ARLAudioRecorderViewController.m
 //  ARLearn
@@ -14,11 +15,13 @@
 
 @implementation ARLAudioRecorderViewController
 
-- (void) clickedSaveButton: (NSData*) audioData{
-    
-    [Response createAudioResponse:audioData withRun:self.run withGeneralItem:self.generalItem];
+@synthesize inquiry = _inquiry;
+@synthesize generalItem = _generalItem;
+
+- (void) clickedSaveButton: (NSData*) audioData {
+    [Response createAudioResponse:audioData withRun:self.inquiry.run withGeneralItem:self.generalItem];
    
-    [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
+    [Action initAction:@"answer_given" forRun:self.inquiry.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
     [INQLog SaveNLogAbort:self.generalItem.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
     
@@ -27,9 +30,11 @@
     }];
     
     if (ARLNetwork.networkAvailable) {
-        [ARLFileCloudSynchronizer syncResponseData:self.generalItem.managedObjectContext
-                                     generalItemId:self.generalItem.generalItemId
-                                      responseType:[NSNumber numberWithInt:AUDIO]];
+        
+        [ARLFileCloudSynchronizer syncMyResponseData:self.generalItem.managedObjectContext
+         //generalItemId:self.generalItem.generalItemId
+                                        responseType:[NSNumber numberWithInt:AUDIO]];
+        
         [ARLCloudSynchronizer syncResponses: self.generalItem.managedObjectContext];
     }
     
@@ -39,6 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.countField = [[UILabel alloc] init];
@@ -56,7 +62,6 @@
     
     self.recordButtons = [[ARLAudioRecordButtons alloc] init];
     [[self view] addSubview:self.recordButtons];
-    
     
     self.recorder = [[ARLAudioRecorder alloc] init];
     

@@ -46,11 +46,14 @@ typedef NS_ENUM(NSInteger, responses) {
 
 @property (readwrite, nonatomic) UIImagePickerControllerCameraCaptureMode mode;
 
+@property (strong, nonatomic) AVAudioSession *audioSession;
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+
 @end
 
 @implementation ARLNarratorItemViewController
 
-@synthesize run = _run;
+@synthesize inquiry = _inquiry;
 @synthesize generalItem = _generalItem;
 @synthesize account = _account;
 
@@ -182,7 +185,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     [request setFetchBatchSize:8];
     
-    if (self.run && self.run.runId) {
+    if (self.inquiry && self.inquiry.run && self.inquiry.run.runId) {
         NSMutableArray *tmp = [[NSMutableArray alloc] init];
         
         if (self.withPicture){
@@ -203,7 +206,7 @@ typedef NS_ENUM(NSInteger, responses) {
         
         // See http://stackoverflow.com/questions/4476026/add-additional-argument-to-an-existing-nspredicate
         NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tmp];
-        NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld",[self.run.runId longLongValue], [self.generalItem.generalItemId longLongValue]];
+        NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld",[self.inquiry.run.runId longLongValue], [self.generalItem.generalItemId longLongValue]];
         
         // Example Predicate: (run.runId == 5860462742732800 AND generalItem.generalItemId == 3713019) AND (contentType == "application/jpg" OR contentType == "video/quicktime" OR contentType == "audio/aac")
         request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:andPredicate, orPredicate, nil]];
@@ -225,9 +228,9 @@ typedef NS_ENUM(NSInteger, responses) {
                                    nil];
     }
     
-    if (self.run) {
+    if (self.inquiry.run) {
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                            managedObjectContext:self.run.managedObjectContext
+                                                                            managedObjectContext:self.inquiry.run.managedObjectContext
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
     } else if (self.account){
@@ -251,115 +254,117 @@ typedef NS_ENUM(NSInteger, responses) {
 
 - (void)contextChanged:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
-        return;
-    }
+//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    if ([notification object] == appDelegate.managedObjectContext) {
+//        return ;
+//    }
+//    
+//    if (![NSThread isMainThread]) {
+//        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+//        return;
+//    }
     
     // Existing Code...
-    @autoreleasepool {
-        NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
-        
-        for (NSManagedObject *obj in deletedObjects){
-            @autoreleasepool {
-                if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-                    GeneralItem* changedObject = (GeneralItem*) obj;
-                    if (self.generalItem == changedObject) {
-                        
-                        DLog(@"little less easy... I was deleted");
-                        
-                        [self.navigationController popViewControllerAnimated:NO];
-                        [self dismissViewControllerAnimated:TRUE completion:nil];
-                    }
-                }
-            }
-        }
-    }
+//    @autoreleasepool {
+//        NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+//        
+//        for (NSManagedObject *obj in deletedObjects){
+//            @autoreleasepool {
+//                if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
+//                    GeneralItem* changedObject = (GeneralItem*) obj;
+//                    if (self.generalItem == changedObject) {
+//                        
+//                        DLog(@"little less easy... I was deleted");
+//                        
+//                        [self.navigationController popViewControllerAnimated:NO];
+//                        [self dismissViewControllerAnimated:TRUE completion:nil];
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     // New Code.
     //    if ([ARLAppDelegate.theLock tryLock]) {
     //        [ARLAppDelegate.theLock unlock];
     
     // See if there are any Inquiry objects added and if so, reload the collectionView.
-    @autoreleasepool {
-        NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-        
-        for (NSManagedObject *obj in insertedObjects){
-            @autoreleasepool {
-                if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-                    
-                    NSError *error = nil;
-                    [self.fetchedResultsController performFetch:&error];
-                    
-                    ELog(error);
-                    
-                    [self.collectionView reloadData];
-                    
-                    return;
-                }
-            }
-        }
-    }
+//    @autoreleasepool {
+//        NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+//        
+//        for (NSManagedObject *obj in insertedObjects){
+//            @autoreleasepool {
+//                if ([[obj entity].name isEqualToString:@"Inquiry"]) {
+//                    
+//                    NSError *error = nil;
+//                    [self.fetchedResultsController performFetch:&error];
+//                    
+//                    ELog(error);
+//                    
+//                    [self.collectionView reloadData];
+//                    
+//                    return;
+//                }
+//            }
+//        }
+//    }
     
-    [self.fetchedResultsController fetchRequest];
+//    [self.fetchedResultsController fetchRequest];
     
     // Existing Code...
-    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-    
-    for(NSManagedObject *obj in updatedObjects){
-        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-            GeneralItem* changedObject = (GeneralItem*) obj;
-            if (self.generalItem == changedObject) {
-                self.navigationItem.title = self.generalItem.name;
-                
-                DLog(@"TEXT='%@'", self.generalItem.richText);
-                
-                // warning Replace the the TableView top Section.
-                // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
-            }
-        }
-    }
+//    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+//    
+//    for(NSManagedObject *obj in updatedObjects){
+//        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
+//            GeneralItem* changedObject = (GeneralItem*) obj;
+//            if (self.generalItem == changedObject) {
+//                self.navigationItem.title = self.generalItem.name;
+//                
+//                DLog(@"TEXT='%@'", self.generalItem.richText);
+//                
+//                // warning Replace the the TableView top Section.
+//                // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
+//            }
+//        }
+//    }
 
-    @autoreleasepool {
-        NSArray *indexPaths = [[NSArray alloc] init];
-        BOOL fetched = NO;
-        
-        for(NSManagedObject *obj in updatedObjects) {
-            @autoreleasepool {
-                if ([[obj entity].name isEqualToString:@"Response"]) {
-                    if (!fetched) {
-                        NSError *error = nil;
-                        [self.fetchedResultsController performFetch:&error];
-                        fetched=YES;
-                    }
-                    
-                    Response *updated = (Response *)obj;
-                    
-                    // workaround for indexPathForObject:obj not working.
-                    for (Response *response in self.fetchedResultsController.fetchedObjects) {
-                        if ([response.objectID isEqual:updated.objectID]) {
-                            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
-                            if (indexPath) {
-                                indexPaths = [indexPaths arrayByAddingObject:indexPath];
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        
-        
-        if (indexPaths.count != 0) {
-            [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
-        }
-    }
+//    @autoreleasepool {
+//        NSArray *indexPaths = [[NSArray alloc] init];
+//        BOOL fetched = NO;
+//        
+//        for(NSManagedObject *obj in updatedObjects) {
+//            @autoreleasepool {
+//                if ([[obj entity].name isEqualToString:@"Response"]) {
+//                    if (!fetched) {
+//                        NSError *error = nil;
+//                        [self.fetchedResultsController performFetch:&error];
+//                        fetched=YES;
+//                    }
+//                    
+//                    Response *updated = (Response *)obj;
+//                    
+//                    // workaround for indexPathForObject:obj not working.
+//                    for (Response *response in self.fetchedResultsController.fetchedObjects) {
+//                        if ([response.objectID isEqual:updated.objectID]) {
+//                            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
+//                            if (indexPath) {
+//                                indexPaths = [indexPaths arrayByAddingObject:indexPath];
+//                            }
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        
+//        
+//        if (indexPaths.count != 0) {
+//            [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
+//        }
+//    }
     
+    //[self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
+
     //    [self.fetchedResultsController fetchRequest];
     //
     //    [self.collectionView reloadData];
@@ -382,7 +387,7 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (self.run) {
+    if (self.inquiry.run) {
         NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];
         
         self.navigationItem.title = self.generalItem.name;
@@ -406,19 +411,19 @@ typedef NS_ENUM(NSInteger, responses) {
     [super viewDidAppear:animated];
     
     if (ARLNetwork.networkAvailable) {
-        if (self.run) {
+        if (self.inquiry.run) {
             if (self.withPicture) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                [ARLFileCloudSynchronizer syncResponseData:self.inquiry.run.managedObjectContext
                                              generalItemId:self.generalItem.generalItemId
                                               responseType:[NSNumber numberWithInt:PHOTO]];
             }
             if (self.withVideo) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                [ARLFileCloudSynchronizer syncResponseData:self.inquiry.run.managedObjectContext
                                              generalItemId:self.generalItem.generalItemId
                                               responseType:[NSNumber numberWithInt:VIDEO]];
             }
             if (self.withAudio) {
-                [ARLFileCloudSynchronizer syncResponseData:self.run.managedObjectContext
+                [ARLFileCloudSynchronizer syncResponseData:self.inquiry.run.managedObjectContext
                                              generalItemId:self.generalItem.generalItemId
                                               responseType:[NSNumber numberWithInt:AUDIO]];
             }
@@ -637,7 +642,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                            withReuseIdentifier:@"NarratorHeader"
                                                            forIndexPath:indexPath];
         
-        if (self.run) {
+        if (self.inquiry.run) {
             NSString *description = [INQUtils cleanHtml:self.generalItem.richText];
             if ([description length] == 0) {
                 [headerView.headerText setText:self.generalItem.name];
@@ -700,10 +705,7 @@ typedef NS_ENUM(NSInteger, responses) {
     Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     if (response.fileName) {
-        BOOL http =
-        
-        [[response.fileName lowercaseString] hasPrefix:@"http://"] ||
-        [[response.fileName lowercaseString] hasPrefix:@"https://"] ;
+        BOOL http = [[response.fileName lowercaseString] hasPrefix:@"http://"] || [[response.fileName lowercaseString] hasPrefix:@"https://"] ;
         
         // if (http) {
         CGSize size = [[UIScreen mainScreen] bounds].size;
@@ -711,30 +713,52 @@ typedef NS_ENUM(NSInteger, responses) {
         
         INQWebViewController *controller = (INQWebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"WebViewController"];
         
-        if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:PHOTO]] ) {
-            if (http && ARLNetwork.networkAvailable /*&& !response.thumb*/) {
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
-                                   response.fileName];
-            } else {
-                // NSString *strEncoded = [Base64 encode:data];
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='data:%@;base64,%@' style='width:100%%;' /></body></html>",
-                                   response.contentType,
-                                   [INQUtils base64forData:response.thumb]];
+        switch ([response.responseType intValue]) {
+            case PHOTO: {
+                if (http && ARLNetwork.networkAvailable /*&& !response.thumb*/) {
+                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
+                                       response.fileName];
+                } else {
+                    // NSString *strEncoded = [Base64 encode:data];
+                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='data:%@;base64,%@' style='width:100%%;' /></body></html>",
+                                       response.contentType,
+                                       [INQUtils base64forData:response.thumb]];
+                }
             }
-            
-// See http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri
-            
-        } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:VIDEO]]) {
-            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
-                               response.fileName, size.width * screenScale, size.height * screenScale];
-        } else if ( [response.responseType isEqualToNumber:[NSNumber numberWithInt:AUDIO]] ) {
-            controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center; margin-top:100px;'><audio src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
-                               response.fileName, size.width * screenScale, size.height * screenScale];
+                break;
+                
+            case VIDEO: {
+                // See http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
+                                   response.fileName, size.width * screenScale, size.height * screenScale];
+            }
+                break;
+                
+            case AUDIO: {
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function plasy() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio is='audio' src='%@' controls></audio></div></body></html>",
+                                   response.fileName];
+                /*
+                NSError *error = nil;
+                
+                // See http://www.raywenderlich.com/69369/audio-tutorial-ios-playing-audio-programatically-2014-edition
+                self.audioSession = [AVAudioSession sharedInstance];
+                [self.audioSession setCategory:AVAudioSessionCategoryPlayback error:&error];
+                
+                ELog(error);
+                
+                NSString *audioString = [response.fileName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *audioUrl = [[NSURL alloc] initWithString:audioString];
+                NSData *audioFile = [[NSData alloc] initWithContentsOfURL:audioUrl options:NSDataReadingMappedIfSafe error:&error];
+
+                self.audioPlayer = [[AVAudioPlayer alloc] initWithData:audioFile error:&error];
+                self.audioPlayer.volume=1.0;
+                
+                [self.audioPlayer prepareToPlay];
+                [self.audioPlayer play];
+                 */
+            }
+                break;
         }
-        
-        // Log(@"%@", controller.html);
-        
-        // DLog(@"%@", response.fileName);
         
         if (controller && controller.html) {
             [self.navigationController pushViewController:controller animated:FALSE];
@@ -746,7 +770,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                         otherButtonTitles:nil, nil];
             [myAlertView show];
         }
-        
+
     } else {
         
         //TODO: Textarea does not forward clicks.
@@ -764,9 +788,9 @@ typedef NS_ENUM(NSInteger, responses) {
             
             if ([dictionary valueForKey:@"text"]) {
                 msg = [dictionary valueForKey:@"text"];
-            }else if ([dictionary valueForKey:@"value"]) {
+            } else if ([dictionary valueForKey:@"value"]) {
                 msg = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
-            }else {
+            } else {
                 msg = [NSString stringWithFormat:@"%@", response.value];
             }
             
@@ -827,7 +851,7 @@ typedef NS_ENUM(NSInteger, responses) {
 - (void) collectAudio {
     ARLAudioRecorderViewController *controller = [[ARLAudioRecorderViewController alloc] init];
     
-    controller.run = self.run;
+    controller.inquiry = self.inquiry;
     controller.generalItem = self.generalItem;
     
     [self.navigationController pushViewController:controller animated:TRUE];
@@ -902,7 +926,7 @@ typedef NS_ENUM(NSInteger, responses) {
                 
                 if (number != nil) {
                     [Response createValueResponse: trimmed
-                                          withRun:self.run
+                                          withRun:self.inquiry.run
                                   withGeneralItem:self.generalItem ];
                 } else {
                     // Invalid Number.
@@ -917,13 +941,13 @@ typedef NS_ENUM(NSInteger, responses) {
                 break;
             case 2:
                 [Response createTextResponse: trimmed
-                                     withRun:self.run
+                                     withRun:self.inquiry.run
                              withGeneralItem:self.generalItem ];
                 break;
         }
         
         [Action initAction:@"answer_given"
-                    forRun:self.run
+                    forRun:self.inquiry.run
             forGeneralItem:self.generalItem
     inManagedObjectContext:self.generalItem.managedObjectContext];
         
@@ -962,7 +986,7 @@ typedef NS_ENUM(NSInteger, responses) {
 /*!
  *  Take a Picture.
  */
-- (void) collectImage{
+- (void) collectImage {
     if (!self.imagePickerController) {
         self.imagePickerController = [[UIImagePickerController alloc] init];
         
@@ -990,7 +1014,8 @@ typedef NS_ENUM(NSInteger, responses) {
  *  @param picker <#picker description#>
  *  @param info   <#info description#>
  */
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
 //    NSString *url = [info objectForKey:UIImagePickerControllerReferenceURL];
@@ -1007,7 +1032,7 @@ typedef NS_ENUM(NSInteger, responses) {
         [Response createImageResponse:imageData
                                 width:[NSNumber numberWithFloat:image.size.width]
                                height:[NSNumber numberWithFloat:image.size.height]
-                              withRun:self.run
+                              withRun:self.inquiry.run
                       withGeneralItem:self.generalItem];
     } else {
         id object = [info objectForKey:UIImagePickerControllerMediaURL];
@@ -1017,13 +1042,13 @@ typedef NS_ENUM(NSInteger, responses) {
         
         NSData* videoData = [NSData dataWithContentsOfURL:object];
         [Response createVideoResponse:videoData
-                              withRun:self.run
+                              withRun:self.inquiry.run
                       withGeneralItem:self.generalItem];
         
         // [picker dismissViewControllerAnimated:YES completion:NULL];
     }
     
-    [Action initAction:@"answer_given" forRun:self.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
+    [Action initAction:@"answer_given" forRun:self.inquiry.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     
@@ -1041,7 +1066,9 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 // See http://stackoverflow.com/questions/8528880/enabling-the-photo-library-button-on-the-uiimagepickercontroller
-- (void) navigationController: (UINavigationController *) navigationController  willShowViewController: (UIViewController *) viewController animated: (BOOL) animated {
+- (void) navigationController: (UINavigationController *)navigationController
+       willShowViewController: (UIViewController *)viewController
+                     animated: (BOOL) animated {
     
     // 1) video/photo
     // 2) video -> front/back (standard user-ineterface)

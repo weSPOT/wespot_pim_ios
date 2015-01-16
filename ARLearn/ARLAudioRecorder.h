@@ -31,19 +31,19 @@ typedef NS_ENUM(NSInteger, RecorderState) {
 
 @property (nonatomic, readwrite) RecorderState status;
 
-
 @property (nonatomic, strong) AVAudioRecorder *recorder;
+@property (strong, nonatomic) AVAudioSession *session;
 @property (strong, nonatomic ) AVAudioPlayer * player;
+
 @property (strong, nonatomic ) NSTimer * recordTimer;
 @property (strong, nonatomic ) NSTimer * playTimer;
+
 @property (weak, nonatomic ) ARLAudioRecorderViewController * controller;
 
 @property (nonatomic, strong) NSURL *tmpFileUrl;
 @property (strong, nonatomic ) ARLAudioRecordButtons * buttons;
 
-
 - (void) clickedLeftButton;
 - (void) clickedRightButton;
-
 
 @end

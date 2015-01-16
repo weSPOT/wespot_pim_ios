@@ -248,7 +248,9 @@
  *
  *  @return An array of Responses.
  */
-+ (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context generalItemId:(NSNumber *) generalItemId {
++ (NSArray *) getReponsesWithoutMedia:(NSManagedObjectContext *)context
+                        generalItemId:(NSNumber *) generalItemId {
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
     request.predicate = [NSPredicate predicateWithFormat:@"(generalItem.generalItemId = %@ AND data = %@ AND thumb = %@) AND fileName != %@", generalItemId, NULL, NULL, NULL];

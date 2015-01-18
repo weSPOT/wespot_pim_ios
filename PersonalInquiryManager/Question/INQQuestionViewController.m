@@ -41,9 +41,20 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
+@property(nonatomic, assign) BOOL automaticallyAdjustsScrollViewInsets;
+
 @end
 
 @implementation INQQuestionViewController
+
+
+-(BOOL)automaticallyAdjustsScrollViewInsets {
+    return NO;
+}
+
+-(void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)automaticallyAdjustsScrollViewInsets  {
+    //
+}
 
 /*!
  *  Getter
@@ -54,19 +65,12 @@ typedef NS_ENUM(NSInteger, sections) {
     return  @"questionCell";
 }
 
-//- (void) setQuestions:(NSArray *) Questions {
-//    if (_Questions != Questions) {
-//        _Questions = Questions;
-//    }
-//}
-
-
 /*!
  *  viewDidLoad
  */
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
@@ -81,12 +85,6 @@ typedef NS_ENUM(NSInteger, sections) {
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-//    if ([self.questions count]==0) {
-//        self.textView.text = @"No question has been added yet for this inquiry.";
-//    }else {
-//        self.textView.text = [[self.questions objectAtIndex:0] valueForKey:@"question"];
-//    }
     
     [self.tableView reloadData];
 }
@@ -164,14 +162,82 @@ typedef NS_ENUM(NSInteger, sections) {
         case QUESTIONS: {
             NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
             
-            cell.textLabel.text = [question valueForKey:@"question"];
+            UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
+            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+        
+            textView.editable = NO;
+            
+            //WARNING: Without this, the last line is missing.
+            textView.scrollEnabled = YES;
+            
+            NSString *title = [question valueForKey:@"question"];
+            
+            title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            titleLabel.text = title.length==0 ? @"?" : title;
+            
             //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             
             NSString *html = [question valueForKey:@"description"];
-            NSString *text = [INQUtils cleanHtml:html];
-            cell.detailTextLabel.text = text;
+            NSString *body = [INQUtils cleanHtml:html];
+            
+            textView.text = body;
+            
+            // CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
             
             cell.accessoryType = UITableViewCellAccessoryNone;
+            {
+                float tw = tableView.frame.size.width - 5*8.0f;
+                
+                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                
+                // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
+                CGRect frame = textView.frame;
+                
+                //frame.size = CGSizeMake(frame.size.width, MIN(rect.size.height + 2*8.0f, 64.0f));
+                frame.size = CGSizeMake(tw, rect.size.height + 3*8.0f);
+                frame.origin = CGPointMake(titleLabel.frame.origin.x, frame.origin.y);
+                
+                textView.frame = frame;
+            }
+            
+//            {
+//                CGFloat topCorrect = ([textView bounds].size.height - [textView contentSize].height * [textView zoomScale])/2.0;
+//                topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
+//                textView.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
+//            }
+            // Size?
+            
+            //            {
+//                CGRect frame = textView.frame;
+//                
+//                frame.origin = CGPointMake(8.0f,
+//                                           titleLabel.frame.origin.y + titleLabel.frame.size.height + 8.0f);
+//                
+//                frame.size = CGSizeMake(tableView.frame.size.width /*- tableView.rowHeight*/ - 2*8.0f,
+//                                     tableView.rowHeight+(frame.size.height-58.0f));
+//                
+//                textView.frame = frame;
+//                textView.textAlignment = NSTextAlignmentLeft;
+//            }
+   
+            // Location?
+//            {
+//                CGRect frame = textView.frame;
+//                
+//                frame.origin =  CGPointMake(textView.frame.origin.x,
+//                                            textView.frame.origin.y + textView.frame.size.height + 8.0f);
+//                frame.size = CGSizeMake(textView.frame.size.width,
+//                                        size.height);
+//                
+//                textView.frame = frame;
+//                textView.textAlignment = NSTextAlignmentLeft;
+//            }
+            
+            //textView.editable = YES;
+            
+            //textView.scrollEnabled = YES;
         }
     }
     
@@ -197,6 +263,36 @@ typedef NS_ENUM(NSInteger, sections) {
     // Another way to set the background color
     // Note: does not preserve gradient effect of original header
     // header.contentView.backgroundColor = [UIColor blackColor];
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case QUESTIONS: {
+            // Calculate the correct height here based on the message content!!
+            NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
+            
+            NSString *html = [question valueForKey:@"description"];
+            NSString *body = [INQUtils cleanHtml:html];
+    
+            if ([body length] == 0) {
+                return self.tableView.rowHeight;
+            }
+
+            float tw = tableView.frame.size.width - 5*8.0f;
+  
+            NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+            CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+
+            // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
+            return 1.0f * tableView.rowHeight + rect.size.height + 3*8.0f - 58.0f;
+            // return 1.0f*tableView.rowHeight + MIN((rect.size.height) + 2*8.0f, 64.0f) - 58.0f;
+        }
+    }
+    
+    // Error
+    return tableView.rowHeight;
 }
 
 @end

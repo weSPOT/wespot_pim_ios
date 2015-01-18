@@ -336,24 +336,8 @@ typedef NS_ENUM(NSInteger, friends) {
                 
                 CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
                 
-                // UIColor *c1 = [UIColor clearColor];
-                // UIColor *c2 = [UIColor whiteColor];
-                //
-                // // float radius = 10.0f;
-                //
-                // CGRect rect = cell.frame;
-                // rect.origin = CGPointMake(0.0f, 0.0f);
-                //
-                //   *gradient = [CAGradientLayer layer];
-                //                gradient.frame = rect;
-                
                 switch(MyMessage) {
                     case TRUE: {
-                        // imageView.frame = CGRectMake(
-                        //  cell.frame.size.width - imageView.frame.size.width - 8.0f,
-                        //  imageView.frame.origin.y,
-                        //  tableView.rowHeight,
-                        //  tableView.rowHeight);
                         {
                             CGRect frame = detailTextLabel.frame;
                             
@@ -373,22 +357,10 @@ typedef NS_ENUM(NSInteger, friends) {
                             textView.frame = frame;
                             textView.textAlignment = NSTextAlignmentRight;
                         }
-                        
-                        // gradient.locations =  [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.1], nil];
-                        // gradient.colors = [NSArray arrayWithObjects:(id)c1.CGColor, (id)c2.CGColor, nil];
-                        // //BottomLeft
-                        // gradient.startPoint = CGPointMake(0.0f, 0.5f);
-                        // //TopRight
-                        // gradient.endPoint = CGPointMake(1.0f, 0.5f);
                     }
                         break;
                         
                     case FALSE: {
-                        // imageView.frame = CGRectMake(
-                        //  8.0f,
-                        //  imageView.frame.origin.y,
-                        //  tableView.rowHeight,
-                        //  tableView.rowHeight);
                         {
                             CGRect frame = detailTextLabel.frame;
                             
@@ -412,18 +384,9 @@ typedef NS_ENUM(NSInteger, friends) {
                             textView.frame = frame;
                             textView.textAlignment = NSTextAlignmentLeft;
                         }
-                        
-                        // gradient.locations =  [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.9], [NSNumber numberWithFloat:1.0], nil];
-                        // gradient.colors = [NSArray arrayWithObjects:(id)c2.CGColor, (id)c1.CGColor, nil];
-                        // //BottomLeft
-                        // gradient.startPoint = CGPointMake(0.0f, 0.5f);
-                        // //TopRight
-                        // gradient.endPoint = CGPointMake(1.0f, 0.5f);
                     }
                         break;
                 }
-                
-                // [cell.layer insertSublayer:gradient atIndex:0];
             }
         }
     }
@@ -443,6 +406,10 @@ typedef NS_ENUM(NSInteger, friends) {
             Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
             
             NSString *body = [INQUtils cleanHtml:message.body];
+            
+            if ([body length] == 0) {
+                return tableView.rowHeight;
+            }
             
             float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
             

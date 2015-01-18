@@ -32,6 +32,7 @@
 
 + (id) getHypothesis: (NSNumber *) inquiryId;
 + (id) getQuestions: (NSNumber *) inquiryId;
++ (id) getAnswers: (NSNumber *) inquiryId;
 + (id) getReflection:  (NSNumber *) inquiryId;
 + (id) getNotes: (NSNumber *) inquiryId;
 + (id) getFiles: (NSNumber *) inquiryId;

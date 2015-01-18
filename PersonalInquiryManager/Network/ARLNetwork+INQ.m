@@ -278,17 +278,14 @@
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 
-
 /*!
- *  Return the Questions sof an Inquiry.
+ *  Return the Questions of an Inquiry.
  *
  *  @param inquiryId The Inquiry Id.
  *
- *  @return The Question of the Inquiry as JSON.
+ *  @return The Questions of the Inquiry as JSON.
  */
 + (id) getQuestions: (NSNumber *) inquiryId {
-    // NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
-    
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           @"inquiry.questions",                 @"method",
                           apiKey,                               @"api_key",
@@ -297,6 +294,25 @@
                           
                           nil];
 
+    return [self returnJson:[self dictionaryToUrl:dict]];
+}
+
+/*!
+ *  Return the Answers of an Inquiry.
+ *
+ *  @param inquiryId The Inquiry Id.
+ *
+ *  @return The Answers of the Inquiry as JSON.
+ */
++ (id) getAnswers: (NSNumber *) inquiryId {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"inquiry.answers",                   @"method",
+                          apiKey,                               @"api_key",
+                          
+                          inquiryId,                            @"inquiryId",
+                          
+                          nil];
+    
     return [self returnJson:[self dictionaryToUrl:dict]];
 }
 

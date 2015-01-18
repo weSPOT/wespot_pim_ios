@@ -280,17 +280,17 @@
 
 
 /*!
- *  Return the Question of an Inquiry.
+ *  Return the Questions sof an Inquiry.
  *
  *  @param inquiryId The Inquiry Id.
  *
  *  @return The Question of the Inquiry as JSON.
  */
-+ (id) getQuestion: (NSNumber *) inquiryId {
++ (id) getQuestions: (NSNumber *) inquiryId {
     // NSString *url = [NSString stringWithFormat:@"%@%@&api_key=%@&inquiryId=%@", elgUrl, @"inquiry.hypothesis", apiKey, inquiryId];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          @"inquiry.question",                  @"method",
+                          @"inquiry.questions",                 @"method",
                           apiKey,                               @"api_key",
                           
                           inquiryId,                            @"inquiryId",

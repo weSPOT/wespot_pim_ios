@@ -444,8 +444,28 @@ typedef NS_ENUM(NSInteger, sections) {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"QuestionView"];
             
+            NSDictionary *json = [ARLNetwork getQuestions:self.inquiry.inquiryId];
+            NSArray *questions = [json valueForKey:@"result"];
+            //            {
+            //                result =     (
+            //                              {
+            //                                  description = "Do the spanish people know?";
+            //                                  question = "Are there different kinds of Siesta?";
+            //                                  questionId = 80911;
+            //                                  tags =             (
+            //                                                      types,
+            //                                                      siesta,
+            //                                                      spanish,
+            //                                                      lazy
+            //                                                      );
+//                                  url = "http://inquiry.wespot.net/answers/view/80911/are-there-different-kinds-of-siesta";
+//                              },
+//                              );
+//                status = 0;
+//            }
+            
             // Pass the parameters to render.
-            // [newViewController performSelector:@selector(setQuestion:) withObject:self.inquiry.question];
+            [newViewController performSelector:@selector(setQuestions:) withObject:questions];
         }
             break;
         

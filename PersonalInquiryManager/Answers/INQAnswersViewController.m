@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQQuestionViewController.h"
+#import "INQAnswersViewController.h"
 
-@interface INQQuestionViewController ()
+@interface INQAnswersViewController ()
 /*!
  *  ID's and order of the cells.
  */
 typedef NS_ENUM(NSInteger, indices) {
     /*!
-     *  Question.
+     *  Answer.
      */
-    QUESTION = 0,
+    ANSWER = 0,
 
     /*!
      *  Number of items in this NS_ENUM.
@@ -29,9 +29,9 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 typedef NS_ENUM(NSInteger, sections) {
     /*!
-     *  Inquiry Parts
+     *  Answers
      */
-    QUESTIONS =0,
+    ANSWERS =0,
  
     /*!
      *  Number of Sections in this NS_ENUM.
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @end
 
-@implementation INQQuestionViewController
+@implementation INQAnswersViewController
 
 /*!
  *  Getter
@@ -51,15 +51,8 @@ typedef NS_ENUM(NSInteger, sections) {
  *  @return The First Cell Identifier.
  */
 -(NSString *) cellIdentifier {
-    return  @"questionCell";
+    return  @"answerCell";
 }
-
-//- (void) setQuestions:(NSArray *) Questions {
-//    if (_Questions != Questions) {
-//        _Questions = Questions;
-//    }
-//}
-
 
 /*!
  *  viewDidLoad
@@ -124,8 +117,8 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case QUESTIONS:
-            return self.Questions.count;
+        case ANSWERS:
+            return self.Answers.count;
     }
     
     return 0;
@@ -134,8 +127,8 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
-        case QUESTIONS:
-            return @"Questions";
+        case ANSWERS:
+            return @"Answers";
     }
     
     // Error
@@ -161,13 +154,13 @@ typedef NS_ENUM(NSInteger, sections) {
     
     // Configure the cell...
     switch (indexPath.section) {
-        case QUESTIONS: {
-            NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
+        case ANSWERS: {
+            NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
             
-            cell.textLabel.text = [question valueForKey:@"question"];
+            cell.textLabel.text = [answer valueForKey:@"answer"];
             //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             
-            NSString *html = [question valueForKey:@"description"];
+            NSString *html = [answer valueForKey:@"description"];
             NSString *text = [INQUtils cleanHtml:html];
             cell.detailTextLabel.text = text;
             

@@ -10,8 +10,8 @@
 
 #import "UIViewController+UI.h"
 
-@interface INQQuestionViewController : UITableViewController
+@interface INQAnswersViewController : UITableViewController
 
-@property (strong, nonatomic) NSArray *Questions;
+@property (strong, nonatomic) NSArray *Answers;
 
 @end

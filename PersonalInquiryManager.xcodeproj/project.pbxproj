@@ -161,6 +161,7 @@
 		8DDE2D2E19D95FCC00EC9230 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DDE2D2B19D95FCC00EC9230 /* UIImage+RoundedCorner.m */; };
 		8DDE2D3119D96FB000EC9230 /* INQUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DDE2D3019D96FB000EC9230 /* INQUtils.m */; };
 		8DE646F61922162700CB8E67 /* INQNewGeneralItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */; };
+		8DECC6EB1A6C1407007CFA1B /* INQAnswersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DECC6EA1A6C1407007CFA1B /* INQAnswersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -426,6 +427,8 @@
 		8DDE2D3019D96FB000EC9230 /* INQUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQUtils.m; sourceTree = "<group>"; };
 		8DE646F41922162700CB8E67 /* INQNewGeneralItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQNewGeneralItemViewController.h; sourceTree = "<group>"; };
 		8DE646F51922162700CB8E67 /* INQNewGeneralItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQNewGeneralItemViewController.m; sourceTree = "<group>"; };
+		8DECC6E91A6C1407007CFA1B /* INQAnswersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAnswersViewController.h; sourceTree = "<group>"; };
+		8DECC6EA1A6C1407007CFA1B /* INQAnswersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAnswersViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -530,6 +533,7 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8DECC6E81A6C1407007CFA1B /* Answers */,
 				8D219637196C34E40044616A /* PrivateData.h */,
 				8D81D5CF193F584E00D4C7B4 /* en.lproj */,
 				8D1945C418C0A20200C32EED /* Analysis */,
@@ -1039,6 +1043,15 @@
 			path = "UIImage-categories";
 			sourceTree = "<group>";
 		};
+		8DECC6E81A6C1407007CFA1B /* Answers */ = {
+			isa = PBXGroup;
+			children = (
+				8DECC6E91A6C1407007CFA1B /* INQAnswersViewController.h */,
+				8DECC6EA1A6C1407007CFA1B /* INQAnswersViewController.m */,
+			);
+			path = Answers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1212,6 +1225,7 @@
 				8D8B45B71973D063001FC6DF /* Model_2_to_3.xcmappingmodel in Sources */,
 				8D5C668418D6F5CA003B79E5 /* ARLAudioRecordButtons.m in Sources */,
 				8DD19C0E19FE708000E87D44 /* GeneralItem.m in Sources */,
+				8DECC6EB1A6C1407007CFA1B /* INQAnswersViewController.m in Sources */,
 				8DDE2D3119D96FB000EC9230 /* INQUtils.m in Sources */,
 				8D6E80BC18D5B5DB0077D70E /* ARLFileCloudSynchronizer.m in Sources */,
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,

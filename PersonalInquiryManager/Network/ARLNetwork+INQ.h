@@ -31,6 +31,7 @@
 + (id) getInquiryUsers: (NSString *) localId withProviderId: (NSNumber *) oauthProvider inquiryId: (NSNumber *) inquiryId;
 
 + (id) getHypothesis: (NSNumber *) inquiryId;
++ (id) getQuestions: (NSNumber *) inquiryId;
 + (id) getReflection:  (NSNumber *) inquiryId;
 + (id) getNotes: (NSNumber *) inquiryId;
 + (id) getFiles: (NSNumber *) inquiryId;

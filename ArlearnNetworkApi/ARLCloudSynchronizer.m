@@ -402,6 +402,8 @@
                             
                             NSString * contentType;
                             if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
+                            if ([resp.contentType isEqualToString:@"audio/mp3"]) contentType = @"audioUrl";
+                            if ([resp.contentType isEqualToString:@"audio/amr"]) contentType = @"audioUrl";
                             if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
                             if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
                             

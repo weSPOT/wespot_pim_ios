@@ -14,18 +14,21 @@
     if (!self.tmpFileUrl) {
         NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *docsDir = [dirPaths objectAtIndex:0];
-        self.tmpFileUrl = [NSURL fileURLWithPath:[docsDir stringByAppendingPathComponent:@"tmp.m4a"]];
+        
+        u_int32_t random = arc4random();
+        self.tmpFileName = [NSString stringWithFormat:@"%u.%@", random, @"m4a"];
+        self.tmpFileUrl = [NSURL fileURLWithPath:[docsDir stringByAppendingPathComponent:self.tmpFileName]];
+        
         self.controller.saveButton.hidden = NO;
         [self.controller.saveButton addTarget:self
                                        action:@selector(clickedSaveButton)
                              forControlEvents:UIControlEventTouchUpInside];
-        
     }
     
     NSDictionary *recordSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
-                                    [NSNumber numberWithFloat:16000.0],             AVSampleRateKey,
-                                    [NSNumber numberWithInt: 1],                    AVNumberOfChannelsKey,
+                                    [NSNumber numberWithInt:kAudioFormatMPEG4AAC],    AVFormatIDKey,
+                                    [NSNumber numberWithFloat:16000.0],                 AVSampleRateKey,
+                                    [NSNumber numberWithInt: 1],                        AVNumberOfChannelsKey,
                                     nil];
     NSError *error = nil;
     self.recorder = [[AVAudioRecorder alloc] initWithURL:self.tmpFileUrl settings:recordSettings error:&error];

@@ -142,7 +142,16 @@
             response.responseType = [NSNumber numberWithInt:VIDEO];
         } else if ([valueDict objectForKey:@"audioUrl"]) {
             response.fileName = [valueDict objectForKey:@"audioUrl"];
-            response.contentType = @"audio/aac";
+            if ([response.fileName hasSuffix:@".m4a"]) {
+                response.contentType = @"audio/aac";
+            } else  if ([response.fileName hasSuffix:@".mp3"]) {
+                response.contentType = @"audio/mp3";
+            } else  if ([response.fileName hasSuffix:@".amr"]) {
+                response.contentType = @"audio/amr";
+            } else {
+                // Fallback.
+                response.contentType = @"audio/aac";
+            }
             response.responseType = [NSNumber numberWithInt:AUDIO];
         } else if ([valueDict objectForKey:@"text"]) {
             NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -394,9 +403,9 @@
  *  @param run         The Run.
  *  @param generalItem The GeneralItem.
  */
-+ (void) createVideoResponse:(NSData *) data
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem {
++ (void) createVideoResponse:(NSData *)data
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *)generalItem {
     
     Response *response = [Response initResponse:run
                                  forGeneralItem:generalItem
@@ -419,20 +428,31 @@
  *  @param run         The Run.
  *  @param generalItem The GeneralItem.
  */
-+ (void) createAudioResponse:(NSData *) data
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem {
-    
++ (void) createAudioResponse:(NSData *)data
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *)generalItem
+                    fileName:(NSString *)fileName
+{
     Response *response = [Response initResponse:run
                                  forGeneralItem:generalItem
                                        withData:data
                          inManagedObjectContext:generalItem.managedObjectContext];
-    
-    response.contentType = @"audio/aac";
+   
+    if ([fileName hasSuffix:@".m4a"]) {
+        response.contentType = @"audio/aac";
+    } else  if ([fileName hasSuffix:@".mp3"]) {
+        response.contentType = @"audio/mp3";
+    } else  if ([fileName hasSuffix:@".amr"]) {
+        response.contentType = @"audio/amr";
+    } else {
+        // Fallback.
+        response.contentType = @"audio/aac";
+    }
+
     response.responseType = [NSNumber numberWithInt:AUDIO];
     
-    u_int32_t random = arc4random();
-    response.fileName =[NSString stringWithFormat:@"%u.%@", random, @"m4a"];
+    //    u_int32_t random = arc4random();
+    response.fileName = fileName;//[NSString stringWithFormat:@"%u.%@", random, @"mp3"];
     
     response.account = [ARLNetwork CurrentAccount];
 }

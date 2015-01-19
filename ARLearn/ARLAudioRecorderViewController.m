@@ -19,7 +19,7 @@
 @synthesize generalItem = _generalItem;
 
 - (void) clickedSaveButton: (NSData*) audioData {
-    [Response createAudioResponse:audioData withRun:self.inquiry.run withGeneralItem:self.generalItem];
+    [Response createAudioResponse:audioData withRun:self.inquiry.run withGeneralItem:self.generalItem fileName:self.recorder.tmpFileName];
    
     [Action initAction:@"answer_given" forRun:self.inquiry.run forGeneralItem:self.generalItem inManagedObjectContext:self.generalItem.managedObjectContext];
     

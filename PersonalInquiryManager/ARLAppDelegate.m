@@ -116,6 +116,10 @@ static BOOL _syncAllowed = NO;
                 
                 if ([response.contentType isEqualToString:@"audio/aac"]) {
                     response.responseType = [NSNumber numberWithInt:AUDIO];
+                } else if ([response.contentType isEqualToString:@"audio/mp3"]) {
+                    response.responseType = [NSNumber numberWithInt:AUDIO];
+                } else if ([response.contentType isEqualToString:@"audio/amr"]) {
+                    response.responseType = [NSNumber numberWithInt:AUDIO];
                 } else if ([response.contentType isEqualToString:@"application/jpg"]) {
                     response.responseType = [NSNumber numberWithInt:PHOTO];
                 } else if ([response.contentType isEqualToString:@"video/quicktime"]) {

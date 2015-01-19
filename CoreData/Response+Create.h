@@ -43,26 +43,27 @@ typedef NS_ENUM (NSInteger, ResponseTypes) {
 
 + (NSArray *) getMyReponsesWithoutMedia: (NSManagedObjectContext *) context;
 
-+ (void) createTextResponse: (NSString *) text
-                    withRun: (Run*)run
-            withGeneralItem: (GeneralItem *) generalItem;
++ (void) createTextResponse:(NSString *) text
+                    withRun:(Run*)run
+            withGeneralItem:(GeneralItem *) generalItem;
 
-+ (void) createValueResponse: (NSString *) value
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem;
++ (void) createValueResponse:(NSString *) value
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *) generalItem;
 
 + (void) createImageResponse:(NSData *) imageUrl
-                       width: (NSNumber*) width
-                      height: (NSNumber *) height
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem;
+                       width:(NSNumber*) width
+                      height:(NSNumber *) height
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *) generalItem;
 
 + (void) createVideoResponse:(NSData *) data
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem;
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *) generalItem;
 
 + (void) createAudioResponse:(NSData *) data
-                     withRun: (Run *)run
-             withGeneralItem: (GeneralItem *) generalItem;
+                     withRun:(Run *)run
+             withGeneralItem:(GeneralItem *) generalItem
+                    fileName:(NSString *) fileName;
 
 @end

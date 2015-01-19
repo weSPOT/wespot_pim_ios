@@ -57,6 +57,8 @@
         theHtml = [theHtml substringFromIndex:3];
     }
     
+    // NSBigMutableString* x;
+    
     //Remove Trailing </p>
     if ([theHtml rangeOfString:@"</p>"].location == theHtml.length-1-3) {
         theHtml = [theHtml substringToIndex:theHtml.length-1-3];
@@ -64,8 +66,10 @@
     
     theHtml = [[INQUtils htmlToAttributedString:theHtml] string];
     
-    //Remove WhiteSpace.
-    return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    //Remove WhiteSpace (note U0000fffc is 'OBJECT REPLACEMENT CHARACTER' acording to unicode).
+    return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n\t\U0000fffc"]];
+    
+    //return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 @end

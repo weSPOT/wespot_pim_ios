@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, RecorderState) {
 @property (weak, nonatomic ) ARLAudioRecorderViewController * controller;
 
 @property (nonatomic, strong) NSURL *tmpFileUrl;
+@property (nonatomic, strong) NSString *tmpFileName;
+
 @property (strong, nonatomic ) ARLAudioRecordButtons * buttons;
 
 - (void) clickedLeftButton;

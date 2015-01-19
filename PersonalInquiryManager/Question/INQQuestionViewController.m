@@ -156,7 +156,6 @@ typedef NS_ENUM(NSInteger, sections) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
     
-    
     // Configure the cell...
     switch (indexPath.section) {
         case QUESTIONS: {
@@ -164,7 +163,8 @@ typedef NS_ENUM(NSInteger, sections) {
             
             UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
             UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:3];
+
+            cell.imageView.image = [UIImage imageNamed:@"question"];
             
             textView.editable = NO;
             
@@ -175,70 +175,14 @@ typedef NS_ENUM(NSInteger, sections) {
             
             title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            titleLabel.text = title.length==0 ? @"?" : title;
-            
-            //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+            titleLabel.text = title.length==0 ? @"Question" : title;
             
             NSString *html = [question valueForKey:@"description"];
             NSString *body = [INQUtils cleanHtml:html];
             
-            textView.text = body;
-            
-            // CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
-            
+            textView.text = body.length==0 ? @"No description." : body;
+        
             cell.accessoryType = UITableViewCellAccessoryNone;
-            {
-                float tw = tableView.frame.size.width - imageView.frame.size.width - 5*8.0f;
-                
-                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
-                CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
-                
-                // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
-                CGRect frame = textView.frame;
-                
-                //frame.size = CGSizeMake(frame.size.width, MIN(rect.size.height + 2*8.0f, 64.0f));
-                frame.size = CGSizeMake(tw, rect.size.height + 3*8.0f);
-                frame.origin = CGPointMake(imageView.frame.origin.x+ imageView.frame.size.width, frame.origin.y);
-                
-                textView.frame = frame;
-            }
-            
-//            {
-//                CGFloat topCorrect = ([textView bounds].size.height - [textView contentSize].height * [textView zoomScale])/2.0;
-//                topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
-//                textView.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
-//            }
-            // Size?
-            
-            //            {
-//                CGRect frame = textView.frame;
-//                
-//                frame.origin = CGPointMake(8.0f,
-//                                           titleLabel.frame.origin.y + titleLabel.frame.size.height + 8.0f);
-//                
-//                frame.size = CGSizeMake(tableView.frame.size.width /*- tableView.rowHeight*/ - 2*8.0f,
-//                                     tableView.rowHeight+(frame.size.height-58.0f));
-//                
-//                textView.frame = frame;
-//                textView.textAlignment = NSTextAlignmentLeft;
-//            }
-   
-            // Location?
-//            {
-//                CGRect frame = textView.frame;
-//                
-//                frame.origin =  CGPointMake(textView.frame.origin.x,
-//                                            textView.frame.origin.y + textView.frame.size.height + 8.0f);
-//                frame.size = CGSizeMake(textView.frame.size.width,
-//                                        size.height);
-//                
-//                textView.frame = frame;
-//                textView.textAlignment = NSTextAlignmentLeft;
-//            }
-            
-            //textView.editable = YES;
-            
-            //textView.scrollEnabled = YES;
         }
     }
     
@@ -266,6 +210,38 @@ typedef NS_ENUM(NSInteger, sections) {
     // header.contentView.backgroundColor = [UIColor blackColor];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    CGRect iframe = cell.imageView.frame;
+    iframe.size = CGSizeMake(66.0f, 66.0f);
+    iframe.origin = CGPointMake(iframe.origin.x, 8.0f);
+    cell.imageView.frame = iframe;
+    
+    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
+    
+    CGRect tframe = titleLabel.frame;
+    tframe.size = CGSizeMake(self.tableView.frame.size.width - 66.0f - 2*8.0f, titleLabel.frame.size.height);
+    tframe.origin = CGPointMake(66.0f, titleLabel.frame.origin.y);
+    titleLabel.frame= tframe;
+
+    UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+    
+    NSString *body = textView.text;
+    //NSString *tmp = [textView.text substringToIndex:2];
+    float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
+    
+    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+    CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+    
+    // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
+    CGRect frame = textView.frame;
+    
+    frame.size = CGSizeMake(tw, rect.size.height + 5*8.0f);
+    //66.0f is the width of the image.
+    frame.origin = CGPointMake(66.0f, frame.origin.y);
+    
+    textView.frame = frame;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -281,13 +257,14 @@ typedef NS_ENUM(NSInteger, sections) {
                 return self.tableView.rowHeight;
             }
 
-            float tw = tableView.frame.size.width - 5*8.0f;
+            // 66.0f is the width of the image.
+            float tw = tableView.frame.size.width - 66.0f - 2*8.0f;
   
             NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
             CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
 
             // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
-            return 1.0f * tableView.rowHeight + rect.size.height + 3*8.0f - 58.0f;
+            return 1.0f * tableView.rowHeight + rect.size.height + 5*8.0f - 58.0f;
             // return 1.0f*tableView.rowHeight + MIN((rect.size.height) + 2*8.0f, 64.0f) - 58.0f;
         }
     }

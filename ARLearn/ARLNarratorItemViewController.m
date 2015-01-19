@@ -735,8 +735,9 @@ typedef NS_ENUM(NSInteger, responses) {
                 break;
                 
             case AUDIO: {
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function plasy() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio is='audio' src='%@' controls></audio></div></body></html>",
-                                   response.fileName];
+                Log(@"%@", response.fileName);
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls></audio></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
+                                   response.fileName, [response.fileName pathExtension]];
                 /*
                 NSError *error = nil;
                 

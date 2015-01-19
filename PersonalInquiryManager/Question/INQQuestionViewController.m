@@ -164,7 +164,8 @@ typedef NS_ENUM(NSInteger, sections) {
             
             UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
             UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-        
+            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:3];
+            
             textView.editable = NO;
             
             //WARNING: Without this, the last line is missing.
@@ -187,7 +188,7 @@ typedef NS_ENUM(NSInteger, sections) {
             
             cell.accessoryType = UITableViewCellAccessoryNone;
             {
-                float tw = tableView.frame.size.width - 5*8.0f;
+                float tw = tableView.frame.size.width - imageView.frame.size.width - 5*8.0f;
                 
                 NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                 CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
@@ -197,7 +198,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 
                 //frame.size = CGSizeMake(frame.size.width, MIN(rect.size.height + 2*8.0f, 64.0f));
                 frame.size = CGSizeMake(tw, rect.size.height + 3*8.0f);
-                frame.origin = CGPointMake(titleLabel.frame.origin.x, frame.origin.y);
+                frame.origin = CGPointMake(imageView.frame.origin.x+ imageView.frame.size.width, frame.origin.y);
                 
                 textView.frame = frame;
             }

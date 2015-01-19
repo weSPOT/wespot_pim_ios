@@ -41,20 +41,20 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
-@property(nonatomic, assign) BOOL automaticallyAdjustsScrollViewInsets;
+//@property(nonatomic, assign) BOOL automaticallyAdjustsScrollViewInsets;
 
 @end
 
 @implementation INQQuestionViewController
 
 
--(BOOL)automaticallyAdjustsScrollViewInsets {
-    return NO;
-}
-
--(void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)automaticallyAdjustsScrollViewInsets  {
-    //
-}
+//-(BOOL)automaticallyAdjustsScrollViewInsets {
+//    return NO;
+//}
+//
+//-(void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)automaticallyAdjustsScrollViewInsets  {
+//    //
+//}
 
 /*!
  *  Getter

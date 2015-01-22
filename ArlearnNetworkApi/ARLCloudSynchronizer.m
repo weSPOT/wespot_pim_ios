@@ -279,7 +279,7 @@
     self.visibilityRunId = nil;
 }
 
-- (void) synchronizeGeneralItemsAndVisibilityStatements:(Run *) run {
+- (void) synchronizeGeneralItemsAndVisibilityStatements:(Run *)run {
     // CLog(@"Run:%@", run.runId);
     
     @autoreleasepool {
@@ -317,18 +317,47 @@
             }
         }
         
-        @autoreleasepool {
-            NSDictionary *respDict = [ARLNetwork responsesForRun:run.runId]; // from:lastDate
-            
-            for (NSDictionary *response in [respDict objectForKey:@"responses"] ) {
-                [Response responseWithDictionary:response inManagedObjectContext:self.context];
-                
-                [INQLog SaveNLog:self.context];
-            }
-        }
-        
         if (serverTime) {
             [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
+                                               time:serverTime
+                                          idContext:run.runId
+                             inManagedObjectContext:self.context];
+        }
+    }
+    
+    {
+        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"response" context:run.runId];
+        
+        NSString *token = @"";
+        NSNumber *serverTime = @0;
+        
+        do {
+            @autoreleasepool {
+                NSDictionary *respDict = (token && token.length!=0) ?
+                [ARLNetwork responsesForRun:run.runId from:lastDate token:token]:
+                [ARLNetwork responsesForRun:run.runId from:lastDate];
+                
+                if ([respDict objectForKey:@"serverTime"]) {
+                    serverTime = (NSNumber *)[respDict objectForKey:@"serverTime"];
+                }
+                token = [respDict valueForKey:@"resumptionToken"];
+                
+                NSArray *responses = (NSArray *)[respDict objectForKey:@"responses"];
+                
+                respDict = nil;
+                
+                Log(@"%d Responses", [responses count]);
+
+                for (NSDictionary *response in responses ) {
+                    [Response responseWithDictionary:response inManagedObjectContext:self.context];
+                }
+                
+                // Done in responseWithDictionary [INQLog SaveNLog:self.context];
+            }
+        } while (token && token.length>0);
+        
+        if (serverTime) {
+            [SynchronizationBookKeeping createEntry:@"response"
                                                time:serverTime
                                           idContext:run.runId
                              inManagedObjectContext:self.context];

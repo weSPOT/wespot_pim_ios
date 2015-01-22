@@ -69,8 +69,11 @@
                                from:(NSNumber *)from;
 
 //Responses
-+ (NSDictionary *) responsesForRun:(NSNumber *)runId;
-
++ (NSDictionary *) responsesForRun:(NSNumber *)runId
+                              from:(NSNumber *)from;
++ (NSDictionary *) responsesForRun:(NSNumber *)runId
+                              from:(NSNumber *)from
+                             token:(NSString *)token;
 //GeneralItems
 + (id) createGeneralItem:(NSString *)title
              description:(NSString *)description
@@ -128,10 +131,14 @@
 + (NSDictionary *) geoSearch:(NSNumber *)distance
                      withLat:(NSNumber *)lat
                      withLng: (NSNumber *)lng;
+
 + (NSDictionary *) defaultThread:(NSNumber *)runId;
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId;
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
                                     from:(NSNumber *)from;
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
+                                    from:(NSNumber *)from
+                                   token:(NSString *)token;
 + (NSDictionary *) addMessage:(NSString *)message;
 
 + (id) executeARLearnGetWithAuthorization:(NSString *)path;

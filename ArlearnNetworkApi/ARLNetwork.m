@@ -13,7 +13,8 @@
 
 #pragma mark - Network Requests
 
-+ (NSMutableURLRequest *) prepareRequest: (NSString *) method requestWithUrl: (NSString *) url {
++ (NSMutableURLRequest *) prepareRequest:(NSString *)method
+                          requestWithUrl:(NSString *)url {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                        timeoutInterval:60.0];
@@ -23,7 +24,7 @@
     return request;
 }
 
-+ (id) executeARLearnGetWithAuthorization: (NSString *) path {
++ (id) executeARLearnGetWithAuthorization:(NSString *)path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     
     // DLog(@"%@", urlString);
@@ -41,7 +42,7 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+ (id) executeOpenBadgesGetWithAuthorization: (NSString *) path {
++ (id) executeOpenBadgesGetWithAuthorization:(NSString *)path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", openbadgesUrl, path];
     
     // DLog(@"%@", urlString);
@@ -60,9 +61,9 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+ (id) executeARLearnPostWithAuthorization: (NSString *) path
-                                  postData:(NSData *) data
-                           withContentType: (NSString *) ctValue {
++ (id) executeARLearnPostWithAuthorization:(NSString *)path
+                                  postData:(NSData *)data
+                           withContentType:(NSString *)ctValue {
     NSString* urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     NSMutableURLRequest *request = [self prepareRequest:@"POST" requestWithUrl:urlString];
     
@@ -80,7 +81,7 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+ (id) executeARLearnGet: (NSString *) path {
++ (id) executeARLearnGet:(NSString *)path {
     NSString* urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
@@ -91,10 +92,10 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
 
-+ (id) executeARLearnPost: (NSString *) path
-                 postData: (NSData *) data
-               withAccept: (NSString *) acceptValue
-          withContentType: (NSString *) ctValue
++ (id) executeARLearnPost:(NSString *)path
+                 postData:(NSData *)data
+               withAccept:(NSString *)acceptValue
+          withContentType:(NSString *)ctValue
 {
     NSString* urlString;
     if ([path hasPrefix:@"/"]) {
@@ -123,7 +124,8 @@
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"returnin gsth";
 }
 
-+(void) dumpJsonData: (NSData *) jsonData url: (NSString *) url {
++(void) dumpJsonData:(NSData *)jsonData
+                 url:(NSString *)url {
     //http://stackoverflow.com/questions/12603047/how-to-convert-nsdata-to-nsdictionary
     //http://stackoverflow.com/questions/7097842/xcode-how-to-nslog-a-json
     NSError *error = nil;
@@ -148,7 +150,8 @@
 
 #pragma mark - Authentication
 
-+ (NSString *) requestAuthToken: (NSString *) username password: (NSString *) password {
++ (NSString *) requestAuthToken:(NSString *)username
+                       password:(NSString *)password {
     NSData *postData = [self stringToData:[NSString stringWithFormat:@"%@\n%@", username, password]];
     
     return [[self executeARLearnPostWithAuthorization:@"login" postData:postData withContentType:textplain] objectForKey:@"auth"];
@@ -160,15 +163,16 @@
     return [self executeARLearnGetWithAuthorization:@"myRuns/participate"];
 }
 
-+ (NSDictionary *) runsParticipateFrom: (NSNumber *) from{
++ (NSDictionary *) runsParticipateFrom:(NSNumber *)from{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/participate?from=%lld", [from longLongValue]]];
 }
 
-+ (NSDictionary *) runsWithId: (NSNumber *) runId{
++ (NSDictionary *) runsWithId:(NSNumber *)runId{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myRuns/runId/%lld", [runId longLongValue]]];
 }
 
-+ (NSDictionary *) createRun: (NSNumber *) gameId withTitle: (NSString *) runTitle {
++ (NSDictionary *) createRun:(NSNumber *)gameId
+                   withTitle:(NSString *)runTitle {
     NSDictionary *runDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 gameId, @"gameId",
                                 runTitle, @"title",
@@ -179,9 +183,9 @@
 
 #pragma mark - Users
 
-+ (NSDictionary *) createUser: (NSNumber *) runId
-                 accountType: (NSNumber *) accountType
-                 withLocalId:(NSString *) localId {
++ (NSDictionary *) createUser:(NSNumber *)runId
+                  accountType:(NSNumber *)accountType
+                  withLocalId:(NSString *)localId {
     
     NSDictionary *userDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                              runId, @"runId",
@@ -200,15 +204,15 @@
     return [self executeARLearnGetWithAuthorization:@"myGames/participate"];
 }
 
-+ (NSDictionary *) gamesParticipateFrom: (NSNumber *) from{
++ (NSDictionary *) gamesParticipateFrom:(NSNumber *)from{
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/participate?from=%lld", [from longLongValue]]];
 }
 
-+ (NSDictionary *) game: (NSNumber *) gameId {
++ (NSDictionary *) game:(NSNumber *)gameId {
    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/gameId/%lld", [gameId longLongValue]]];
 }
 
-+ (NSDictionary *) createGame: (NSString *) gameTitle {
++ (NSDictionary *) createGame:(NSString *)gameTitle {
     NSDictionary *runDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                              gameTitle, @"title",
                              nil];
@@ -220,19 +224,21 @@
 
 #pragma mark - GeneralItems
 
-+ (NSDictionary *) itemsForRun: (int64_t) runId {
++ (NSDictionary *) itemsForRun:(int64_t)runId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItems/runId/%lld", runId ]];
 }
 
-+ (NSDictionary *) itemsForGameFrom: (NSNumber *) gameId from:(NSNumber *) from {
++ (NSDictionary *) itemsForGameFrom:(NSNumber *)gameId
+                               from:(NSNumber *)from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItems/gameId/%lld?from=%lld", [gameId longLongValue],[from longLongValue] ]];
 }
 
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId {
++ (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld", [runId longLongValue]]];
 }
 
-+ (NSDictionary *) itemVisibilityForRun: (NSNumber *) runId from: (NSNumber *) from {
++ (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId
+                                   from:(NSNumber *)from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"generalItemsVisibility/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
 }
 
@@ -366,13 +372,24 @@
 
 #pragma mark - Responses
 
-+ (NSDictionary*) responsesForRun: (NSNumber *) runId {
-    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"response/runId/%lld", [runId longLongValue]]];
++ (NSDictionary*) responsesForRun:(NSNumber *)runId
+                             from:(NSNumber *)from {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"response/runId/%lld?from=%lld", [runId longLongValue], [from longLongValue]]];
+}
+
++ (NSDictionary *) responsesForRun:(NSNumber *)runId
+                              from:(NSNumber *)from
+                            token:(NSString *)token {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"response/runId/%lld?from=%lld&resumptionToken=%@",
+                                                     [runId longLongValue], [from longLongValue], token]];
 }
 
 #pragma mark - APN
 
-+ (void) registerDevice: (NSString *) deviceToken withUID: (NSString *) deviceUniqueIdentifier withAccount: (NSString *) account withBundleId: (NSString *) bundleIdentifier{
++ (void) registerDevice:(NSString *)deviceToken
+                withUID:(NSString *)deviceUniqueIdentifier
+            withAccount:(NSString *)account
+           withBundleId:(NSString *)bundleIdentifier{
     if (!account) return;
     
     NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -391,17 +408,17 @@
 
 #pragma mark - Actions
 
-+ (void) publishAction: (NSDictionary *) actionDict {
++ (void) publishAction:(NSDictionary *)actionDict {
     NSData *postData = [NSJSONSerialization dataWithJSONObject:actionDict options:0 error:nil];
     
     [self executeARLearnPostWithAuthorization:@"actions" postData:postData withContentType:applicationjson];
 }
 
-+ (void) publishAction: (NSNumber *) runId
-                    action: (NSString *) action
-                    itemId: (NSNumber *) itemId
-                    time: (NSNumber *) time
-                  itemType:(NSString *) itemType {
++ (void) publishAction:(NSNumber *)runId
+                    action:(NSString *)action
+                    itemId:(NSNumber *)itemId
+                    time:(NSNumber *)time
+                  itemType:(NSString *)itemType {
     NSString *accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     NSString *accountLocalId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
     NSString *account = [NSString stringWithFormat:@"%@:%@", accountType, accountLocalId];
@@ -420,7 +437,7 @@
 
 #pragma mark - Response
 
-+ (void) publishResponse: (NSDictionary *) responseDict {
++ (void) publishResponse:(NSDictionary *)responseDict {
     NSData *postData = [NSJSONSerialization dataWithJSONObject:responseDict options:0 error:nil];
     
     [self executeARLearnPostWithAuthorization:@"response"
@@ -428,10 +445,10 @@
                               withContentType:applicationjson];
 }
 
-+ (void) publishResponse: (NSNumber *) runId
-           responseValue: (NSString *) value
-                  itemId: (NSNumber*) generalItemId
-               timeStamp: (NSNumber*) timeStamp
++ (void) publishResponse:(NSNumber *)runId
+           responseValue:(NSString *)value
+                  itemId:(NSNumber*)generalItemId
+               timeStamp:(NSNumber*)timeStamp
 {
     NSString* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     NSString* accountLocalId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
@@ -458,7 +475,8 @@
  *
  *  @return <#return value description#>
  */
-+ (NSString *) requestUploadUrl: (NSString *) fileName withRun:(NSNumber *) runId {
++ (NSString *) requestUploadUrl:(NSString *)fileName
+                        withRun:(NSNumber *)runId {
     NSString *str =[NSString stringWithFormat:@"runId=%@&account=%@:%@&fileName=%@", runId,
                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                     [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],fileName];
@@ -479,8 +497,10 @@
  *  @param contentTypeIn <#contentTypeIn description#>
  *  @param data          <#data description#>
  */
-+ (void) perfomUpload: (NSString *) uploadUrl withFileName:(NSString *) fileName
-          contentType:(NSString *) contentTypeIn withData:(NSData *) data {
++ (void) perfomUpload:(NSString *)uploadUrl
+         withFileName:(NSString *)fileName
+          contentType:(NSString *)contentTypeIn
+             withData:(NSData *)data {
     DLog(@"Uploading %@ - %@", contentTypeIn, fileName);
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
@@ -521,7 +541,7 @@
 
 #pragma mark - Account
 
-+ (NSDictionary *) anonymousLogin: (NSString *) account {
++ (NSDictionary *) anonymousLogin:(NSString *)account {
     return [self executeARLearnGet:[NSString stringWithFormat:@"account/anonymousLogin/%@", account]];
 }
 
@@ -535,7 +555,7 @@
     return [self executeARLearnGet:@"oauth/getOauthInfo"];
 }
 
-+ (NSDictionary *) search: (NSString *) query {
++ (NSDictionary *) search:(NSString *)query {
     return [self executeARLearnPostWithAuthorization:@"myGames/search" postData:[self stringToData:query] withContentType:applicationjson];
 }
 
@@ -543,31 +563,42 @@
     return [self executeARLearnGetWithAuthorization:@"myGames/featured"];
 }
 
-+ (NSDictionary *) geoSearch: (NSNumber*) distance withLat:(NSNumber *) lat withLng: (NSNumber *) lng {
++ (NSDictionary *) geoSearch:(NSNumber*)distance
+                     withLat:(NSNumber *)lat
+                     withLng: (NSNumber *)lng {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"myGames/search/lat/%f/lng/%f/distance/%ld", lat.doubleValue, lng.doubleValue, distance.longValue  ]];
 }
 
-+ (NSDictionary *) defaultThread: (NSNumber *) runId {
++ (NSDictionary *) defaultThread:(NSNumber *)runId {
         return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/thread/runId/%@/default", runId ]];
 }
 
-+ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId {
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default", runId ]];
 }
 
-+ (NSDictionary *) defaultThreadMessages: (NSNumber *) runId from: (NSNumber *) from {
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
+                                    from:(NSNumber *)from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default?from=%lld", runId, [from longLongValue]]];
 }
 
-+ (NSDictionary *) addMessage: (NSString *) message {
++ (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
+                                    from:(NSNumber *)from
+                                   token:(NSString *)token {
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default?from=%lld&resumptionToken=%@", runId, [from longLongValue], token]];
+}
+
++ (NSDictionary *) addMessage:(NSString *)message {
     return [self executeARLearnPostWithAuthorization:@"messages/message" postData:[self stringToData:message] withContentType:applicationjson];
 }
 
-+ (NSDictionary *) getUserInfo: (NSNumber *) runId userId:(NSString *) userId providerId:(NSString *) providerId {
++ (NSDictionary *) getUserInfo:(NSNumber *)runId
+                        userId:(NSString *)userId
+                    providerId:(NSString *)providerId {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"users/runId/%@/account/%@:%@", runId, providerId, userId]];
 }
 
-+ (NSDictionary *) getUserBadges: (NSString *) userId {
++ (NSDictionary *) getUserBadges:(NSString *)userId {
     return [self executeOpenBadgesGetWithAuthorization:[NSString stringWithFormat:@"badges/user/%@/awarded", userId ]];
 }
 

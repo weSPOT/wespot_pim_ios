@@ -506,28 +506,68 @@
     self.syncInquiryUsers = NO;
 }
 
-
 /*!
  *  Synchronize Messages with backend.
+ *  Uses resumptionToken if present.
  *
  *  Runs on a separate thread in the background.
  */
-- (void) synchronizeMessages{
+- (void) synchronizeMessages {
     NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"messages" context:self.inquiryId];
     
     // CLog(@"InquiryId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
     
-    NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
-    NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+    NSString *token = @"";
+    NSNumber *serverTime = @0;
     
-    NSNumber *serverTime = [tmDict objectForKey:@"serverTime"];
-    
-    for (NSDictionary *mDict in messages)
-    {
-        [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
-    }
-
+    do {
+        @autoreleasepool {
+            NSDictionary *tmDict = (token && token.length!=0) ?
+            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
+            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
+            
+            //    {
+            //        messages =     (
+            //    ...
+            //    {
+            //        body = "i see... okay i will work on it later, now busy with backward compatibility :)";
+            //        date = 1409916323612;
+            //        deleted = 0;
+            //        messageId = 5257301996863488;
+            //        runId = 5844989250633728;
+            //        senderId = 117769871710404943583;
+            //        senderProviderId = 2;
+            //        subject = "";
+            //        threadId = 5811067598929920;
+            //        type = "org.celstec.arlearn2.beans.run.Message";
+            //    }
+            //    );
+            //    resumptionToken = "E-ABAOsB8gEEZGF0ZfoBBwicjr-shCnsAYICKGoNc35zdHJlZXRsZWFybnIXCxIKTWVzc2FnZUpETxiAgICQ0K-rCQyIAgAU";
+            //    serverTime = 1421955845690;
+            //    type = "org.celstec.arlearn2.beans.run.MessageList";
+            //}
+            
+            // messages/runId/5844989250633728/default?resumptionToken-E-ABAOsB8gEEZGF0ZfoBBwicjr-shCnsAYICKGoNc35zdHJlZXRsZWFybnIXCxIKTWVzc2FnZUpETxiAgICQ0K-rCQyIAgAU
+            
+            if ([tmDict objectForKey:@"serverTime"]) {
+                serverTime = [tmDict objectForKey:@"serverTime"];
+            }
+            token = [tmDict valueForKey:@"resumptionToken"];
+            
+            NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+            
+            tmDict = nil;
+            
+            Log(@"%d Messages", [messages count]);
+            
+            for (NSDictionary *mDict in messages)
+            {
+                [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
+                // Done in messageWithDictionary [INQLog SaveNLog:self.context];
+            }
+        }
+    } while (token && token.length>0);
     
     if (serverTime) {
         [SynchronizationBookKeeping createEntry:@"messages"

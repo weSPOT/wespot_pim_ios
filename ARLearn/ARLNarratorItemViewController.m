@@ -364,10 +364,9 @@ typedef NS_ENUM(NSInteger, responses) {
 //    }
     
     //[self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
-
-    //    [self.fetchedResultsController fetchRequest];
-    //
-    //    [self.collectionView reloadData];
+    
+//    [self.fetchedResultsController fetchRequest];
+//    [self.collectionView reloadData];
 }
 
 /*!
@@ -428,10 +427,14 @@ typedef NS_ENUM(NSInteger, responses) {
                                               responseType:[NSNumber numberWithInt:AUDIO]];
             }
             if (self.withText) {
-                // TODO Sync Text
+                [ARLFileCloudSynchronizer syncResponseData:self.inquiry.run.managedObjectContext
+                                             generalItemId:self.generalItem.generalItemId
+                                              responseType:[NSNumber numberWithInt:TEXT]];
             }
             if (self.withValue) {
-                // TODO Sync Values
+                [ARLFileCloudSynchronizer syncResponseData:self.inquiry.run.managedObjectContext
+                                             generalItemId:self.generalItem.generalItemId
+                                              responseType:[NSNumber numberWithInt:NUMBER]];
             }
         } else if (self.account) {
             // My Media
@@ -657,10 +660,10 @@ typedef NS_ENUM(NSInteger, responses) {
     }
     
     //    if (kind == UICollectionElementKindSectionFooter) {
-//        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
-//        
-//        reusableview = footerview;
-//    }
+    //        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+    //
+    //        reusableview = footerview;
+    //    }
     
     return reusableview;
 }
@@ -1040,6 +1043,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         
         DLog(@"Dict %@", info);
         DLog(@"Object %@", [object class ]);
+        
+        // Zie http://stackoverflow.com/questions/20282672/record-save-and-or-convert-video-in-mp4-format
+        // voor conversie nar mp4
         
         NSData* videoData = [NSData dataWithContentsOfURL:object];
         [Response createVideoResponse:videoData

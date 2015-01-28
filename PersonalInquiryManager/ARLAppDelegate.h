@@ -14,6 +14,7 @@
 
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
+#import "ARLNotificationSubscriber.h"
 
 #define DEVELOPMENT_MODE    @"enable_development_mode"
 #define PROXY_MODE          @"enable_proxy_mode"

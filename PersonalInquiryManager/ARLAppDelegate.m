@@ -215,6 +215,8 @@ static BOOL _syncAllowed = NO;
     // Synchronize preferences.
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    [self doRegisterForAPN:application];
+    
     return YES;
 }
 
@@ -332,6 +334,117 @@ static BOOL _syncAllowed = NO;
 
     // Log(@"%@", @"applicationWillTerminate");
 }
+
+#pragma mark - APN
+
+#warning APN CODE AHEAD
+
+/*!
+ * Register for APN with Apple.
+ *
+ *  @param application <#application description#>
+ */
+- (void)doRegisterForAPN:(UIApplication *)application
+{
+#warning APN REGISTRATION CODE DISABLED FOR NOW.
+    
+    //    // See http://stackoverflow.com/questions/24216632/remote-notification-ios-8
+    //    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {    UIUserNotificationSettings *settings =
+    //#ifdef __IPHONE_8_0
+    //        //Right, that is the point
+    //        [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+    //                                                      |UIRemoteNotificationTypeSound) categories:nil];
+    //        [application registerUserNotificationSettings:settings];
+    //#endif
+    //    } else {
+    //        //register to receive notifications
+    //        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound;
+    //        [application registerForRemoteNotificationTypes:myTypes];
+    //        
+    //    }
+}
+
+//TESTCODE: Remote notifications
+/*!
+ *  Called when receiving a Remote Notification.
+ *         
+ *  @param app   <#app description#>
+ *  @param notif <#notif description#>
+ */
+- (void)application:(UIApplication *)app didReceiveRemoteNotification:(UILocalNotification *)notif {
+    //TODO: Implement
+    Log(@"didReceiveRemoteNotification: %@", notif.userInfo);
+    
+    //    NSString *itemName = [notif.userInfo objectForKey:ToDoItemKey];
+    //    [viewController displayItem:itemName];  // custom method
+    //    app.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
+}
+
+/*!
+ *  Registration Success.
+ *
+ *  @param application The application
+ *  @param deviceToken The Device Token
+ */
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSString* newToken = [deviceToken description];
+    
+    newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    // Store DeviceToken
+    [[NSUserDefaults standardUserDefaults] setObject:newToken
+                                              forKey:@"deviceToken"];
+    
+    //!!!: This UID behaves very different on iOS 1-6 and iOS 7.
+    UIDevice *device = [UIDevice currentDevice];
+    
+    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
+    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [device.identifierForVendor UUIDString]);
+    
+    [[NSUserDefaults standardUserDefaults] setObject:[device.identifierForVendor UUIDString]
+                                              forKey:@"deviceUniqueIdentifier"];
+#warning hardcoded e-mail.
+    [ARLNotificationSubscriber registerAccount:@"2:wim@vander-vegt.nl"];
+}
+
+#ifdef __IPHONE_8_0
+/*!
+ *  See http://stackoverflow.com/questions/24485681/registerforremotenotifications-method-not-being-called-properly
+ *
+ *  @param application          <#application description#>
+ *  @param notificationSettings <#notificationSettings description#>
+ */
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    Log(@"didRegisterUserNotificationSettings");
+    
+    // Register to receive notifications
+    [application registerForRemoteNotifications];
+}
+
+//- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
+//{
+//    //handle the actions
+//    if ([identifier isEqualToString:@"declineAction"]){
+//    }
+//    else if ([identifier isEqualToString:@"answerAction"]){
+//    }
+//}
+#endif
+
+/*!
+ *  Registration Failure (for instance when running in the emulator);
+ *
+ *  @param application The application
+ *  @param error       The error
+ */
+- (void)Implement:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    //TODO: Implement
+    Log(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.description);
+}
+
+#pragma mark - CoreData
 
 /*!
  *  If the context doesn't already exist, it is created from the application's Store Coordinator.

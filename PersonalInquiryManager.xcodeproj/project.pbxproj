@@ -150,6 +150,7 @@
 		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 		8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */; };
 		8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */; };
+		8DC83D2A1A792EB0003EA3BE /* ARLNotificationSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */; };
 		8DD19C0E19FE708000E87D44 /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DD19C0919FE708000E87D44 /* GeneralItem.m */; };
 		8DD19C0F19FE708000E87D44 /* Model_3_to_4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DD19C0A19FE708000E87D44 /* Model_3_to_4.xcmappingmodel */; };
 		8DD19C1219FE70BA00E87D44 /* Model_4_to_5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DD19C1119FE70BA00E87D44 /* Model_4_to_5.xcmappingmodel */; };
@@ -406,6 +407,8 @@
 		8DC3AA5D192CB9AC00C16A31 /* INQQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQQuestionViewController.h; path = Question/INQQuestionViewController.h; sourceTree = "<group>"; };
 		8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQQuestionViewController.m; path = Question/INQQuestionViewController.m; sourceTree = "<group>"; };
 		8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8DC83D281A792EB0003EA3BE /* ARLNotificationSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLNotificationSubscriber.h; sourceTree = "<group>"; };
+		8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNotificationSubscriber.m; sourceTree = "<group>"; };
 		8DD19C0819FE708000E87D44 /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
 		8DD19C0919FE708000E87D44 /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
 		8DD19C0A19FE708000E87D44 /* Model_3_to_4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_3_to_4.xcmappingmodel; sourceTree = "<group>"; };
@@ -533,6 +536,8 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
+				8DC83D281A792EB0003EA3BE /* ARLNotificationSubscriber.h */,
+				8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */,
 				8DECC6E81A6C1407007CFA1B /* Answers */,
 				8D219637196C34E40044616A /* PrivateData.h */,
 				8D81D5CF193F584E00D4C7B4 /* en.lproj */,
@@ -1246,6 +1251,7 @@
 				8D6E80C818D5B7AC0077D70E /* ARLNotificationSubscriber.m in Sources */,
 				8D1945FE18C0A54200C32EED /* INQFriendsTableViewController.m in Sources */,
 				8D4C36C718E46076000FCEA6 /* Message+Create.m in Sources */,
+				8DC83D2A1A792EB0003EA3BE /* ARLNotificationSubscriber.m in Sources */,
 				8D1945F518C0A52000C32EED /* INQBadgesViewController.m in Sources */,
 				8D6E80BD18D5B5DB0077D70E /* ARLNetwork.m in Sources */,
 				8D19461C18C0A5B000C32EED /* INQSplashContentViewController.m in Sources */,

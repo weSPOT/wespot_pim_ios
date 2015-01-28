@@ -18,6 +18,15 @@
     #import <SystemConfiguration/SystemConfiguration.h>
 #endif
 
+#define streetlearnUrlUrl           @"http://streetlearn.appspot.com"
+
+#define acceptHeader        @"Accept"
+#define contenttypeHeader   @"Content-Type"
+
+#define textplain           @"text/plain"
+#define applicationjson     @"application/json"
+#define xwwformurlencode    @"application/x-www-form-urlencoded"
+
 #ifdef NDEBUG
 #define NSLog(...) /* suppress NSLog when in release mode */
 #endif

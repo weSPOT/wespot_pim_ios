@@ -881,6 +881,12 @@ typedef NS_ENUM(NSInteger, responses) {
     myAlertView.tag = 1;
     
     [myAlertView show];
+    
+    // see: http://stackoverflow.com/questions/10579658/uialertview-uialertviewstylesecuretextinput-numeric-keyboard
+    [[myAlertView textFieldAtIndex:0] setDelegate:self];
+    [[myAlertView textFieldAtIndex:0] resignFirstResponder];
+    [[myAlertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+    [[myAlertView textFieldAtIndex:0] becomeFirstResponder];
 }
 
 /*!
@@ -925,17 +931,21 @@ typedef NS_ENUM(NSInteger, responses) {
                 
                 NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
                 [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                NSString *decimalSymbol = [formatter decimalSeparator];
+                
+                trimmed = [trimmed stringByReplacingOccurrencesOfString:@"." withString:decimalSymbol];
+                trimmed = [trimmed stringByReplacingOccurrencesOfString:@"," withString:decimalSymbol];
                 
                 NSNumber *number = [formatter numberFromString:trimmed];
                 
                 if (number != nil) {
-                    [Response createValueResponse: trimmed
+                    [Response createValueResponse:trimmed
                                           withRun:self.inquiry.run
                                   withGeneralItem:self.generalItem ];
                 } else {
                     // Invalid Number.
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-                                                                    message:NSLocalizedString(@"Invalid Number",@"Invalid Numbber")
+                                                                    message:NSLocalizedString(@"Invalid Number", @"Invalid Number")
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                           otherButtonTitles:nil, nil];

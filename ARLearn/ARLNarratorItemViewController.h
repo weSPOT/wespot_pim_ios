@@ -24,7 +24,7 @@
 #import "ARLNarratorItemHeaderViewController.h"
 
 @interface ARLNarratorItemViewController : UICollectionViewController
-<NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate>
+<NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) GeneralItem *generalItem;
 @property (strong, nonatomic) Inquiry *inquiry;

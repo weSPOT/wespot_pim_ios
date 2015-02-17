@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface INQUtils : NSObject
 
@@ -16,4 +17,6 @@
 
 + (NSString *)cleanHtml:(NSString *)theHtml;
 
++ (void)addRoundedCorner:(UIView *)imageView
+                  radius:(float)radius;
 @end

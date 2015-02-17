@@ -72,4 +72,27 @@
     //return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+/*!
+ *  Add a rounded corner.
+ *
+ *  See http://stackoverflow.com/questions/2264083/rounded-uiview-using-calayers-only-some-corners-how
+ *
+ *  @param view   <#view description#>
+ *  @param radius <#radius description#>
+ */
++ (void)addRoundedCorner:(UIView *)view
+                  radius:(float)radius {
+    // Create the path (with only the top-left corner rounded)
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds
+                                                   byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight | UIRectCornerBottomRight
+                                                         cornerRadii:CGSizeMake(radius, radius)];
+    
+    // Create the shape layer and set its path
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = view.bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    // Set the newly created shape layer as the mask for the image view's layer
+    view.layer.mask = maskLayer;
+}
 @end

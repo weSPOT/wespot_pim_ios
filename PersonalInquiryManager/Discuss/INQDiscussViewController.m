@@ -268,10 +268,17 @@ typedef NS_ENUM(NSInteger, friends) {
             cell.textLabel.text = @"Add message";
             cell.detailTextLabel.text = @"";
             cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+            
+            // [cell.layer setCornerRadius:7.0f];
+            // [cell.layer setMasksToBounds:YES];
+            // [cell.layer setBorderWidth:2.0f];
+            
             break;
             
         case MESSAGES:{
             @autoreleasepool {
+                [INQUtils addRoundedCorner:cell radius:10.0f];
+                
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
                 
                 Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);

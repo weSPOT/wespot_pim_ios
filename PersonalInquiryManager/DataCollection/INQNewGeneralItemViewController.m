@@ -17,7 +17,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionEdit;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
-@property (weak, nonatomic) IBOutlet MultiSelectSegmentedControl *typeSegments;
+
+// Swap for MultiSelectSegmentedControl to allow multiselect
+// If so also change the class in the interface builder.
+@property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegments;
 
 @property (strong, nonatomic) UIBarButtonItem *createButton;
 
@@ -125,12 +128,22 @@
 
         [self createGeneralItem:self.titleEdit.text
                     description:self.descriptionEdit.text
-                    withPicture:[self.typeSegments.selectedSegmentIndexes containsIndex:0]
-                      withVideo:[self.typeSegments.selectedSegmentIndexes containsIndex:1]
-                      withAudio:[self.typeSegments.selectedSegmentIndexes containsIndex:2]
-                       withText:[self.typeSegments.selectedSegmentIndexes containsIndex:3]
-                      withValue:[self.typeSegments.selectedSegmentIndexes containsIndex:4]
+                    withPicture:self.typeSegments.selectedSegmentIndex == 0
+                      withVideo:self.typeSegments.selectedSegmentIndex == 1
+                      withAudio:self.typeSegments.selectedSegmentIndex == 2
+                       withText:self.typeSegments.selectedSegmentIndex == 3
+                      withValue:self.typeSegments.selectedSegmentIndex == 4
          ];
+        
+        // Re-enable his code for muli-type select for data collection task.
+        //        [self createGeneralItem:self.titleEdit.text
+        //                    description:self.descriptionEdit.text
+        //                    withPicture:[self.typeSegments.selectedSegmentIndexes containsIndex:0]
+        //                      withVideo:[self.typeSegments.selectedSegmentIndexes containsIndex:1]
+        //                      withAudio:[self.typeSegments.selectedSegmentIndexes containsIndex:2]
+        //                       withText:[self.typeSegments.selectedSegmentIndexes containsIndex:3]
+        //                      withValue:[self.typeSegments.selectedSegmentIndexes containsIndex:4]
+        //         ];
         
         if (ARLNetwork.networkAvailable) {
             [ARLCloudSynchronizer syncVisibilityForInquiry:self.run.managedObjectContext run:self.run];

@@ -1,24 +1,24 @@
 //
-//  INQHypothesisViewController.m
+//  ARLDescriptionViewController.m
 //  PersonalInquiryManager
 //
-//  Created by Stefaan Ternier on 9/6/13.
-//  Copyright (c) 2013 Stefaan Ternier. All rights reserved.
+//  Created by G.W. van der Vegt on 18/02/15.
+//  Copyright (c) 2015 Stefaan Ternier. All rights reserved.
 //
 
-#import "INQHypothesisViewController.h"
+#import "INQDescriptionViewController.h"
 
-@interface INQHypothesisViewController ()
+@interface INQDescriptionViewController ()
 
 @end
 
-@implementation INQHypothesisViewController
+@implementation INQDescriptionViewController
 
-@synthesize hypothesis = _hypothesis;
+@synthesize Description  = _Description;
 
-- (void) setHypothesis:(NSString *) hypothesis {
-    if (_hypothesis != hypothesis){
-        _hypothesis = hypothesis;
+- (void) setDescription:(NSString *) description {
+    if (_Description != description){
+        _Description = description;
     }
 }
 
@@ -43,10 +43,10 @@
     web.backgroundColor = [UIColor whiteColor];
     web.delegate = self;
     
-    if ([self.hypothesis length] ==0) {
-        [web loadHTMLString:@"No hypothesis has been added yet for this inquiry." baseURL:[[NSBundle mainBundle] bundleURL]];
+    if ([self.Description length] ==0) {
+        [web loadHTMLString:@"No description has been added yet for this inquiry." baseURL:[[NSBundle mainBundle] bundleURL]];
     }else {
-        [web loadHTMLString:self.hypothesis baseURL:[[NSBundle mainBundle] bundleURL]];
+        [web loadHTMLString:self.Description baseURL:[[NSBundle mainBundle] bundleURL]];
     }
 }
 

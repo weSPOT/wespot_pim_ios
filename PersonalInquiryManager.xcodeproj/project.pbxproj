@@ -129,6 +129,7 @@
 		8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6E80E618D5BAFA0077D70E /* libzbar.a */; };
 		8D6F237C196592060063DFA8 /* UIViewController+UI.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F237B196592060063DFA8 /* UIViewController+UI.m */; };
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
+		8D76FF4C1A94D65C0066D1FC /* INQDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D76FF4B1A94D65C0066D1FC /* INQDescriptionViewController.m */; };
 		8D77DADF1958631400D84482 /* INQLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D77DADE1958631400D84482 /* INQLog.m */; };
 		8D81D5CD193F57E200D4C7B4 /* storyboard.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5CB193F57E200D4C7B4 /* storyboard.strings */; };
 		8D81D5D2193F587800D4C7B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D81D5D0193F587800D4C7B4 /* Localizable.strings */; };
@@ -368,6 +369,8 @@
 		8D6F237B196592060063DFA8 /* UIViewController+UI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UI.m"; sourceTree = "<group>"; };
 		8D750DC818D74BEB0005C41D /* INQProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQProfileTableViewController.h; sourceTree = "<group>"; };
 		8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQProfileTableViewController.m; sourceTree = "<group>"; };
+		8D76FF4A1A94D65C0066D1FC /* INQDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQDescriptionViewController.h; path = Description/INQDescriptionViewController.h; sourceTree = "<group>"; };
+		8D76FF4B1A94D65C0066D1FC /* INQDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQDescriptionViewController.m; path = Description/INQDescriptionViewController.m; sourceTree = "<group>"; };
 		8D77DADD1958631400D84482 /* INQLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQLog.h; sourceTree = "<group>"; };
 		8D77DADE1958631400D84482 /* INQLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQLog.m; sourceTree = "<group>"; };
 		8D81D5CC193F57E200D4C7B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/storyboard.strings; sourceTree = "<group>"; };
@@ -487,7 +490,6 @@
 		3477E67C1769C9A000F3A5F3 = {
 			isa = PBXGroup;
 			children = (
-				8D090E1B18FFDE95006A9D93 /* Settings.bundle */,
 				3454CC8E17B3A72D00C0DFFC /* ARLearn */,
 				8D6E809818D5B5A90077D70E /* ARLearnAuthentication */,
 				8D6E80BF18D5B7AC0077D70E /* ARLearnContextAwareNotification */,
@@ -499,6 +501,7 @@
 				8DA9643018BF3085006C736D /* Libraries */,
 				3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */,
 				3477E6861769C9A000F3A5F3 /* Products */,
+				8D090E1B18FFDE95006A9D93 /* Settings.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -536,24 +539,28 @@
 		3477E68E1769C9A000F3A5F3 /* PersonalInquiryManager */ = {
 			isa = PBXGroup;
 			children = (
-				8DC83D281A792EB0003EA3BE /* ARLNotificationSubscriber.h */,
-				8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */,
-				8DECC6E81A6C1407007CFA1B /* Answers */,
-				8D219637196C34E40044616A /* PrivateData.h */,
-				8D81D5CF193F584E00D4C7B4 /* en.lproj */,
 				8D1945C418C0A20200C32EED /* Analysis */,
+				8DECC6E81A6C1407007CFA1B /* Answers */,
 				3477E6971769C9A000F3A5F3 /* ARLAppDelegate.h */,
 				3477E6981769C9A000F3A5F3 /* ARLAppDelegate.m */,
+				8DC83D281A792EB0003EA3BE /* ARLNotificationSubscriber.h */,
+				8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */,
 				8D1945BD18C0A1AD00C32EED /* Authentication */,
 				8D1945BE18C0A1AD00C32EED /* Badges */,
 				8D1945BF18C0A1AD00C32EED /* Communicate */,
 				8D1945C218C0A1AD00C32EED /* DataCollection */,
+				8D76FF4D1A94D6990066D1FC /* Description */,
 				8D1945C818C0A24200C32EED /* Discuss */,
+				8D81D5CF193F584E00D4C7B4 /* en.lproj */,
 				8D1945CC18C0A26E00C32EED /* Friends */,
 				8D1945CD18C0A28800C32EED /* Hypothesis */,
 				8D4DF87B18A3C08B009CD9BA /* Images.xcassets */,
+				8D77DADD1958631400D84482 /* INQLog.h */,
+				8D77DADE1958631400D84482 /* INQLog.m */,
 				8D1945CF18C0A2BB00C32EED /* Inquiries */,
 				8D1945D018C0A2DD00C32EED /* Inquiry */,
+				8DDE2D2F19D96FB000EC9230 /* INQUtils.h */,
+				8DDE2D3019D96FB000EC9230 /* INQUtils.m */,
 				8D1945D118C0A2FD00C32EED /* Main */,
 				8D40F3EB18C0AAE700F081AE /* main.m */,
 				347AD0C817B3795C00B4B345 /* Network */,
@@ -561,17 +568,14 @@
 				8D40F3E818C0AAD400F081AE /* PersonalInquiryManager-Info.plist */,
 				8D40F3E918C0AAD400F081AE /* PersonalInquiryManager-Prefix.pch */,
 				8D3F8B1918ACE2DC00B233A6 /* Plan */,
+				8D219637196C34E40044616A /* PrivateData.h */,
 				8D750DC718D74BEB0005C41D /* Profile */,
+				8DC3AA60192CB9EB00C16A31 /* Question */,
 				8D0249FD18A80B08009D0566 /* Splash */,
 				8D19462918C0A80100C32EED /* Supporting Files */,
-				8DB8E3B8191B9535000C51CB /* Viewers */,
-				8DC3AA60192CB9EB00C16A31 /* Question */,
-				8D77DADD1958631400D84482 /* INQLog.h */,
-				8D77DADE1958631400D84482 /* INQLog.m */,
 				8D6F237A19658ED20063DFA8 /* UIViewController+UI.h */,
 				8D6F237B196592060063DFA8 /* UIViewController+UI.m */,
-				8DDE2D2F19D96FB000EC9230 /* INQUtils.h */,
-				8DDE2D3019D96FB000EC9230 /* INQUtils.m */,
+				8DB8E3B8191B9535000C51CB /* Viewers */,
 			);
 			path = PersonalInquiryManager;
 			sourceTree = "<group>";
@@ -989,6 +993,15 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		8D76FF4D1A94D6990066D1FC /* Description */ = {
+			isa = PBXGroup;
+			children = (
+				8D76FF4A1A94D65C0066D1FC /* INQDescriptionViewController.h */,
+				8D76FF4B1A94D65C0066D1FC /* INQDescriptionViewController.m */,
+			);
+			name = Description;
+			sourceTree = "<group>";
+		};
 		8D81D5CF193F584E00D4C7B4 /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1233,6 +1246,7 @@
 				8DECC6EB1A6C1407007CFA1B /* INQAnswersViewController.m in Sources */,
 				8DDE2D3119D96FB000EC9230 /* INQUtils.m in Sources */,
 				8D6E80BC18D5B5DB0077D70E /* ARLFileCloudSynchronizer.m in Sources */,
+				8D76FF4C1A94D65C0066D1FC /* INQDescriptionViewController.m in Sources */,
 				8D40F3EC18C0AAE700F081AE /* main.m in Sources */,
 				8D9B21B2198A90140018DBA4 /* MultiSelectSegmentedControl.m in Sources */,
 				8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */,

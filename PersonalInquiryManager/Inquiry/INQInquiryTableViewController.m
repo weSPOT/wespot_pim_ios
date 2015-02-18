@@ -15,13 +15,17 @@
  */
 typedef NS_ENUM(NSInteger, indices) {
     /*!
+     *  Description.
+     */
+    DESCRIPTION = 0,
+    /*!
      *  Hypothesis.
      */
-    HYPOTHESIS = 0,
+    HYPOTHESIS = 1,
     /*!
      *  Question.
      */
-    QUESTION = 1,
+    QUESTION = 2,
     /*!
      *  Plan
      */
@@ -29,7 +33,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECTION = 2,
+    DATACOLLECTION = 3,
     /*!
      *  Analysis.
      */
@@ -37,7 +41,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Discussion.
      */
-    DISCUSS = 3,
+    DISCUSS = 4,
     /*!
      *  Communication.
      */
@@ -45,7 +49,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Number of items in this NS_ENUM.
      */
-    numItems = 4,
+    numItems = 5,
 };
 
 /*!
@@ -53,13 +57,13 @@ typedef NS_ENUM(NSInteger, indices) {
  */
 typedef NS_ENUM(NSInteger, sections) {
     /*!
-     *  Inquiry Parts
+     *  Icon
      */
-    HEADER =0,
+    ICON =0,
     /*!
      *  Inquiry Parts
      */
-    PARTS,
+    PARTS =1,
     /*!
      *  Invite Friends.
      */
@@ -71,10 +75,11 @@ typedef NS_ENUM(NSInteger, sections) {
     numSections
 };
 
-@property (readonly, nonatomic) NSString *cellIdentifier1;
-@property (readonly, nonatomic) NSString *cellIdentifier2;
+@property (readonly, nonatomic) NSString *cellIdentifier;
 
-@property (readonly, nonatomic) NSInteger *headerCellHeight;
+@property (readonly, nonatomic) NSString *iconIdentifier;
+
+// @property (readonly, nonatomic) NSInteger *headerCellHeight;
 
 @end
 
@@ -88,20 +93,21 @@ typedef NS_ENUM(NSInteger, sections) {
 /*!
  *  Getter
  *
- *  @return The First Cell Identifier.
+ *  @return The Cell Identifier.
  */
--(NSString *) cellIdentifier1 {
-    return  @"inquiryPartCell1";
+-(NSString *) cellIdentifier {
+    return  @"inquiryPartCell";
 }
 
 /*!
  *  Getter
  *
- *  @return The Second Cell Identifier.
+ *  @return The Cell Identifier.
  */
--(NSString *) cellIdentifier2 {
-    return  @"inquiryPartCell2";
+-(NSString *) iconIdentifier {
+    return  @"inquiryIconCell";
 }
+
 
 /*!
  *  Getter
@@ -226,15 +232,27 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case HEADER:
+        case ICON :
             return 1;
         case PARTS :
             return numItems;
-//        case INVITE :
-//            return 1;
+//      case INVITE :
+//          return 1;
     }
     
     return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch (section){
+        case ICON:
+            return @"";
+        case PARTS:
+            return @"Inquiry parts";
+    }
+    
+    // Error
+    return @"";
 }
 
 /*!
@@ -250,104 +268,118 @@ typedef NS_ENUM(NSInteger, sections) {
     UITableViewCell *cell;
     
     switch (indexPath.section) {
-        case HEADER:
-            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1];
-           cell.accessoryType = UITableViewCellAccessoryNone;
+        case ICON:
+            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.iconIdentifier];
+            cell.accessoryType = UITableViewCellAccessoryNone;
             break;
         case PARTS:
-            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
-//        case INVITE:
-//            cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
-//            break;
+//      case INVITE:
+//          cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+//          break;
     }
     
     // Configure the cell...
     switch (indexPath.section) {
-        case HEADER:
-        {
-            // Setup & Remove Auto Constraints.
-            
-            // Fetch views by tag.
-            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
-            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-            UIWebView *webView = (UIWebView *)[cell.contentView viewWithTag:3];
-
-            // Icon
-            UIImage *image = [UIImage imageNamed:@"description"];
-            imageView.image = image;
-            imageView.backgroundColor = [UIColor clearColor];
-            imageView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            [cell.contentView addSubview:imageView];
-            
-            // Tile
-            textView.backgroundColor = [UIColor clearColor];
-            textView.editable = NO;
-            textView.text = self.inquiry.title;
-            textView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            // Description
-            webView.backgroundColor = [UIColor clearColor];
-            [webView loadHTMLString:self.inquiry.desc baseURL:nil];
-            webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            webView.layer.borderWidth = 1.0f;
-            webView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            //Add Constraints
-            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                             imageView, @"icon",
-                                             textView, @"text",
-                                             webView, @"description",
-                                             nil];
-            
-            [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
-                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                  metrics:nil
-                                  views:viewsDictionary]];
-
-            [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]", image.size.width]
-                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                  metrics:nil
-                                  views:viewsDictionary]];
-            
-            [cell.contentView addConstraints:[NSLayoutConstraint
-                                              constraintsWithVisualFormat:@"H:[icon]-[text]-|"
-                                              options:NSLayoutFormatDirectionLeadingToTrailing
-                                              metrics:nil
-                                              views:viewsDictionary]];
-            
-            
-            float tw = tableView.frame.size.width - image.size.width - 3*8.0f;
-            
-            CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
-            
-            [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[text(==%f)]-[description]-|", size.height]
-                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                  metrics:nil
-                                  views:viewsDictionary]];
-
-            [cell addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"H:[icon]-[description]-|"
-                                  options:NSLayoutFormatDirectionLeadingToTrailing
-                                  metrics:nil
-                                  views:viewsDictionary]];
-        }
+        case ICON:
+            cell.textLabel.text = @"";
+            if ([self.inquiry.icon length] == 0) {
+                cell.imageView.image = [UIImage imageNamed:@"inquiry"];
+            }else {
+                cell.imageView.image = [UIImage imageWithData:self.inquiry.icon];
+            }
             break;
+
+//        case HEADER:
+//        {
+//            // Setup & Remove Auto Constraints.
+//            
+//            // Fetch views by tag.
+//            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
+//            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+//            UIWebView *webView = (UIWebView *)[cell.contentView viewWithTag:3];
+//
+//            // Icon
+//            UIImage *image = [UIImage imageNamed:@"description"];
+//            imageView.image = image;
+//            imageView.backgroundColor = [UIColor clearColor];
+//            imageView.translatesAutoresizingMaskIntoConstraints = NO;
+//            
+//            [cell.contentView addSubview:imageView];
+//            
+//            // Tile
+//            textView.backgroundColor = [UIColor clearColor];
+//            textView.editable = NO;
+//            textView.text = self.inquiry.title;
+//            textView.translatesAutoresizingMaskIntoConstraints = NO;
+//            
+//            // Description
+//            webView.backgroundColor = [UIColor clearColor];
+//            [webView loadHTMLString:self.inquiry.desc baseURL:nil];
+//            webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//            webView.layer.borderWidth = 1.0f;
+//            webView.translatesAutoresizingMaskIntoConstraints = NO;
+//            
+//            //Add Constraints
+//            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                             imageView, @"icon",
+//                                             textView, @"text",
+//                                             webView, @"description",
+//                                             nil];
+//            
+//            [cell addConstraints:[NSLayoutConstraint
+//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
+//                                  options:NSLayoutFormatDirectionLeadingToTrailing
+//                                  metrics:nil
+//                                  views:viewsDictionary]];
+//
+//            [cell addConstraints:[NSLayoutConstraint
+//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]", image.size.width]
+//                                  options:NSLayoutFormatDirectionLeadingToTrailing
+//                                  metrics:nil
+//                                  views:viewsDictionary]];
+//            
+//            [cell.contentView addConstraints:[NSLayoutConstraint
+//                                              constraintsWithVisualFormat:@"H:[icon]-[text]-|"
+//                                              options:NSLayoutFormatDirectionLeadingToTrailing
+//                                              metrics:nil
+//                                              views:viewsDictionary]];
+//            
+//            
+//            float tw = tableView.frame.size.width - image.size.width - 3*8.0f;
+//            
+//            CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
+//            
+//            [cell addConstraints:[NSLayoutConstraint
+//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[text(==%f)]-[description]-|", size.height]
+//                                  options:NSLayoutFormatDirectionLeadingToTrailing
+//                                  metrics:nil
+//                                  views:viewsDictionary]];
+//
+//            [cell addConstraints:[NSLayoutConstraint
+//                                  constraintsWithVisualFormat:@"H:[icon]-[description]-|"
+//                                  options:NSLayoutFormatDirectionLeadingToTrailing
+//                                  metrics:nil
+//                                  views:viewsDictionary]];
+//        }
+//            break;
             
         case PARTS : {
             switch (indexPath.item) {
+                case DESCRIPTION:
+                    cell.textLabel.text = @"Description";
+                    cell.detailTextLabel.text = @"";
+                    cell.imageView.image = [UIImage imageNamed:@"description"];
+                    break;
                 case HYPOTHESIS:
                     cell.textLabel.text = @"Hypothesis";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
                 case QUESTION:
-                    cell.textLabel.text = @"Question";
+                    cell.textLabel.text = @"Questions";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
@@ -386,7 +418,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 case DISCUSS:
                     cell.textLabel.text = @"Chat";
                     cell.detailTextLabel.text = @"";
-                    cell.imageView.image = [UIImage imageNamed:@"discuss"];
+                    cell.imageView.image = [UIImage imageNamed:@"communicate"];
                     break;
                 case COMMUNICATE:
                     cell.textLabel.text = @"Communicate";
@@ -412,8 +444,8 @@ typedef NS_ENUM(NSInteger, sections) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
-        case HEADER:
-            return 1.0f * (int)self.headerCellHeight;
+        case ICON:
+            return 2 * tableView.rowHeight;
         case PARTS:
             return tableView.rowHeight;
 //        case INVITE:
@@ -431,12 +463,23 @@ typedef NS_ENUM(NSInteger, sections) {
     UIViewController *newViewController;
     
     switch ([index intValue]){
+         case DESCRIPTION: {
+             // Create the new ViewController.
+             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DescriptionView"];
+             
+             // Pass the parameters to render.
+             [newViewController performSelector:@selector(setDescription:)
+                                     withObject:self.inquiry.desc];
+         }
+            break;
+            
         case HYPOTHESIS: {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HypothesisView"];
             
             // Pass the parameters to render.
-            [newViewController performSelector:@selector(setHypothesis:) withObject:self.inquiry.hypothesis];
+            [newViewController performSelector:@selector(setHypothesis:)
+                                    withObject:self.inquiry.hypothesis];
         }
             break;
             
@@ -525,11 +568,13 @@ typedef NS_ENUM(NSInteger, sections) {
     UIViewController * newViewController;
     
     switch (indexPath.section) {
-        case HEADER:
-            break;
         case PARTS: {
             
             switch (indexPath.item) {
+                case DESCRIPTION:
+                    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
+                    break;
+
                 case HYPOTHESIS:
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InquiryPartPageViewController"];
                     break;

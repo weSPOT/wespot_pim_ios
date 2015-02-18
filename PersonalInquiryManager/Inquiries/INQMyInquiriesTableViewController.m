@@ -284,7 +284,11 @@ typedef NS_ENUM(NSInteger, inquiries) {
             Inquiry *inquiry = ((Inquiry*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]);
             
             cell.textLabel.text = inquiry.title;
-            cell.imageView.image = [UIImage imageNamed:@"inquiry"];            
+            if ([inquiry.icon length] == 0) {
+                cell.imageView.image = [UIImage imageNamed:@"inquiry"];
+            }else {
+                cell.imageView.image = [UIImage imageWithData:inquiry.icon];
+            }
             cell.detailTextLabel.text = @"";
         }
     }

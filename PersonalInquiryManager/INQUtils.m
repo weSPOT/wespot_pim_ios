@@ -81,10 +81,46 @@
  *  @param radius <#radius description#>
  */
 + (void)addRoundedCorner:(UIView *)view
+       byRoundingCorners:(UIRectCorner)corners
                   radius:(float)radius {
-    // Create the path (with only the top-left corner rounded)
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds
-                                                   byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight | UIRectCornerBottomRight
+    [INQUtils addRoundedCorner:view
+             byRoundingCorners:corners
+                  deltaOriginX:0
+                  deltaOriginY:0
+                    deltaWidth:0
+                   deltaHeight:0
+                        radius:radius];
+}
+
+/*!
+ *  Add a rounded corner and shrink visibe size.
+ *
+ *  See http://stackoverflow.com/questions/2264083/rounded-uiview-using-calayers-only-some-corners-how
+ *
+ *  @param view         <#view description#>
+ *  @param corners      <#corners description#>
+ *  @param deltaOriginX <#deltaOriginX description#>
+ *  @param deltaOriginY <#deltaOriginY description#>
+ *  @param deltaWidth   <#deltaWidth description#>
+ *  @param deltaHeight  <#deltaHeight description#>
+ *  @param radius       <#radius description#>
+ */
++ (void)addRoundedCorner:(UIView *)view
+       byRoundingCorners:(UIRectCorner)corners
+            deltaOriginX:(NSInteger)deltaOriginX
+            deltaOriginY:(NSInteger)deltaOriginY
+              deltaWidth:(NSInteger)deltaWidth
+             deltaHeight:(NSInteger)deltaHeight
+                  radius:(float)radius {
+    // Shrink visible area
+    CGRect newbounds = CGRectMake(view.bounds.origin.x+deltaOriginX,
+                                  view.bounds.origin.y+deltaOriginY,
+                                  view.bounds.size.width-deltaWidth,
+                                  view.bounds.size.height-deltaHeight);
+    
+    // Create the path (for specified corners)
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:newbounds
+                                                   byRoundingCorners:corners
                                                          cornerRadii:CGSizeMake(radius, radius)];
     
     // Create the shape layer and set its path
@@ -95,4 +131,5 @@
     // Set the newly created shape layer as the mask for the image view's layer
     view.layer.mask = maskLayer;
 }
+
 @end

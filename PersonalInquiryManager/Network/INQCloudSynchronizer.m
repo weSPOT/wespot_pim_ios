@@ -513,7 +513,9 @@
  *  Runs on a separate thread in the background.
  */
 - (void) synchronizeMessages {
-    NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"messages" context:self.inquiryId];
+    NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
+                                                                           type:@"messages"
+                                                                        context:self.inquiryId];
     
     // CLog(@"InquiryId: %@", self.inquiryId);
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];

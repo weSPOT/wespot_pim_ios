@@ -732,15 +732,15 @@ typedef NS_ENUM(NSInteger, responses) {
                 
             case VIDEO: {
                 // See http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' /></div></body></html>",
-                                   response.fileName, size.width * screenScale, size.height * screenScale];
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' type='%@'/></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
+                                   response.fileName, size.width * screenScale, size.height * screenScale, response.contentType, [response.fileName pathExtension]];
             }
                 break;
                 
             case AUDIO: {
                 Log(@"%@", response.fileName);
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls></audio></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
-                                   response.fileName, [response.fileName pathExtension]];
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls type='%@'></audio></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
+                                   response.fileName, response.contentType, [response.fileName pathExtension]];
                 /*
                 NSError *error = nil;
                 

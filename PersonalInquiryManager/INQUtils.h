@@ -18,5 +18,15 @@
 + (NSString *)cleanHtml:(NSString *)theHtml;
 
 + (void)addRoundedCorner:(UIView *)imageView
+       byRoundingCorners:(UIRectCorner)corners
                   radius:(float)radius;
+
++ (void)addRoundedCorner:(UIView *)view
+       byRoundingCorners:(UIRectCorner)corners
+            deltaOriginX:(NSInteger)deltaOriginX
+            deltaOriginY:(NSInteger)deltaOriginY
+              deltaWidth:(NSInteger)deltaWidth
+             deltaHeight:(NSInteger)deltaHeight
+                  radius:(float)radius;
+
 @end

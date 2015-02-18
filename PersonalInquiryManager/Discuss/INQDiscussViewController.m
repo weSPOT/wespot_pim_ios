@@ -60,26 +60,35 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [request setFetchBatchSize:8];
     
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO selector:@selector(compare:)]];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date"
+                                                                                     ascending:YES
+                                                                                      selector:@selector(compare:)]];
     
     request.predicate = [NSPredicate predicateWithFormat:
                          @"run.runId == %lld",
                          [inquiry.run.runId longLongValue]];
     
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                        managedObjectContext:appDelegate.managedObjectContext
+                                                                          sectionNameKeyPath:nil
+                                                                                   cacheName:nil];
     
     self.fetchedResultsController.delegate = self;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contextChanged:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:nil];
     
     DLog(@"RunId: %@", inquiry.run.runId);
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
     
-    if (ARLNetwork.networkAvailable) {
-        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:inquiry.inquiryId];
-    }
+//    if (ARLNetwork.networkAvailable) {
+//        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
+//                                 inquiryId:inquiry.inquiryId];
+//    }
     
     DLog(@"Messages: %d", [[self.fetchedResultsController fetchedObjects] count]);
 }
@@ -92,7 +101,9 @@ typedef NS_ENUM(NSInteger, friends) {
     }
     
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(contextChanged:)
+                               withObject:notification
+                            waitUntilDone:YES];
         return;
     }
     
@@ -115,7 +126,8 @@ typedef NS_ENUM(NSInteger, friends) {
             [self.fetchedResultsController performFetch:&error];
             
             [self.tableView reloadData];
-            return;
+            
+            [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
         }
     }
 }
@@ -142,15 +154,17 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self setupFetchedResultsController];
-    
-    [self.tableView reloadData];
-    
     [self.navigationController setToolbarHidden:NO];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self setupFetchedResultsController];
+    
+    [self.tableView reloadData];
+    
+    [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
@@ -277,8 +291,6 @@ typedef NS_ENUM(NSInteger, friends) {
             
         case MESSAGES:{
             @autoreleasepool {
-                [INQUtils addRoundedCorner:cell radius:10.0f];
-                
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
                 
                 Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);
@@ -345,6 +357,14 @@ typedef NS_ENUM(NSInteger, friends) {
                 
                 switch(MyMessage) {
                     case TRUE: {
+                        [INQUtils addRoundedCorner:cell
+                                 byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight|UIRectCornerBottomLeft
+                                      deltaOriginX:tableView.rowHeight + 1*8.0f
+                                      deltaOriginY:4
+                                        deltaWidth:tableView.rowHeight + 1*8.0f
+                                       deltaHeight:4
+                                            radius:10.0f];
+
                         {
                             CGRect frame = detailTextLabel.frame;
                             
@@ -368,6 +388,14 @@ typedef NS_ENUM(NSInteger, friends) {
                         break;
                         
                     case FALSE: {
+                        [INQUtils addRoundedCorner:cell
+                                 byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight|UIRectCornerBottomRight
+                                      deltaOriginX:0
+                                      deltaOriginY:4
+                                        deltaWidth:tableView.rowHeight + 2*8.0f
+                                       deltaHeight:4
+                                            radius:10.0f];
+                        
                         {
                             CGRect frame = detailTextLabel.frame;
                             
@@ -498,7 +526,8 @@ typedef NS_ENUM(NSInteger, friends) {
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
+                                 inquiryId:self.inquiryId];
     }
 }
 

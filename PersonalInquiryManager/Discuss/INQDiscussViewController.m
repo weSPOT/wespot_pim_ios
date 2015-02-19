@@ -15,13 +15,13 @@
  */
 typedef NS_ENUM(NSInteger, friends) {
     /*!
-     *  Send a Message.
-     */
-    SEND = 0,
-    /*!
      *  Messages.
      */
-    MESSAGES,
+    MESSAGES = 0,
+    /*!
+     *  Send a Message.
+     */
+    SEND,
     /*!
      *  Number of Inquires
      */
@@ -120,6 +120,8 @@ typedef NS_ENUM(NSInteger, friends) {
     // See if there are any Inquiry objects added and if so, reload the tableView.
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     
+#warning This does not see newly added messages.
+    
     for (NSManagedObject *obj in insertedObjects) {
         if ([[obj entity].name isEqualToString:@"Message"]) {
             NSError *error = nil;
@@ -130,6 +132,12 @@ typedef NS_ENUM(NSInteger, friends) {
             [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
         }
     }
+    
+//    NSError *error = nil;
+//    
+//    [self.fetchedResultsController performFetch:&error];
+//    
+//    [self.tableView reloadData];
 }
 
 ///*!
@@ -209,10 +217,10 @@ typedef NS_ENUM(NSInteger, friends) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
-        case SEND:
-            return @"";
         case MESSAGES:
             return @"Chat";
+        case SEND:
+            return @"";
     }
     
     // Error
@@ -231,10 +239,10 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     // Return the number of rows in the section.
     switch (section) {
-        case SEND:
-            return 1;
         case MESSAGES:
             return [[self.fetchedResultsController fetchedObjects] count];
+        case SEND:
+            return 1;
     }
     
     // Error
@@ -252,43 +260,27 @@ typedef NS_ENUM(NSInteger, friends) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    
-    // if (!cell || (indexPath.section==SEND)) {
+
     switch (indexPath.section) {
-        case SEND:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1 forIndexPath:indexPath];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier1];
-            }
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            break;
-            
         case MESSAGES:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2 forIndexPath:indexPath]; //
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
-            }
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2 forIndexPath:indexPath];
+
             cell.accessoryType = UITableViewCellAccessoryNone;
             
-            // cell.backgroundColor = [UIColor clearColor];
+            break;
+            
+        case SEND:
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1 forIndexPath:indexPath];
+
+            cell.accessoryType = UITableViewCellAccessoryNone;
             
             break;
+            
     }
     
     // Configure the cell...
     
     switch (indexPath.section) {
-        case SEND:
-            cell.textLabel.text = @"Add message";
-            cell.detailTextLabel.text = @"";
-            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
-            
-            // [cell.layer setCornerRadius:7.0f];
-            // [cell.layer setMasksToBounds:YES];
-            // [cell.layer setBorderWidth:2.0f];
-            
-            break;
-            
         case MESSAGES:{
             @autoreleasepool {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
@@ -421,8 +413,17 @@ typedef NS_ENUM(NSInteger, friends) {
                         }
                     }
                         break;
+                        
                 }
             }
+            break;
+            
+        case SEND: {
+            UITextField *text = (UITextField *)[cell.contentView viewWithTag:1];
+            
+            [text setDelegate:self];
+        }
+            break;
         }
     }
     
@@ -432,8 +433,6 @@ typedef NS_ENUM(NSInteger, friends) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
-        case SEND:
-            return tableView.rowHeight;
         case MESSAGES: {
             // Calculate the correct height here based on the message content!!
             
@@ -454,43 +453,12 @@ typedef NS_ENUM(NSInteger, friends) {
             // Correct for top/bottom margins.
             return 1.0f * tableView.rowHeight + rect.size.height + 3*8.0f;
         }
+        case SEND:
+            return tableView.rowHeight;
     }
     
     // Error
     return tableView.rowHeight;
-}
-
-/*!
- *  For each row in the table jump to the associated view.
- *
- *  @param tableView The UITableView
- *  @param indexPath The NSIndexPath containing grouping/section and record index.
- */
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIViewController *newViewController;
-    
-    switch (indexPath.section) {
-        case SEND: {
-            if (ARLNetwork.networkAvailable) {
-                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessageController"];
-                
-                if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
-                    [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
-                }
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", @"Notice") message:NSLocalizedString(@"Only available when on-line", @"Only available when on-line") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
-                [alert show];
-            }
-        }
-            break;
-        case MESSAGES:
-            break;
-    }
-    
-    if (newViewController) {
-        [self.navigationController pushViewController:newViewController animated:YES];
-    }
 }
 
 /*!
@@ -529,6 +497,58 @@ typedef NS_ENUM(NSInteger, friends) {
         [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
                                  inquiryId:self.inquiryId];
     }
+}
+
+- (void) createDefaultThreadMessage:(NSString *)title description:(NSString *)description {
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
+    
+    NSNumber *threadId = [[ARLNetwork defaultThread:inquiry.run.runId] objectForKey:@"threadId"];
+    
+    NSDictionary *message = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             inquiry.run.runId,     @"runId",
+                             threadId,              @"threadId",
+                             title,                 @"subject",
+                             description,           @"body",
+                             nil];
+    
+    NSDictionary *result = [ARLNetwork addMessage:[ARLAppDelegate jsonString:message]];
+    
+    [Message messageWithDictionary:result
+            inManagedObjectContext:appDelegate.managedObjectContext];
+    
+    [INQLog SaveNLog:appDelegate.managedObjectContext];
+    
+    DLog(@"%@", result);
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField.text length]>0) {
+        NSString *body = [textField.text
+                          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if ([body length]>0) {
+            [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply")
+                                 description:body];
+            
+            if (ARLNetwork.networkAvailable) {
+                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+            }
+            
+            NSError *error = nil;
+            
+            [self.fetchedResultsController performFetch:&error];
+            
+            textField.text = @"";
+            
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

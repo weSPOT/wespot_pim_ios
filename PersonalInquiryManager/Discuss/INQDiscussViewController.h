@@ -12,7 +12,7 @@
 
 #import "Inquiry+Create.h"
 
-@interface INQDiscussViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface INQDiscussViewController : UITableViewController <NSFetchedResultsControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) NSNumber *inquiryId;
 

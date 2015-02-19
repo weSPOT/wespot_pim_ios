@@ -1136,55 +1136,6 @@
             </objects>
             <point key="canvasLocation" x="270" y="1026"/>
         </scene>
-        <!--Add Message View Controller-->
-        <scene sceneID="ACu-sj-C9E">
-            <objects>
-                <viewController storyboardIdentifier="AddMessageController" title="New message" id="wXZ-PW-eiy" userLabel="Add Message View Controller" customClass="INQAddMessageViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="9o1-N7-75D" customClass="TPKeyboardAvoidingScrollView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main" id="x44-L0-Eoh">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
-                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="EvM-md-PzQ">
-                                <rect key="frame" x="9" y="104" width="303" height="140"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="x44-L0-Eoh" id="8K4-4j-rpg"/>
-                                </connections>
-                            </textView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tVq-4A-kHj">
-                                <rect key="frame" x="9" y="74" width="302" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <toolbarItems/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <connections>
-                        <outlet property="background" destination="x44-L0-Eoh" id="Yhm-hg-mwQ"/>
-                        <outlet property="descriptionEdit" destination="EvM-md-PzQ" id="g4P-8t-nIf"/>
-                        <outlet property="descriptionLabel" destination="tVq-4A-kHj" id="cZl-YV-m8o"/>
-                        <outlet property="view" destination="9o1-N7-75D" id="ik8-nE-s7D"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vdq-fq-4Dk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3387" y="1586"/>
-        </scene>
         <!--Answers View Controller-->
         <scene sceneID="AuR-zi-060">
             <objects>

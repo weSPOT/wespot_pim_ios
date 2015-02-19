@@ -146,7 +146,6 @@
 		8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C01318BF873D006858E1 /* TestAccount+Lazy.m */; };
 		8DA8305D195C3758009E7E4E /* Model_1_to_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */; };
 		8DAD834118FBF548008196E0 /* INQInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */; };
-		8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */; };
 		8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */; };
 		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 		8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */; };
@@ -401,8 +400,6 @@
 		8DA8305C195C3758009E7E4E /* Model_1_to_2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_1_to_2.xcmappingmodel; sourceTree = "<group>"; };
 		8DAD833F18FBF548008196E0 /* INQInviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQInviteFriendsViewController.h; sourceTree = "<group>"; };
 		8DAD834018FBF548008196E0 /* INQInviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQInviteFriendsViewController.m; sourceTree = "<group>"; };
-		8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQAddMessageViewController.h; sourceTree = "<group>"; };
-		8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQAddMessageViewController.m; sourceTree = "<group>"; };
 		8DAF9E7A18D0A9A2003D6B98 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8DB86E3E19FE6CE2001E8400 /* ARLDatabase v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v5.xcdatamodel"; sourceTree = "<group>"; };
 		8DB8E3B5191B9510000C51CB /* INQWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQWebViewController.h; path = Viewers/INQWebViewController.h; sourceTree = "<group>"; };
@@ -762,8 +759,6 @@
 			children = (
 				8D1945C918C0A24200C32EED /* INQDiscussViewController.h */,
 				8D1945CA18C0A24200C32EED /* INQDiscussViewController.m */,
-				8DAD834218FEB3C9008196E0 /* INQAddMessageViewController.h */,
-				8DAD834318FEB3C9008196E0 /* INQAddMessageViewController.m */,
 			);
 			path = Discuss;
 			sourceTree = "<group>";
@@ -1259,7 +1254,6 @@
 				8D6E80AA18D5B5AA0077D70E /* ARLAccountDelegator.m in Sources */,
 				8DE646F61922162700CB8E67 /* INQNewGeneralItemViewController.m in Sources */,
 				8D5C667918D6F559003B79E5 /* ARLNarratorItemViewController.m in Sources */,
-				8DAD834418FEB3C9008196E0 /* INQAddMessageViewController.m in Sources */,
 				8D36746418D5DE1D0023A263 /* INQPageViewController.m in Sources */,
 				8D6AE1CA18D5C5FE0094D911 /* TPKeyboardAvoidingTableView.m in Sources */,
 				8D6E80C818D5B7AC0077D70E /* ARLNotificationSubscriber.m in Sources */,

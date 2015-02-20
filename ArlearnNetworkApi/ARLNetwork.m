@@ -37,9 +37,20 @@
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
     NSError *error = nil;
     
-    // [self dumpJsonData:jsonData url:urlString];
     
-    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    // [self dumpJsonData:jsonData url:urlString];
+    id json = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
+                                                         options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    
+    ELog(error);
+    
+    if (jsonData!=nil && error!=nil) {
+        NSString* data = [[NSString alloc] initWithData:jsonData
+                                               encoding:NSUTF8StringEncoding];
+        Log(@"Error: %@", data);
+    }
+    
+    return json;
 }
 
 + (id) executeOpenBadgesGetWithAuthorization:(NSString *)path {

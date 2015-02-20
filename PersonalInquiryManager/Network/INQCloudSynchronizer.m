@@ -1,4 +1,4 @@
-//
+ //
 //  INQCloudSynchronizer.m
 //  PersonalInquiryManager
 //
@@ -578,9 +578,9 @@
                          inManagedObjectContext:self.context];
     }
     
-    if (ARLAppDelegate.SyncAllowed) {
-        [INQLog SaveNLog:self.context];
-    }
+    //if (ARLAppDelegate.SyncAllowed) {
+    [INQLog SaveNLog:self.context];
+    //}
     
     self.syncMessages = NO;
 }

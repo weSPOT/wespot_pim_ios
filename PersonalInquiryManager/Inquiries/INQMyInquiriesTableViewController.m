@@ -62,9 +62,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
                                                                                    cacheName:nil];
     
     self.fetchedResultsController.delegate = self;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-    
+
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
     
@@ -73,96 +71,73 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
-- (void)refreshTable
-{
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+//- (void)refreshTable
+//{
+//    NSError *error = nil;
+//    [self.fetchedResultsController performFetch:&error];
+//
+//    [self.tableView reloadData];
+//    
+//    [self.refreshControl endRefreshing];
+//}
 
-    [self.tableView reloadData];
-    
-    [self.refreshControl endRefreshing];
-}
-
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(syncProgress:)
+                               withObject:notification
+                            waitUntilDone:YES];
         return;
     }
     
-//    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
-//    
-//    NSError *error = nil;
-//    [self.fetchedResultsController performFetch:&error];
-//    
-//    if (count != [self.fetchedResultsController.fetchedObjects count]) {
-//        [self.tableView reloadData];
-//    }
+    NSString *recordType = notification.object;
     
-    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
-    for (NSManagedObject *obj in deletedObjects) {
-        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
-            
-            // [self.tableView reloadData];
-            return;
-        }
-    }
-    
-    // See if there are any Inquiry objects added and if so, reload the tableView.
-    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-    
-    for (NSManagedObject *obj in insertedObjects) {
-        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
+    if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
+        NSError *error = nil;
+        
+        NSUInteger cntBefore = [[self.fetchedResultsController fetchedObjects] count];
+        
+        [self.fetchedResultsController performFetch:&error];
+        
+        ELog(error);
+        
+        NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
+        
+        if (cntBefore!=cntAfter) {
+            Log(@"Inquiries: %d -> %d", cntBefore, cntAfter);
             
             [self.tableView reloadData];
-            return;
         }
     }
+}
 
-    // If no Inquiry objecst are added, look for updates and refresh them.
-    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-                             
-    BOOL fetched = NO;
-    NSArray *indexPaths = [[NSArray alloc] init];
-                             
-    for (NSManagedObject *obj in updatedObjects) {
-        if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-            if (!fetched) {
-                NSError *error = nil;
-                [self.fetchedResultsController performFetch:&error];
-                fetched=YES;
-            }
-            
-            Inquiry *updated = (Inquiry *)obj;
-            
-            //workaround for indexPathForObject:obj not working.
-            for (Inquiry *inquiry in self.fetchedResultsController.fetchedObjects) {
-                if ([inquiry.objectID isEqual:updated.objectID]) {
-                    NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:inquiry];
-                    if (indexPath) {
-                        indexPaths = [indexPaths arrayByAddingObject:[self coreDataIndexPathToTableIndexPath:indexPath]];
-                    }
-                    break;
-                }
-                
-            }
-        }
+- (void)syncReady:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncReady:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
     }
     
-    // This fails when a record is deleted....
-    if (indexPaths.count != 0)
-    {
-        // [self.tableView reloadData];
-        // [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    NSString *recordType = notification.object;
+    
+    if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
+        NSError *error = nil;
+        
+        NSUInteger cntBefore = [[self.fetchedResultsController fetchedObjects] count];
+        
+        [self.fetchedResultsController performFetch:&error];
+        
+        ELog(error);
+        
+        NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
+        
+        // if (cntBefore!=cntAfter) {
+        Log(@"Inquiries: %d -> %d", cntBefore, cntAfter);
+        
+        [self.tableView reloadData];
+        // }
     }
 }
 
@@ -183,8 +158,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     self.navigationController.view .backgroundColor = [UIColor clearColor];
     
-    [self setupFetchedResultsController];
-    
     // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
     
     self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
@@ -194,6 +167,20 @@ typedef NS_ENUM(NSInteger, inquiries) {
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+    
+    [self setupFetchedResultsController];
+    
+    [self.tableView reloadData];
+    
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         [INQCloudSynchronizer syncInquiries:appDelegate.managedObjectContext];
@@ -201,6 +188,15 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
     
     [self.navigationController setToolbarHidden:YES];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
 }
 
 /*!

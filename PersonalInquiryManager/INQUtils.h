@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#define INQ_SYNCREADY @"INQ_syncReady"
+#define INQ_SYNCPROGRESS @"INQ_syncProgress"
+
 @interface INQUtils : NSObject
 
 + (NSString *)base64forData:(NSData*)theData;

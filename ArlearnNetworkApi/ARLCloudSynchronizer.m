@@ -314,6 +314,9 @@
                 [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
                 
                 [INQLog SaveNLog:self.context];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                    object:NSStringFromClass([GeneralItemVisibility class])];
             }
         }
         
@@ -323,6 +326,9 @@
                                           idContext:run.runId
                              inManagedObjectContext:self.context];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                            object:NSStringFromClass([GeneralItemVisibility class])];
     }
     
     {
@@ -346,10 +352,13 @@
                 
                 respDict = nil;
                 
-                Log(@"%d Responses", [responses count]);
-
+                // Log(@"%d Responses", [responses count]);
+                
                 for (NSDictionary *response in responses ) {
                     [Response responseWithDictionary:response inManagedObjectContext:self.context];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                        object:NSStringFromClass([Response class])];
                 }
                 
                 // Done in responseWithDictionary [INQLog SaveNLog:self.context];
@@ -362,6 +371,9 @@
                                           idContext:run.runId
                              inManagedObjectContext:self.context];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                            object:NSStringFromClass([Response class])];
     }
     
     self.visibilityRunId = nil;

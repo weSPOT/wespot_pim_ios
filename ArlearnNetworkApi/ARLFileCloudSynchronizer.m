@@ -289,21 +289,33 @@
     for (Response *response in [Response getReponsesWithoutMedia:self.context
                                                    generalItemId:self.generalItemId]) {
         [self downloadResponse:response];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                            object:NSStringFromClass([Response class])];
     }
     
     // DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
     
     self.syncResponses=NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Response class])];
 }
 
 - (void) downloadMyResponses {
     for (Response *response in [Response getMyReponsesWithoutMedia:self.context]) {
         [self downloadResponse:response];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                            object:NSStringFromClass([Response class])];
     }
     
     // DLog(@"** Downloaded %d files for contentType=%@", cnt, self.contentType);
     
     self.syncMyResponses=NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Response class])];
 }
 
 @end

@@ -64,7 +64,6 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:DEVELOPMENT_MODE];
 }
 
-
 +(BOOL) elgUseProxy {
     return [[NSUserDefaults standardUserDefaults] boolForKey:PROXY_MODE];
 }

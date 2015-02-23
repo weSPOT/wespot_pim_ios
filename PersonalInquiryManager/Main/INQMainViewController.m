@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, groups) {
     /*!
      *  My Inquires.
      */
-    MYINQUIRES = 0,
+    MYINQUIRIES = 0,
     /*!
      *  My Media.
      */
@@ -73,62 +73,51 @@ typedef NS_ENUM(NSInteger, tools) {
     return  @"mainPartCell";
 }
 
-/*!
- *  See http://stackoverflow.com/questions/13387378/uirefreshcontrol-uitableview-stuck-while-refreshing
- *
- *  @param refresh <#refresh description#>
- */
-- (void)refreshTable:(UIRefreshControl *)refresh  {
-    [self.tableView reloadData];
-    
-    [self.refreshControl endRefreshing];
-}
-
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(syncProgress:)
+                               withObject:notification
+                            waitUntilDone:YES];
         return;
     }
-   
-    [self.tableView reloadData];
+    
+    NSString *recordType = notification.object;
+    // Inquiry
+    Log(@"syncProgress: %@", recordType);
+    
+    if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
+        // Force Counter on DataCollection TableRow to update.
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:0 inSection:MYINQUIRIES], nil];
+        
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    Log(@"%@", @"initWithNibName");
-//
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
+- (void)syncReady:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncReady:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
+    
+    NSString *recordType = notification.object;
+    
+    Log(@"syncReady: %@", recordType);
+    
+    if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
+        // Force Counter on DataCollection TableRow to update.
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:0 inSection:MYINQUIRIES], nil];
+        
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Log(@"%@", @"viewDidLoad");
-    
-    
-    //See http://stackoverflow.com/questions/14739048/uirefreshcontrol-hidden-obscured-by-my-uinavigationcontrollers-uinavigationba
-    
-    // [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
-    
-    //WARNING: OPENBADGES TEST CODE AHEAD
-    
-    //    Account *account = ARLNetwork.CurrentAccount;
-    //    NSString *userId = [NSString stringWithFormat:@"%@_%@", [[ARLNetwork elggProviderId:account.accountType] lowercaseString], account.localId];
-    //    [ARLNetwork getUserBadges:userId];
-    
-    //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
-    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
     
     if (!self.Friends) {
         [self getMyFriends];
@@ -149,8 +138,16 @@ typedef NS_ENUM(NSInteger, tools) {
                                                  name:@"UIApplicationWillEnterForegroundNotification"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+    
     [self adjustLoginButton];
 
     self.syncButton.enabled = ARLNetwork.networkAvailable;
@@ -183,14 +180,12 @@ typedef NS_ENUM(NSInteger, tools) {
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Log(@"%@", @"viewWillDisappear");
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
--(void) dealloc {
-    DLog(@"");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)getMyFriends {
@@ -241,7 +236,7 @@ typedef NS_ENUM(NSInteger, tools) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     switch (section){
-        case MYINQUIRES:
+        case MYINQUIRIES:
             return @"";
         case MYMEDIA:
             return @"";
@@ -265,7 +260,7 @@ typedef NS_ENUM(NSInteger, tools) {
 {
     // Return the number of rows in the section.
     switch (section) {
-        case MYINQUIRES:
+        case MYINQUIRIES:
             return 1;
         case MYMEDIA:
             return 1;
@@ -293,7 +288,7 @@ typedef NS_ENUM(NSInteger, tools) {
 
     // Configure the cell...
     switch (indexPath.section) {
-        case MYINQUIRES: {
+        case MYINQUIRIES: {
             cell.textLabel.Text = @"My inquiries";
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             
@@ -393,7 +388,7 @@ typedef NS_ENUM(NSInteger, tools) {
     
     // Create the new ViewController.
     switch (indexPath.section) {
-        case MYINQUIRES:
+        case MYINQUIRIES:
             switch (indexPath.item) {
                default:
                     newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyInquiriesView"];

@@ -118,27 +118,52 @@ typedef NS_ENUM(NSInteger, sections) {
     return 210;
 }
 
-- (void)refreshTable {
-    [self.tableView reloadData];
-    
-    [self.refreshControl endRefreshing];
-}
+//- (void)refreshTable {
+//    [self.tableView reloadData];
+//    
+//    [self.refreshControl endRefreshing];
+//}
 
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(syncProgress:)
+                               withObject:notification
+                            waitUntilDone:YES];
         return;
     }
     
-    NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:DATACOLLECTION inSection:PARTS], nil];
+    NSString *recordType = notification.object;
     
-    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    Log(@"syncProgress: %@", recordType);
+    
+    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
+        // Force Counter on DataCollection TableRow to update.
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:DATACOLLECTION inSection:PARTS], nil];
+        
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (void)syncReady:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncReady:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
+    
+    NSString *recordType = notification.object;
+    
+    Log(@"syncReady: %@", recordType);
+    
+    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
+        // Force Counter on DataCollection TableRow to update.
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:DATACOLLECTION inSection:PARTS], nil];
+        
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 /*!
@@ -147,12 +172,6 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-    
-//    if (ARLNetwork.networkAvailable && self.inquiry.run) {
-//        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    }
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -168,14 +187,27 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+    
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        [INQCloudSynchronizer syncInquiry:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
+        [INQCloudSynchronizer syncInquiry:appDelegate.managedObjectContext
+                                inquiryId:self.inquiry.inquiryId];
         
-        [ARLCloudSynchronizer syncVisibilityForInquiry:appDelegate.managedObjectContext run:self.inquiry.run];
+        [ARLCloudSynchronizer syncVisibilityForInquiry:appDelegate.managedObjectContext
+                                                   run:self.inquiry.run];
 
-        [INQCloudSynchronizer syncInquiryUsers:appDelegate.managedObjectContext inquiryId:self.inquiry.inquiryId];
+        [INQCloudSynchronizer syncInquiryUsers:appDelegate.managedObjectContext
+                                     inquiryId:self.inquiry.inquiryId];
     }
 }
 
@@ -190,11 +222,13 @@ typedef NS_ENUM(NSInteger, sections) {
     [self.tableView reloadData];
 }
 
-/*!
- *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
- */
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
 }
 
 /*!
@@ -292,80 +326,6 @@ typedef NS_ENUM(NSInteger, sections) {
             }
             break;
 
-//        case HEADER:
-//        {
-//            // Setup & Remove Auto Constraints.
-//            
-//            // Fetch views by tag.
-//            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
-//            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-//            UIWebView *webView = (UIWebView *)[cell.contentView viewWithTag:3];
-//
-//            // Icon
-//            UIImage *image = [UIImage imageNamed:@"description"];
-//            imageView.image = image;
-//            imageView.backgroundColor = [UIColor clearColor];
-//            imageView.translatesAutoresizingMaskIntoConstraints = NO;
-//            
-//            [cell.contentView addSubview:imageView];
-//            
-//            // Tile
-//            textView.backgroundColor = [UIColor clearColor];
-//            textView.editable = NO;
-//            textView.text = self.inquiry.title;
-//            textView.translatesAutoresizingMaskIntoConstraints = NO;
-//            
-//            // Description
-//            webView.backgroundColor = [UIColor clearColor];
-//            [webView loadHTMLString:self.inquiry.desc baseURL:nil];
-//            webView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//            webView.layer.borderWidth = 1.0f;
-//            webView.translatesAutoresizingMaskIntoConstraints = NO;
-//            
-//            //Add Constraints
-//            NSDictionary *viewsDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                                             imageView, @"icon",
-//                                             textView, @"text",
-//                                             webView, @"description",
-//                                             nil];
-//            
-//            [cell addConstraints:[NSLayoutConstraint
-//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[icon(==%0.0f)]", image.size.height]
-//                                  options:NSLayoutFormatDirectionLeadingToTrailing
-//                                  metrics:nil
-//                                  views:viewsDictionary]];
-//
-//            [cell addConstraints:[NSLayoutConstraint
-//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-[icon(==%0.0f)]", image.size.width]
-//                                  options:NSLayoutFormatDirectionLeadingToTrailing
-//                                  metrics:nil
-//                                  views:viewsDictionary]];
-//            
-//            [cell.contentView addConstraints:[NSLayoutConstraint
-//                                              constraintsWithVisualFormat:@"H:[icon]-[text]-|"
-//                                              options:NSLayoutFormatDirectionLeadingToTrailing
-//                                              metrics:nil
-//                                              views:viewsDictionary]];
-//            
-//            
-//            float tw = tableView.frame.size.width - image.size.width - 3*8.0f;
-//            
-//            CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
-//            
-//            [cell addConstraints:[NSLayoutConstraint
-//                                  constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[text(==%f)]-[description]-|", size.height]
-//                                  options:NSLayoutFormatDirectionLeadingToTrailing
-//                                  metrics:nil
-//                                  views:viewsDictionary]];
-//
-//            [cell addConstraints:[NSLayoutConstraint
-//                                  constraintsWithVisualFormat:@"H:[icon]-[description]-|"
-//                                  options:NSLayoutFormatDirectionLeadingToTrailing
-//                                  metrics:nil
-//                                  views:viewsDictionary]];
-//        }
-//            break;
-            
         case PARTS : {
             switch (indexPath.item) {
                 case DESCRIPTION:

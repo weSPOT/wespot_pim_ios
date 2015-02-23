@@ -86,8 +86,6 @@ typedef NS_ENUM(NSInteger, groups) {
         
         self.fetchedResultsController.delegate = self;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-        
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
     }
@@ -100,55 +98,45 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (void) setInquiry:(Inquiry *)inquiry  {
     _inquiry = inquiry;
-    
-    [self setupFetchedResultsController];
 }
 
-/*!
- *  Notification, send when something changes in the NSManagedContext.
- *
- *  @param notification <#notification description#>
- */
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return ;
-    }
-    
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(syncProgress:)
+                               withObject:notification
+                            waitUntilDone:YES];
         return;
     }
     
-    NSInteger count = [self.fetchedResultsController.fetchedObjects count];
+    NSString *recordType = notification.object;
     
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+    Log(@"syncProgress: %@", recordType);
     
-    if (count != [self.fetchedResultsController.fetchedObjects count]) {
+    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         [self.tableView reloadData];
-        return;
     }
 }
 
-- (void)refreshTable
+- (void)syncReady:(NSNotification*)notification
 {
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch:&error];
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncReady:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
     
-    [self.tableView reloadData];
+    NSString *recordType = notification.object;
     
-    [self.refreshControl endRefreshing];
-}
-
-/*!
- *  Remove the Notification. Dealloc is the closest to ViewDidLoad.
- *
- *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
- */
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    Log(@"syncReady: %@", recordType);
+    
+    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
+        NSError *error = nil;
+        [self.fetchedResultsController performFetch:&error];
+        
+        [self.tableView reloadData];
+    }
 }
 
 /*!
@@ -157,11 +145,6 @@ typedef NS_ENUM(NSInteger, groups) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-    
-    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
 /*!
@@ -173,9 +156,6 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    //    NSError *error = nil;
-    //    [self.fetchedResultsController performFetch:&error];
     
     self.navigationController.toolbar.backgroundColor = [UIColor whiteColor];
     
@@ -186,19 +166,38 @@ typedef NS_ENUM(NSInteger, groups) {
     
     self.navigationController.title = @"Collect Data";
     self.navigationController.navigationBar.translucent= NO;
-
+    
+    // viewDidLoad does not seem to get called at all
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+    
     [self setupFetchedResultsController];
     
     [self.tableView reloadData];
-
+    
     [self.navigationController setToolbarHidden:YES];
-}
+    
+    if (ARLNetwork.networkAvailable && self.inquiry.run) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+  
+        [ARLCloudSynchronizer syncVisibilityForInquiry:appDelegate.managedObjectContext
+                                                   run:self.inquiry.run];
+    }}
 
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
 }
 
 /*!

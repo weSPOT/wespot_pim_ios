@@ -246,135 +246,56 @@ typedef NS_ENUM(NSInteger, responses) {
     [self.fetchedResultsController performFetch:&error];
     
     self.fetchedResultsController.delegate = self;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged:) name:NSManagedObjectContextDidSaveNotification object:nil];
-    
-    [self.collectionView reloadData];
 }
 
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if ([notification object] == appDelegate.managedObjectContext) {
-//        return ;
-//    }
-//    
-//    if (![NSThread isMainThread]) {
-//        [self performSelectorOnMainThread:@selector(contextChanged:) withObject:notification waitUntilDone:YES];
-//        return;
-//    }
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncProgress:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
     
-    // Existing Code...
-//    @autoreleasepool {
-//        NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
-//        
-//        for (NSManagedObject *obj in deletedObjects){
-//            @autoreleasepool {
-//                if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-//                    GeneralItem* changedObject = (GeneralItem*) obj;
-//                    if (self.generalItem == changedObject) {
-//                        
-//                        DLog(@"little less easy... I was deleted");
-//                        
-//                        [self.navigationController popViewControllerAnimated:NO];
-//                        [self dismissViewControllerAnimated:TRUE completion:nil];
-//                    }
-//                }
-//            }
-//        }
-//    }
+    NSString *recordType = notification.object;
     
-    // New Code.
-    //    if ([ARLAppDelegate.theLock tryLock]) {
-    //        [ARLAppDelegate.theLock unlock];
+    Log(@"syncProgress: %@", recordType);
     
-    // See if there are any Inquiry objects added and if so, reload the collectionView.
-//    @autoreleasepool {
-//        NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-//        
-//        for (NSManagedObject *obj in insertedObjects){
-//            @autoreleasepool {
-//                if ([[obj entity].name isEqualToString:@"Inquiry"]) {
-//                    
-//                    NSError *error = nil;
-//                    [self.fetchedResultsController performFetch:&error];
-//                    
-//                    ELog(error);
-//                    
-//                    [self.collectionView reloadData];
-//                    
-//                    return;
-//                }
-//            }
-//        }
-//    }
-    
-//    [self.fetchedResultsController fetchRequest];
-    
-    // Existing Code...
-//    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-//    
-//    for(NSManagedObject *obj in updatedObjects){
-//        if ([[obj entity].name isEqualToString:@"GeneralItem"]) {
-//            GeneralItem* changedObject = (GeneralItem*) obj;
-//            if (self.generalItem == changedObject) {
-//                self.navigationItem.title = self.generalItem.name;
-//                
-//                DLog(@"TEXT='%@'", self.generalItem.richText);
-//                
-//                // warning Replace the the TableView top Section.
-//                // self.webView loadHTMLString:self.generalItem.richText baseURL:nil];
-//            }
-//        }
-//    }
-
-//    @autoreleasepool {
-//        NSArray *indexPaths = [[NSArray alloc] init];
-//        BOOL fetched = NO;
-//        
-//        for(NSManagedObject *obj in updatedObjects) {
-//            @autoreleasepool {
-//                if ([[obj entity].name isEqualToString:@"Response"]) {
-//                    if (!fetched) {
-//                        NSError *error = nil;
-//                        [self.fetchedResultsController performFetch:&error];
-//                        fetched=YES;
-//                    }
-//                    
-//                    Response *updated = (Response *)obj;
-//                    
-//                    // workaround for indexPathForObject:obj not working.
-//                    for (Response *response in self.fetchedResultsController.fetchedObjects) {
-//                        if ([response.objectID isEqual:updated.objectID]) {
-//                            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:response];
-//                            if (indexPath) {
-//                                indexPaths = [indexPaths arrayByAddingObject:indexPath];
-//                            }
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        
-//        
-//        if (indexPaths.count != 0) {
-//            [self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
-//        }
-//    }
-    
-    //[self.collectionView reloadData]; //reloadItemsAtIndexPaths:indexPaths];
-    
-//    [self.fetchedResultsController fetchRequest];
-//    [self.collectionView reloadData];
+    if ([NSStringFromClass([Response class]) isEqualToString:recordType]) {
+        //
+    }
 }
 
-/*!
- *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
- */
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)syncReady:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncReady:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
+    
+    NSString *recordType = notification.object;
+    
+    Log(@"syncReady: %@", recordType);
+    
+    if ([NSStringFromClass([Response class]) isEqualToString:recordType]) {
+        // Comparing cnt fails because the code already does a performFetch before we enter here (because we switch views to add this one is rebuilt).
+        // NSUInteger cntBefore = [[self.fetchedResultsController fetchedObjects] count];
+        
+        NSError *error = nil;
+        [self.fetchedResultsController performFetch:&error];
+        
+        // NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
+        
+        // if (cntBefore!=cntAfter) {
+            // Log(@"Responses: %d -> %d", cntBefore, cntAfter);
+            
+            [self.collectionView reloadData];
+        // }
+    }
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -403,7 +324,19 @@ typedef NS_ENUM(NSInteger, responses) {
         self.withValue = YES;
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+    
     [self setupFetchedResultsController];
+    
+    [self.collectionView reloadData];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -449,7 +382,11 @@ typedef NS_ENUM(NSInteger, responses) {
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
     
     self.navigationController.toolbarHidden = YES;
     

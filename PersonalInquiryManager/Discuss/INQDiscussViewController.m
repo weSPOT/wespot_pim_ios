@@ -75,69 +75,54 @@ typedef NS_ENUM(NSInteger, friends) {
     
     self.fetchedResultsController.delegate = self;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contextChanged:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:nil];
-    
     DLog(@"RunId: %@", inquiry.run.runId);
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
     
-//    if (ARLNetwork.networkAvailable) {
-//        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
-//                                 inquiryId:inquiry.inquiryId];
-//    }
-    
     DLog(@"Messages: %d", [[self.fetchedResultsController fetchedObjects] count]);
 }
 
-- (void)contextChanged:(NSNotification*)notification
+- (void)syncProgress:(NSNotification*)notification
 {
-    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([notification object] == appDelegate.managedObjectContext) {
-        return;
-    }
-    
+    // Nothing yet
+}
+
+- (void)syncReady:(NSNotification*)notification
+{
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(contextChanged:)
+        [self performSelectorOnMainThread:@selector(syncReady:)
                                withObject:notification
                             waitUntilDone:YES];
         return;
     }
     
-    //NSInteger count = [self.fetchedResultsController.fetchedObjects count];
-    //
-    //    NSError *error = nil;
-    //    [self.fetchedResultsController performFetch:&error];
-    //
-    //    if (count != [self.fetchedResultsController.fetchedObjects count]) {
-    //        [self.tableView reloadData];
-    //    }
+    NSString *recordType = notification.object;
     
+    // Log(@"syncReady:%@", recordType);
     
-    // See if there are any Inquiry objects added and if so, reload the tableView.
-    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
-    
-#warning This does not see newly added messages.
-    
-    for (NSManagedObject *obj in insertedObjects) {
-        if ([[obj entity].name isEqualToString:@"Message"]) {
-            NSError *error = nil;
-            [self.fetchedResultsController performFetch:&error];
+    if ([NSStringFromClass([Message class]) isEqualToString:recordType]) {
+        NSError *error = nil;
+      
+        NSUInteger cntBefore = [[self.fetchedResultsController fetchedObjects] count];
+        
+        [self.fetchedResultsController performFetch:&error];
+        
+        ELog(error);
+        
+        NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
+        
+        if (cntBefore!=cntAfter) {
+            Log(@"Messages: %d -> %d", cntBefore, cntAfter);
             
             [self.tableView reloadData];
             
-            [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0
+                                                                       inSection:SEND]
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:NO];
         }
     }
-    
-//    NSError *error = nil;
-//    
-//    [self.fetchedResultsController performFetch:&error];
-//    
-//    [self.tableView reloadData];
 }
 
 ///*!
@@ -168,23 +153,50 @@ typedef NS_ENUM(NSInteger, friends) {
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncProgress:)
+                                                 name:INQ_SYNCPROGRESS
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncReady:)
+                                                 name:INQ_SYNCREADY
+                                               object:nil];
+
     [self setupFetchedResultsController];
     
     [self.tableView reloadData];
     
+    //    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0
+    //                                                               inSection:SEND]
+    //                          atScrollPosition:UITableViewScrollPositionTop
+    //                                  animated:NO];
+    
+    // Only works in viewDidAppear.
     [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
+    
+    if (ARLNetwork.networkAvailable) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
+                                 inquiryId:self.inquiryId];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+   // [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
+
     [self.navigationController setToolbarHidden:YES];
 }
 
@@ -538,9 +550,9 @@ typedef NS_ENUM(NSInteger, friends) {
                 [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
             }
             
-            NSError *error = nil;
+            //NSError *error = nil;
             
-            [self.fetchedResultsController performFetch:&error];
+            // [self.fetchedResultsController performFetch:&error];
             
             textField.text = @"";
             

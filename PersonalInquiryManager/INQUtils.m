@@ -132,4 +132,22 @@
     view.layer.mask = maskLayer;
 }
 
+//+ (NSString *)entityName:(NSString *)stringFromClass {
+//    static NSString *name:
+//    static dispatch_once_t once;
+//    dispatch_once(&once, ^{
+//        NSString *myName = NSStringFromClass(self);
+//        NSManagedObjectModel *model = [(AppDelegate *)[UIApplication delegate] managedObjectModel];
+//        for (NSEntityDescription *description in model.entities) {
+//            if ([description.managedObjectClassName isEqualToString:myName]) {
+//                name = description.name;
+//                break;
+//            }
+//        }
+//        [NSException raise:NSInvalidArgumentException
+//                    format:@"no entity found that uses %@ as its class", myName];
+//    });
+//    return name;
+//}
+
 @end

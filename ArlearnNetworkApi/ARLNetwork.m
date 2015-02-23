@@ -45,9 +45,9 @@
     ELog(error);
     
     if (jsonData!=nil && error!=nil) {
-        NSString* data = [[NSString alloc] initWithData:jsonData
-                                               encoding:NSUTF8StringEncoding];
-        Log(@"Error: %@", data);
+        //        NSString* data = [[NSString alloc] initWithData:jsonData
+        //                                               encoding:NSUTF8StringEncoding];
+        Log(@"Error: %@", urlString);
     }
     
     return json;

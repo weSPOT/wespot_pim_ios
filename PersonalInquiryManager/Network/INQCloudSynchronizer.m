@@ -244,6 +244,9 @@
                         //                [appDelegate.managedObjectContext deleteObject:run];
                         //            }
                         [self.context deleteObject:inquiry];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                            object:NSStringFromClass([Inquiry class])];
                     }
                 }
             }
@@ -336,6 +339,9 @@
                     //        }
                     
                     [INQLog SaveNLog:self.context];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                        object:NSStringFromClass([Inquiry class])];
                 }
             }
         }
@@ -357,6 +363,9 @@
     }
     
     self.syncInquiries = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Inquiry class])];
 }
 
 /*!
@@ -459,6 +468,9 @@
     }
     
     self.syncInquiry = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Inquiry class])];
 }
 
 /*!
@@ -494,6 +506,9 @@
                             [Account accountWithDictionary:user inManagedObjectContext:self.context];
                         }
                     }
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                        object:NSStringFromClass([Account class])];
                 }
             }
         }
@@ -501,6 +516,9 @@
         if (ARLAppDelegate.SyncAllowed) {
             [INQLog SaveNLog:self.context];
         }
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                            object:NSStringFromClass([Account class])];
     }
     
     self.syncInquiryUsers = NO;
@@ -525,9 +543,11 @@
     
     do {
         @autoreleasepool {
-            NSDictionary *tmDict = (token && token.length!=0) ?
-            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
-            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
+#warning DISABLED ?FROM for now as it's not working properly it seems.
+            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+//            NSDictionary *tmDict = (token && token.length!=0) ?
+//            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
+//            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
             
             //    {
             //        messages =     (
@@ -555,18 +575,22 @@
             if ([tmDict objectForKey:@"serverTime"]) {
                 serverTime = [tmDict objectForKey:@"serverTime"];
             }
-            token = [tmDict valueForKey:@"resumptionToken"];
             
+            token = [tmDict valueForKey:@"resumptionToken"];
+        
             NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
             
             tmDict = nil;
             
-            Log(@"%d Messages", [messages count]);
+            Log(@"Retrieved %d Messages", [messages count]);
             
             for (NSDictionary *mDict in messages)
             {
                 [Message messageWithDictionary:mDict inManagedObjectContext:self.context];
                 // Done in messageWithDictionary [INQLog SaveNLog:self.context];
+                
+//              [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+//                                                                    object:NSStringFromClass([Message class])];
             }
         }
     } while (token && token.length>0);
@@ -583,6 +607,9 @@
     //}
     
     self.syncMessages = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Message class])];
 }
 
 @end

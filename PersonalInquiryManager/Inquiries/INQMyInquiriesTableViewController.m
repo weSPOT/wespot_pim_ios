@@ -141,13 +141,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
-/*!
- *  See http://stackoverflow.com/questions/6469209/objective-c-where-to-remove-observer-for-nsnotification
- */
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     

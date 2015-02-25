@@ -59,11 +59,11 @@ static BOOL _syncAllowed = NO;
     return _theAbortLock;
 }
 
-+ (BOOL *) SyncAllowed {
++ (BOOL) SyncAllowed {
     return _syncAllowed;
 }
 
-+ (void) setSyncAllowed:(BOOL *) value {
++ (void) setSyncAllowed:(BOOL) value {
     _syncAllowed = value;
 }
 
@@ -215,8 +215,6 @@ static BOOL _syncAllowed = NO;
     // Synchronize preferences.
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [self doRegisterForAPN:application];
-    
     return YES;
 }
 
@@ -337,7 +335,7 @@ static BOOL _syncAllowed = NO;
 
 #pragma mark - APN
 
-#warning APN CODE AHEAD
+// #warning APN CODE AHEAD
 
 /*!
  * Register for APN with Apple.
@@ -346,22 +344,27 @@ static BOOL _syncAllowed = NO;
  */
 - (void)doRegisterForAPN:(UIApplication *)application
 {
-#warning APN REGISTRATION CODE DISABLED FOR NOW.
+    // #warning APN REGISTRATION CODE DISABLED FOR NOW.
     
-    //    // See http://stackoverflow.com/questions/24216632/remote-notification-ios-8
-    //    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {    UIUserNotificationSettings *settings =
-    //#ifdef __IPHONE_8_0
-    //        //Right, that is the point
-    //        [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-    //                                                      |UIRemoteNotificationTypeSound) categories:nil];
-    //        [application registerUserNotificationSettings:settings];
-    //#endif
-    //    } else {
-    //        //register to receive notifications
-    //        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound;
-    //        [application registerForRemoteNotificationTypes:myTypes];
-    //        
-    //    }
+    // See http://stackoverflow.com/questions/24216632/remote-notification-ios-8
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {    UIUserNotificationSettings *settings =
+#ifdef __IPHONE_8_0
+        //Right, that is the point
+        [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge |
+                                                      UIRemoteNotificationTypeSound |
+                                                      UIRemoteNotificationTypeAlert)
+                                          categories:nil];
+        [application registerUserNotificationSettings:settings];
+#endif
+    } else {
+        //register to receive notifications
+        UIRemoteNotificationType myTypes =
+        UIRemoteNotificationTypeBadge |
+        UIRemoteNotificationTypeSound |
+        UIRemoteNotificationTypeAlert;
+        
+        [application registerForRemoteNotificationTypes:myTypes];
+    }
 }
 
 //TESTCODE: Remote notifications
@@ -399,13 +402,22 @@ static BOOL _syncAllowed = NO;
     //!!!: This UID behaves very different on iOS 1-6 and iOS 7.
     UIDevice *device = [UIDevice currentDevice];
     
-    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
-    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [device.identifierForVendor UUIDString]);
-    
     [[NSUserDefaults standardUserDefaults] setObject:[device.identifierForVendor UUIDString]
                                               forKey:@"deviceUniqueIdentifier"];
-#warning hardcoded e-mail.
-    [ARLNotificationSubscriber registerAccount:@"2:wim@vander-vegt.nl"];
+
+    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
+    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
+    
+    Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
+    
+    if ([ARLNetwork RegisteredForAPN] != YES &&
+          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"] &&
+          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]) {
+        NSString *localId  = [NSString stringWithFormat:@"%@:%@",
+                              [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+                              [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
+        [ARLNetwork registerAccount:localId];
+    }
 }
 
 #ifdef __IPHONE_8_0
@@ -442,6 +454,11 @@ static BOOL _syncAllowed = NO;
 - (void)Implement:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     //TODO: Implement
     Log(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.description);
+    
+    [[NSUserDefaults standardUserDefaults] setObject:FALSE
+                                              forKey:@"deviceToken"];
+    [[NSUserDefaults standardUserDefaults] setObject:FALSE
+                                              forKey:@"deviceUniqueIdentifier"];
 }
 
 #pragma mark - CoreData
@@ -696,6 +713,8 @@ static BOOL _syncAllowed = NO;
     ARLAppDelegate.SyncAllowed = NO;
     
     [ARLAccountDelegator deleteCurrentAccount:self.managedObjectContext];
+    
+    [ARLNetwork setRegisteredForAPN:NO];
     
     _CurrentAccount = nil;
 }

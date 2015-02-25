@@ -9,6 +9,17 @@
 #import "ARLNotificationSubscriber.h"
 
 @implementation ARLNotificationSubscriber
+
+//static BOOL _RegisteredForAPN = NO;
+//
+//+ (BOOL *) RegisteredForAPN {
+//    return _RegisteredForAPN;
+//}
+//
+//+ (void) setRegisteredForAPN:(BOOL *) value {
+//    _RegisteredForAPN = value;
+//}
+
 //{
 //    NSMutableDictionary * notDict;
 //}
@@ -30,21 +41,21 @@
 //    return self;
 //}
 
-/*!
- *  Register a APN Notification Account.
- *
- *  @param fullId <#fullId description#>
- */
-+ (void) registerAccount: (NSString *) fullId {
-    NSString *deviceUniqueIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"];
-    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    
-    [self registerDevice:deviceToken
-                 withUID:deviceUniqueIdentifier
-             withAccount:fullId
-            withBundleId:bundleIdentifier];
-}
+///*!
+// *  Register a APN Notification Account.
+// *
+// *  @param fullId <#fullId description#>
+// */
+//+ (void) registerAccount: (NSString *) fullId {
+//    NSString *deviceUniqueIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"];
+//    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+//    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+//    
+//    [self registerDevice:deviceToken
+//                 withUID:deviceUniqueIdentifier
+//             withAccount:fullId
+//            withBundleId:bundleIdentifier];
+//}
 
 /*!
  *  Register a device for APN Notifications.
@@ -54,40 +65,52 @@
  *  @param account                <#account description#>
  *  @param bundleIdentifier       <#bundleIdentifier description#>
  */
-+ (void) registerDevice: (NSString *) deviceToken
-                withUID: (NSString *) deviceUniqueIdentifier
-            withAccount: (NSString *) account
-           withBundleId: (NSString *) bundleIdentifier {
-    
-    //FIXME: Removed account check.
-    //if (!account) return;
-    
-    //TODO: Hardcode bundleIdentifier/account with values from weSPOT PIM.
-    Log(@"bundleIdentifier:       %@",bundleIdentifier);
-    Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
-    Log(@"account:                %@",account);
-    Log(@"deviceToken:            %@",deviceToken);
-    Log(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);
-    
-    // NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-    
-    NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                         @"org.celstec.arlearn2.beans.notification.APNDeviceDescription",   @"type",
-                                         account,                                                           @"account",
-                                         deviceUniqueIdentifier,                                            @"deviceUniqueIdentifier",
-                                         deviceToken,                                                       @"deviceToken",
-                                         @"net.wespot.PersonalInquiryManager",                              @"bundleIdentifier",
-                                         nil];
- 
-    NSData *postData = [[NSData alloc] initWithData: [NSJSONSerialization dataWithJSONObject:apnRegistrationBean
-                                                       options:0
-                                                         error:nil]];
-    
-    [self executeARLearnPOST:@"notifications/apn"
-                    postData:postData
-                  withAccept:nil
-             withContentType:applicationjson];
-}
+//+ (void) registerDevice: (NSString *) deviceToken
+//                withUID: (NSString *) deviceUniqueIdentifier
+//            withAccount: (NSString *) account
+//           withBundleId: (NSString *) bundleIdentifier {
+//    
+//    //FIXME: Removed account check.
+//    //if (!account) return;
+//    
+//    //TODO: Hardcode bundleIdentifier/account with values from weSPOT PIM.
+//    Log(@"bundleIdentifier:       %@",bundleIdentifier);
+//    Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
+//    Log(@"account:                %@",account);
+//    Log(@"deviceToken:            %@",deviceToken);
+//    Log(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);
+//    
+//    // NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+//    
+//    NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                         @"org.celstec.arlearn2.beans.notification.APNDeviceDescription",   @"type",
+//                                         account,                                                           @"account",
+//                                         deviceUniqueIdentifier,                                            @"deviceUniqueIdentifier",
+//                                         deviceToken,                                                       @"deviceToken",
+//                                         @"net.wespot.PersonalInquiryManager",                              @"bundleIdentifier",
+//                                         nil];
+// 
+//    NSData *postData = [[NSData alloc] initWithData: [NSJSONSerialization dataWithJSONObject:apnRegistrationBean
+//                                                                                     options:0
+//                                                                                       error:nil]];
+//    
+//    
+////    + (id) executeARLearnPost:(NSString *)path
+////postData:(NSData *)data
+////withAccept:(NSString *)acceptValue
+////withContentType:(NSString *)ctValue
+//    
+//    NSDictionary *result = (NSDictionary *)[ARLNetwork executeARLearnPOST:@"notifications/apn"
+//                                                             postData:postData
+////                                                           withAccept:nil
+//                                                      withContentType:applicationjson];
+//    
+//    Log(@"registerDevice: %@", result);
+//    
+//#warning TODO Check Return code when registering.
+//    
+//    [ARLNotificationSubscriber setRegisteredForAPN:YES];
+//}
 
 /*!
  *  Prepare a HTTP Request.
@@ -97,18 +120,18 @@
  *
  *  @return <#return value description#>
  */
-+ (NSMutableURLRequest *) prepareRequest: (NSString *)method
-                          requestWithUrl: (NSString *) url {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:60.0];
-    [request setHTTPMethod:method];
-    
-    [request setValue:applicationjson
-   forHTTPHeaderField:acceptHeader];
-    
-    return request;
-}
+//+ (NSMutableURLRequest *) prepareRequest: (NSString *)method
+//                          requestWithUrl: (NSString *) url {
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
+//                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+//                                                       timeoutInterval:60.0];
+//    [request setHTTPMethod:method];
+//    
+//    [request setValue:applicationjson
+//   forHTTPHeaderField:acceptHeader];
+//    
+//    return request;
+//}
 
 /*!
  *  Perform a sync http POST call.
@@ -120,54 +143,56 @@
  *
  *  @return <#return value description#>
  */
-+ (id) executeARLearnPOST: (NSString *) path
-                 postData: (NSData *) data
-               withAccept: (NSString *) acceptValue
-          withContentType: (NSString *) ctValue
-{
-    NSString* urlString;
-    
-    if ([path hasPrefix:@"/"]) {
-        urlString = [NSString stringWithFormat:@"%@%@", streetlearnUrlUrl, path];
-    } else {
-        urlString = [NSString stringWithFormat:@"%@/rest/%@", streetlearnUrlUrl, path];
-    }
-    
-    NSMutableURLRequest *request = [self prepareRequest:@"POST" requestWithUrl:urlString];
-    
-    [request setHTTPBody:data];
-    
-    if (ctValue) {
-        [request setValue:ctValue forHTTPHeaderField:contenttypeHeader];
-    }
-    
-    if (acceptValue) {
-        [request setValue:acceptValue forHTTPHeaderField:acceptHeader];
-    }
-    
-    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
-    NSError *error = [[NSError alloc] init];
-
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
-                                              returningResponse:&response
-                                                          error:&error];
-   
-    Log(@"Status Code: %d",[response statusCode]);
-    if ([error code]) {
-        ELog(error);
-    }
-    
-    if ([acceptValue isEqualToString:textplain]) {
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        // return [NSString stringWithUTF8String:[jsonData bytes]];
-    }
-    
-    // [ARLUtils LogJsonData:jsonData url:urlString];
-    
-    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
-                                                      options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves
-                                                        error:nil] : @"error";
-}
+//+ (id) executeARLearnPOST: (NSString *) path
+//                 postData: (NSData *) data
+//               withAccept: (NSString *) acceptValue
+//          withContentType: (NSString *) ctValue
+//{
+//    NSString* urlString;
+//    
+//    if ([path hasPrefix:@"/"]) {
+//        urlString = [NSString stringWithFormat:@"%@%@", streetlearnUrlUrl, path];
+//    } else {
+//        urlString = [NSString stringWithFormat:@"%@/rest/%@", streetlearnUrlUrl, path];
+//    }
+//    
+//    NSMutableURLRequest *request = [self prepareRequest:@"POST" requestWithUrl:urlString];
+//    
+//    [request setHTTPBody:data];
+//    
+//    if (ctValue) {
+//        [request setValue:ctValue forHTTPHeaderField:contenttypeHeader];
+//    }
+//    
+//    if (acceptValue) {
+//        [request setValue:acceptValue forHTTPHeaderField:acceptHeader];
+//    }
+//    
+//    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+//    NSError *error = [[NSError alloc] init];
+//    
+//    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+//                                             returningResponse:nil //&response
+//                                                         error:nil]; //&error
+//    
+//    Log(@"Status Code: %d",[response statusCode]);
+//    if ([error code]) {
+//        ELog(error);
+//    }
+//    
+//    if ([acceptValue isEqualToString:textplain]) {
+//        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        // return [NSString stringWithUTF8String:[jsonData bytes]];
+//    }
+//    
+//    Log("Response: %@", jsonData);
+//    
+//    // [ARLUtils LogJsonData:jsonData url:urlString];
+//    //[response ]
+//    return response ? [NSJSONSerialization JSONObjectWithData:response
+//                                                      options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves
+//                                                        error:nil] : @"error";
+//}
 
 //- (void) dispatchMessage: (NSDictionary *) message {
 //    if (ARLNetwork.networkAvailable) {

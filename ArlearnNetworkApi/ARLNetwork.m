@@ -34,9 +34,17 @@
     NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
     [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
-    NSError *error = nil;
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
     
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&response
+                                                         error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
+    NSError *error = nil;
     
     // [self dumpJsonData:jsonData url:urlString];
     id json = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
@@ -58,13 +66,25 @@
     
     // DLog(@"%@", urlString);
     
-    NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
+    NSMutableURLRequest *request = [self prepareRequest:@"GET"
+                                         requestWithUrl:urlString];
     //GoogleLogin auth=
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json"
+   forHTTPHeaderField:@"Accept"];
     
-    [request setValue:badges_authorization_key forHTTPHeaderField:@"Authorization"];
+    [request setValue:badges_authorization_key
+   forHTTPHeaderField:@"Authorization"];
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&response
+                                                         error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
     
     [self dumpJsonData:jsonData url:urlString];
@@ -82,11 +102,22 @@
     [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     
     [request setHTTPBody:data];
-    if (ctValue) [request setValue:ctValue forHTTPHeaderField:contenttype];
-
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    if (ctValue) {
+        [request setValue:ctValue forHTTPHeaderField:contenttype];
+    }
+    
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&response
+                                                         error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
-
+    
     // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
@@ -95,9 +126,19 @@
 + (id) executeARLearnGet:(NSString *)path {
     NSString* urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
     NSMutableURLRequest *request = [self prepareRequest:@"GET" requestWithUrl:urlString];
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
-  
+    
     // [self dumpJsonData:jsonData url:urlString];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
@@ -119,11 +160,25 @@
 
     NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
     [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
-
+    
     [request setHTTPBody:data];
-    if (ctValue) [request setValue:ctValue forHTTPHeaderField:contenttype];
-    if (acceptValue) [request setValue:acceptValue forHTTPHeaderField:accept];
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    if (ctValue) {
+        [request setValue:ctValue forHTTPHeaderField:contenttype];
+    }
+    if (acceptValue){
+        [request setValue:acceptValue forHTTPHeaderField:accept];
+    }
+    
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+
     NSError *error = nil;
     if ([acceptValue isEqualToString:textplain]) {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -132,7 +187,7 @@
     
     // [self dumpJsonData:jsonData url:urlString];
     
-    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"returnin gsth";
+    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : @"error";
 }
 
 +(void) dumpJsonData:(NSData *)jsonData
@@ -397,11 +452,43 @@
 
 #pragma mark - APN
 
+static BOOL _RegisteredForAPN = NO;
+
++ (BOOL) RegisteredForAPN {
+    return _RegisteredForAPN;
+}
+
++ (void) setRegisteredForAPN:(BOOL) value {
+    _RegisteredForAPN = value;
+}
+
+/*!
+ *  Register a APN Notification Account.
+ *
+ *  @param fullId <#fullId description#>
+ */
++ (void) registerAccount: (NSString *) fullId {
+    NSString *deviceUniqueIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"];
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    
+    [self registerDevice:deviceToken
+                 withUID:deviceUniqueIdentifier
+             withAccount:fullId
+            withBundleId:bundleIdentifier];
+}
+
 + (void) registerDevice:(NSString *)deviceToken
                 withUID:(NSString *)deviceUniqueIdentifier
             withAccount:(NSString *)account
-           withBundleId:(NSString *)bundleIdentifier{
+           withBundleId:(NSString *)bundleIdentifier {
     if (!account) return;
+    
+    Log(@"bundleIdentifier:       %@",bundleIdentifier);
+    Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
+    Log(@"account:                %@",account);
+    Log(@"deviceToken:            %@",deviceToken);
+    Log(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);
     
     NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
                                          @"org.celstec.arlearn2.beans.notification.APNDeviceDescription",   @"type",
@@ -413,8 +500,13 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:apnRegistrationBean options:0 error:nil];
     
-    [self executeARLearnPost:@"notifications/apn" postData:postData withAccept:nil withContentType:applicationjson ];
+    id jsoNData = [self executeARLearnPost:@"notifications/apn"
+                                  postData:postData withAccept:nil
+                           withContentType:applicationjson ];
     
+    if ([@"error" isEqualToString:[NSString stringWithFormat:@"%@", jsoNData]]) {
+        [ARLNetwork setRegisteredForAPN:YES];
+    }
 }
 
 #pragma mark - Actions
@@ -545,8 +637,16 @@
     // uploadUrl = [uploadUrl stringByReplacingOccurrencesOfString:@"localhost:8888" withString:@"192.168.1.8:8080"];
     [request setURL:[NSURL URLWithString: uploadUrl]];
     
-    [NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
-
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    [NSURLConnection sendSynchronousRequest:request
+                          returningResponse:&response
+                                      error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     DLog(@"Uploaded %@ - %@", contentTypeIn, fileName);
 }
 
@@ -567,7 +667,9 @@
 }
 
 + (NSDictionary *) search:(NSString *)query {
-    return [self executeARLearnPostWithAuthorization:@"myGames/search" postData:[self stringToData:query] withContentType:applicationjson];
+    return [self executeARLearnPostWithAuthorization:@"myGames/search"
+                                            postData:[self stringToData:query]
+                                     withContentType:applicationjson];
 }
 
 + (NSDictionary *) featured {

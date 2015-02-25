@@ -925,6 +925,11 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="aaX-70-08s"/>
+                        <barButtonItem title="APN" id="Vdz-hI-23V">
+                            <connections>
+                                <action selector="apnButtonAction:" destination="mph-xo-zGo" id="46y-Jt-rdx"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem title="Sync" id="aYp-OI-cLx">
                             <connections>
                                 <action selector="syncButtonAction:" destination="mph-xo-zGo" id="4RQ-bp-Y6T"/>
@@ -939,6 +944,7 @@
                     <navigationItem key="navigationItem" id="vFt-AZ-sMZ"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="apnButton" destination="Vdz-hI-23V" id="W0j-0M-ltp"/>
                         <outlet property="logoutButton" destination="LcJ-g6-OSF" id="fIF-sW-Wpd"/>
                         <outlet property="spacerButton" destination="aaX-70-08s" id="l4K-Xt-cEc"/>
                         <outlet property="syncButton" destination="aYp-OI-cLx" id="ymB-gW-gXK"/>

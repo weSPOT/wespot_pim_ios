@@ -447,8 +447,8 @@ typedef NS_ENUM(NSInteger, sections) {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"QuestionView"];
             
-            NSDictionary *json = [ARLNetwork getQuestions:self.inquiry.inquiryId];
-            NSArray *questions = [json valueForKey:@"result"];
+            NSDictionary *json1 = [ARLNetwork getQuestions:self.inquiry.inquiryId];
+            NSArray *questions = [json1 valueForKey:@"result"];
             //            {
             //                result =     (
             //                              {
@@ -469,6 +469,11 @@ typedef NS_ENUM(NSInteger, sections) {
             
             // Pass the parameters to render.
             [newViewController performSelector:@selector(setQuestions:) withObject:questions];
+        
+            NSDictionary *json2 = [ARLNetwork getAnswers:self.inquiry.inquiryId];
+            NSArray *answers = [json2 valueForKey:@"result"];
+        
+            [newViewController performSelector:@selector(setAnswers:) withObject:answers];
         }
             break;
         

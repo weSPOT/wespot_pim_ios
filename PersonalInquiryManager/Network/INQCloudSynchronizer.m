@@ -544,10 +544,10 @@
     do {
         @autoreleasepool {
 #warning DISABLED ?FROM for now as it's not working properly it seems.
-            NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
-//            NSDictionary *tmDict = (token && token.length!=0) ?
-//            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
-//            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
+           // NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+            NSDictionary *tmDict = (token && token.length!=0) ?
+            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
+            [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
             
             //    {
             //        messages =     (
@@ -595,7 +595,7 @@
         }
     } while (token && token.length>0);
     
-    if (serverTime) {
+    if (serverTime && [serverTime intValue] != 0) {
         [SynchronizationBookKeeping createEntry:@"messages"
                                            time:serverTime
                                       idContext:self.inquiryId

@@ -90,6 +90,12 @@
 + (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId;
 + (NSDictionary *) itemVisibilityForRun:(NSNumber *)runId
                                    from:(NSNumber *)from;
+//APN
++ (BOOL) RegisteredForAPN;
+
++ (void) setRegisteredForAPN:(BOOL) value;
+
++ (void) registerAccount: (NSString *) fullId;
 
 + (void) registerDevice:(NSString *)deviceToken
                 withUID:(NSString *)deviceUniqueIdentifier

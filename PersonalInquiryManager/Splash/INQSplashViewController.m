@@ -72,9 +72,21 @@
             
             newViewController = nil;
             
-            // Log("Initial Sync at Startup");
+#warning APN CODE
+//            if (![ARLNetwork RegisteredForAPN] != YES &&
+//                [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"] &&
+//                [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]) {
+//                NSString *localId  = [NSString stringWithFormat:@"%@:%@",
+//                                      [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+//                                      [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
+//                [ARLNetwork registerAccount:localId];
+//            }
             
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+            
+            [appDelegate doRegisterForAPN:[UIApplication sharedApplication]];
+            
+            // Log("Initial Sync at Startup");
             
             // if ([appDelegate respondsToSelector:@selector(syncData)]) {
             NSInteger *count = [appDelegate entityCount:@"Inquiry"];
@@ -442,9 +454,9 @@
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"localId"] forKey:@"accountLocalId"];
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
         
-        // veg 26-06-2014 disabled because notification api is disabled.
-        //        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-        //        [[ARLNotificationSubscriber sharedSingleton] registerAccount:fullId];
+        // veg 26-06-2014 disabled because notification api is disabled. moved to login.
+        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+        [ARLNetwork registerAccount:fullId];
         
         [self navigateBack];
     }

@@ -95,10 +95,18 @@
         [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     }
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:nil];
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
-  
-//  [self dumpJsonData2:jsonData url:url];
+    
+    //  [self dumpJsonData2:jsonData url:url];
     
     return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
 }
@@ -125,7 +133,15 @@
         [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     }
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:nil];
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
     
     //[self dumpJsonData2:jsonData url:url];
@@ -154,7 +170,16 @@
         [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
     }
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:nil];
+    
+    if (response.statusCode!=200) {
+        Log(@"%@ %d", response.URL, response.statusCode);
+    }
+    
     NSError *error = nil;
     
     //[self dumpJsonData2:jsonData url:url];

@@ -175,7 +175,7 @@
         for (NSDictionary *run in [dict objectForKey:@"runs"]) {
             [Run runWithDictionary:run inManagedObjectContext:self.context];
         }
-        if (serverTime) {
+        if (serverTime && [serverTime intValue] != 0) {
             [SynchronizationBookKeeping createEntry:@"myRuns" time:serverTime inManagedObjectContext:self.context];
         }
     }
@@ -195,7 +195,7 @@
             [Game gameWithDictionary:game inManagedObjectContext:self.context];
         }
         
-        if (serverTime) {
+        if (serverTime && [serverTime intValue] != 0) {
             [SynchronizationBookKeeping createEntry:@"myGames" time:serverTime inManagedObjectContext:self.context];
         }
     }
@@ -257,7 +257,7 @@
                             inManagedObjectContext:self.context];
         }
         
-        if (serverTime) {
+        if (serverTime && [serverTime intValue] != 0) {
             [SynchronizationBookKeeping createEntry:@"generalItems"
                                                time:serverTime
                                           idContext:self.gameId
@@ -320,7 +320,7 @@
             }
         }
         
-        if (serverTime) {
+        if (serverTime && [serverTime intValue] != 0) {
             [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
                                                time:serverTime
                                           idContext:run.runId
@@ -365,7 +365,7 @@
             }
         } while (token && token.length>0);
         
-        if (serverTime) {
+        if (serverTime && [serverTime intValue] != 0) {
             [SynchronizationBookKeeping createEntry:@"response"
                                                time:serverTime
                                           idContext:run.runId

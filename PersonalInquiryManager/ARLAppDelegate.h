@@ -14,7 +14,7 @@
 
 #import "Account+Create.h"
 #import "INQCloudSynchronizer.h"
-#import "ARLNotificationSubscriber.h"
+//#import "ARLNotificationSubscriber.h"
 
 #define DEVELOPMENT_MODE    @"enable_development_mode"
 #define PROXY_MODE          @"enable_proxy_mode"
@@ -30,8 +30,8 @@
 + (NSRecursiveLock *) theLock;
 + (NSCondition *) theAbortLock;
 
-+ (BOOL *) SyncAllowed;
-+ (void) setSyncAllowed:(BOOL *) value;
++ (BOOL) SyncAllowed;
++ (void) setSyncAllowed:(BOOL) value;
 
 + (CLLocationCoordinate2D) CurrentLocation;
 
@@ -44,6 +44,8 @@
 
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name;
 + (NSArray *) retrievAllOfEntity: (NSManagedObjectContext *) context enityName:(NSString *) name predicate:(NSPredicate *) predicate;
+
+- (void)doRegisterForAPN:(UIApplication *)application;
 
 - (void) LogOut;
 

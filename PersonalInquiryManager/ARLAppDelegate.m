@@ -408,8 +408,6 @@ static BOOL _syncAllowed = NO;
     Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
     Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
     
-    Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
-    
     if ([ARLNetwork RegisteredForAPN] != YES &&
           [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"] &&
           [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]) {
@@ -418,6 +416,8 @@ static BOOL _syncAllowed = NO;
                               [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
         [ARLNetwork registerAccount:localId];
     }
+
+    Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
 }
 
 #ifdef __IPHONE_8_0

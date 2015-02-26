@@ -455,8 +455,8 @@
         [[NSUserDefaults standardUserDefaults] setObject:[accountDetails objectForKey:@"accountType"] forKey:@"accountType"];
         
         // veg 26-06-2014 disabled because notification api is disabled. moved to login.
-        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
-        [ARLNetwork registerAccount:fullId];
+//        NSString *fullId = [NSString stringWithFormat:@"%@:%@",  [accountDetails objectForKey:@"accountType"], [accountDetails objectForKey:@"localId"]];
+//        [ARLNetwork registerAccount:fullId];
         
         [self navigateBack];
     }

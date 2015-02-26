@@ -544,11 +544,11 @@
     do {
         @autoreleasepool {
 #warning DISABLED ?FROM for now as it's not working properly it seems.
-           // NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+           //NSDictionary *tmDict = [ARLNetwork defaultThreadMessages:inquiry.run.runId];
+
             NSDictionary *tmDict = (token && token.length!=0) ?
             [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate token:token]:
             [ARLNetwork defaultThreadMessages:inquiry.run.runId from:lastDate];
-            
             //    {
             //        messages =     (
             //    ...

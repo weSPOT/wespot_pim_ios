@@ -504,7 +504,7 @@ static BOOL _RegisteredForAPN = NO;
                                   postData:postData withAccept:nil
                            withContentType:applicationjson ];
     
-    if ([@"error" isEqualToString:[NSString stringWithFormat:@"%@", jsoNData]]) {
+    if (![@"error" isEqualToString:[NSString stringWithFormat:@"%@", jsoNData]]) {
         [ARLNetwork setRegisteredForAPN:YES];
     }
 }
@@ -702,7 +702,9 @@ static BOOL _RegisteredForAPN = NO;
 }
 
 + (NSDictionary *) addMessage:(NSString *)message {
-    return [self executeARLearnPostWithAuthorization:@"messages/message" postData:[self stringToData:message] withContentType:applicationjson];
+    return [self executeARLearnPostWithAuthorization:@"messages/message"
+                                            postData:[self stringToData:message]
+                                     withContentType:applicationjson];
 }
 
 + (NSDictionary *) getUserInfo:(NSNumber *)runId

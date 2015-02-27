@@ -347,6 +347,7 @@ static BOOL _syncAllowed = NO;
 //http://ar-learn.appspot.com/network.html?path=notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/pim.p12
 //notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/arlearn.p12
 //notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/pim.p12/prod
+//notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/pimdev.p12/dev
 
 /*!
  * Register for APN with Apple.
@@ -398,6 +399,9 @@ static BOOL _syncAllowed = NO;
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
     Log(@"didReceiveRemoteNotification: %@", userInfo);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_GOTAPN
+                                                        object:NSStringFromClass([Message class])];
 }
 
 /*!
@@ -422,19 +426,23 @@ static BOOL _syncAllowed = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[device.identifierForVendor UUIDString]
                                               forKey:@"deviceUniqueIdentifier"];
 
+    Log(@"--");
     Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
     Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
     
     if ([ARLNetwork RegisteredForAPN] != YES &&
-          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"] &&
-          [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]) {
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"] &&
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]) {
         NSString *localId  = [NSString stringWithFormat:@"%@:%@",
                               [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                               [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
+        Log(@"--");
         [ARLNetwork registerAccount:localId];
+        Log(@"--");
     }
-
+    
     Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
+    Log(@"--");
 }
 
 #ifdef __IPHONE_8_0

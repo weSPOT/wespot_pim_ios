@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define INQ_SYNCREADY @"INQ_syncReady"
+#define INQ_SYNCREADY    @"INQ_syncReady"
 #define INQ_SYNCPROGRESS @"INQ_syncProgress"
+#define INQ_GOTAPN       @"INQ_GotAPN"
 
 @interface INQUtils : NSObject
 

@@ -125,6 +125,18 @@ typedef NS_ENUM(NSInteger, friends) {
     }
 }
 
+- (void)syncAPN:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncAPN:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
+    
+    [self syncData];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -155,7 +167,12 @@ typedef NS_ENUM(NSInteger, friends) {
                                              selector:@selector(syncReady:)
                                                  name:INQ_SYNCREADY
                                                object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncAPN:)
+                                                 name:INQ_GOTAPN
+                                               object:nil];
+    
     [self setupFetchedResultsController];
     
     [self.tableView reloadData];

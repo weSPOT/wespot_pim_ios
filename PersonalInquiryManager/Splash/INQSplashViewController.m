@@ -72,16 +72,6 @@
             
             newViewController = nil;
             
-#warning APN CODE
-//            if (![ARLNetwork RegisteredForAPN] != YES &&
-//                [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"] &&
-//                [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]) {
-//                NSString *localId  = [NSString stringWithFormat:@"%@:%@",
-//                                      [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
-//                                      [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
-//                [ARLNetwork registerAccount:localId];
-//            }
-            
             ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
             
             [appDelegate doRegisterForAPN:[UIApplication sharedApplication]];

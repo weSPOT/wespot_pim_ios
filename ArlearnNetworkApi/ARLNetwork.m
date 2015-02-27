@@ -485,7 +485,7 @@ static BOOL _RegisteredForAPN = NO;
     if (!account) return;
     
     Log(@"bundleIdentifier:       %@",bundleIdentifier);
-    Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
+    // Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
     Log(@"account:                %@",account);
     Log(@"deviceToken:            %@",deviceToken);
     Log(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);

@@ -211,6 +211,13 @@ static BOOL _syncAllowed = NO;
     }
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefault];
+
+    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif)
+    {
+        NSLog(@"Accept push Notification when app is not open if stat ");
+        // [self processRemoteNotificationApplicationStateActive:remoteNotif];
+    }
     
     // Synchronize preferences.
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -337,6 +344,10 @@ static BOOL _syncAllowed = NO;
 
 // #warning APN CODE AHEAD
 
+//http://ar-learn.appspot.com/network.html?path=notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/pim.p12
+//notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/arlearn.p12
+//notifications/test/deviceToken/d8f810ad024f84c1070814614a71e2568a3803aff8c3b514a371c90c5273d274/apns/pim.p12/prod
+
 /*!
  * Register for APN with Apple.
  *
@@ -367,6 +378,7 @@ static BOOL _syncAllowed = NO;
     }
 }
 
+
 //TESTCODE: Remote notifications
 /*!
  *  Called when receiving a Remote Notification.
@@ -374,13 +386,18 @@ static BOOL _syncAllowed = NO;
  *  @param app   <#app description#>
  *  @param notif <#notif description#>
  */
-- (void)application:(UIApplication *)app didReceiveRemoteNotification:(UILocalNotification *)notif {
-    //TODO: Implement
-    Log(@"didReceiveRemoteNotification: %@", notif.userInfo);
-    
-    //    NSString *itemName = [notif.userInfo objectForKey:ToDoItemKey];
-    //    [viewController displayItem:itemName];  // custom method
-    //    app.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
+//- (void)application:(UIApplication *)app didReceiveRemoteNotification:(UILocalNotification *)notif {
+//    //TODO: Implement
+//    Log(@"didReceiveRemoteNotification: %@", notif.userInfo);
+//    
+//    //    NSString *itemName = [notif.userInfo objectForKey:ToDoItemKey];
+//    //    [viewController displayItem:itemName];  // custom method
+//    //    app.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
+//}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+    Log(@"didReceiveRemoteNotification: %@", userInfo);
 }
 
 /*!
@@ -435,14 +452,15 @@ static BOOL _syncAllowed = NO;
     [application registerForRemoteNotifications];
 }
 
-//- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
-//{
-//    //handle the actions
-//    if ([identifier isEqualToString:@"declineAction"]){
-//    }
-//    else if ([identifier isEqualToString:@"answerAction"]){
-//    }
-//}
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
+{
+    //handle the actions
+    //    if ([identifier isEqualToString:@"declineAction"]){
+    //    }
+    //    else if ([identifier isEqualToString:@"answerAction"]){
+    //    }
+}
+
 #endif
 
 /*!

@@ -160,9 +160,37 @@ typedef NS_ENUM(NSInteger, sections) {
     
     if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         // Force Counter on DataCollection TableRow to update.
-        NSArray *indexPaths = [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:DATACOLLECTION inSection:PARTS], nil];
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:
+                               [NSIndexPath indexPathForRow:DATACOLLECTION
+                                                  inSection:PARTS], nil];
         
         [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
+    if ([NSStringFromClass([Message class]) isEqualToString:recordType]) {
+        // Force Counter on DataCollection TableRow to update.
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:
+                               [NSIndexPath indexPathForRow:DISCUSS
+                                                  inSection:PARTS], nil];
+        
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (void)syncAPN:(NSNotification*)notification
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(syncAPN:)
+                               withObject:notification
+                            waitUntilDone:YES];
+        return;
+    }
+    
+    if (ARLNetwork.networkAvailable) {
+        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
+                                 inquiryId:self.inquiry.inquiryId];
     }
 }
 
@@ -195,6 +223,11 @@ typedef NS_ENUM(NSInteger, sections) {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(syncReady:)
                                                  name:INQ_SYNCREADY
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(syncAPN:)
+                                                 name:INQ_GOTAPN
                                                object:nil];
     
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
@@ -229,6 +262,8 @@ typedef NS_ENUM(NSInteger, sections) {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_GOTAPN object:nil];
 }
 
 /*!
@@ -321,7 +356,7 @@ typedef NS_ENUM(NSInteger, sections) {
             cell.textLabel.text = @"";
             if ([self.inquiry.icon length] == 0) {
                 cell.imageView.image = [UIImage imageNamed:@"inquiry"];
-            }else {
+            } else {
                 cell.imageView.image = [UIImage imageWithData:self.inquiry.icon];
             }
             break;
@@ -333,21 +368,25 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"description"];
                     break;
+                    
                 case HYPOTHESIS:
                     cell.textLabel.text = @"Hypothesis";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
+                    
                 case QUESTION:
                     cell.textLabel.text = @"Questions";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"hypothesis"];
                     break;
+                    
                 case PLAN:
                     cell.textLabel.text = @"Plan";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"plan"];
                     break;
+                    
                 case DATACOLLECTION: {
                     cell.textLabel.text = @"Collect Data";
                     
@@ -370,21 +409,41 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.imageView.image = [UIImage imageNamed:@"collect-data"];
                 }
                     break;
+                    
                 case ANALYSIS:
                     cell.textLabel.text = @"Analyze";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"analyze"];
                     break;
-                case DISCUSS:
+                    
+                case DISCUSS: {
                     cell.textLabel.text = @"Chat";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"communicate"];
+                    
+                    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+                    NSInteger count = [appDelegate entityCount:@"Message"
+                                                     predicate:[NSPredicate predicateWithFormat:@"run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
+                    if (count!=0) {
+                        NSString *value = [NSString stringWithFormat:@"%d", count];
+                        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
+                        NSRange range=[value rangeOfString:value];
+                        
+                        [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                        
+                        [cell.detailTextLabel setAttributedText:string];
+                    } else {
+                        cell.detailTextLabel.text = @"";
+                    }
+                }
                     break;
+                    
                 case COMMUNICATE:
                     cell.textLabel.text = @"Communicate";
                     cell.detailTextLabel.text = @"";
                     cell.imageView.image = [UIImage imageNamed:@"communicate"];
                     break;
+                    
                 default:
                     break;
             }
@@ -403,17 +462,19 @@ typedef NS_ENUM(NSInteger, sections) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
+    
     switch (indexPath.section) {
         case ICON:
-            return 2 * tableView.rowHeight;
+            return 2 * rh;
         case PARTS:
-            return tableView.rowHeight;
-//        case INVITE:
-//            return tableView.rowHeight;
+            return rh;
+            //        case INVITE:
+            //            return rh;
     }
     
     // Error
-    return tableView.rowHeight;
+    return rh;
 }
 
 #pragma mark - Table view delegate

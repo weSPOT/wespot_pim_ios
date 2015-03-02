@@ -18,18 +18,17 @@ typedef NS_ENUM(NSInteger, friends) {
      *  Messages.
      */
     MESSAGES = 0,
-    /*!
-     *  Send a Message.
-     */
-    SEND,
-    /*!
-     *  Number of Inquires
-     */
+    
+//    /*!
+//     *  Number of Inquires
+//     */
     numMessages
 };
 
-@property (readonly, nonatomic) NSString *cellIdentifier1;
 @property (readonly, nonatomic) NSString *cellIdentifier2;
+
+@property (weak, nonatomic) IBOutlet UIView *chatView;
+@property (weak, nonatomic) IBOutlet UITextField *chatMessageField;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
@@ -39,9 +38,9 @@ typedef NS_ENUM(NSInteger, friends) {
 
 @implementation INQDiscussViewController
 
--(NSString *) cellIdentifier1 {
-    return  @"messageCell1";
-}
+//-(NSString *) cellIdentifier1 {
+//    return  @"messageCell1";
+//}
 
 -(NSString *) cellIdentifier2 {
     return  @"messageCell2";
@@ -88,6 +87,15 @@ typedef NS_ENUM(NSInteger, friends) {
     // Nothing yet
 }
 
+- (void)adjustChatWidth
+{
+    //   [self.tableView scrollRectToVisible:[self.tableView convertRect:self.tableView.tableFooterView.bounds fromView:self.tableView.tableFooterView] animated:YES];
+    CGRect fr1 = self.chatMessageField.frame;
+    CGRect fr2 = self.chatView.frame;
+    
+    [self.chatMessageField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
+}
+
 - (void)syncReady:(NSNotification*)notification
 {
     if (![NSThread isMainThread]) {
@@ -116,13 +124,13 @@ typedef NS_ENUM(NSInteger, friends) {
             Log(@"Messages: %d -> %d", cntBefore, cntAfter);
             
             [self.tableView reloadData];
-            
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0
-                                                                       inSection:SEND]
-                                  atScrollPosition:UITableViewScrollPositionTop
-                                          animated:NO];
         }
     }
+    
+    [self adjustChatWidth];
+    
+    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
+                               animated:NO];
 }
 
 - (void)syncAPN:(NSNotification*)notification
@@ -135,6 +143,8 @@ typedef NS_ENUM(NSInteger, friends) {
     }
     
     [self syncData];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)viewDidLoad
@@ -142,6 +152,10 @@ typedef NS_ENUM(NSInteger, friends) {
     [super viewDidLoad];
    
 	// Do any additional setup after loading the view.
+    
+    self.chatMessageField.delegate = self;
+    
+    [self adjustChatWidth];
     
     //[self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
     //
@@ -177,21 +191,16 @@ typedef NS_ENUM(NSInteger, friends) {
     
     [self.tableView reloadData];
     
-    //    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0
-    //                                                               inSection:SEND]
-    //                          atScrollPosition:UITableViewScrollPositionTop
-    //                                  animated:NO];
-    
-    // Only works in viewDidAppear.
-    [self.tableView setContentOffset:CGPointMake(0, MAXFLOAT)];
-    
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     
+    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
+                               animated:NO];
+    
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-
+        
         [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
                                  inquiryId:self.inquiryId];
     }
@@ -200,12 +209,10 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-   // [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCPROGRESS object:nil];
-
     [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_SYNCREADY object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:INQ_GOTAPN object:nil];
 
     [self.navigationController setToolbarHidden:YES];
 }
@@ -241,8 +248,8 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (section){
         case MESSAGES:
             return @"Chat";
-        case SEND:
-            return @"";
+//        case SEND:
+//            return @"";
     }
     
     // Error
@@ -263,8 +270,8 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (section) {
         case MESSAGES:
             return [[self.fetchedResultsController fetchedObjects] count];
-        case SEND:
-            return 1;
+//        case SEND:
+//            return 1;
     }
     
     // Error
@@ -291,12 +298,12 @@ typedef NS_ENUM(NSInteger, friends) {
             
             break;
             
-        case SEND:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1 forIndexPath:indexPath];
-
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            
-            break;
+//        case SEND:
+//            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1 forIndexPath:indexPath];
+//
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//            
+//            break;
             
     }
     
@@ -440,12 +447,12 @@ typedef NS_ENUM(NSInteger, friends) {
             }
             break;
             
-        case SEND: {
-            UITextField *text = (UITextField *)[cell.contentView viewWithTag:1];
-            
-            [text setDelegate:self];
-        }
-            break;
+//        case SEND: {
+//            UITextField *text = (UITextField *)[cell.contentView viewWithTag:1];
+//            
+//            [text setDelegate:self];
+//        }
+//            break;
         }
     }
     
@@ -454,6 +461,8 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
+
     switch (indexPath.section) {
         case MESSAGES: {
             // Calculate the correct height here based on the message content!!
@@ -464,19 +473,19 @@ typedef NS_ENUM(NSInteger, friends) {
             NSString *body = [INQUtils cleanHtml:message.body];
             
             if ([body length] == 0) {
-                return tableView.rowHeight;
+                return rh;
             }
             
-            float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
+            float tw = tableView.frame.size.width - rh - 3*8.0f;
             
             NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
             CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
             
             // Correct for top/bottom margins.
-            return 1.0f * tableView.rowHeight + rect.size.height + 3*8.0f;
+            return 1.0f * rh + rect.size.height + 3*8.0f;
         }
-        case SEND:
-            return tableView.rowHeight;
+//        case SEND:
+//            return rh;
     }
     
     // Error
@@ -510,6 +519,11 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.tableView reloadData];
+    
+    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
+                               animated:NO];
+    
+    [self adjustChatWidth];
 }
 
 - (void)syncData {

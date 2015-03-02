@@ -402,6 +402,8 @@ static BOOL _syncAllowed = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:INQ_GOTAPN
                                                         object:NSStringFromClass([Message class])];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 /*!

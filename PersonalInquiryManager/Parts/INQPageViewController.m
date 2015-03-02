@@ -235,4 +235,10 @@
     self.refreshButton.enabled = ARLNetwork.networkAvailable;
 }
 
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+  //
+}
+
 @end

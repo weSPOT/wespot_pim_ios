@@ -245,6 +245,8 @@ typedef NS_ENUM(NSInteger, sections) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
+    
     switch (indexPath.section) {
         case QUESTIONS: {
             // Calculate the correct height here based on the message content!!
@@ -254,7 +256,7 @@ typedef NS_ENUM(NSInteger, sections) {
             NSString *body = [INQUtils cleanHtml:html];
     
             if ([body length] == 0) {
-                return self.tableView.rowHeight;
+                return rh;
             }
 
             // 66.0f is the width of the image.
@@ -264,13 +266,13 @@ typedef NS_ENUM(NSInteger, sections) {
             CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
 
             // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
-            return 1.0f * tableView.rowHeight + rect.size.height + 5*8.0f - 58.0f;
+            return 1.0f * rh + rect.size.height + 5*8.0f - 58.0f;
             // return 1.0f*tableView.rowHeight + MIN((rect.size.height) + 2*8.0f, 64.0f) - 58.0f;
         }
     }
     
     // Error
-    return tableView.rowHeight;
+    return rh;
 }
 
 @end

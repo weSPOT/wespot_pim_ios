@@ -235,10 +235,36 @@
     self.refreshButton.enabled = ARLNetwork.networkAvailable;
 }
 
+/*!
+ *  Pre iOS7 Code
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+/*!
+ *  Pre iOS7 Code
+ *
+ *  @return <#return value description#>
+ */
+- (NSUInteger)supportedInterfaceOrientations
 {
-  //
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+/*!
+ *  iOS 7+ Code ?
+ *
+ *  @param application <#application description#>
+ *  @param window      <#window description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

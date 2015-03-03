@@ -513,18 +513,18 @@ typedef NS_ENUM(NSInteger, friends) {
     // header.contentView.backgroundColor = [UIColor blackColor];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return NO;
-}
-
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self.tableView reloadData];
-    
-    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
-                               animated:NO];
-    
-    [self adjustChatWidth];
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//    return NO;
+//}
+//
+//- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+//    [self.tableView reloadData];
+//    
+//    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
+//                               animated:NO];
+//    
+//    [self adjustChatWidth];
+//}
 
 - (void)syncData {
     if (ARLNetwork.networkAvailable) {
@@ -585,6 +585,38 @@ typedef NS_ENUM(NSInteger, friends) {
     }
     
     return NO;
+}
+
+/*!
+ *  Pre iOS7 Code
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+/*!
+ *  Pre iOS7 Code
+ *
+ *  @return <#return value description#>
+ */
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+/*!
+ *  iOS 7+ Code ?
+ *
+ *  @param application <#application description#>
+ *  @param window      <#window description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

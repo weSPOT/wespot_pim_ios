@@ -82,6 +82,8 @@ static BOOL _syncAllowed = NO;
     // Override point for customization after application launch.
     _networkAvailable = NO;
     
+    // application.delegate.screenIsPortraitOnly = true;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification

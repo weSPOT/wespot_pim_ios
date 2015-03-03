@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, friends) {
     numMessages
 };
 
-@property (readonly, nonatomic) NSString *cellIdentifier2;
+@property (readonly, nonatomic) NSString *cellIdentifier;
 
 @property (weak, nonatomic) IBOutlet UIView *chatView;
 @property (weak, nonatomic) IBOutlet UITextField *chatMessageField;
@@ -38,12 +38,8 @@ typedef NS_ENUM(NSInteger, friends) {
 
 @implementation INQDiscussViewController
 
-//-(NSString *) cellIdentifier1 {
-//    return  @"messageCell1";
-//}
-
--(NSString *) cellIdentifier2 {
-    return  @"messageCell2";
+-(NSString *) cellIdentifier {
+    return  @"messageCell";
 }
 
 -(NSInteger *) messageCellHeight {
@@ -292,7 +288,7 @@ typedef NS_ENUM(NSInteger, friends) {
 
     switch (indexPath.section) {
         case MESSAGES:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2 forIndexPath:indexPath];
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
 
             cell.accessoryType = UITableViewCellAccessoryNone;
             

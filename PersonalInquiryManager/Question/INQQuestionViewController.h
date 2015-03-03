@@ -10,10 +10,15 @@
 
 #import "UIViewController+UI.h"
 
-@interface INQQuestionViewController : UITableViewController
+#import "ARLAppDelegate.h"
+#import "ARLNetwork+INQ.h"
+
+@interface INQQuestionViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSArray *Questions;
 
 @property (strong, nonatomic) NSArray *Answers;
+
+@property (strong, nonatomic) NSNumber *inquiryId;
 
 @end

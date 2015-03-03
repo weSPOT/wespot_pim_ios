@@ -695,4 +695,69 @@
     return NO;
 }
 
+//+ (NSDictionary *) addQuestionWithDictionary:(NSString *)name description:(NSString *)description {
+//    NSString *url = ARLNetwork.elgBaseUrl;
+//    
+//    return [self addQuestion:[ARLNetwork dictionaryToParmeters:question]];
+//}
+
++ (id) addQuestionWithDictionary:(NSString *)title
+                     description:(NSString *)description
+                        inquiryId:(NSNumber *)inquiryId
+                      //visibility: (NSNumber *)visibility membership: (NSNumber *)membership
+{
+    Account *account = [ARLNetwork CurrentAccount];
+    
+    NSString *user_uid = [NSString stringWithFormat:@"%@", account.localId];
+    NSString *provider = [ARLNetwork elggProviderId:account.accountType];
+    
+    NSString *encoded = [ARLNetwork htmlEncode:description];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"add.question",          @"method",
+                          apiKey,                   @"api_key",
+                          
+                          title,                    @"name",
+                          encoded,                  @"description",
+                          inquiryId,                @"container_guid",
+                          @"tag",                   @"tags",
+                          //@"Interests",           @"tags",                //(Tags, comma separated)
+                          // membership,            @"access_id",           //(Read Acecss: 0 -> Private, 1 -> Logged In, 2 -> Public)
+                          // membership,            @"write_access_id",     //(Write Acecss: 0 -> Private, 1 -> Logged In, 2 -> Public)
+
+                          provider,                 @"provider",            //@"Google"
+                          user_uid,                 @"user_uid",            //@"Google_localId",
+                          
+                          nil];
+    
+    Log(@"%@", dict);
+    
+    NSString *body = [ARLNetwork dictionaryToParmeters:dict];
+   
+    Log(@"%@", body);
+    
+    // Angel:
+    // method=add.question&
+    // name=test&
+    // description=tesd+descr&
+    // container_guid=42876&
+    // provider=Google&
+    // user_uid=117769871710404943583&
+    // tags=tag&
+    // api_key=27936b77bcb9bb67df2965c6518f37a77a7ab9f8
+    
+    // iOS
+    // description=%27question%201&
+    // container_guid=62226&
+    // name=Question&
+    // api_key=27936b77bcb9bb67df2965c6518f37a77a7ab9f8&
+    // method=add.question&
+    // user_uid=103021572104496509774&
+    // provider=Google
+    
+    NSString *url = ARLNetwork.elgBaseUrl;
+    
+    return [self returnJsonPOST:url body:body];
+}
+
 @end

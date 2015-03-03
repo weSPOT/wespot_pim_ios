@@ -39,6 +39,9 @@ typedef NS_ENUM(NSInteger, sections) {
     numSections
 };
 
+@property (weak, nonatomic) IBOutlet UIView *questionView;
+@property (weak, nonatomic) IBOutlet UITextField *questionField;
+
 @property (readonly, nonatomic) NSString *cellIdentifier;
 
 //@property(nonatomic, assign) BOOL automaticallyAdjustsScrollViewInsets;
@@ -71,6 +74,8 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.questionField.delegate = self;
+    
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
@@ -273,6 +278,58 @@ typedef NS_ENUM(NSInteger, sections) {
     
     // Error
     return rh;
+}
+
+- (void) createQuestion:(NSString *)title description:(NSString *)description
+{
+//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+//method=add.question&
+//    name=Sample_Question_KSa_19.02.2014&
+//    description=Question Description&
+//    tags=my Question Tags&
+//    container_guid=27568&
+//    provider=Google &user_uid=XXXXXXXXXXXXXXXXXXXXXX&
+//    api_key=YOUR_API_KEY
+
+    NSDictionary *result = [ARLNetwork addQuestionWithDictionary:title
+                                                     description:description
+                                                       inquiryId:self.inquiryId];
+    
+//    [Message messageWithDictionary:result
+//            inManagedObjectContext:appDelegate.managedObjectContext];
+//    
+//    [INQLog SaveNLog:appDelegate.managedObjectContext];
+//    
+    DLog(@"%@", result);
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField.text length]>0) {
+        NSString *body = [textField.text
+                          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if ([body length]>0) {
+            [self createQuestion:NSLocalizedString(@"Question", @"Question")
+                                 description:body];
+            
+            if (ARLNetwork.networkAvailable) {
+                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+            }
+            
+            //NSError *error = nil;
+            
+            // [self.fetchedResultsController performFetch:&error];
+            
+            textField.text = @"";
+            
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

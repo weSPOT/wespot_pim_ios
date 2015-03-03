@@ -38,6 +38,12 @@
 + (id) getFiles: (NSNumber *) inquiryId;
 + (id) getSchools;
 
++ (id) addQuestionWithDictionary:(NSString *)title
+                     description:(NSString *)description
+                       inquiryId:(NSNumber *)inquiryId;
+
++ (NSDictionary *) addQuestionWithDictionary:(NSDictionary *)question;
+
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider;
 + (NSNumber *) elggProviderByName: (NSString  *) oauthProvider;
 

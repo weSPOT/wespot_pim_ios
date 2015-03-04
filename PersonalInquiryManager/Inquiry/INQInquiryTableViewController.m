@@ -353,7 +353,8 @@ typedef NS_ENUM(NSInteger, sections) {
     // Configure the cell...
     switch (indexPath.section) {
         case ICON:
-            cell.textLabel.text = @"";
+            // cell.textLabel.text = @"";
+            cell.textLabel.text = self.inquiry.title;
             if ([self.inquiry.icon length] == 0) {
                 cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             } else {

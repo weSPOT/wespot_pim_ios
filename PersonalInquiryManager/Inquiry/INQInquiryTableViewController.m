@@ -507,34 +507,6 @@ typedef NS_ENUM(NSInteger, sections) {
         case QUESTION: {
             // Create the new ViewController.
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"QuestionView"];
-      
-            NSDictionary *json1 = [ARLNetwork getQuestions:self.inquiry.inquiryId];
-            NSArray *questions = [json1 valueForKey:@"result"];
-            //            {
-            //                result =     (
-            //                              {
-            //                                  description = "Do the spanish people know?";
-            //                                  question = "Are there different kinds of Siesta?";
-            //                                  questionId = 80911;
-            //                                  tags =             (
-            //                                                      types,
-            //                                                      siesta,
-            //                                                      spanish,
-            //                                                      lazy
-            //                                                      );
-//                                  url = "http://inquiry.wespot.net/answers/view/80911/are-there-different-kinds-of-siesta";
-//                              },
-//                              );
-//                status = 0;
-//            }
-            
-            // Pass the parameters to render.
-            [newViewController performSelector:@selector(setQuestions:) withObject:questions];
-            
-            NSDictionary *json2 = [ARLNetwork getAnswers:self.inquiry.inquiryId];
-            NSArray *answers = [json2 valueForKey:@"result"];
-            
-            [newViewController performSelector:@selector(setAnswers:) withObject:answers];
             
             [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiry.inquiryId];
         }

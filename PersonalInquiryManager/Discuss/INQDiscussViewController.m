@@ -576,6 +576,8 @@ typedef NS_ENUM(NSInteger, friends) {
             
             textField.text = @"";
             
+            [textField resignFirstResponder];
+
             return YES;
         }
     }

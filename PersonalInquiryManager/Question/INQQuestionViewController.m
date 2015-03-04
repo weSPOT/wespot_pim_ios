@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @implementation INQQuestionViewController
 
+@synthesize inquiryId = _inquiryId;
 
 //-(BOOL)automaticallyAdjustsScrollViewInsets {
 //    return NO;
@@ -100,6 +101,42 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Properties
+
+-(NSNumber*)inquiryId {
+    return _inquiryId;
+}
+
+- (void)updateQuestionsAndAnswers {
+    self.Questions = [[ARLNetwork getQuestions:_inquiryId] valueForKey:@"result"];
+    
+    //            {
+    //                result =     (
+    //                              {
+    //                                  description = "Do the spanish people know?";
+    //                                  question = "Are there different kinds of Siesta?";
+    //                                  questionId = 80911;
+    //                                  tags =             (
+    //                                                      types,
+    //                                                      siesta,
+    //                                                      spanish,
+    //                                                      lazy
+    //                                                      );
+    //                                  url = "http://inquiry.wespot.net/answers/view/80911/are-there-different-kinds-of-siesta";
+    //                              },
+    //                              );
+    //                status = 0;
+    //            }
+    
+    self.Answers = [[ARLNetwork getAnswers:_inquiryId] valueForKey:@"result"];
+}
+
+- (void) setInquiryId:(NSNumber *)inquiryId {
+    _inquiryId = inquiryId;
+    
+    [self updateQuestionsAndAnswers];
 }
 
 #pragma mark - Table view data source
@@ -310,20 +347,16 @@ typedef NS_ENUM(NSInteger, sections) {
                           stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if ([body length]>0) {
-            [self createQuestion:NSLocalizedString(@"Question", @"Question")
+            [self createQuestion:NSLocalizedString(@"Question:", @"Question:")
                                  description:body];
             
-            if (ARLNetwork.networkAvailable) {
-                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-                
-                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
-            }
+            [self updateQuestionsAndAnswers];
             
-            //NSError *error = nil;
-            
-            // [self.fetchedResultsController performFetch:&error];
+            [self.tableView reloadData];
             
             textField.text = @"";
+
+            [textField resignFirstResponder];
             
             return YES;
         }

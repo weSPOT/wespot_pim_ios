@@ -104,7 +104,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
         NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
         
         if (cntBefore!=cntAfter) {
-            Log(@"Inquiries: %d -> %d", cntBefore, cntAfter);
+            DLog(@"Inquiries: %d -> %d", cntBefore, cntAfter);
             
             [self.tableView reloadData];
         }
@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, inquiries) {
         NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
         
         // if (cntBefore!=cntAfter) {
-        Log(@"Inquiries: %d -> %d", cntBefore, cntAfter);
+        DLog(@"Inquiries: %d -> %d", cntBefore, cntAfter);
         
         [self.tableView reloadData];
         // }

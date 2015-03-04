@@ -59,11 +59,9 @@ typedef NS_ENUM(NSInteger, tools) {
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *spacerButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *logoutButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *apnButton;
 
 - (IBAction)syncButtonAction:(UIBarButtonItem *)sender;
 - (IBAction)logoutButtonAction:(UIBarButtonItem *)sender;
-- (IBAction)apnButtonAction:(UIBarButtonItem *)sender;
 
 @property (strong, nonatomic) NSArray *Friends;
 
@@ -86,7 +84,7 @@ typedef NS_ENUM(NSInteger, tools) {
     
     NSString *recordType = notification.object;
     // Inquiry
-    Log(@"syncProgress: %@", recordType);
+    DLog(@"syncProgress: %@", recordType);
     
     if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
         // Force Counter on DataCollection TableRow to update.
@@ -107,7 +105,7 @@ typedef NS_ENUM(NSInteger, tools) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncReady: %@", recordType);
+    DLog(@"syncReady: %@", recordType);
     
     if ([NSStringFromClass([Inquiry class]) isEqualToString:recordType]) {
         // Force Counter on DataCollection TableRow to update.
@@ -120,15 +118,6 @@ typedef NS_ENUM(NSInteger, tools) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-#warning DEBUG CODE AHEAD.
-    if ([ARLNetwork RegisteredForAPN]) {
-        [self.apnButton setEnabled:YES];
-        [self.apnButton setTintColor:nil];
-    } else {
-        [self.apnButton setEnabled:NO];
-        [self.apnButton setTintColor: [UIColor clearColor]];
-    }
     
     if (!self.Friends) {
         [self getMyFriends];
@@ -563,12 +552,6 @@ typedef NS_ENUM(NSInteger, tools) {
     
     // [ARLAppDelegate.theLock unlock];
     // }
-}
-
-- (IBAction)apnButtonAction:(UIBarButtonItem *)sender {
-    NSString *deviceToken =  [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
-    
-    
 }
 
 @end

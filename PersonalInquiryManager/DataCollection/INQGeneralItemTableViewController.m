@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, groups) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncProgress: %@", recordType);
+    DLog(@"syncProgress: %@", recordType);
     
     if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         [self.tableView reloadData];
@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, groups) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncReady: %@", recordType);
+    DLog(@"syncReady: %@", recordType);
     
     if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         NSError *error = nil;

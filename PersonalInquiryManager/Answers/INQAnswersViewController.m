@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @implementation INQAnswersViewController
 
+@synthesize Answers = _Answers;
+
 /*!
  *  Getter
  *
@@ -151,18 +153,23 @@ typedef NS_ENUM(NSInteger, sections) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
     
-    
     // Configure the cell...
     switch (indexPath.section) {
         case ANSWERS: {
             NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
-            
-            cell.textLabel.text = [answer valueForKey:@"answer"];
+//            {
+//                answer = "<p>adasasdasd</p>";
+//                answerId = 89043;
+//                description = "<p>asasdasad &nbsp;asd a</p>";
+//                question = TESTTTTT;
+//                questionId = 89021;
+//                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
+//            }
+            cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"question"]];
+        
             //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
             
-            NSString *html = [answer valueForKey:@"description"];
-            NSString *text = [INQUtils cleanHtml:html];
-            cell.detailTextLabel.text = text;
+            cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"description"]];
             
             cell.accessoryType = UITableViewCellAccessoryNone;
         }

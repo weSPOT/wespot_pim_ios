@@ -117,7 +117,7 @@ typedef NS_ENUM(NSInteger, friends) {
         NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
         
         if (cntBefore!=cntAfter) {
-            Log(@"Messages: %d -> %d", cntBefore, cntAfter);
+            DLog(@"Messages: %d -> %d", cntBefore, cntAfter);
             
             [self.tableView reloadData];
         }

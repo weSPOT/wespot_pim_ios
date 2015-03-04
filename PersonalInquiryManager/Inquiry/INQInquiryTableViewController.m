@@ -135,7 +135,7 @@ typedef NS_ENUM(NSInteger, sections) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncProgress: %@", recordType);
+    DLog(@"syncProgress: %@", recordType);
     
     if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         // Force Counter on DataCollection TableRow to update.
@@ -156,7 +156,7 @@ typedef NS_ENUM(NSInteger, sections) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncReady: %@", recordType);
+    DLog(@"syncReady: %@", recordType);
     
     if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
         // Force Counter on DataCollection TableRow to update.

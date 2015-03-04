@@ -101,7 +101,7 @@
                                               returningResponse:&response
                                                           error:nil];
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -139,7 +139,7 @@
                                               returningResponse:&response
                                                           error:nil];
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -177,7 +177,7 @@
                                                           error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -697,14 +697,13 @@
 
 //+ (NSDictionary *) addQuestionWithDictionary:(NSString *)name description:(NSString *)description {
 //    NSString *url = ARLNetwork.elgBaseUrl;
-//    
+//
 //    return [self addQuestion:[ARLNetwork dictionaryToParmeters:question]];
 //}
 
 + (id) addQuestionWithDictionary:(NSString *)title
                      description:(NSString *)description
-                        inquiryId:(NSNumber *)inquiryId
-                      //visibility: (NSNumber *)visibility membership: (NSNumber *)membership
+                       inquiryId:(NSNumber *)inquiryId
 {
     Account *account = [ARLNetwork CurrentAccount];
     
@@ -731,11 +730,11 @@
                           
                           nil];
     
-    Log(@"%@", dict);
+    // Log(@"%@", dict);
     
     NSString *body = [ARLNetwork dictionaryToParmeters:dict];
    
-    Log(@"%@", body);
+    // Log(@"%@", body);
     
     // Angel:
     // method=add.question&

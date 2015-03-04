@@ -217,7 +217,9 @@ static BOOL _syncAllowed = NO;
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif)
     {
-        NSLog(@"Accept push Notification when app is not open if stat ");
+        // NSLog(@"Accept push Notification when app is not open during notify");
+        
+        // Can't reproduce it to test this code.
         // [self processRemoteNotificationApplicationStateActive:remoteNotif];
     }
     
@@ -391,7 +393,7 @@ static BOOL _syncAllowed = NO;
  */
 //- (void)application:(UIApplication *)app didReceiveRemoteNotification:(UILocalNotification *)notif {
 //    //TODO: Implement
-//    Log(@"didReceiveRemoteNotification: %@", notif.userInfo);
+// Log(@"didReceiveRemoteNotification: %@", notif.userInfo);
 //    
 //    //    NSString *itemName = [notif.userInfo objectForKey:ToDoItemKey];
 //    //    [viewController displayItem:itemName];  // custom method
@@ -400,7 +402,7 @@ static BOOL _syncAllowed = NO;
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-    Log(@"didReceiveRemoteNotification: %@", userInfo);
+    // DLog(@"didReceiveRemoteNotification: %@", userInfo);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:INQ_GOTAPN
                                                         object:NSStringFromClass([Message class])];
@@ -430,9 +432,9 @@ static BOOL _syncAllowed = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[device.identifierForVendor UUIDString]
                                               forKey:@"deviceUniqueIdentifier"];
 
-    Log(@"--");
-    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
-    Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
+    // Log(@"--");
+    // Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"]);
+    // Log(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceUniqueIdentifier"]);
     
     if ([ARLNetwork RegisteredForAPN] != YES &&
         [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"] &&
@@ -440,13 +442,13 @@ static BOOL _syncAllowed = NO;
         NSString *localId  = [NSString stringWithFormat:@"%@:%@",
                               [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
                               [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"]];
-        Log(@"--");
+        // Log(@"--");
         [ARLNetwork registerAccount:localId];
-        Log(@"--");
+        // Log(@"--");
     }
     
-    Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
-    Log(@"--");
+    // Log(@"RegisteredForAPN: %@:", [NSNumber numberWithBool:[ARLNetwork RegisteredForAPN]]);
+    // Log(@"--");
 }
 
 #ifdef __IPHONE_8_0
@@ -458,7 +460,7 @@ static BOOL _syncAllowed = NO;
  */
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-    Log(@"didRegisterUserNotificationSettings");
+    DLog(@"didRegisterUserNotificationSettings");
     
     // Register to receive notifications
     [application registerForRemoteNotifications];
@@ -483,7 +485,7 @@ static BOOL _syncAllowed = NO;
  */
 - (void)Implement:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     //TODO: Implement
-    Log(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.description);
+    DLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.description);
     
     [[NSUserDefaults standardUserDefaults] setObject:FALSE
                                               forKey:@"deviceToken"];
@@ -523,13 +525,13 @@ static BOOL _syncAllowed = NO;
     if (!_managedObjectModel) {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
     
-        Log(@"Model Location: %@", modelURL);
+        DLog(@"Model Location: %@", modelURL);
         
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 
         //_managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil] ;
         
-        Log(@"Model Version: %@", [[_managedObjectModel.versionIdentifiers allObjects] objectAtIndex:0]);
+        DLog(@"Model Version: %@", [[_managedObjectModel.versionIdentifiers allObjects] objectAtIndex:0]);
     }
  
     return _managedObjectModel;
@@ -547,7 +549,7 @@ static BOOL _syncAllowed = NO;
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
-        Log(@"Database Location: %@", storeURL);
+        DLog(@"Database Location: %@", storeURL);
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -570,7 +572,7 @@ static BOOL _syncAllowed = NO;
             return nil;
         }
         
-        Log(@"Model Version: %@", [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]);
+        DLog(@"Model Version: %@", [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]);
     }
 
     return _persistentStoreCoordinator;
@@ -755,7 +757,7 @@ static BOOL _syncAllowed = NO;
  *  @return If TRUE the user is logged-in.
  */
 - (NSNumber *)networkAvailable {
-    // Log(@"networkAvailable: %@", _networkAvailable);
+    // DLog(@"networkAvailable: %@", _networkAvailable);
     
     return _networkAvailable;
 }

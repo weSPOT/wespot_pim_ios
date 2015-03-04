@@ -87,12 +87,14 @@ typedef NS_ENUM(NSInteger, sections) {
     [super viewWillAppear:animated];
     
     [self.navigationController setToolbarHidden:YES];
+    
+    [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self.tableView reloadData];
+
+    [self adjustQuestionWidth];
 }
 
 /*!
@@ -205,7 +207,8 @@ typedef NS_ENUM(NSInteger, sections) {
             
             UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
             UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-
+            UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
+            
             cell.imageView.image = [UIImage imageNamed:@"question"];
             
             textView.editable = NO;
@@ -224,7 +227,24 @@ typedef NS_ENUM(NSInteger, sections) {
             
             textView.text = body.length==0 ? @"No description." : body;
         
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            // Add Answer Count Indicator.
+            NSInteger count = [[self getAnswersOfQuestion:indexPath] count];
+            
+            if (count!=0) {
+                NSString *value = [NSString stringWithFormat:@"%d", count];
+                NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
+                NSRange range=[value rangeOfString:value];
+                
+                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+    
+                [countView setAttributedText:string];
+                
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            } else {
+                [countView setText:@""];
+
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
     }
     
@@ -259,13 +279,17 @@ typedef NS_ENUM(NSInteger, sections) {
     iframe.origin = CGPointMake(iframe.origin.x, 8.0f);
     cell.imageView.frame = iframe;
     
+    // 1
+    
     UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
     
     CGRect tframe = titleLabel.frame;
-    tframe.size = CGSizeMake(self.tableView.frame.size.width - 66.0f - 2*8.0f, titleLabel.frame.size.height);
-    tframe.origin = CGPointMake(66.0f, titleLabel.frame.origin.y);
+    tframe.size = CGSizeMake(self.tableView.frame.size.width - 2*8.0f /*66.0f*/ - 2*8.0f, titleLabel.frame.size.height);
+    tframe.origin = CGPointMake(2*8.0f /*66.0f*/, titleLabel.frame.origin.y);
     titleLabel.frame= tframe;
 
+    // 2
+    
     UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
     
     NSString *body = textView.text;
@@ -283,6 +307,25 @@ typedef NS_ENUM(NSInteger, sections) {
     frame.origin = CGPointMake(66.0f, frame.origin.y);
     
     textView.frame = frame;
+    
+    // 3
+    UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
+    
+    [countView setTextColor:[UIColor blueColor]];
+    
+    CGRect countFrame = countView.frame;
+    CGRect cellFrame = cell.imageView.frame;
+    
+    // Log(@"CFRAME %@", NSStringFromCGRect(countFrame));
+    // Log(@"TEXT %@", NSStringFromCGRect(textView.frame));
+
+    countView.frame = CGRectMake(
+                                 3*8.0f+4.0f,
+                                 textView.frame.origin.y  + textView.frame.size.height - countFrame.size.height,
+                                 cellFrame.size.width,
+                                 countFrame.size.height);
+
+    // Log(@"AFTER %@", NSStringFromCGRect(countView.frame));
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -315,6 +358,55 @@ typedef NS_ENUM(NSInteger, sections) {
     
     // Error
     return rh;
+}
+
+- (NSArray *)getAnswersOfQuestion:(NSIndexPath *)indexPath {
+    //        {
+    //            description = "<p>asasdasad &nbsp;asd a</p>";
+    //            question = TESTTTTT;
+    //            questionId = 89021;
+    //            tags = "<null>";
+    //            url = "http://inquiry.wespot.net/answers/view/89021/testtttt";
+    //        }
+    NSDictionary *Question = [self.Questions objectAtIndex:indexPath.row];
+    NSNumber *QuestionId = [Question objectForKey:@"questionId" ];
+    NSArray *filteredArray = [self.Answers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings) {
+        //            {
+        //                answer = "<p>adasasdasd</p>";
+        //                answerId = 89043;
+        //                description = "<p>asasdasad &nbsp;asd a</p>";
+        //                question = TESTTTTT;
+        //                questionId = 89021;
+        //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
+        //            }
+        return [[object objectForKey:@"questionId"] longLongValue] == [QuestionId longLongValue];
+        // Return YES for each object you want in filteredArray.
+    }]];
+    return filteredArray;
+}
+
+/*!
+ *  For each row in the table jump to the associated view.
+ *
+ *  @param tableView The UITableView
+ *  @param indexPath The NSIndexPath containing grouping/section and record index.
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryNone) {
+        return;
+    }
+    
+    UIViewController *newViewController;
+    
+    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
+    if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
+        
+        [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
+    }
+    
+    if (newViewController) {
+        [self.navigationController pushViewController:newViewController animated:YES];
+    }
 }
 
 - (void) createQuestion:(NSString *)title description:(NSString *)description
@@ -363,6 +455,15 @@ typedef NS_ENUM(NSInteger, sections) {
     }
     
     return NO;
+}
+
+- (void)adjustQuestionWidth
+{
+    //   [self.tableView scrollRectToVisible:[self.tableView convertRect:self.tableView.tableFooterView.bounds fromView:self.tableView.tableFooterView] animated:YES];
+    CGRect fr1 = self.questionField.frame;
+    CGRect fr2 = self.questionView.frame;
+    
+    [self.questionField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
 }
 
 @end

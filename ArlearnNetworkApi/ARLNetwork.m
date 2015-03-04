@@ -41,7 +41,7 @@
                                                          error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -55,7 +55,7 @@
     if (jsonData!=nil && error!=nil) {
         //        NSString* data = [[NSString alloc] initWithData:jsonData
         //                                               encoding:NSUTF8StringEncoding];
-        Log(@"Error: %@", urlString);
+        DLog(@"Error: %@", urlString);
     }
     
     return json;
@@ -82,7 +82,7 @@
                                                          error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -113,7 +113,7 @@
                                                          error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -134,7 +134,7 @@
                                                           error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     NSError *error = nil;
@@ -176,7 +176,7 @@
                                                           error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
 
     NSError *error = nil;
@@ -199,13 +199,13 @@
                           JSONObjectWithData:jsonData
                           options:kNilOptions
                           error:&error];
-    Log(@"[JSON]");
-    Log(@"URL: %@", url);
+    DLog(@"[JSON]");
+    DLog(@"URL: %@", url);
     if (error==nil && json!=nil && json.count!=0) {
-        Log(@"JSON:\r%@", json);
+        DLog(@"JSON:\r%@", json);
     } else {
         NSString *errorString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        Log(@"ERROR: %@", errorString);
+        DLog(@"ERROR: %@", errorString);
     }
 }
 
@@ -484,11 +484,11 @@ static BOOL _RegisteredForAPN = NO;
            withBundleId:(NSString *)bundleIdentifier {
     if (!account) return;
     
-    Log(@"bundleIdentifier:       %@",bundleIdentifier);
+    DLog(@"bundleIdentifier:       %@",bundleIdentifier);
     // Log(@"bundleIdentifier:       %@",@"net.wespot.PersonalInquiryManager");
-    Log(@"account:                %@",account);
-    Log(@"deviceToken:            %@",deviceToken);
-    Log(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);
+    DLog(@"account:                %@",account);
+    DLog(@"deviceToken:            %@",deviceToken);
+    DLog(@"deviceUniqueIdentifier: %@",deviceUniqueIdentifier);
     
     NSDictionary *apnRegistrationBean = [[NSDictionary alloc] initWithObjectsAndKeys:
                                          @"org.celstec.arlearn2.beans.notification.APNDeviceDescription",   @"type",
@@ -644,7 +644,7 @@ static BOOL _RegisteredForAPN = NO;
                                       error:nil];
     
     if (response.statusCode!=200) {
-        Log(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
     DLog(@"Uploaded %@ - %@", contentTypeIn, fileName);

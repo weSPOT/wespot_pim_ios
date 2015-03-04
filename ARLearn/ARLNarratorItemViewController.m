@@ -259,7 +259,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncProgress: %@", recordType);
+    // DLog(@"syncProgress: %@", recordType);
     
     if ([NSStringFromClass([Response class]) isEqualToString:recordType]) {
         //
@@ -277,7 +277,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     NSString *recordType = notification.object;
     
-    Log(@"syncReady: %@", recordType);
+    // DLog(@"syncReady: %@", recordType);
     
     if ([NSStringFromClass([Response class]) isEqualToString:recordType]) {
         // Comparing cnt fails because the code already does a performFetch before we enter here (because we switch views to add this one is rebuilt).
@@ -674,7 +674,7 @@ typedef NS_ENUM(NSInteger, responses) {
                 break;
                 
             case AUDIO: {
-                Log(@"%@", response.fileName);
+                // Log(@"%@", response.fileName);
                 controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls type='%@'></audio></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
                                    response.fileName, response.contentType, [response.fileName pathExtension]];
                 /*

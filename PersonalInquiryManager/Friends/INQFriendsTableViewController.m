@@ -111,7 +111,8 @@ typedef NS_ENUM(NSInteger, friends) {
     }
 }
 
-#warning DO NOT REENABLE THIS CODE But replace it with the new syncProgress/syncReady code.
+// #warning DO NOT REENABLE THIS CODE But replace it with the new syncProgress/syncReady code.
+
 //- (void)setupFetchedResultsController {
 //    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
 //

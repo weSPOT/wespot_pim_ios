@@ -604,12 +604,18 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Kd-V7-rKC">
-                                            <rect key="frame" x="82" y="8" width="230" height="21"/>
+                                            <rect key="frame" x="8" y="8" width="304" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" adjustsFontSizeToFit="NO" minimumFontSize="17" id="mt5-K4-PvW">
+                                            <rect key="frame" x="13" y="73" width="61" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -945,11 +951,6 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="aaX-70-08s"/>
-                        <barButtonItem title="APN" id="Vdz-hI-23V">
-                            <connections>
-                                <action selector="apnButtonAction:" destination="mph-xo-zGo" id="46y-Jt-rdx"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem title="Sync" id="aYp-OI-cLx">
                             <connections>
                                 <action selector="syncButtonAction:" destination="mph-xo-zGo" id="4RQ-bp-Y6T"/>
@@ -964,7 +965,6 @@
                     <navigationItem key="navigationItem" id="vFt-AZ-sMZ"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="apnButton" destination="Vdz-hI-23V" id="W0j-0M-ltp"/>
                         <outlet property="logoutButton" destination="LcJ-g6-OSF" id="fIF-sW-Wpd"/>
                         <outlet property="spacerButton" destination="aaX-70-08s" id="l4K-Xt-cEc"/>
                         <outlet property="syncButton" destination="aYp-OI-cLx" id="ymB-gW-gXK"/>

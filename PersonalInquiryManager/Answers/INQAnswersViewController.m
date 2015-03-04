@@ -156,22 +156,24 @@ typedef NS_ENUM(NSInteger, sections) {
     // Configure the cell...
     switch (indexPath.section) {
         case ANSWERS: {
-            NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
-//            {
-//                answer = "<p>adasasdasd</p>";
-//                answerId = 89043;
-//                description = "<p>asasdasad &nbsp;asd a</p>";
-//                question = TESTTTTT;
-//                questionId = 89021;
-//                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
-//            }
-            cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"question"]];
-        
-            //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-            
-            cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"description"]];
-            
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            @autoreleasepool {
+                NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
+                //            {
+                //                answer = "<p>adasasdasd</p>";
+                //                answerId = 89043;
+                //                description = "<p>asasdasad &nbsp;asd a</p>";
+                //                question = TESTTTTT;
+                //                questionId = 89021;
+                //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
+                //            }
+                cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"question"]];
+                
+                //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+                
+                cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"description"]];
+                
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
     }
     

@@ -203,47 +203,49 @@ typedef NS_ENUM(NSInteger, sections) {
     // Configure the cell...
     switch (indexPath.section) {
         case QUESTIONS: {
-            NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
-            
-            UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
-            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-            UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
-            
-            cell.imageView.image = [UIImage imageNamed:@"question"];
-            
-            textView.editable = NO;
-            
-            //WARNING: Without this, the last line is missing.
-            textView.scrollEnabled = YES;
-            
-            NSString *title = [question valueForKey:@"question"];
-            
-            title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            
-            titleLabel.text = title.length==0 ? @"Question" : title;
-            
-            NSString *html = [question valueForKey:@"description"];
-            NSString *body = [INQUtils cleanHtml:html];
-            
-            textView.text = body.length==0 ? @"No description." : body;
-        
-            // Add Answer Count Indicator.
-            NSInteger count = [[self getAnswersOfQuestion:indexPath] count];
-            
-            if (count!=0) {
-                NSString *value = [NSString stringWithFormat:@"%d", count];
-                NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
-                NSRange range=[value rangeOfString:value];
+            @autoreleasepool {
+                NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
                 
-                [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
-    
-                [countView setAttributedText:string];
+                UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
+                UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+                UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
                 
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            } else {
-                [countView setText:@""];
-
-                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.imageView.image = [UIImage imageNamed:@"question"];
+                
+                textView.editable = NO;
+                
+                //WARNING: Without this, the last line is missing.
+                textView.scrollEnabled = YES;
+                
+                NSString *title = [question valueForKey:@"question"];
+                
+                title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                
+                titleLabel.text = title.length==0 ? @"Question" : title;
+                
+                NSString *html = [question valueForKey:@"description"];
+                NSString *body = [INQUtils cleanHtml:html];
+                
+                textView.text = body.length==0 ? @"No description." : body;
+                
+                // Add Answer Count Indicator.
+                NSInteger count = [[self getAnswersOfQuestion:indexPath] count];
+                
+                if (count!=0) {
+                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
+                    NSRange range=[value rangeOfString:value];
+                    
+                    [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+                    
+                    [countView setAttributedText:string];
+                    
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                } else {
+                    [countView setText:@""];
+                    
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                }
             }
         }
     }

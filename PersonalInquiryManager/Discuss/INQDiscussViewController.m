@@ -78,6 +78,11 @@ typedef NS_ENUM(NSInteger, friends) {
     DLog(@"Messages: %d", [[self.fetchedResultsController fetchedObjects] count]);
 }
 
+/*!
+ *  Called when an SYNC Progress notification is received.
+ *
+ *  @param notification <#notification description#>
+ */
 - (void)syncProgress:(NSNotification*)notification
 {
     // Nothing yet
@@ -85,13 +90,19 @@ typedef NS_ENUM(NSInteger, friends) {
 
 - (void)adjustChatWidth
 {
-    //   [self.tableView scrollRectToVisible:[self.tableView convertRect:self.tableView.tableFooterView.bounds fromView:self.tableView.tableFooterView] animated:YES];
-    CGRect fr1 = self.chatMessageField.frame;
-    CGRect fr2 = self.chatView.frame;
-    
-    [self.chatMessageField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
+    @autoreleasepool {
+        CGRect fr1 = self.chatMessageField.frame;
+        CGRect fr2 = self.chatView.frame;
+        
+        [self.chatMessageField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
+    }
 }
 
+/*!
+ *  Called when an Sync Ready notification is received.
+ *
+ *  @param notification <#notification description#>
+ */
 - (void)syncReady:(NSNotification*)notification
 {
     if (![NSThread isMainThread]) {
@@ -129,6 +140,11 @@ typedef NS_ENUM(NSInteger, friends) {
                                animated:NO];
 }
 
+/*!
+ *  Called when an APN notification is received.
+ *
+ *  @param notification <#notification description#>
+ */
 - (void)syncAPN:(NSNotification*)notification
 {
     if (![NSThread isMainThread]) {
@@ -137,12 +153,17 @@ typedef NS_ENUM(NSInteger, friends) {
                             waitUntilDone:YES];
         return;
     }
+  
+    // Log(@"syncAPN");
     
     [self syncData];
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
+/*!
+ *  See iOS documentation.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -159,12 +180,22 @@ typedef NS_ENUM(NSInteger, friends) {
     //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
 }
 
+/*!
+ *  See iOS documentation.
+ *
+ *  @param animated <#animated description#>
+ */
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setToolbarHidden:NO];
 }
 
+/*!
+ *  See iOS documentation.
+ *
+ *  @param animated <#animated description#>
+ */
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -202,6 +233,11 @@ typedef NS_ENUM(NSInteger, friends) {
     }
 }
 
+/*!
+ *  See iOS documentation.
+ *
+ *  @param animated <#animated description#>
+ */
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -213,6 +249,9 @@ typedef NS_ENUM(NSInteger, friends) {
     [self.navigationController setToolbarHidden:YES];
 }
 
+/*!
+ *  See iOS documentation.
+ */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -381,8 +420,8 @@ typedef NS_ENUM(NSInteger, friends) {
                                         deltaWidth:tableView.rowHeight + 1*8.0f
                                        deltaHeight:4
                                             radius:10.0f];
-
-                        {
+                        
+                        @autoreleasepool {
                             CGRect frame = detailTextLabel.frame;
                             
                             frame.origin = CGPointMake(tableView.rowHeight + 8.0f, 8.0f);
@@ -392,7 +431,7 @@ typedef NS_ENUM(NSInteger, friends) {
                             detailTextLabel.textAlignment = NSTextAlignmentRight;
                         }
                         
-                        {
+                        @autoreleasepool {
                             CGRect frame = detailTextLabel.frame;
                             frame.origin =  CGPointMake(detailTextLabel.frame.origin.x,
                                                         detailTextLabel.frame.origin.y + detailTextLabel.frame.size.height + 8.0f);
@@ -413,7 +452,7 @@ typedef NS_ENUM(NSInteger, friends) {
                                        deltaHeight:4
                                             radius:10.0f];
                         
-                        {
+                        @autoreleasepool {
                             CGRect frame = detailTextLabel.frame;
                             
                             frame.origin = CGPointMake(8.0f,
@@ -425,7 +464,7 @@ typedef NS_ENUM(NSInteger, friends) {
                             detailTextLabel.textAlignment = NSTextAlignmentLeft;
                         }
                         
-                        {
+                        @autoreleasepool {
                             CGRect frame = detailTextLabel.frame;
                             
                             frame.origin =  CGPointMake(detailTextLabel.frame.origin.x,
@@ -462,26 +501,28 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (indexPath.section) {
         case MESSAGES: {
             // Calculate the correct height here based on the message content!!
-            
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-            Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
-            
-            NSString *body = [INQUtils cleanHtml:message.body];
-            
-            if ([body length] == 0) {
-                return rh;
+            @autoreleasepool {
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+                
+                Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
+                
+                NSString *body = [INQUtils cleanHtml:message.body];
+                
+                if ([body length] == 0) {
+                    return rh;
+                }
+                
+                float tw = tableView.frame.size.width - rh - 3*8.0f;
+                
+                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                
+                // Correct for top/bottom margins.
+                return 1.0f * rh + rect.size.height + 3*8.0f;
             }
-            
-            float tw = tableView.frame.size.width - rh - 3*8.0f;
-            
-            NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
-            CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
-            
-            // Correct for top/bottom margins.
-            return 1.0f * rh + rect.size.height + 3*8.0f;
         }
-//        case SEND:
-//            return rh;
+            //        case SEND:
+            //            return rh;
     }
     
     // Error
@@ -501,8 +542,7 @@ typedef NS_ENUM(NSInteger, friends) {
     // view.tintColor = [UIColor blackColor];
     
     // Text Color
-    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    [header.textLabel setTextColor:[UIColor whiteColor]];
+    [((UITableViewHeaderFooterView *)view).textLabel setTextColor:[UIColor whiteColor]];
     
     // Another way to set the background color
     // Note: does not preserve gradient effect of original header

@@ -126,6 +126,14 @@ typedef NS_ENUM(NSInteger, sections) {
     return 0;
 }
 
+/*!
+ *  Return header text for Sections.
+ *
+ *  @param tableView <#tableView description#>
+ *  @param section   <#section description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){

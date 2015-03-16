@@ -54,14 +54,28 @@ typedef NS_ENUM(NSInteger, friends) {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
     
     [request setFetchBatchSize:8];
+    [request setFetchLimit:100];
     
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date"
                                                                                      ascending:YES
                                                                                       selector:@selector(compare:)]];
     
+//    NSDate *now = [NSDate date];
+//    NSDate *then = [now dateByAddingTimeInterval:-3*24*60*60];
+    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-3*24*60*60];
+    NSNumber *interval = [NSNumber numberWithDouble:[date timeIntervalSince1970] * 1000];
+    NSNumber *ticks = [NSNumber numberWithDouble:[now timeIntervalSince1970] * 1000];
+    
+    Log(@"%lld",[interval longLongValue]);
+    Log(@"%lld",[ticks longLongValue]);
+    
+    //DATE:  1425305445292
+    //INTER: 1426247007.931608
+    //TICKS: 447939642.376218
     request.predicate = [NSPredicate predicateWithFormat:
-                         @"run.runId == %lld",
-                         [inquiry.run.runId longLongValue]];
+                         @"(run.runId == %lld) AND (date > %lld)",
+                         [inquiry.run.runId longLongValue], [interval longLongValue]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:appDelegate.managedObjectContext
@@ -612,7 +626,7 @@ typedef NS_ENUM(NSInteger, friends) {
             
             //NSError *error = nil;
             
-            // [self.fetchedResultsController performFetch:&error];
+            //[self.fetchedResultsController performFetch:&error];
             
             textField.text = @"";
             

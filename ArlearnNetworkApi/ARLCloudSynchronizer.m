@@ -469,9 +469,15 @@
                             resp.synchronized = [NSNumber numberWithBool:YES];
                         }
                     }
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                        object:NSStringFromClass([Response class])];
                 }
             }
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                            object:NSStringFromClass([Response class])];
     }
     
     self.syncResponses = NO;

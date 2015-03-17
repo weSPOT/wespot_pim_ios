@@ -643,6 +643,14 @@ typedef NS_ENUM(NSInteger, responses) {
 {
     Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
+    NSDate *stamp = [NSDate dateWithTimeIntervalSince1970:[response.timeStamp doubleValue]/1000.f];
+    NSString *who;
+    if (response.account) {
+        who = [NSString stringWithFormat:@"by %@ %@ at %@",response.account.givenName, response.account.familyName, stamp];
+    } else {
+        who = [NSString stringWithFormat:@"at %@", stamp];
+    }
+
     if (response.fileName) {
         BOOL http = [[response.fileName lowercaseString] hasPrefix:@"http://"] || [[response.fileName lowercaseString] hasPrefix:@"https://"] ;
         
@@ -655,28 +663,28 @@ typedef NS_ENUM(NSInteger, responses) {
         switch ([response.responseType intValue]) {
             case PHOTO: {
                 if (http && ARLNetwork.networkAvailable /*&& !response.thumb*/) {
-                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /></body></html>",
-                                       response.fileName];
+                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='%@?thumbnail=1600&crop=true' style='width:100%%;' /><hr/><div><h2 style='text-align: center;'>%@, %@</h2></div></body></html>",
+                                       response.fileName, [response.fileName pathExtension], who];
                 } else {
                     // NSString *strEncoded = [Base64 encode:data];
-                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='data:%@;base64,%@' style='width:100%%;' /></body></html>",
+                    controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><img src='data:%@;base64,%@' style='width:100%%;' /><hr/><div><h2 style='text-align: center;'>%@, %@</h2></div></body></html>",
                                        response.contentType,
-                                       [INQUtils base64forData:response.thumb]];
+                                       [INQUtils base64forData:response.thumb], [response.fileName pathExtension], who];
                 }
             }
                 break;
                 
             case VIDEO: {
                 // See http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' type='%@'/></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
-                                   response.fileName, size.width * screenScale, size.height * screenScale, response.contentType, [response.fileName pathExtension]];
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head></head><body><div style='text-align:center;'><video src='%@' controls autoplay width='%f' height='%f' type='%@'/></div><br/><br/><br/><hr/><div><h2 style='text-align: center;'>%@, by %@ %@ at %@</h2></div></body></html>",
+                                   response.fileName, size.width * screenScale, size.height * screenScale, response.contentType, [response.fileName pathExtension], response.account.givenName, response.account.familyName, stamp];
             }
                 break;
                 
             case AUDIO: {
                 // Log(@"%@", response.fileName);
-                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls type='%@'></audio></div><br/><br/><br/><hr/><div><h1 style='text-align: center;'>%@</h1></div></body></html>",
-                                   response.fileName, response.contentType, [response.fileName pathExtension]];
+                controller.html = [NSString stringWithFormat:@"<!DOCTYPE html><html><head><script type='text/javascript'>function play() { document.getElementById('audio').play();}</script></head><body onload='play();'><div style='text-align:center; margin-top:100px;'><audio id='audio' src='%@' controls type='%@'></audio></div><br/><br/><br/><hr/><div><h2 style='text-align: center;'>%@, %@</h2></div></body></html>",
+                                   response.fileName, response.contentType, [response.fileName pathExtension], who];
                 /*
                 NSError *error = nil;
                 
@@ -727,11 +735,11 @@ typedef NS_ENUM(NSInteger, responses) {
             NSString *msg;
             
             if ([dictionary valueForKey:@"text"]) {
-                msg = [dictionary valueForKey:@"text"];
+                msg = [NSString stringWithFormat:@"%@\r\n\r\n%@", [dictionary valueForKey:@"text"], who];
             } else if ([dictionary valueForKey:@"value"]) {
-                msg = [NSString stringWithFormat:@"%@", [dictionary valueForKey:@"value"]];
+                msg = [NSString stringWithFormat:@"%@\r\n\r\n%@", [dictionary valueForKey:@"value"], who];
             } else {
-                msg = [NSString stringWithFormat:@"%@", response.value];
+                msg = [NSString stringWithFormat:@"%@\r\n\r\n%@", response.value, who];
             }
             
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Value", @"Value")
@@ -875,7 +883,7 @@ typedef NS_ENUM(NSInteger, responses) {
                 NSNumber *number = [formatter numberFromString:trimmed];
                 
                 if (number != nil) {
-                    [Response createValueResponse:trimmed
+                    [Response createValueResponse:trimmed //[trimmed stringByReplacingOccurrencesOfString:decimalSymbol withString:@"."]
                                           withRun:self.inquiry.run
                                   withGeneralItem:self.generalItem ];
                 } else {

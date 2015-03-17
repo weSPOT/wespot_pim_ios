@@ -101,6 +101,9 @@
         if (response) {
             //item is deleted
             [context deleteObject:response];
+            
+            [INQLog SaveNLog:context];
+            
             response = nil;
         }
         return nil;

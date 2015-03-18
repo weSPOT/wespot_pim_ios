@@ -81,8 +81,11 @@
     //RawLog(@"");
     
     [INQLog SaveNLogAbort:self.context func:[NSString stringWithFormat:@"%s",__func__]];
-//    [self.parentContext performBlock:^{
-    [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+    
+    //    [self.parentContext performBlock:^{
+    if (self.parentContext) {
+        [INQLog SaveNLogAbort:self.parentContext func:[NSString stringWithFormat:@"%s",__func__]];
+    }
 //    }];
 }
 

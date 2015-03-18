@@ -150,6 +150,7 @@
 		8DB8E3B7191B9510000C51CB /* INQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8E3B6191B9510000C51CB /* INQWebViewController.m */; };
 		8DC3AA5F192CB9AC00C16A31 /* INQQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */; };
 		8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */; };
+		8DC698931AB9BD3800BC576E /* INQNewQuestionviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC698921AB9BD3800BC576E /* INQNewQuestionviewController.m */; };
 		8DC83D2A1A792EB0003EA3BE /* ARLNotificationSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */; };
 		8DD19C0E19FE708000E87D44 /* GeneralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DD19C0919FE708000E87D44 /* GeneralItem.m */; };
 		8DD19C0F19FE708000E87D44 /* Model_3_to_4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8DD19C0A19FE708000E87D44 /* Model_3_to_4.xcmappingmodel */; };
@@ -407,6 +408,8 @@
 		8DC3AA5D192CB9AC00C16A31 /* INQQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQQuestionViewController.h; path = Question/INQQuestionViewController.h; sourceTree = "<group>"; };
 		8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQQuestionViewController.m; path = Question/INQQuestionViewController.m; sourceTree = "<group>"; };
 		8DC3AA63192CD3D400C16A31 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8DC698911AB9BD3800BC576E /* INQNewQuestionviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INQNewQuestionviewController.h; path = Splash/INQNewQuestionviewController.h; sourceTree = "<group>"; };
+		8DC698921AB9BD3800BC576E /* INQNewQuestionviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INQNewQuestionviewController.m; path = Splash/INQNewQuestionviewController.m; sourceTree = "<group>"; };
 		8DC83D281A792EB0003EA3BE /* ARLNotificationSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLNotificationSubscriber.h; sourceTree = "<group>"; };
 		8DC83D291A792EB0003EA3BE /* ARLNotificationSubscriber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLNotificationSubscriber.m; sourceTree = "<group>"; };
 		8DD19C0819FE708000E87D44 /* GeneralItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItem.h; sourceTree = "<group>"; };
@@ -1039,6 +1042,8 @@
 			children = (
 				8DC3AA5D192CB9AC00C16A31 /* INQQuestionViewController.h */,
 				8DC3AA5E192CB9AC00C16A31 /* INQQuestionViewController.m */,
+				8DC698911AB9BD3800BC576E /* INQNewQuestionviewController.h */,
+				8DC698921AB9BD3800BC576E /* INQNewQuestionviewController.m */,
 			);
 			name = Question;
 			sourceTree = "<group>";
@@ -1300,6 +1305,7 @@
 				8DD19C1819FE720000E87D44 /* Response.m in Sources */,
 				8DA0C01618BF873D006858E1 /* TestAccount+Lazy.m in Sources */,
 				34D422C917B670ED0051E84C /* Run+ARLearnBeanCreate.m in Sources */,
+				8DC698931AB9BD3800BC576E /* INQNewQuestionviewController.m in Sources */,
 				8D4C36D918EC3F19000FCEA6 /* INQNewInquiryViewController.m in Sources */,
 				8D19460F18C0A58D00C32EED /* ARLNetwork+INQ.m in Sources */,
 				34D422CB17B670ED0051E84C /* SynchronizationBookKeeping+create.m in Sources */,

@@ -9,29 +9,34 @@
 #import "INQQuestionViewController.h"
 
 @interface INQQuestionViewController ()
-/*!
- *  ID's and order of the cells.
- */
-typedef NS_ENUM(NSInteger, indices) {
-    /*!
-     *  Question.
-     */
-    QUESTION = 0,
 
-    /*!
-     *  Number of items in this NS_ENUM.
-     */
-    numItems
-};
+///*!
+// *  ID's and order of the cells.
+// */
+//typedef NS_ENUM(NSInteger, indices) {
+//    /*!
+//     *  Question.
+//     */
+//    QUESTION = 0,
+//
+//    /*!
+//     *  Number of items in this NS_ENUM.
+//     */
+//    numItems
+//};
 
 /*!
  *  TableView Sections.
  */
 typedef NS_ENUM(NSInteger, sections) {
     /*!
+     *  Add Question
+     */
+    ADDQUESTION = 0,
+    /*!
      *  Inquiry Parts
      */
-    QUESTIONS =0,
+    QUESTIONS = 1,
  
     /*!
      *  Number of Sections in this NS_ENUM.
@@ -42,7 +47,8 @@ typedef NS_ENUM(NSInteger, sections) {
 @property (weak, nonatomic) IBOutlet UIView *questionView;
 @property (weak, nonatomic) IBOutlet UITextField *questionField;
 
-@property (readonly, nonatomic) NSString *cellIdentifier;
+@property (readonly, nonatomic) NSString *cellIdentifier1;
+@property (readonly, nonatomic) NSString *cellIdentifier2;
 
 //@property(nonatomic, assign) BOOL automaticallyAdjustsScrollViewInsets;
 
@@ -65,7 +71,16 @@ typedef NS_ENUM(NSInteger, sections) {
  *
  *  @return The First Cell Identifier.
  */
--(NSString *) cellIdentifier {
+-(NSString *) cellIdentifier1 {
+    return  @"addquestionCell";
+}
+
+/*!
+ *  Getter
+ *
+ *  @return The First Cell Identifier.
+ */
+-(NSString *) cellIdentifier2 {
     return  @"questionCell";
 }
 
@@ -166,6 +181,9 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
+        case ADDQUESTION:
+            return 1;
+            
         case QUESTIONS:
             return self.Questions.count;
     }
@@ -176,6 +194,9 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
+        case ADDQUESTION:
+            return @"";
+            
         case QUESTIONS:
             return @"Questions";
     }
@@ -194,15 +215,30 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
-    }
+    UITableViewCell *cell;
     
     // Configure the cell...
     switch (indexPath.section) {
+        case ADDQUESTION: {
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier1];
+            }
+    
+            cell.textLabel.text = @"Add Question";
+            cell.imageView.image = [UIImage imageNamed:@"add-friend"];
+        }
+            break;
+            
+            
         case QUESTIONS: {
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier2];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier2];
+            }
+            
             @autoreleasepool {
                 NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
                 
@@ -275,59 +311,71 @@ typedef NS_ENUM(NSInteger, sections) {
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    CGRect iframe = cell.imageView.frame;
-    iframe.size = CGSizeMake(66.0f, 66.0f);
-    iframe.origin = CGPointMake(iframe.origin.x, 8.0f);
-    cell.imageView.frame = iframe;
     
-    // 1
-    
-    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
-    
-    CGRect tframe = titleLabel.frame;
-    tframe.size = CGSizeMake(self.tableView.frame.size.width - 2*8.0f /*66.0f*/ - 2*8.0f, titleLabel.frame.size.height);
-    tframe.origin = CGPointMake(2*8.0f /*66.0f*/, titleLabel.frame.origin.y);
-    titleLabel.frame= tframe;
-
-    // 2
-    
-    UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
-    
-    NSString *body = textView.text;
-    //NSString *tmp = [textView.text substringToIndex:2];
-    float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
-    
-    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
-    CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
-    
-    // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
-    CGRect frame = textView.frame;
-    
-    frame.size = CGSizeMake(tw, rect.size.height + 5*8.0f);
-    //66.0f is the width of the image.
-    frame.origin = CGPointMake(66.0f, frame.origin.y);
-    
-    textView.frame = frame;
-    
-    // 3
-    UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
-    
-    [countView setTextColor:[UIColor blueColor]];
-    
-    CGRect countFrame = countView.frame;
-    CGRect cellFrame = cell.imageView.frame;
-    
-    // Log(@"CFRAME %@", NSStringFromCGRect(countFrame));
-    // Log(@"TEXT %@", NSStringFromCGRect(textView.frame));
-
-    countView.frame = CGRectMake(
-                                 3*8.0f+4.0f,
-                                 textView.frame.origin.y  + textView.frame.size.height - countFrame.size.height,
-                                 cellFrame.size.width,
-                                 countFrame.size.height);
-
-    // Log(@"AFTER %@", NSStringFromCGRect(countView.frame));
+    switch (indexPath.section) {
+        case ADDQUESTION:
+        {
+            //Nothing
+        }
+            break;
+            
+        case QUESTIONS:
+        {
+            CGRect iframe = cell.imageView.frame;
+            iframe.size = CGSizeMake(66.0f, 66.0f);
+            iframe.origin = CGPointMake(iframe.origin.x, 8.0f);
+            cell.imageView.frame = iframe;
+            
+            // 1
+            
+            UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
+            
+            CGRect tframe = titleLabel.frame;
+            tframe.size = CGSizeMake(self.tableView.frame.size.width - 2*8.0f /*66.0f*/ - 2*8.0f, titleLabel.frame.size.height);
+            tframe.origin = CGPointMake(2*8.0f /*66.0f*/, titleLabel.frame.origin.y);
+            titleLabel.frame= tframe;
+            
+            // 2
+            
+            UITextView *textView = (UITextView *)[cell.contentView viewWithTag:2];
+            
+            NSString *body = textView.text;
+            //NSString *tmp = [textView.text substringToIndex:2];
+            float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
+            
+            NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+            CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+            
+            // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
+            CGRect frame = textView.frame;
+            
+            frame.size = CGSizeMake(tw, rect.size.height + 5*8.0f);
+            //66.0f is the width of the image.
+            frame.origin = CGPointMake(66.0f, frame.origin.y);
+            
+            textView.frame = frame;
+            
+            // 3
+            UITextView *countView = (UITextView *)[cell.contentView viewWithTag:3];
+            
+            [countView setTextColor:[UIColor blueColor]];
+            
+            CGRect countFrame = countView.frame;
+            CGRect cellFrame = cell.imageView.frame;
+            
+            // Log(@"CFRAME %@", NSStringFromCGRect(countFrame));
+            // Log(@"TEXT %@", NSStringFromCGRect(textView.frame));
+            
+            countView.frame = CGRectMake(
+                                         3*8.0f+4.0f,
+                                         textView.frame.origin.y  + textView.frame.size.height - countFrame.size.height,
+                                         cellFrame.size.width,
+                                         countFrame.size.height);
+            
+            // Log(@"AFTER %@", NSStringFromCGRect(countView.frame));
+        }
+            break;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,56 +383,78 @@ typedef NS_ENUM(NSInteger, sections) {
     CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
     
     switch (indexPath.section) {
+        case ADDQUESTION:
+        {
+            rh = 44.0f;
+        }
+            break;
+            
         case QUESTIONS: {
+            rh = 104.0f;
+            
             // Calculate the correct height here based on the message content!!
             NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
             
             NSString *html = [question valueForKey:@"description"];
             NSString *body = [INQUtils cleanHtml:html];
-    
+            
             if ([body length] == 0) {
                 return rh;
             }
-
+            
             // 66.0f is the width of the image.
             float tw = tableView.frame.size.width - 66.0f - 2*8.0f;
-  
+            
             NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
             CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
-
+            
             // Correct for top/bottom margins (58.0f is the designed height of the UITextView).
-            return 1.0f * rh + rect.size.height + 5*8.0f - 58.0f;
+            rh = 1.0f * rh + rect.size.height + 5*8.0f - 58.0f;
             // return 1.0f*tableView.rowHeight + MIN((rect.size.height) + 2*8.0f, 64.0f) - 58.0f;
         }
+            break;
     }
     
-    // Error
     return rh;
 }
 
 - (NSArray *)getAnswersOfQuestion:(NSIndexPath *)indexPath {
-    //        {
-    //            description = "<p>asasdasad &nbsp;asd a</p>";
-    //            question = TESTTTTT;
-    //            questionId = 89021;
-    //            tags = "<null>";
-    //            url = "http://inquiry.wespot.net/answers/view/89021/testtttt";
-    //        }
-    NSDictionary *Question = [self.Questions objectAtIndex:indexPath.row];
-    NSNumber *QuestionId = [Question objectForKey:@"questionId" ];
-    NSArray *filteredArray = [self.Answers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings) {
-        //            {
-        //                answer = "<p>adasasdasd</p>";
-        //                answerId = 89043;
-        //                description = "<p>asasdasad &nbsp;asd a</p>";
-        //                question = TESTTTTT;
-        //                questionId = 89021;
-        //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
-        //            }
-        return [[object objectForKey:@"questionId"] longLongValue] == [QuestionId longLongValue];
-        // Return YES for each object you want in filteredArray.
-    }]];
-    return filteredArray;
+    switch (indexPath.section) {
+        case ADDQUESTION:
+        {
+            //
+        }
+            break;
+            
+        case QUESTIONS:
+        {
+            
+            //        {
+            //            description = "<p>asasdasad &nbsp;asd a</p>";
+            //            question = TESTTTTT;
+            //            questionId = 89021;
+            //            tags = "<null>";
+            //            url = "http://inquiry.wespot.net/answers/view/89021/testtttt";
+            //        }
+            NSDictionary *Question = [self.Questions objectAtIndex:indexPath.row];
+            NSNumber *QuestionId = [Question objectForKey:@"questionId" ];
+            NSArray *filteredArray = [self.Answers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings) {
+                //            {
+                //                answer = "<p>adasasdasd</p>";
+                //                answerId = 89043;
+                //                description = "<p>asasdasad &nbsp;asd a</p>";
+                //                question = TESTTTTT;
+                //                questionId = 89021;
+                //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
+                //            }
+                return [[object objectForKey:@"questionId"] longLongValue] == [QuestionId longLongValue];
+                // Return YES for each object you want in filteredArray.
+            }]];
+            return filteredArray;
+        }
+    }
+    
+    return nil;
 }
 
 /*!
@@ -394,16 +464,27 @@ typedef NS_ENUM(NSInteger, sections) {
  *  @param indexPath The NSIndexPath containing grouping/section and record index.
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryNone) {
-        return;
-    }
     
     UIViewController *newViewController;
     
-    newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
-    if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
+    switch (indexPath.section) {
+        case ADDQUESTION:
+        {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddQuestionView"];
+        }
+            break;
         
-        [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
+        case QUESTIONS:
+        {
+            if ([tableView cellForRowAtIndexPath:indexPath].accessoryType != UITableViewCellAccessoryNone) {
+                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
+                if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
+                    
+                    [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
+                }
+            }
+        }
+            break;
     }
     
     if (newViewController) {
@@ -411,6 +492,7 @@ typedef NS_ENUM(NSInteger, sections) {
     }
 }
 
+/*
 - (void) createQuestion:(NSString *)title description:(NSString *)description
 {
 //    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -458,6 +540,7 @@ typedef NS_ENUM(NSInteger, sections) {
     
     return NO;
 }
+*/
 
 - (void)adjustQuestionWidth
 {

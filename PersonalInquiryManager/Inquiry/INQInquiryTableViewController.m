@@ -21,11 +21,11 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Hypothesis.
      */
-    HYPOTHESIS = 1,
+    HYPOTHESIS = 100,
     /*!
      *  Question.
      */
-    QUESTION = 2,
+    QUESTION = 1,
     /*!
      *  Plan
      */
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Data collection tasks.
      */
-    DATACOLLECTION = 3,
+    DATACOLLECTION = 2,
     /*!
      *  Analysis.
      */
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Discussion.
      */
-    DISCUSS = 4,
+    DISCUSS = 3,
     /*!
      *  Communication.
      */
@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, indices) {
     /*!
      *  Number of items in this NS_ENUM.
      */
-    numItems = 5,
+    numItems = 4,
 };
 
 /*!

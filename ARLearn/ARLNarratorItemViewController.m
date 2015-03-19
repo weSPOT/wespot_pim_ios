@@ -289,9 +289,9 @@ typedef NS_ENUM(NSInteger, responses) {
         // NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
         
         // if (cntBefore!=cntAfter) {
-            // Log(@"Responses: %d -> %d", cntBefore, cntAfter);
-            
-            [self.collectionView reloadData];
+        // Log(@"Responses: %d -> %d", cntBefore, cntAfter);
+        
+        [self.collectionView reloadData];
         // }
     }
 }
@@ -335,7 +335,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     [self setupFetchedResultsController];
     
-    [self.collectionView reloadData];
+    // [self.collectionView reloadData];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

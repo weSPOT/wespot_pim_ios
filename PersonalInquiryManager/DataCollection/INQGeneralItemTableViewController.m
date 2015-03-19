@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, groups) {
     
     [self setupFetchedResultsController];
     
-    [self.tableView reloadData];
+    // [self.tableView reloadData];
     
     [self.navigationController setToolbarHidden:YES];
     

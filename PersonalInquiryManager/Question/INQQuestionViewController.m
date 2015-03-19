@@ -104,8 +104,6 @@ typedef NS_ENUM(NSInteger, sections) {
     [self updateQuestionsAndAnswers];
     
     [self adjustQuestionWidth];
-    
-    [self.tableView reloadData];
 
     [self.navigationController setToolbarHidden:YES];
 }
@@ -509,56 +507,6 @@ typedef NS_ENUM(NSInteger, sections) {
         [self.navigationController pushViewController:newViewController animated:YES];
     }
 }
-
-/*
-- (void) createQuestion:(NSString *)title description:(NSString *)description
-{
-//    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-//method=add.question&
-//    name=Sample_Question_KSa_19.02.2014&
-//    description=Question Description&
-//    tags=my Question Tags&
-//    container_guid=27568&
-//    provider=Google &user_uid=XXXXXXXXXXXXXXXXXXXXXX&
-//    api_key=YOUR_API_KEY
-
-    NSDictionary *result = [ARLNetwork addQuestionWithDictionary:title
-                                                     description:description
-                                                       inquiryId:self.inquiryId];
-    
-//    [Message messageWithDictionary:result
-//            inManagedObjectContext:appDelegate.managedObjectContext];
-//    
-//    [INQLog SaveNLog:appDelegate.managedObjectContext];
-//    
-    DLog(@"%@", result);
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if ([textField.text length]>0) {
-        NSString *body = [textField.text
-                          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
-        if ([body length]>0) {
-            [self createQuestion:NSLocalizedString(@"Question:", @"Question:")
-                                 description:body];
-            
-            [self updateQuestionsAndAnswers];
-            
-            [self.tableView reloadData];
-            
-            textField.text = @"";
-
-            [textField resignFirstResponder];
-            
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-*/
 
 - (void)adjustQuestionWidth
 {

@@ -157,9 +157,9 @@ typedef NS_ENUM(NSInteger, tools) {
     
     if (!self.Friends) {
         [self getMyFriends];
+        
+        [self.tableView reloadData];
     }
-    
-    [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {

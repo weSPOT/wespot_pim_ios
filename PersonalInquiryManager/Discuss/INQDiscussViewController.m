@@ -13,15 +13,15 @@
 /*!
  *  ID's and order of the cells sections.
  */
-typedef NS_ENUM(NSInteger, friends) {
+typedef NS_ENUM(NSInteger, messages) {
     /*!
      *  Messages.
      */
     MESSAGES = 0,
     
-//    /*!
-//     *  Number of Inquires
-//     */
+    /*!
+     *  Number of Section
+     */
     numMessages
 };
 
@@ -199,6 +199,10 @@ typedef NS_ENUM(NSInteger, friends) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self setupFetchedResultsController];
+    
+    // [self.tableView reloadData];
+
     [self.navigationController setToolbarHidden:NO];
 }
 
@@ -224,10 +228,6 @@ typedef NS_ENUM(NSInteger, friends) {
                                              selector:@selector(syncAPN:)
                                                  name:INQ_GOTAPN
                                                object:nil];
-    
-    [self setupFetchedResultsController];
-    
-    [self.tableView reloadData];
     
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
     
@@ -293,9 +293,7 @@ typedef NS_ENUM(NSInteger, friends) {
 {
     switch (section){
         case MESSAGES:
-            return @"Chat";
-//        case SEND:
-//            return @"";
+            return @"Chat (Latest)";
     }
     
     // Error
@@ -316,8 +314,6 @@ typedef NS_ENUM(NSInteger, friends) {
     switch (section) {
         case MESSAGES:
             return [[self.fetchedResultsController fetchedObjects] count];
-//        case SEND:
-//            return 1;
     }
     
     // Error
@@ -343,14 +339,6 @@ typedef NS_ENUM(NSInteger, friends) {
             cell.accessoryType = UITableViewCellAccessoryNone;
             
             break;
-            
-//        case SEND:
-//            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier1 forIndexPath:indexPath];
-//
-//            cell.accessoryType = UITableViewCellAccessoryNone;
-//            
-//            break;
-            
     }
     
     // Configure the cell...
@@ -492,13 +480,6 @@ typedef NS_ENUM(NSInteger, friends) {
                 }
             }
             break;
-            
-//        case SEND: {
-//            UITextField *text = (UITextField *)[cell.contentView viewWithTag:1];
-//            
-//            [text setDelegate:self];
-//        }
-//            break;
         }
     }
     
@@ -532,8 +513,6 @@ typedef NS_ENUM(NSInteger, friends) {
                 return 1.0f * rh + rect.size.height + 3*8.0f;
             }
         }
-            //        case SEND:
-            //            return rh;
     }
     
     // Error
@@ -559,19 +538,6 @@ typedef NS_ENUM(NSInteger, friends) {
     // Note: does not preserve gradient effect of original header
     // header.contentView.backgroundColor = [UIColor blackColor];
 }
-
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//    return NO;
-//}
-//
-//- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-//    [self.tableView reloadData];
-//    
-//    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
-//                               animated:NO];
-//    
-//    [self adjustChatWidth];
-//}
 
 - (void)syncData {
     if (ARLNetwork.networkAvailable) {
@@ -620,10 +586,6 @@ typedef NS_ENUM(NSInteger, friends) {
                 
                 [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
             }
-            
-            //NSError *error = nil;
-            
-            //[self.fetchedResultsController performFetch:&error];
             
             textField.text = @"";
             

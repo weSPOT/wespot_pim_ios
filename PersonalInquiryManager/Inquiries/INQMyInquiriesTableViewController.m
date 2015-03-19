@@ -71,16 +71,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
     }
 }
 
-//- (void)refreshTable
-//{
-//    NSError *error = nil;
-//    [self.fetchedResultsController performFetch:&error];
-//
-//    [self.tableView reloadData];
-//    
-//    [self.refreshControl endRefreshing];
-//}
-
 - (void)syncProgress:(NSNotification*)notification
 {
     if (![NSThread isMainThread]) {
@@ -155,6 +145,13 @@ typedef NS_ENUM(NSInteger, inquiries) {
     
     self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self setupFetchedResultsController];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -169,10 +166,6 @@ typedef NS_ENUM(NSInteger, inquiries) {
                                              selector:@selector(syncReady:)
                                                  name:INQ_SYNCREADY
                                                object:nil];
-    
-    [self setupFetchedResultsController];
-    
-    [self.tableView reloadData];
     
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];

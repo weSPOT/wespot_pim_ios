@@ -118,12 +118,6 @@ typedef NS_ENUM(NSInteger, sections) {
     return 210;
 }
 
-//- (void)refreshTable {
-//    [self.tableView reloadData];
-//    
-//    [self.refreshControl endRefreshing];
-//}
-
 - (void)syncProgress:(NSNotification*)notification
 {
     if (![NSThread isMainThread]) {
@@ -232,6 +226,8 @@ typedef NS_ENUM(NSInteger, sections) {
                                                  name:INQ_GOTAPN
                                                object:nil];
     
+    [self.tableView reloadData];
+
     if (ARLNetwork.networkAvailable && self.inquiry.run) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
@@ -253,8 +249,6 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (void)viewDidAppear:(BOOL)animated  {
     [super viewDidAppear:animated];
-    
-    [self.tableView reloadData];
 }
 
 - (void) viewWillDisappear:(BOOL)animated

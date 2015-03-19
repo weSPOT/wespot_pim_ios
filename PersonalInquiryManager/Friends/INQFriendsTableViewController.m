@@ -65,10 +65,10 @@ typedef NS_ENUM(NSInteger, friends) {
     
     if (!self.Friends) {
         [self getMyFriends];
+        
+        [self.tableView reloadData];
     }
     
-    [self.tableView reloadData];
-
     //    if (ARLNetwork.networkAvailable) {
     //        ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{

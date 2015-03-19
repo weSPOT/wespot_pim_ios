@@ -102,14 +102,16 @@ typedef NS_ENUM(NSInteger, sections) {
     [super viewWillAppear:animated];
     
     [self.navigationController setToolbarHidden:YES];
-    
-    [self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self updateQuestionsAndAnswers];
 
     [self adjustQuestionWidth];
+
+    [self.tableView reloadData];
 }
 
 /*!
@@ -122,8 +124,12 @@ typedef NS_ENUM(NSInteger, sections) {
 
 #pragma mark - Properties
 
--(NSNumber*)inquiryId {
+-(NSNumber *)inquiryId {
     return _inquiryId;
+}
+
+- (void) setInquiryId:(NSNumber *)inquiryId {
+    _inquiryId = inquiryId;
 }
 
 - (void)updateQuestionsAndAnswers {
@@ -150,11 +156,6 @@ typedef NS_ENUM(NSInteger, sections) {
     self.Answers = [[ARLNetwork getAnswers:_inquiryId] valueForKey:@"result"];
 }
 
-- (void) setInquiryId:(NSNumber *)inquiryId {
-    _inquiryId = inquiryId;
-    
-    [self updateQuestionsAndAnswers];
-}
 
 #pragma mark - Table view data source
 
@@ -260,7 +261,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 titleLabel.text = title.length==0 ? @"Question" : title;
                 
                 NSString *html = [question valueForKey:@"description"];
-                NSString *body = [INQUtils cleanHtml:html];
+                NSString *body = [INQUtils ClipNWords:[INQUtils cleanHtml:html] offset:0 words:15];
                 
                 textView.text = body.length==0 ? @"No description." : body;
                 
@@ -396,7 +397,7 @@ typedef NS_ENUM(NSInteger, sections) {
             NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
             
             NSString *html = [question valueForKey:@"description"];
-            NSString *body = [INQUtils cleanHtml:html];
+            NSString *body = [INQUtils ClipNWords:[INQUtils cleanHtml:html] offset:0 words:15];
             
             if ([body length] == 0) {
                 return rh;
@@ -471,17 +472,25 @@ typedef NS_ENUM(NSInteger, sections) {
         case ADDQUESTION:
         {
             newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AddQuestionView"];
+            
+            if ([newViewController respondsToSelector:@selector(setInquiryId:)]) {
+                
+                [newViewController performSelector:@selector(setInquiryId:) withObject:self.inquiryId];
+            }
         }
+            
             break;
-        
+            
         case QUESTIONS:
         {
             if ([tableView cellForRowAtIndexPath:indexPath].accessoryType != UITableViewCellAccessoryNone) {
                 newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
+                
                 if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
                     
                     [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
                 }
+                
             }
         }
             break;

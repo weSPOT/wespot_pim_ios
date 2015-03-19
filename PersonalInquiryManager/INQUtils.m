@@ -150,4 +150,25 @@
 //    return name;
 //}
 
++(NSString *)ClipNWords:(NSString *)msg
+                 offset:(NSInteger)offset
+                  words:(NSInteger)words
+{
+    NSArray *chunks = [msg componentsSeparatedByString:@" "];
+    
+    NSRange wordRange = NSMakeRange(MIN(offset, [chunks count]), MIN(offset + words, [chunks count]));
+    
+    //NSCharacterSet *delimiterCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    //NSArray *firstWords = [[msg componentsSeparatedByCharactersInSet:delimiterCharacterSet] subarrayWithRange:wordRange];
+    NSArray *firstWords = [chunks subarrayWithRange:wordRange];
+    
+    NSString * result = [firstWords componentsJoinedByString:@" "];
+    
+    if (firstWords.count!=chunks.count) {
+        result = [result stringByAppendingString:@"..."];
+    }
+    
+    return result;
+}
+
 @end

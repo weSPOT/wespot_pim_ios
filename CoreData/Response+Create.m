@@ -97,7 +97,8 @@
     // lat
     // lng
     
-    if ([[respDict objectForKey:@"deleted"] boolValue]) {
+    if ([[respDict objectForKey:@"deleted"] boolValue] ||
+        [[respDict objectForKey:@"revoked"] boolValue]) {
         if (response) {
             //item is deleted
             [context deleteObject:response];
@@ -174,6 +175,7 @@
     
     // Set Linked Objects
     response.account = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
+    
     response.generalItem = [GeneralItem retrieveFromDbWithId:[NSNumber numberWithLongLong:[[respDict objectForKey:@"generalItemId"] longLongValue]]
                                           withManagedContext:context];
     response.run = [Run retrieveRun:[NSNumber numberWithLongLong:[[respDict objectForKey:@"runId"] longLongValue]]
@@ -181,6 +183,12 @@
     
     // Set TimeStamp.
     response.timeStamp = [NSNumber numberWithLongLong:[[respDict objectForKey:@"timestamp"] longLongValue]];
+    
+    if (!response.account) {
+        NSDictionary *acc = [ARLNetwork getUserInfo:response.run.runId userId:mail providerId:type];
+        
+        response.account = [Account accountWithDictionary:acc inManagedObjectContext:context];
+    }
     
     [INQLog SaveNLog:context];
 

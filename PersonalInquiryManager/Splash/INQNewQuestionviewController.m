@@ -26,6 +26,8 @@
 
 @implementation INQNewQuestionviewController
 
+@synthesize inquiryId = _inquiryId;
+
 /*!
  *  viewDidLoad
  */
@@ -167,37 +169,69 @@
                                views:viewsDictionary]];
 }
 
+-(NSNumber *)inquiryId {
+    return _inquiryId;
+}
+
+- (void) setInquiryId:(NSNumber *)inquiryId {
+    _inquiryId = inquiryId;
+}
+
 /*!
  *  Create a new Question
  *
  *  @param sender The sender
  */
-- (IBAction)createTap:(UIButton *)sender {
-    // TODO
+- (IBAction)createTap:(UIButton *)sender
+{
+    self.addQuestionField.text = [self.addQuestionField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.additionalDetailsField.text = [self.additionalDetailsField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.tagsField.text = [self.tagsField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+    if ([self.addQuestionField.text length]>0 &&
+        [self.additionalDetailsField.text length]>0 &&
+        [self.tagsField.text length]>0) {
+        
+        [self createQuestion:self.addQuestionField.text
+                 description:self.additionalDetailsField.text
+                        tags:self.tagsField.text];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                        message:NSLocalizedString(@"You need to enter title, description and tags to create a new question!", @"ou need to enter title, description and tags to create a new question!")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 
-//- (void) createQuestion:(NSString *)title description:(NSString *)description
-//{
-//    //    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    
-//    //method=add.question&
-//    //    name=Sample_Question_KSa_19.02.2014&
-//    //    description=Question Description&
-//    //    tags=my Question Tags&
-//    //    container_guid=27568&
-//    //    provider=Google &user_uid=XXXXXXXXXXXXXXXXXXXXXX&
-//    //    api_key=YOUR_API_KEY
-//    
-//    NSDictionary *result = [ARLNetwork addQuestionWithDictionary:title
-//                                                     description:description
-//                                                       inquiryId:self.inquiryId];
-//    
-//    //    [Message messageWithDictionary:result
-//    //            inManagedObjectContext:appDelegate.managedObjectContext];
-//    //
-//    //    [INQLog SaveNLog:appDelegate.managedObjectContext];
-//    //    
-//    DLog(@"%@", result);
-//}
+- (void) createQuestion:(NSString *)title
+            description:(NSString *)description
+                   tags:(NSString *)tags
+{
+    //    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    //method=add.question&
+    //    name=Sample_Question_KSa_19.02.2014&
+    //    description=Question Description&
+    //    tags=my Question Tags&
+    //    container_guid=27568&
+    //    provider=Google &user_uid=XXXXXXXXXXXXXXXXXXXXXX&
+    //    api_key=YOUR_API_KEY
+    
+    NSDictionary *result = [ARLNetwork addQuestionWithDictionary:title
+                                                     description:description
+                                                            tags:tags
+                                                       inquiryId:self.inquiryId];
+    
+    //    [Message messageWithDictionary:result
+    //            inManagedObjectContext:appDelegate.managedObjectContext];
+    //
+    //    [INQLog SaveNLog:appDelegate.managedObjectContext];
+   
+    DLog(@"%@", result);
+}
 
 @end

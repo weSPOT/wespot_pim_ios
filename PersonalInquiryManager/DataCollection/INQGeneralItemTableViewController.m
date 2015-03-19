@@ -63,20 +63,40 @@ typedef NS_ENUM(NSInteger, groups) {
  */
 - (void)setupFetchedResultsController {
     if (self.inquiry.run.runId) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
+//        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CurrentItemVisibility"];
+//        
+//        [request setFetchBatchSize:8];
+//        
+//        request.predicate = [NSPredicate predicateWithFormat:
+//                             @"visible = 1 and run.runId = %lld",
+//                             [self.inquiry.run.runId longLongValue]];
+//        // As sortKey seems to be 0, we need to keep the order stable.
+//        NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
+//        NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
+//        NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"item.name" ascending:YES];
+//        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.generalItemId" ascending:YES];
+//        
+//        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sectionkey, sortkey, namekey, idkey, nil];
+//        [request setSortDescriptors:sortDescriptors];
+//        
+//        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+//                                                                            managedObjectContext:self.inquiry.run.managedObjectContext
+//                                                                              sectionNameKeyPath:nil
+//                                                                                       cacheName:nil];
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GeneralItem"];
         
         [request setFetchBatchSize:8];
         
         request.predicate = [NSPredicate predicateWithFormat:
-                             @"visible = 1 and run.runId = %lld",
-                             [self.inquiry.run.runId longLongValue]];
+                             @"gameId = %lld",
+                             [self.inquiry.run.gameId longLongValue]];
         // As sortKey seems to be 0, we need to keep the order stable.
-        NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
-        NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"item.sortKey" ascending:YES];
-        NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"item.name" ascending:YES];
-        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"item.generalItemId" ascending:YES];
+        //NSSortDescriptor* sectionkey = [[NSSortDescriptor alloc] initWithKey:@"visible" ascending:YES];
+        NSSortDescriptor* sortkey = [[NSSortDescriptor alloc] initWithKey:@"sortKey" ascending:YES];
+        NSSortDescriptor* namekey = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        NSSortDescriptor* idkey = [[NSSortDescriptor alloc] initWithKey:@"generalItemId" ascending:YES];
         
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sectionkey, sortkey, namekey, idkey, nil];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortkey, namekey, idkey, nil];
         [request setSortDescriptors:sortDescriptors];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
@@ -113,7 +133,7 @@ typedef NS_ENUM(NSInteger, groups) {
     
     DLog(@"syncProgress: %@", recordType);
     
-    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
+    if ([NSStringFromClass([GeneralItem class]) isEqualToString:recordType]) {
         [self.tableView reloadData];
     }
 }
@@ -131,7 +151,7 @@ typedef NS_ENUM(NSInteger, groups) {
     
     DLog(@"syncReady: %@", recordType);
     
-    if ([NSStringFromClass([GeneralItemVisibility class]) isEqualToString:recordType]) {
+    if ([NSStringFromClass([GeneralItem class]) isEqualToString:recordType]) {
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
         
@@ -275,10 +295,12 @@ typedef NS_ENUM(NSInteger, groups) {
         case DATA: {
             // Fetch Data from CoreData
             NSIndexPath *tmp = [self tableIndexPathToCoreDataIndexPath:indexPath];
+
+#pragma warn GENERALITEM
+
+            // CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:tmp]);
             
-            CurrentItemVisibility *civ = ((CurrentItemVisibility *)[self.fetchedResultsController objectAtIndexPath:tmp]);
-            
-            GeneralItem *generalItem = civ.item;
+            GeneralItem *generalItem = ((GeneralItem *)[self.fetchedResultsController objectAtIndexPath:tmp]);;
             
             // Set Font to Bold if unread.
             cell.textLabel.text = generalItem.name;
@@ -365,7 +387,7 @@ typedef NS_ENUM(NSInteger, groups) {
             break;
             
         case DATA: {
-            GeneralItem *generalItem = ((CurrentItemVisibility*)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]]).item;
+            GeneralItem *generalItem = (GeneralItem *)[self.fetchedResultsController objectAtIndexPath:[self tableIndexPathToCoreDataIndexPath:indexPath]];
 
             //NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:generalItem.json];
             //Log(@"%@", jsonDict);

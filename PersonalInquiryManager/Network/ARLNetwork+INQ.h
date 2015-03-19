@@ -40,6 +40,7 @@
 
 + (id) addQuestionWithDictionary:(NSString *)title
                      description:(NSString *)description
+                            tags:(NSString *)tags
                        inquiryId:(NSNumber *)inquiryId;
 
 + (NSDictionary *) addQuestionWithDictionary:(NSDictionary *)question;

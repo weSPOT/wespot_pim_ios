@@ -226,6 +226,7 @@
             if (gi.generalItemId!=0) {
                 continue;
             }
+            
             NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
             NSDictionary *openQuestion = [jsonDict objectForKey:@"openQuestion"];
             
@@ -242,8 +243,8 @@
             
             gi.generalItemId = [NSNumber numberWithLongLong:[[result objectForKey:@"id"] longLongValue]];
         }
-        
         [INQLog SaveNLog:self.context];
+        
         
         NSDictionary *gisDict = [ARLNetwork itemsForGameFrom:self.gameId
                                                          from:lastDate];
@@ -255,6 +256,9 @@
             [GeneralItem generalItemWithDictionary:generalItemDict
                                           withGame:game
                             inManagedObjectContext:self.context];
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                object:NSStringFromClass([GeneralItem class])];
         }
         
         if (serverTime && [serverTime intValue] != 0) {
@@ -265,6 +269,9 @@
         }
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([GeneralItem class])];
+
     self.gameId = nil;
 }
 
@@ -282,54 +289,54 @@
 - (void) synchronizeGeneralItemsAndVisibilityStatements:(Run *)run {
     // CLog(@"Run:%@", run.runId);
     
-    @autoreleasepool {
-        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
-        
-        NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
-        
-        //    {
-        //        deleted = 0;
-        //        responses =     (
-        //                         {
-        //                             deleted = 0;
-        //                             generalItemId = 4596856252268544;
-        //                             responseId = 4524418407596032;
-        //                             responseValue = "{\"text\":\"\"}";
-        //                             runId = 5117857260109824;
-        //                             timestamp = 1395396382116;
-        //                             type = "org.celstec.arlearn2.beans.run.Response";
-        //                             userEmail = "2:101754523769925754305";
-        //                         },
-        //
-        //     }
-        
-        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
-        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
-        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
-        
-        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
-            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
-                [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
-                
-                [INQLog SaveNLog:self.context];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
-                                                                    object:NSStringFromClass([GeneralItemVisibility class])];
-            }
-        }
-        
-        if (serverTime && [serverTime intValue] != 0) {
-            [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
-                                               time:serverTime
-                                          idContext:run.runId
-                             inManagedObjectContext:self.context];
-        }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
-                                                            object:NSStringFromClass([GeneralItemVisibility class])];
-    }
+    //    @autoreleasepool {
+    //        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
+    //
+    //        NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
+    //
+    //        //    {
+    //        //        deleted = 0;
+    //        //        responses =     (
+    //        //                         {
+    //        //                             deleted = 0;
+    //        //                             generalItemId = 4596856252268544;
+    //        //                             responseId = 4524418407596032;
+    //        //                             responseValue = "{\"text\":\"\"}";
+    //        //                             runId = 5117857260109824;
+    //        //                             timestamp = 1395396382116;
+    //        //                             type = "org.celstec.arlearn2.beans.run.Response";
+    //        //                             userEmail = "2:101754523769925754305";
+    //        //                         },
+    //        //
+    //        //     }
+    //
+    //        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
+    //        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
+    //        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
+    //
+    //        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
+    //
+    //        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
+    //            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
+    //                [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
+    //
+    //                [INQLog SaveNLog:self.context];
+    //
+    //                [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+    //                                                                    object:NSStringFromClass([GeneralItemVisibility class])];
+    //            }
+    //        }
+    //
+    //        if (serverTime && [serverTime intValue] != 0) {
+    //            [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
+    //                                               time:serverTime
+    //                                          idContext:run.runId
+    //                             inManagedObjectContext:self.context];
+    //        }
+    //
+    //        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+    //                                                            object:NSStringFromClass([GeneralItemVisibility class])];
+    //    }
     
     {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"response" context:run.runId];
@@ -355,10 +362,32 @@
                 // Log(@"%d Responses", [responses count]);
                 
                 for (NSDictionary *response in responses ) {
-                    [Response responseWithDictionary:response inManagedObjectContext:self.context];
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
-                                                                        object:NSStringFromClass([Response class])];
+                    //{
+                    //deleted = 0;
+                    //generalItemId = 5792979277053952;
+                    //lastModificationDate = 1423583417091;
+                    //lat = "52.03156824";
+                    //lng = "-0.70991183";
+                    //responseId = 5873632303644672;
+                    //responseValue = "{\"text\":\"pruebaaaa\"}";
+                    //revoked = 1;
+                    //runId = 6130594576596992;
+                    //timestamp = 1423583415572;
+                    //type = "org.celstec.arlearn2.beans.run.Response";
+                    //userEmail = "5:aitor";
+                    //},
+                    
+                    if ([[response valueForKey:@"revoked"] integerValue] == 0) {
+                        /*Response *resp =*/ [Response responseWithDictionary:response inManagedObjectContext:self.context];
+                        
+                      // resp.account
+                        
+                        //getUserInfo
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                            object:NSStringFromClass([Response class])];
+                    }
                 }
                 
                 // Done in responseWithDictionary [INQLog SaveNLog:self.context];

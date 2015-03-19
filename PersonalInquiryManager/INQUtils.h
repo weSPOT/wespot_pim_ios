@@ -33,4 +33,8 @@
              deltaHeight:(NSInteger)deltaHeight
                   radius:(float)radius;
 
++(NSString *)ClipNWords:(NSString *)msg
+                 offset:(NSInteger)offset
+                  words:(NSInteger)words;
+
 @end

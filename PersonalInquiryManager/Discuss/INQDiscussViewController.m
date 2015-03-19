@@ -60,19 +60,16 @@ typedef NS_ENUM(NSInteger, friends) {
                                                                                      ascending:YES
                                                                                       selector:@selector(compare:)]];
     
-//    NSDate *now = [NSDate date];
-//    NSDate *then = [now dateByAddingTimeInterval:-3*24*60*60];
+    // Get Messages of last two days with a max of 100.
+    //
     NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-3*24*60*60];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
     NSNumber *interval = [NSNumber numberWithDouble:[date timeIntervalSince1970] * 1000];
     NSNumber *ticks = [NSNumber numberWithDouble:[now timeIntervalSince1970] * 1000];
     
-    Log(@"%lld",[interval longLongValue]);
-    Log(@"%lld",[ticks longLongValue]);
+    DLog(@"%lld",[interval longLongValue]);
+    DLog(@"%lld",[ticks longLongValue]);
     
-    //DATE:  1425305445292
-    //INTER: 1426247007.931608
-    //TICKS: 447939642.376218
     request.predicate = [NSPredicate predicateWithFormat:
                          @"(run.runId == %lld) AND (date > %lld)",
                          [inquiry.run.runId longLongValue], [interval longLongValue]];

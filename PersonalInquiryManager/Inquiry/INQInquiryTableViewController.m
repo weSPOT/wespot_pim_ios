@@ -189,6 +189,8 @@ typedef NS_ENUM(NSInteger, sections) {
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
         
+#pragma warn CHECK notification.userInfo for bean name.
+        
         [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
                                  inquiryId:self.inquiry.inquiryId];
     }
@@ -392,8 +394,11 @@ typedef NS_ENUM(NSInteger, sections) {
                     cell.textLabel.text = @"Collect Data";
                     
                     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-                    NSInteger count = [appDelegate entityCount:@"CurrentItemVisibility"
-                                                     predicate:[NSPredicate predicateWithFormat:@"visible = 1 and run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
+#pragma warn TODO GENERALITEMS
+//                    NSInteger count = [appDelegate entityCount:@"CurrentItemVisibility"
+//                                                     predicate:[NSPredicate predicateWithFormat:@"visible = 1 and run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
+                    NSInteger count = [appDelegate entityCount:@"GeneralItem"
+                                                     predicate:[NSPredicate predicateWithFormat:@"gameId = %lld", [self.inquiry.run.gameId longLongValue]]];
                     
                     if (count!=0) {
                         NSString *value = [NSString stringWithFormat:@"%d", count];

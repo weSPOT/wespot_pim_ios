@@ -703,6 +703,7 @@
 
 + (id) addQuestionWithDictionary:(NSString *)title
                      description:(NSString *)description
+                            tags:(NSString *)tags
                        inquiryId:(NSNumber *)inquiryId
 {
     Account *account = [ARLNetwork CurrentAccount];
@@ -719,11 +720,10 @@
                           title,                    @"name",
                           encoded,                  @"description",
                           inquiryId,                @"container_guid",
-                          @"tag",                   @"tags",
+                          tags,                     @"tags",                //(Tags, comma separated)
                           
-                          //@"Interests",           @"tags",                //(Tags, comma separated)
-                          // membership,            @"access_id",           //(Read Acecss: 0 -> Private, 1 -> Logged In, 2 -> Public)
-                          // membership,            @"write_access_id",     //(Write Acecss: 0 -> Private, 1 -> Logged In, 2 -> Public)
+                          // membership,            @"access_id",           //(Read Access: 0 -> Private, 1 -> Logged In, 2 -> Public)
+                          // membership,            @"write_access_id",     //(Write Access: 0 -> Private, 1 -> Logged In, 2 -> Public)
 
                           provider,                 @"provider",            //@"Google"
                           user_uid,                 @"user_uid",            //@"Google_localId",

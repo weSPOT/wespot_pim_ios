@@ -16,4 +16,6 @@
 
 @interface INQNewQuestionviewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
 
+@property (strong, nonatomic) NSNumber *inquiryId;
+
 @end

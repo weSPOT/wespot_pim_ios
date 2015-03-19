@@ -174,11 +174,11 @@ typedef NS_ENUM(NSInteger, sections) {
                 //                questionId = 89021;
                 //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
                 //            }
-                cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"question"]];
+                cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
                 
                 //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
                 
-                cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"description"]];
+                cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
                 
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }

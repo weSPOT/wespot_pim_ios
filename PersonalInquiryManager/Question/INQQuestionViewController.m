@@ -101,17 +101,17 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self updateQuestionsAndAnswers];
+    
+    [self adjustQuestionWidth];
+    
+    [self.tableView reloadData];
+
     [self.navigationController setToolbarHidden:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self updateQuestionsAndAnswers];
-
-    [self adjustQuestionWidth];
-
-    [self.tableView reloadData];
 }
 
 /*!
@@ -489,6 +489,15 @@ typedef NS_ENUM(NSInteger, sections) {
                 if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
                     
                     [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
+                }
+
+                if ([newViewController respondsToSelector:@selector(setDescription:)]) {
+                    
+                    NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
+                    
+                    NSString *html = [question valueForKey:@"description"];
+          
+                    [newViewController performSelector:@selector(setDescription:) withObject:html];
                 }
                 
             }

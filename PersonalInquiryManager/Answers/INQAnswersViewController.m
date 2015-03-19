@@ -9,20 +9,21 @@
 #import "INQAnswersViewController.h"
 
 @interface INQAnswersViewController ()
-/*!
- *  ID's and order of the cells.
- */
-typedef NS_ENUM(NSInteger, indices) {
-    /*!
-     *  Answer.
-     */
-    ANSWER = 0,
 
-    /*!
-     *  Number of items in this NS_ENUM.
-     */
-    numItems
-};
+///*!
+// *  ID's and order of the cells.
+// */
+//typedef NS_ENUM(NSInteger, indices) {
+//    /*!
+//     *  Answer.
+//     */
+//    ANSWER = 0,
+//
+//    /*!
+//     *  Number of items in this NS_ENUM.
+//     */
+//    numItems
+//};
 
 /*!
  *  TableView Sections.
@@ -31,7 +32,12 @@ typedef NS_ENUM(NSInteger, sections) {
     /*!
      *  Answers
      */
-    ANSWERS =0,
+    QUESTION =0,
+    
+    /*!
+     *  Answers
+     */
+    ANSWERS =1,
  
     /*!
      *  Number of Sections in this NS_ENUM.
@@ -46,6 +52,8 @@ typedef NS_ENUM(NSInteger, sections) {
 @implementation INQAnswersViewController
 
 @synthesize Answers = _Answers;
+
+@synthesize Description = _Description;
 
 /*!
  *  Getter
@@ -71,19 +79,13 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.tableView reloadData];
+
     [self.navigationController setToolbarHidden:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-//    if ([self.questions count]==0) {
-//        self.textView.text = @"No question has been added yet for this inquiry.";
-//    }else {
-//        self.textView.text = [[self.questions objectAtIndex:0] valueForKey:@"question"];
-//    }
-    
-    [self.tableView reloadData];
 }
 
 /*!
@@ -119,6 +121,9 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
+        case QUESTION:
+            return 1;
+        
         case ANSWERS:
             return self.Answers.count;
     }
@@ -137,8 +142,11 @@ typedef NS_ENUM(NSInteger, sections) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section){
+        case QUESTION:
+            return @"Question";
+        
         case ANSWERS:
-            return @"Answers";
+            return @"Answer(s)";
     }
     
     // Error
@@ -160,12 +168,35 @@ typedef NS_ENUM(NSInteger, sections) {
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
-    
+
+    NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
+
     // Configure the cell...
     switch (indexPath.section) {
+        case QUESTION: {
+            @autoreleasepool {
+                NSString *body = [[[answer valueForKey:@"question"] stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]];
+                
+                // cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
+                
+                float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
+                
+                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                
+                cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, rect.size.width,rect.size.height);
+                
+                cell.textLabel.text = body;
+                
+                cell.detailTextLabel.text = @"";
+            }
+        }
+            break;
+            
         case ANSWERS: {
             @autoreleasepool {
-                NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
                 //            {
                 //                answer = "<p>adasasdasd</p>";
                 //                answerId = 89043;
@@ -174,11 +205,21 @@ typedef NS_ENUM(NSInteger, sections) {
                 //                questionId = 89021;
                 //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
                 //            }
-                cell.textLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
+                 NSString *body = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
                 
-                //cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
                 
-                cell.detailTextLabel.text = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
+                float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
+                
+                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                
+                cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, rect.size.width,rect.size.height);
+
+                cell.textLabel.text = body;
+                
+                cell.detailTextLabel.text = @"";
                 
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
@@ -186,6 +227,57 @@ typedef NS_ENUM(NSInteger, sections) {
     }
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    @autoreleasepool {
+        CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
+        
+        NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
+        
+        float tw = tableView.frame.size.width - rh - 3*8.0f;
+        
+        switch (indexPath.section) {
+            case QUESTION: {
+                // Calculate the correct height here based on the message content!!
+                @autoreleasepool {
+                    NSString *body = [[[answer valueForKey:@"question"] stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]];
+                    
+                    if ([body length] == 0) {
+                        return rh;
+                    }
+                    
+                    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                    CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                    
+                    // Correct for top/bottom margins.
+                    return 1.0f * rh + rect.size.height + 3*8.0f;
+                }
+            }
+                
+            case ANSWERS: {
+                @autoreleasepool {
+                    NSString *body = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
+                    
+                    if ([body length] == 0) {
+                        return rh;
+                    }
+                    
+                    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+                    CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
+                    
+                    // Correct for top/bottom margins.
+                    return 1.0f * rh + rect.size.height + 3*8.0f;
+                }
+            }
+                break;
+                
+        }
+    }
+    
+    // Error
+    return tableView.rowHeight;
 }
 
 /*!

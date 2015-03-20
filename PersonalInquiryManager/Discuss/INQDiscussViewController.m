@@ -634,7 +634,7 @@ NSDictionary *attr;
     
     messageLimit = messageLimit + messageIncrement;
 
-    Log("Refresh Chat Messages %d", messageLimit);
+    // Log("Refresh Chat Messages %d", messageLimit);
 
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -653,7 +653,7 @@ NSDictionary *attr;
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
 
-    Log("Refreshed Chat Messages %d", [self.fetchedResultsController.fetchedObjects count]);
+    // Log("Refreshed Chat Messages %d", [self.fetchedResultsController.fetchedObjects count]);
 
     // End the refreshing
     if (self.refreshControl) {

@@ -690,6 +690,12 @@ static BOOL _RegisteredForAPN = NO;
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default", runId ]];
 }
 
++ (NSDictionary *) defaultThreadRecentMessages:(NSNumber *)runId
+                                            cnt:(NSInteger)cnt
+{
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/recentFirst/%d", runId, cnt]];
+}
+
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
                                     from:(NSNumber *)from {
     return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/default?from=%lld", runId, [from longLongValue]]];

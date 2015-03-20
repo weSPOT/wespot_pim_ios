@@ -10,6 +10,8 @@
 
 #import "ARLNetwork+INQ.h"
 
+#import "INQutils.h"
+
 #import "Inquiry+Create.h"
 
 @interface INQDiscussViewController : UITableViewController <NSFetchedResultsControllerDelegate, UITextFieldDelegate>

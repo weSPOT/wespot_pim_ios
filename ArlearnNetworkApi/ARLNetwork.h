@@ -140,6 +140,8 @@
 
 + (NSDictionary *) defaultThread:(NSNumber *)runId;
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId;
++ (NSDictionary *) defaultThreadRecentMessages:(NSNumber *)runId
+                                            cnt:(NSInteger)cnt;
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId
                                     from:(NSNumber *)from;
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId

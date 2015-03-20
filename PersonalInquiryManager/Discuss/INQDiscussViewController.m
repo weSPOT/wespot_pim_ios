@@ -42,6 +42,17 @@ int messageIncrement = 25;
 
 NSDictionary *attr;
 
+// see http://stackoverflow.com/questions/920675/how-can-i-delay-a-method-call-for-1-second
+
+typedef void (^WaitCompletionBlock)();
+
+void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC),
+                   dispatch_get_main_queue(), ^
+                   { completion(); });
+}
+
 -(NSString *) cellIdentifier {
     return  @"messageCell";
 }
@@ -234,9 +245,41 @@ NSDictionary *attr;
     
     if (ARLNetwork.networkAvailable) {
         ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        if (self.fetchedResultsController.fetchedObjects.count == 0) {
+            @autoreleasepool {
+                
+                Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId
+                                                     withManagedContext:appDelegate.managedObjectContext];
+                
+                NSDictionary * tmDict = [ARLNetwork defaultThreadRecentMessages:inquiry.run.runId
+                                                                            cnt:messageLimit];
+                
+                NSArray *messages = (NSArray *)[tmDict objectForKey:@"messages"];
+                
+                tmDict = nil;
+                
+                DLog(@"Retrieved %d Messages", [messages count]);
+                
+                for (NSDictionary *mDict in messages)
+                {
+                    [Message messageWithDictionary:mDict inManagedObjectContext:appDelegate.managedObjectContext];
+                }
+                
+                [INQLog SaveNLog:appDelegate.managedObjectContext];
+            }
+            
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            
+            Log(@"Latest Records: %d", self.fetchedResultsController.fetchedObjects.count);
+        }
         
-        [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
-                                 inquiryId:self.inquiryId];
+        waitFor(1.0, ^
+                {
+                    [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext
+                                             inquiryId:self.inquiryId];
+                });
     }
 }
 
@@ -326,27 +369,16 @@ NSDictionary *attr;
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    
-    // Log(@"cellForRowAtIndexPath %@",indexPath);
-    
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:self.fetchedResultsController.fetchedObjects.count - indexPath.row -1 inSection:0];
-
-    switch (indexPath.section) {
-        case MESSAGES:
-            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
-
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            
-            break;
-    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
     
     switch (indexPath.section) {
         case MESSAGES:{
             @autoreleasepool {
-                Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
+                NSInteger ndx = self.fetchedResultsController.fetchedObjects.count - indexPath.row -1 ;
+
+                Message *message = (Message *)[self.fetchedResultsController.fetchedObjects objectAtIndex:ndx];
                 
                 // Fetch views by tag.
                 // UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
@@ -494,9 +526,9 @@ NSDictionary *attr;
         case MESSAGES: {
             // Calculate the correct height here based on the message content!!
             @autoreleasepool {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:self.fetchedResultsController.fetchedObjects.count - indexPath.row -1 inSection:0];
+                NSInteger ndx =self.fetchedResultsController.fetchedObjects.count-indexPath.row-1;
                 
-                Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
+                Message *message = (Message *)[self.fetchedResultsController.fetchedObjects objectAtIndex:ndx];
                 
                 NSString *body = message.body; //[INQUtils cleanHtml:message.body];
                 
@@ -580,16 +612,21 @@ NSDictionary *attr;
             [self createDefaultThreadMessage:NSLocalizedString(@"Reply", @"Reply")
                                  description:body];
             
-            if (ARLNetwork.networkAvailable) {
-                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
-                
-                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
-            }
-            
+//            if (ARLNetwork.networkAvailable) {
+//                ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//                
+//                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
+//            }
+
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+
             textField.text = @"";
             
             [textField resignFirstResponder];
 
+            [self.tableView reloadData];
+            
             return YES;
         }
     }
@@ -634,8 +671,6 @@ NSDictionary *attr;
     
     messageLimit = messageLimit + messageIncrement;
 
-    // Log("Refresh Chat Messages %d", messageLimit);
-
     ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
@@ -643,9 +678,6 @@ NSDictionary *attr;
     [NSFetchedResultsController deleteCacheWithName:@"chat"];
     
     self.fetchedResultsController.fetchRequest.fetchLimit = messageLimit;
-//  self.fetchedResultsController.fetchRequest.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date"
-//                                                                                     ascending:NO
-//                                                                                      selector:@selector(compare:)]];
     self.fetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:
                                                             @"(run == %@)",
                                                             inquiry.run];
@@ -653,26 +685,12 @@ NSDictionary *attr;
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
 
-    // Log("Refreshed Chat Messages %d", [self.fetchedResultsController.fetchedObjects count]);
-
     // End the refreshing
     if (self.refreshControl) {
-        
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//        [formatter setDateFormat:@"MMM d, h:mm a"];
-//        NSString *title = [NSString stringWithFormat:@"Last update: %@", [formatter stringFromDate:[NSDate date]]];
-//        NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
-//                                                                    forKey:NSForegroundColorAttributeName];
-//        NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
-//        self.refreshControl.attributedTitle = attributedTitle;
-        
         [self.refreshControl endRefreshing];
     }
     
     [self.tableView reloadData];
-    
-//    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
-//                               animated:NO];
 }
 
 - (void)adjustChatWidth

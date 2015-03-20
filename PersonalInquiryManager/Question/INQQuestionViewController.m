@@ -101,15 +101,16 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self updateQuestionsAndAnswers];
-    
-    [self adjustQuestionWidth];
-
-    [self.navigationController setToolbarHidden:YES];
+    [self.navigationController setToolbarHidden:NO];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (!self.Questions)
+    {
+        [self syncData];
+    }
 }
 
 /*!
@@ -152,6 +153,8 @@ typedef NS_ENUM(NSInteger, sections) {
     //            }
     
     self.Answers = [[ARLNetwork getAnswers:_inquiryId] valueForKey:@"result"];
+    
+    [self.tableView reloadData];
 }
 
 
@@ -275,12 +278,11 @@ typedef NS_ENUM(NSInteger, sections) {
                     
                     [countView setAttributedText:string];
                     
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 } else {
                     [countView setText:@""];
-                    
-                    cell.accessoryType = UITableViewCellAccessoryNone;
                 }
+
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
         }
     }
@@ -481,24 +483,25 @@ typedef NS_ENUM(NSInteger, sections) {
             
         case QUESTIONS:
         {
-            if ([tableView cellForRowAtIndexPath:indexPath].accessoryType != UITableViewCellAccessoryNone) {
-                newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
+            //if ([tableView cellForRowAtIndexPath:indexPath].accessoryType != UITableViewCellAccessoryNone) {
+            newViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerView"];
+            
+            if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
                 
-                if ([newViewController respondsToSelector:@selector(setAnswers:)]) {
-                    
-                    [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
-                }
-
-                if ([newViewController respondsToSelector:@selector(setDescription:)]) {
-                    
-                    NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
-                    
-                    NSString *html = [question valueForKey:@"description"];
-          
-                    [newViewController performSelector:@selector(setDescription:) withObject:html];
-                }
-                
+                [newViewController performSelector:@selector(setAnswers:) withObject:[self getAnswersOfQuestion:indexPath]];
             }
+            
+            NSDictionary *question = [self.Questions objectAtIndex:indexPath.row];
+            
+            if ([newViewController respondsToSelector:@selector(setQuestion:)]) {
+                [newViewController performSelector:@selector(setQuestion:) withObject:[question valueForKey:@"question"]];
+            }
+            
+            if ([newViewController respondsToSelector:@selector(setDescription:)]) {
+                [newViewController performSelector:@selector(setDescription:) withObject:[question valueForKey:@"description"]];
+            }
+            
+            //}
         }
             break;
     }
@@ -515,6 +518,15 @@ typedef NS_ENUM(NSInteger, sections) {
     CGRect fr2 = self.questionView.frame;
     
     [self.questionField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
+}
+
+- (void)syncData {
+    if (ARLNetwork.networkAvailable) {
+        
+        [self updateQuestionsAndAnswers];
+        
+        [self adjustQuestionWidth];
+    }
 }
 
 @end

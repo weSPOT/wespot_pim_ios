@@ -53,7 +53,11 @@ typedef NS_ENUM(NSInteger, sections) {
 
 @synthesize Answers = _Answers;
 
+@synthesize Question = _Question;
+
 @synthesize Description = _Description;
+
+NSDictionary *attr;
 
 /*!
  *  Getter
@@ -69,6 +73,8 @@ typedef NS_ENUM(NSInteger, sections) {
  */
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    attr  = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
     
     self.tableView.opaque = NO;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
@@ -167,13 +173,12 @@ typedef NS_ENUM(NSInteger, sections) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier];
     }
 
-    NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
-
     // Configure the cell...
     switch (indexPath.section) {
         case QUESTION: {
             @autoreleasepool {
-                NSString *body = [[[answer valueForKey:@"question"] stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]];
+                NSString *body = [[[self.Question stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
                 
                 // cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                 cell.textLabel.numberOfLines = 0;
@@ -181,7 +186,6 @@ typedef NS_ENUM(NSInteger, sections) {
                 
                 float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
                 
-                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                 CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
                 
                 cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, rect.size.width,rect.size.height);
@@ -203,14 +207,15 @@ typedef NS_ENUM(NSInteger, sections) {
                 //                questionId = 89021;
                 //                url = "http://inquiry.wespot.net/answers/view/89021/testtttt#elgg-object-89043";
                 //            }
-                 NSString *body = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
+                NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
+                
+                NSString *body = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
                 
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
                 
                 float tw = tableView.frame.size.width - cell.imageView.frame.size.width - 2*8.0f;
                 
-                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                 CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
                 
                 cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, rect.size.width,rect.size.height);
@@ -232,21 +237,18 @@ typedef NS_ENUM(NSInteger, sections) {
     @autoreleasepool {
         CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
         
-        NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
-        
         float tw = tableView.frame.size.width - rh - 3*8.0f;
         
         switch (indexPath.section) {
             case QUESTION: {
                 // Calculate the correct height here based on the message content!!
                 @autoreleasepool {
-                    NSString *body = [[[answer valueForKey:@"question"] stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]];
+                    NSString *body = [[[self.Question stringByAppendingString:@"\r\n\r\n"] stringByAppendingString:[INQUtils cleanHtml:self.Description]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     
                     if ([body length] == 0) {
                         return rh;
                     }
                     
-                    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                     CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
                     
                     // Correct for top/bottom margins.
@@ -256,13 +258,14 @@ typedef NS_ENUM(NSInteger, sections) {
                 
             case ANSWERS: {
                 @autoreleasepool {
+                    NSDictionary *answer = [self.Answers objectAtIndex:indexPath.row];
+                    
                     NSString *body = [INQUtils cleanHtml:[answer valueForKey:@"answer"]];
                     
                     if ([body length] == 0) {
                         return rh;
                     }
                     
-                    NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                     CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
                     
                     // Correct for top/bottom margins.

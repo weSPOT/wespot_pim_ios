@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) NSArray *Answers;
 
+@property (strong, nonatomic) NSString *Question;
+
 @property (strong, nonatomic) NSString *Description;
 
 @end

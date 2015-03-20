@@ -32,18 +32,18 @@ typedef NS_ENUM(NSInteger, messages) {
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
-@property (readonly, nonatomic) NSInteger *messageCellHeight;
-
 @end
 
 @implementation INQDiscussViewController
 
+int messageLimit = 25;
+
+int messageIncrement = 25;
+
+NSDictionary *attr;
+
 -(NSString *) cellIdentifier {
     return  @"messageCell";
-}
-
--(NSInteger *) messageCellHeight {
-    return 120;
 }
 
 - (void)setupFetchedResultsController {
@@ -54,30 +54,31 @@ typedef NS_ENUM(NSInteger, messages) {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
     
     [request setFetchBatchSize:8];
-    [request setFetchLimit:100];
+    [request setFetchLimit:messageLimit];
     
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date"
-                                                                                     ascending:YES
+                                                                                     ascending:NO
                                                                                       selector:@selector(compare:)]];
     
-    // Get Messages of last two days with a max of 100.
+    // Get Messages of last two days with a max of 25.
     //
-    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
-    NSNumber *interval = [NSNumber numberWithDouble:[date timeIntervalSince1970] * 1000];
-    NSNumber *ticks = [NSNumber numberWithDouble:[now timeIntervalSince1970] * 1000];
-    
-    DLog(@"%lld",[interval longLongValue]);
-    DLog(@"%lld",[ticks longLongValue]);
+    //    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
+    //    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
+    //    NSNumber *interval = [NSNumber numberWithDouble:[date timeIntervalSince1970] * 1000];
+    //    NSNumber *ticks = [NSNumber numberWithDouble:[now timeIntervalSince1970] * 1000];
+    //
+    //    DLog(@"%lld",[interval longLongValue]);
+    //    DLog(@"%lld",[ticks longLongValue]);
     
     request.predicate = [NSPredicate predicateWithFormat:
-                         @"(run.runId == %lld) AND (date > %lld)",
-                         [inquiry.run.runId longLongValue], [interval longLongValue]];
+                         //@"(run == %@)
+                         @"(run == %@)", //AND (date > %lld)",
+                         inquiry.run /*,[interval longLongValue]*/];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:appDelegate.managedObjectContext
                                                                           sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
+                                                                                   cacheName:@"chat"];
     
     self.fetchedResultsController.delegate = self;
     
@@ -97,16 +98,6 @@ typedef NS_ENUM(NSInteger, messages) {
 - (void)syncProgress:(NSNotification*)notification
 {
     // Nothing yet
-}
-
-- (void)adjustChatWidth
-{
-    @autoreleasepool {
-        CGRect fr1 = self.chatMessageField.frame;
-        CGRect fr2 = self.chatView.frame;
-        
-        [self.chatMessageField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
-    }
 }
 
 /*!
@@ -180,15 +171,20 @@ typedef NS_ENUM(NSInteger, messages) {
     [super viewDidLoad];
    
 	// Do any additional setup after loading the view.
+    attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
+    
+    messageLimit = messageIncrement;
     
     self.chatMessageField.delegate = self;
     
     [self adjustChatWidth];
     
-    //[self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-    //
-    //    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
-    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    
+    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    
+    self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to add more messages"];
 }
 
 /*!
@@ -293,7 +289,7 @@ typedef NS_ENUM(NSInteger, messages) {
 {
     switch (section){
         case MESSAGES:
-            return @"Chat (Latest)";
+            return [NSString stringWithFormat:@"Chat (Latest %d)", self.fetchedResultsController.fetchedObjects.count];
     }
     
     // Error
@@ -331,6 +327,10 @@ typedef NS_ENUM(NSInteger, messages) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
+    
+    // Log(@"cellForRowAtIndexPath %@",indexPath);
+    
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:self.fetchedResultsController.fetchedObjects.count - indexPath.row -1 inSection:0];
 
     switch (indexPath.section) {
         case MESSAGES:
@@ -346,9 +346,7 @@ typedef NS_ENUM(NSInteger, messages) {
     switch (indexPath.section) {
         case MESSAGES:{
             @autoreleasepool {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-                
-                Message *message = ((Message *)[self.fetchedResultsController objectAtIndexPath:ip]);
+                Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
                 
                 // Fetch views by tag.
                 // UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1];
@@ -409,7 +407,7 @@ typedef NS_ENUM(NSInteger, messages) {
                 float tw = tableView.frame.size.width - tableView.rowHeight - 3*8.0f;
                 
                 CGSize size = [textView sizeThatFits:CGSizeMake(tw, FLT_MAX)];
-                
+               
                 switch(MyMessage) {
                     case TRUE: {
                         [INQUtils addRoundedCorner:cell
@@ -488,17 +486,19 @@ typedef NS_ENUM(NSInteger, messages) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Log(@"heightForRowAtIndexPath %@",indexPath);
+
     CGFloat rh = tableView.rowHeight==-1 ? 44.0f : tableView.rowHeight;
 
     switch (indexPath.section) {
         case MESSAGES: {
             // Calculate the correct height here based on the message content!!
             @autoreleasepool {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:self.fetchedResultsController.fetchedObjects.count - indexPath.row -1 inSection:0];
                 
                 Message *message = (Message *)[self.fetchedResultsController objectAtIndexPath:ip];
                 
-                NSString *body = [INQUtils cleanHtml:message.body];
+                NSString *body = message.body; //[INQUtils cleanHtml:message.body];
                 
                 if ([body length] == 0) {
                     return rh;
@@ -506,7 +506,6 @@ typedef NS_ENUM(NSInteger, messages) {
                 
                 float tw = tableView.frame.size.width - rh - 3*8.0f;
                 
-                NSDictionary *attr = @{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] };
                 CGRect rect = [body boundingRectWithSize:CGSizeMake(tw, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:nil];
                 
                 // Correct for top/bottom margins.
@@ -516,7 +515,7 @@ typedef NS_ENUM(NSInteger, messages) {
     }
     
     // Error
-    return tableView.rowHeight;
+    return rh;
 }
 
 /*!
@@ -628,6 +627,62 @@ typedef NS_ENUM(NSInteger, messages) {
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+-(void)refreshTable {
+    // Reload table data
+    
+    messageLimit = messageLimit + messageIncrement;
+
+    Log("Refresh Chat Messages %d", messageLimit);
+
+    ARLAppDelegate *appDelegate = (ARLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:appDelegate.managedObjectContext];
+    
+    [NSFetchedResultsController deleteCacheWithName:@"chat"];
+    
+    self.fetchedResultsController.fetchRequest.fetchLimit = messageLimit;
+//  self.fetchedResultsController.fetchRequest.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date"
+//                                                                                     ascending:NO
+//                                                                                      selector:@selector(compare:)]];
+    self.fetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:
+                                                            @"(run == %@)",
+                                                            inquiry.run];
+    
+    NSError *error;
+    [self.fetchedResultsController performFetch:&error];
+
+    Log("Refreshed Chat Messages %d", [self.fetchedResultsController.fetchedObjects count]);
+
+    // End the refreshing
+    if (self.refreshControl) {
+        
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:@"MMM d, h:mm a"];
+//        NSString *title = [NSString stringWithFormat:@"Last update: %@", [formatter stringFromDate:[NSDate date]]];
+//        NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
+//                                                                    forKey:NSForegroundColorAttributeName];
+//        NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+//        self.refreshControl.attributedTitle = attributedTitle;
+        
+        [self.refreshControl endRefreshing];
+    }
+    
+    [self.tableView reloadData];
+    
+//    [self.tableView scrollRectToVisible:self.tableView.tableFooterView.frame
+//                               animated:NO];
+}
+
+- (void)adjustChatWidth
+{
+    @autoreleasepool {
+        CGRect fr1 = self.chatMessageField.frame;
+        CGRect fr2 = self.chatView.frame;
+        
+        [self.chatMessageField setFrame:CGRectMake(fr1.origin.x, fr1.origin.y, fr2.size.width-2*fr1.origin.x, fr1.size.height)];
+    }
 }
 
 @end

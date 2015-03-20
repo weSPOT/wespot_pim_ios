@@ -53,21 +53,27 @@
 }
 
 + (NSString *)cleanHtml:(NSString *)theHtml {
-    if ([theHtml rangeOfString:@"<p>"].location == 0) {
-        theHtml = [theHtml substringFromIndex:3];
-    }
+    NSString *tmp = [[theHtml stringByReplacingOccurrencesOfString:@"<p>" withString:@"\r"]
+                     stringByReplacingOccurrencesOfString:@"</p>" withString:@"\r"];
+    
+    //    if ([theHtml rangeOfString:@"<p>"].location == 0) {
+    //        theHtml = [theHtml substringFromIndex:3];
+    //    }
     
     // NSBigMutableString* x;
     
     //Remove Trailing </p>
-    if ([theHtml rangeOfString:@"</p>"].location == theHtml.length-1-3) {
-        theHtml = [theHtml substringToIndex:theHtml.length-1-3];
+    //    if ([theHtml rangeOfString:@"</p>"].location == theHtml.length-1-3) {
+    //        theHtml = [theHtml substringToIndex:theHtml.length-1-3];
+    //    }
+    
+    // The following call is slow!!
+    if ([tmp rangeOfString:@"<"].location != NSNotFound && [tmp rangeOfString:@">"].location != NSNotFound) {
+        tmp = [[INQUtils htmlToAttributedString:tmp] string];
     }
     
-    theHtml = [[INQUtils htmlToAttributedString:theHtml] string];
-    
     //Remove WhiteSpace (note U0000fffc is 'OBJECT REPLACEMENT CHARACTER' acording to unicode).
-    return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n\t\U0000fffc"]];
+    return [tmp stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n\t\U0000fffc"]];
     
     //return [theHtml stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

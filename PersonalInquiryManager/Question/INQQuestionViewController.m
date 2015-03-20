@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, sections) {
     
     if (!self.Questions)
     {
-        [self syncData];
+        [self performSelector:@selector(syncData) withObject:self afterDelay:0.1 ];
     }
 }
 

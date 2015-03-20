@@ -132,19 +132,11 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
     if ([NSStringFromClass([Message class]) isEqualToString:recordType]) {
         NSError *error = nil;
       
-        NSUInteger cntBefore = [[self.fetchedResultsController fetchedObjects] count];
-        
         [self.fetchedResultsController performFetch:&error];
         
         ELog(error);
         
-        NSUInteger cntAfter = [[self.fetchedResultsController fetchedObjects] count];
-        
-        if (cntBefore!=cntAfter) {
-            DLog(@"Messages: %d -> %d", cntBefore, cntAfter);
-            
-            [self.tableView reloadData];
-        }
+        [self.tableView reloadData];
     }
     
     [self adjustChatWidth];
@@ -617,6 +609,8 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
 //                
 //                [INQCloudSynchronizer syncMessages:appDelegate.managedObjectContext inquiryId:self.inquiryId];
 //            }
+
+            [NSFetchedResultsController deleteCacheWithName:@"chat"];
 
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];

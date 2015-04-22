@@ -306,7 +306,9 @@ typedef NS_ENUM(NSInteger, responses) {
     UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
     
     //adjust time interval(floating value CFTimeInterval in seconds)
-    [longPressGesture setMinimumPressDuration:4.0];
+    longPressGesture.minimumPressDuration = 1.5;
+    longPressGesture.delegate = self;
+    longPressGesture.delaysTouchesBegan = YES;
     
     //add gesture to view you want to listen for it(note that if you want whole view to "listen" for gestures you should add gesture to self.view instead)
     [self.collectionView addGestureRecognizer:longPressGesture];
@@ -923,6 +925,14 @@ typedef NS_ENUM(NSInteger, responses) {
         if (ARLNetwork.networkAvailable) {
             [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
         }
+    } else if ([alertView.message isEqualToString: NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")]) {
+        if ([title isEqualToString:NSLocalizedString(@"YES", @"YES")]) {
+            
+            Log("Deleting Item: %d", alertView.tag);
+            
+        } else {
+            Log("NOT Deleting Item %d", alertView.tag);
+        }
     }
 }
 
@@ -1137,17 +1147,42 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 #pragma mark UIGestureRecognizer.
 
--(void)gestureHandler:(UISwipeGestureRecognizer *)gesture
+-(void)gestureHandler:(UISwipeGestureRecognizer *)gestureRecognizer
 {
-    if(UIGestureRecognizerStateBegan == gesture.state)
+    if(UIGestureRecognizerStateBegan == gestureRecognizer.state)
     {//your code here
         
         /*uncomment this to get which exact row was long pressed */
-        CGPoint location = [gesture locationInView:self.collectionView];
+        CGPoint location = [gestureRecognizer locationInView:self.collectionView];
         
-        NSIndexPath *swipedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
         
-        Log(@"CollectionItem: %@", swipedIndexPath);
+        if (indexPath) {
+            // Check Ownership of Collected Item.
+
+            Log(@"CollectionItem: %@", indexPath);
+            
+            Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            
+            if ([ARLNetwork isLoggedIn] && response.account == [ARLNetwork CurrentAccount]) {
+                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+                                                                      message:NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"NO", @"NO")
+                                                            otherButtonTitles:NSLocalizedString(@"YES", @"YES"), nil];
+                myAlertView.tag = indexPath.row;
+                
+                [myAlertView show];
+            } else {
+                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+                                                                      message:NSLocalizedString(@"You can only delete your own collected items.", @"You can only delete your own collected items.")
+                                                                     delegate:nil
+                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                            otherButtonTitles:nil, nil];
+                [myAlertView show];
+            }
+        }
     }
 }
 

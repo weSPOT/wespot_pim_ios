@@ -301,6 +301,15 @@ typedef NS_ENUM(NSInteger, responses) {
     
     self.collectionView.opaque = NO;
     self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
+ 
+    //create long press gesture recognizer(gestureHandler will be triggered after gesture is detected)
+    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
+    
+    //adjust time interval(floating value CFTimeInterval in seconds)
+    [longPressGesture setMinimumPressDuration:4.0];
+    
+    //add gesture to view you want to listen for it(note that if you want whole view to "listen" for gestures you should add gesture to self.view instead)
+    [self.collectionView addGestureRecognizer:longPressGesture];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -1126,5 +1135,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self.imagePickerController dismissViewControllerAnimated:YES completion:NULL];
 }
 
+#pragma mark UIGestureRecognizer.
+
+-(void)gestureHandler:(UISwipeGestureRecognizer *)gesture
+{
+    if(UIGestureRecognizerStateBegan == gesture.state)
+    {//your code here
+        
+        /*uncomment this to get which exact row was long pressed */
+        CGPoint location = [gesture locationInView:self.collectionView];
+        
+        NSIndexPath *swipedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+        
+        Log(@"CollectionItem: %@", swipedIndexPath);
+    }
+}
 
 @end

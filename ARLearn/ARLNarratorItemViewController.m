@@ -927,9 +927,28 @@ typedef NS_ENUM(NSInteger, responses) {
         }
     } else if ([alertView.message isEqualToString: NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")]) {
         if ([title isEqualToString:NSLocalizedString(@"YES", @"YES")]) {
+            NSIndexPath *path = [NSIndexPath indexPathForItem:alertView.tag inSection:RESPONSES];
             
-            Log("Deleting Item: %d", alertView.tag);
+            Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:path];
             
+            [ARLNetwork executeARLearnDeleteWithAuthorization:
+             [NSString stringWithFormat:@"responseId/%lld", [response.responseId longLongValue]]];
+            
+            Log("Deleting Item: %d - %@ %@", alertView.tag, response.responseId, response.fileName);
+
+            [self.inquiry.run.managedObjectContext deleteObject:response];
+            
+            [INQLog SaveNLog:self.inquiry.run.managedObjectContext];
+
+            if (ARLNetwork.networkAvailable) {
+                [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
+            }
+            
+            NSError *error;
+            [self.fetchedResultsController performFetch:&error];
+            ELog(error);
+            
+             [self.collectionView reloadData];
         } else {
             Log("NOT Deleting Item %d", alertView.tag);
         }

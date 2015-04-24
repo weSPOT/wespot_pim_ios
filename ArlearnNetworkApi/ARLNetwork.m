@@ -61,6 +61,43 @@
     return json;
 }
 
++ (id) executeARLearnDeleteWithAuthorization:(NSString *)path {
+    NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", serviceUrl, path];
+    
+    // DLog(@"%@", urlString);
+    
+    NSMutableURLRequest *request = [self prepareRequest:@"DELETE" requestWithUrl:urlString];
+    
+    NSString * authorizationString = [NSString stringWithFormat:@"GoogleLogin auth=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"auth"]];
+    [request setValue:authorizationString forHTTPHeaderField:@"Authorization"];
+    
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&response
+                                                         error:nil];
+    
+    if (response.statusCode!=200) {
+        DLog(@"%@ %d", response.URL, response.statusCode);
+    }
+    
+    NSError *error = nil;
+    
+    // [self dumpJsonData:jsonData url:urlString];
+    id json = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
+                                                         options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    
+    ELog(error);
+    
+    if (jsonData!=nil && error!=nil) {
+        //        NSString* data = [[NSString alloc] initWithData:jsonData
+        //                                               encoding:NSUTF8StringEncoding];
+        DLog(@"Error: %@", urlString);
+    }
+    
+    return json;
+}
+
 + (id) executeOpenBadgesGetWithAuthorization:(NSString *)path {
     NSString *urlString = [NSString stringWithFormat:@"%@/rest/%@", openbadgesUrl, path];
     

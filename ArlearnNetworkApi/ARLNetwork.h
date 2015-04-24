@@ -151,6 +151,8 @@
 
 + (id) executeARLearnGetWithAuthorization:(NSString *)path;
 
++ (id) executeARLearnDeleteWithAuthorization:(NSString *)path;
+
 + (NSDictionary *) getUserInfo:(NSNumber *)runId
                         userId:(NSString *)userId
                     providerId:(NSString *)providerId;

@@ -289,7 +289,7 @@ typedef NS_ENUM(NSInteger, tools) {
     // Configure the cell...
     switch (indexPath.section) {
         case MYINQUIRIES: {
-            cell.textLabel.Text = @"My inquiries";
+            cell.textLabel.text = @"My inquiries";
             cell.imageView.image = [UIImage imageNamed:@"inquiry"];
             
             @autoreleasepool {
@@ -310,7 +310,7 @@ typedef NS_ENUM(NSInteger, tools) {
             break;
             
         case MYMEDIA: {
-            cell.textLabel.Text = @"My media";
+            cell.textLabel.text = @"My media";
             cell.imageView.image = [UIImage imageNamed:@"mymedia"];
            
             @autoreleasepool {
@@ -340,7 +340,7 @@ typedef NS_ENUM(NSInteger, tools) {
         case TOOLS:
             switch (indexPath.item) {
                 case PROFILE :
-                    cell.textLabel.Text = @"Profile";
+                    cell.textLabel.text = @"Profile";
                     cell.imageView.image = [UIImage imageNamed:@"profile"];
                     break;
                     //                case BADGES :
@@ -348,7 +348,7 @@ typedef NS_ENUM(NSInteger, tools) {
                     //                    cell.imageView.image = [UIImage imageNamed:@"badges"];
                     //                    break;
                 case FRIENDS :
-                    cell.textLabel.Text = @"Friends";
+                    cell.textLabel.text = @"Friends";
                     cell.imageView.image = [UIImage imageNamed:@"friends"];
                     
                     @autoreleasepool {

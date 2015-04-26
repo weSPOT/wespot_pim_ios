@@ -27,7 +27,8 @@
     //WARNING: Since generalItem parameter is unused this method is identical to the one below. Seems a private method.
     
     BOOL newItemCreated = false;
-    if ([[visDict objectForKey:@"deleted"] boolValue]) {
+    if ([[visDict objectForKey:@"deleted"] boolValue] ||
+        [[visDict objectForKey:@"revoked"] boolValue]) {
         //item is deleted
         [giVis.managedObjectContext deleteObject:giVis];
         giVis = nil;

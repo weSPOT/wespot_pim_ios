@@ -1,9 +1,9 @@
 //
 //  Run.h
-//  PersonalInquiryManager
+//  
 //
-//  Created by G.W. van der Vegt on 27/10/14.
-//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
+//  Created by G.W. van der Vegt on 26/04/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -13,9 +13,9 @@
 
 @interface Run : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * deleted;
 @property (nonatomic, retain) NSNumber * gameId;
 @property (nonatomic, retain) NSString * owner;
+@property (nonatomic, retain) NSNumber * revoked;
 @property (nonatomic, retain) NSNumber * runId;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSSet *actions;

@@ -122,12 +122,12 @@ typedef NS_ENUM(NSInteger, groups) {
     // Configure the cell...
     switch (indexPath.section) {
         case EARNED: {
-            cell.textLabel.Text = @"Badge";
+            cell.textLabel.text = @"Badge";
             cell.imageView.image = [UIImage imageNamed:@"badges"];
         }
             break;
         case UNEARNED: {
-            cell.textLabel.Text = @"Unearned Badge";
+            cell.textLabel.text = @"Unearned Badge";
             cell.imageView.image = [UIImage imageNamed:@"badges"];
             cell.backgroundColor = [UIColor grayColor];
 

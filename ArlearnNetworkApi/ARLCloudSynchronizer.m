@@ -205,73 +205,75 @@
 - (void) synchronizeGeneralItemsWithGame {
     // CLog(@"GameId: %@", self.gameId);
     
-    @autoreleasepool {
-        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
-                                                                               type:@"generalItems"
-                                                                            context:self.gameId];
-        
-        // Select and Push all GeneralItems for this game with genralItemId =0 and update the id on return!
-        
-        //WARNING: Fails on == 0
-        
-        //NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(generalItemId = %@) AND (gameId = %lld)", [NSNumber numberWithInt:0], [self.gameId longLongValue]];
-        
-        NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
-        
-        // Log(@"%@", localgis);
-        
-        NSArray *gis = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"GeneralItem" predicate:localgis];
-        
-        for (GeneralItem *gi in gis) {
-            if (gi.generalItemId!=0) {
-                continue;
+    if (ARLNetwork.networkAvailable) {
+        @autoreleasepool {
+            NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context
+                                                                                   type:@"generalItems"
+                                                                                context:self.gameId];
+            
+            // Select and Push all GeneralItems for this game with genralItemId =0 and update the id on return!
+            
+            //WARNING: Fails on == 0
+            
+            //NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(generalItemId = %@) AND (gameId = %lld)", [NSNumber numberWithInt:0], [self.gameId longLongValue]];
+            
+            NSPredicate *localgis = [NSPredicate predicateWithFormat:@"(gameId = %lld)", [self.gameId longLongValue]];
+            
+            // Log(@"%@", localgis);
+            
+            NSArray *gis = [ARLAppDelegate retrievAllOfEntity:self.context enityName:@"GeneralItem" predicate:localgis];
+            
+            for (GeneralItem *gi in gis) {
+                if (gi.generalItemId!=0) {
+                    continue;
+                }
+                
+                NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
+                NSDictionary *openQuestion = [jsonDict objectForKey:@"openQuestion"];
+                
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
+                                      self.gameId,                                              @"gameId",
+                                      gi.name,                                                  @"name",
+                                      gi.richText,                                              @"description",
+                                      gi.richText,                                              @"richText",
+                                      openQuestion,                                             @"openQuestion",
+                                      nil];
+                
+                NSDictionary *result = [ARLNetwork postGeneralItemWithDict:dict];
+                
+                gi.generalItemId = [NSNumber numberWithLongLong:[[result objectForKey:@"id"] longLongValue]];
+            }
+            [INQLog SaveNLog:self.context];
+            
+            
+            NSDictionary *gisDict = [ARLNetwork itemsForGameFrom:self.gameId
+                                                            from:lastDate];
+            NSNumber *serverTime = [gisDict objectForKey:@"serverTime"];
+            
+            Game *game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
+            
+            for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
+                [GeneralItem generalItemWithDictionary:generalItemDict
+                                              withGame:game
+                                inManagedObjectContext:self.context];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                    object:NSStringFromClass([GeneralItem class])];
             }
             
-            NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:gi.json];
-            NSDictionary *openQuestion = [jsonDict objectForKey:@"openQuestion"];
-            
-            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                  @"org.celstec.arlearn2.beans.generalItem.NarratorItem",   @"type",
-                                  self.gameId,                                              @"gameId",
-                                  gi.name,                                                  @"name",
-                                  gi.richText,                                              @"description",
-                                  gi.richText,                                              @"richText",
-                                  openQuestion,                                             @"openQuestion",
-                                  nil];
-            
-            NSDictionary *result = [ARLNetwork postGeneralItemWithDict:dict];
-            
-            gi.generalItemId = [NSNumber numberWithLongLong:[[result objectForKey:@"id"] longLongValue]];
-        }
-        [INQLog SaveNLog:self.context];
-        
-        
-        NSDictionary *gisDict = [ARLNetwork itemsForGameFrom:self.gameId
-                                                         from:lastDate];
-        NSNumber *serverTime = [gisDict objectForKey:@"serverTime"];
-        
-        Game *game = [Game retrieveGame:self.gameId inManagedObjectContext:self.context];
-        
-        for (NSDictionary *generalItemDict in [gisDict objectForKey:@"generalItems"]) {
-            [GeneralItem generalItemWithDictionary:generalItemDict
-                                          withGame:game
-                            inManagedObjectContext:self.context];
-
-            [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
-                                                                object:NSStringFromClass([GeneralItem class])];
-        }
-        
-        if (serverTime && [serverTime intValue] != 0) {
-            [SynchronizationBookKeeping createEntry:@"generalItems"
-                                               time:serverTime
-                                          idContext:self.gameId
-                             inManagedObjectContext:self.context];
+            if (serverTime && [serverTime intValue] != 0) {
+                [SynchronizationBookKeeping createEntry:@"generalItems"
+                                                   time:serverTime
+                                              idContext:self.gameId
+                                 inManagedObjectContext:self.context];
+            }
         }
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
                                                         object:NSStringFromClass([GeneralItem class])];
-
+    
     self.gameId = nil;
 }
 
@@ -287,58 +289,8 @@
 }
 
 - (void) synchronizeGeneralItemsAndVisibilityStatements:(Run *)run {
-    // CLog(@"Run:%@", run.runId);
     
-    //    @autoreleasepool {
-    //        NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"generalItemsVisibility" context:run.runId];
-    //
-    //        NSDictionary *visDict =[ARLNetwork itemVisibilityForRun:run.runId from:lastDate];
-    //
-    //        //    {
-    //        //        deleted = 0;
-    //        //        responses =     (
-    //        //                         {
-    //        //                             deleted = 0;
-    //        //                             generalItemId = 4596856252268544;
-    //        //                             responseId = 4524418407596032;
-    //        //                             responseValue = "{\"text\":\"\"}";
-    //        //                             runId = 5117857260109824;
-    //        //                             timestamp = 1395396382116;
-    //        //                             type = "org.celstec.arlearn2.beans.run.Response";
-    //        //                             userEmail = "2:101754523769925754305";
-    //        //                         },
-    //        //
-    //        //     }
-    //
-    //        NSNumber *serverTime = [visDict objectForKey:@"serverTime"];
-    //        NSNumber *currentTimeMillis = [NSNumber numberWithDouble:([[NSDate date] timeIntervalSince1970] * 1000 )];
-    //        NSNumber *delta = [NSNumber numberWithLongLong:(currentTimeMillis.longLongValue - serverTime.longLongValue)];
-    //
-    //        [[NSUserDefaults standardUserDefaults] setObject:delta forKey:@"timeDelta"];
-    //
-    //        if ([[visDict objectForKey:@"generalItemsVisibility"] count] > 0) {
-    //            for (NSDictionary *viStatement in [visDict objectForKey:@"generalItemsVisibility"] ) {
-    //                [GeneralItemVisibility visibilityWithDictionaryAndId:viStatement withRun:run];
-    //
-    //                [INQLog SaveNLog:self.context];
-    //
-    //                [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
-    //                                                                    object:NSStringFromClass([GeneralItemVisibility class])];
-    //            }
-    //        }
-    //
-    //        if (serverTime && [serverTime intValue] != 0) {
-    //            [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
-    //                                               time:serverTime
-    //                                          idContext:run.runId
-    //                             inManagedObjectContext:self.context];
-    //        }
-    //
-    //        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
-    //                                                            object:NSStringFromClass([GeneralItemVisibility class])];
-    //    }
-    
-    {
+    if (ARLNetwork.networkAvailable) {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"response" context:run.runId];
         
         NSString *token = @"";
@@ -381,7 +333,7 @@
                     if ([[response valueForKey:@"revoked"] integerValue] == 0) {
                         /*Response *resp =*/ [Response responseWithDictionary:response inManagedObjectContext:self.context];
                         
-                      // resp.account
+                        // resp.account
                         
                         //getUserInfo
                         
@@ -400,27 +352,29 @@
                                           idContext:run.runId
                              inManagedObjectContext:self.context];
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
-                                                            object:NSStringFromClass([Response class])];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Response class])];
+
     self.visibilityRunId = nil;
 }
 
 - (void) synchronizeActions {
     // CLog(@"");
     
-    @autoreleasepool {
-        NSArray* actions =  [Action getUnsyncedActions:self.context];
-        for (Action* action in actions) {
-            if (ARLAppDelegate.SyncAllowed) {
-                [ARLNetwork publishAction:action.run.runId
-                                   action:action.action
-                                   itemId:action.generalItem.generalItemId
-                                     time:action.time
-                                 itemType:action.generalItem.type];
-                action.synchronized = [NSNumber numberWithBool:YES];
+    if (ARLNetwork.networkAvailable) {
+        @autoreleasepool {
+            NSArray* actions =  [Action getUnsyncedActions:self.context];
+            for (Action* action in actions) {
+                if (ARLAppDelegate.SyncAllowed) {
+                    [ARLNetwork publishAction:action.run.runId
+                                       action:action.action
+                                       itemId:action.generalItem.generalItemId
+                                         time:action.time
+                                     itemType:action.generalItem.type];
+                    action.synchronized = [NSNumber numberWithBool:YES];
+                }
             }
         }
     }
@@ -433,82 +387,99 @@
     
     //  BOOL uploads = NO;
     
-    @autoreleasepool {
-        NSArray* responses = [Response getUnsyncedReponses:self.context];
-        for (Response* resp in responses) {
-            if (ARLAppDelegate.SyncAllowed) {
-                @autoreleasepool {
-                    if (resp.value) {
-                        [ARLNetwork publishResponse:resp.run.runId
-                                      responseValue:resp.value
-                                             itemId:resp.generalItem.generalItemId
-                                          timeStamp:resp.timeStamp];
-                        
-                        resp.synchronized = [NSNumber numberWithBool:YES];
-                    } else {
-                        // VEG NOT neccesay anymore as the filename already has a random number prepended.
-                        u_int32_t random = arc4random();
-                        NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
-                        
-                        if (resp.run.runId) {
-                            NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
-                           
-                            [ARLNetwork perfomUpload:uploadUrl
-                                        withFileName:imageName
-                                         contentType:resp.contentType
-                                            withData:resp.data];
-                            
-                            NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@",
-                                                   serviceUrl,
-                                                   resp.run.runId,
-                                                   [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
-                                                   [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
-                            
-                            resp.fileName = serverUrl;
-                            
-                            // Log(@"Uploaded: %@", serverUrl);
-                            
-                            NSDictionary *myDictionary;
-                            
-                            NSString * contentType;
-                            if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
-                            if ([resp.contentType isEqualToString:@"audio/mp3"]) contentType = @"audioUrl";
-                            if ([resp.contentType isEqualToString:@"audio/amr"]) contentType = @"audioUrl";
-                            if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
-                            if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
-                            
-                            if ([resp.width intValue] ==0 ) {
-                                myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                                serverUrl, contentType, nil];
-                                
-                            } else {
-                                myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                                resp.width, @"width",
-                                                resp.height, @"height",
-                                                serverUrl, contentType, nil];
-                            }
-                            
-                            NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
-                            
+    if (ARLNetwork.networkAvailable) {
+        @autoreleasepool {
+            NSArray* responses = [Response getUnsyncedReponses:self.context];
+            for (Response* resp in responses) {
+                if (ARLAppDelegate.SyncAllowed) {
+                    @autoreleasepool {
+                        if (resp.value) {
                             [ARLNetwork publishResponse:resp.run.runId
-                                          responseValue:jsonString
+                                          responseValue:resp.value
                                                  itemId:resp.generalItem.generalItemId
                                               timeStamp:resp.timeStamp];
                             
                             resp.synchronized = [NSNumber numberWithBool:YES];
+                        } else {
+                            // VEG NOT neccesay anymore as the filename already has a random number prepended.
+                            u_int32_t random = arc4random();
+                            NSString* imageName = [NSString stringWithFormat:@"%u.%@", random, resp.fileName];
+                            
+                            if (resp.run.runId) {
+                                NSString* uploadUrl = [ARLNetwork requestUploadUrl:imageName withRun:resp.run.runId];
+                                
+                                [ARLNetwork perfomUpload:uploadUrl
+                                            withFileName:imageName
+                                             contentType:resp.contentType
+                                                withData:resp.data];
+                                
+                                NSString *serverUrl = [NSString stringWithFormat:@"%@/uploadService/%@/%@:%@/%@",
+                                                       serviceUrl,
+                                                       resp.run.runId,
+                                                       [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"],
+                                                       [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"],imageName];
+                                
+                                resp.fileName = serverUrl;
+                                
+                                // Log(@"Uploaded: %@", serverUrl);
+                                
+                                NSDictionary *myDictionary;
+                                
+                                NSString * contentType;
+                                if ([resp.contentType isEqualToString:@"audio/aac"]) contentType = @"audioUrl";
+                                if ([resp.contentType isEqualToString:@"audio/mp3"]) contentType = @"audioUrl";
+                                if ([resp.contentType isEqualToString:@"audio/amr"]) contentType = @"audioUrl";
+                                if ([resp.contentType isEqualToString:@"application/jpg"]) contentType = @"imageUrl";
+                                if ([resp.contentType isEqualToString:@"video/quicktime"]) contentType = @"videoUrl";
+                                
+                                if ([resp.width intValue] ==0 ) {
+                                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                    serverUrl, contentType, nil];
+                                    
+                                } else {
+                                    myDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                    resp.width, @"width",
+                                                    resp.height, @"height",
+                                                    serverUrl, contentType, nil];
+                                }
+                                
+                                NSString* jsonString = [ARLAppDelegate jsonString:myDictionary];
+                                
+                                [ARLNetwork publishResponse:resp.run.runId
+                                              responseValue:jsonString
+                                                     itemId:resp.generalItem.generalItemId
+                                                  timeStamp:resp.timeStamp];
+                                
+                                resp.synchronized = [NSNumber numberWithBool:YES];
+                            }
                         }
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                            object:NSStringFromClass([Response class])];
                     }
+                }
+            }
+            
+            // Deleted Revoked Responses.
+            NSArray* revoked = [Response getRevokedReponses:self.context];
+            for (Response* resp in revoked) {
+                if (ARLAppDelegate.SyncAllowed) {
+                    [ARLNetwork executeARLearnDeleteWithAuthorization:
+                     [NSString stringWithFormat:@"response/responseId/%lld", [resp.responseId longLongValue]]];
+                    
+                    [self.context deleteObject:resp];
+                    
+                    [INQLog SaveNLog:self.context];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
                                                                         object:NSStringFromClass([Response class])];
                 }
             }
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
-                                                            object:NSStringFromClass([Response class])];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCREADY
+                                                        object:NSStringFromClass([Response class])];
     self.syncResponses = NO;
 }
 

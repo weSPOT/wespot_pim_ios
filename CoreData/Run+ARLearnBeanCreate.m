@@ -54,7 +54,8 @@
     if (!runs || ([runs count] > 1)) {
         // handle error
     } else if (![runs count]) {
-        if (![[runDict objectForKey:@"deleted"] boolValue]) {
+        if (!([[runDict objectForKey:@"deleted"] boolValue] ||
+              [[runDict objectForKey:@"revoked"] boolValue])) {
             run = [NSEntityDescription insertNewObjectForEntityForName:@"Run"
                                                 inManagedObjectContext:context];
         }
@@ -63,7 +64,8 @@
         run = [runs lastObject];
         
     }
-    if ([[runDict objectForKey:@"deleted"] boolValue]) {
+    if ([[runDict objectForKey:@"deleted"] boolValue] ||
+        [[runDict objectForKey:@"revoked"] boolValue]) {
         [run.managedObjectContext deleteObject:run];
         [SynchronizationBookKeeping createEntry:@"generalItemsVisibility"
                                            time:0
@@ -74,7 +76,7 @@
         run.owner = [runDict objectForKey:@"owner"];
         run.gameId = [runDict objectForKey:@"gameId"] ;
         run.runId = [runDict objectForKey:@"runId"] ;
-        run.deleted = [NSNumber numberWithBool:NO];
+        run.revoked = [NSNumber numberWithBool:NO];
         
         [self setGame:run inManagedObjectContext:context];
     }

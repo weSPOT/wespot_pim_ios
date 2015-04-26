@@ -22,7 +22,8 @@
              inManagedObjectContext:(NSManagedObjectContext *) context
 {
     Message * message = [self retrieveFromDb:dict withManagedContext:context];
-    if ([[dict objectForKey:@"deleted"] boolValue]) {
+    if ([[dict objectForKey:@"deleted"] boolValue] ||
+        [[dict objectForKey:@"revoked"] boolValue]) {
         if (message) {
             //item is deleted
             [context deleteObject:message];

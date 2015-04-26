@@ -72,6 +72,7 @@
 		34D4231C17B677BD0051E84C /* video_48x48.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FA17B677BD0051E84C /* video_48x48.png */; };
 		34D4231D17B677BD0051E84C /* wespot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FB17B677BD0051E84C /* wespot_logo.png */; };
 		34D4231E17B677BD0051E84C /* youtube.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D422FC17B677BD0051E84C /* youtube.png */; };
+		8D04D8A31AED0C48003289E2 /* Model_5_to_6.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8D04D8A21AED0C48003289E2 /* Model_5_to_6.xcmappingmodel */; };
 		8D090E1C18FFDE95006A9D93 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8D090E1B18FFDE95006A9D93 /* Settings.bundle */; };
 		8D1945C318C0A1AD00C32EED /* INQCommunicateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */; };
 		8D1945C718C0A20300C32EED /* INQAnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1945C618C0A20300C32EED /* INQAnalysisViewController.m */; };
@@ -247,6 +248,9 @@
 		34D422FA17B677BD0051E84C /* video_48x48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_48x48.png; sourceTree = "<group>"; };
 		34D422FB17B677BD0051E84C /* wespot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wespot_logo.png; sourceTree = "<group>"; };
 		34D422FC17B677BD0051E84C /* youtube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = youtube.png; sourceTree = "<group>"; };
+		8D04D8A21AED0C48003289E2 /* Model_5_to_6.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_5_to_6.xcmappingmodel; sourceTree = "<group>"; };
+		8D04D8A41AED0CDC003289E2 /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
+		8D04D8A61AED0CDC003289E2 /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
 		8D090E1B18FFDE95006A9D93 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8D1945C018C0A1AD00C32EED /* INQCommunicateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQCommunicateViewController.h; sourceTree = "<group>"; };
 		8D1945C118C0A1AD00C32EED /* INQCommunicateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQCommunicateViewController.m; sourceTree = "<group>"; };
@@ -287,6 +291,7 @@
 		8D19462A18C0A80100C32EED /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8D19462B18C0A80100C32EED /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8D19462C18C0A80100C32EED /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		8D2176651AED0B310066D789 /* ARLDatabase v6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v6.xcdatamodel"; sourceTree = "<group>"; };
 		8D219637196C34E40044616A /* PrivateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateData.h; sourceTree = "<group>"; };
 		8D36746218D5DE1D0023A263 /* INQPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INQPageViewController.h; sourceTree = "<group>"; };
 		8D36746318D5DE1D0023A263 /* INQPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INQPageViewController.m; sourceTree = "<group>"; };
@@ -416,9 +421,7 @@
 		8DD19C0919FE708000E87D44 /* GeneralItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralItem.m; sourceTree = "<group>"; };
 		8DD19C0A19FE708000E87D44 /* Model_3_to_4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_3_to_4.xcmappingmodel; sourceTree = "<group>"; };
 		8DD19C1119FE70BA00E87D44 /* Model_4_to_5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model_4_to_5.xcmappingmodel; sourceTree = "<group>"; };
-		8DD19C1619FE720000E87D44 /* Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
 		8DD19C1719FE720000E87D44 /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
-		8DD19C1919FE724500E87D44 /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
 		8DD19C1A19FE724500E87D44 /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Run.m; sourceTree = "<group>"; };
 		8DDE2D2119D1AA9D00EC9230 /* ARLDatabase v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ARLDatabase v4.xcdatamodel"; sourceTree = "<group>"; };
 		8DDE2D2219D1AB2900EC9230 /* GeneralItemVisibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralItemVisibility.h; sourceTree = "<group>"; };
@@ -635,11 +638,12 @@
 				8D8B45B61973D063001FC6DF /* Model_2_to_3.xcmappingmodel */,
 				8DD19C0A19FE708000E87D44 /* Model_3_to_4.xcmappingmodel */,
 				8DD19C1119FE70BA00E87D44 /* Model_4_to_5.xcmappingmodel */,
-				8DD19C1619FE720000E87D44 /* Response.h */,
+				8D04D8A21AED0C48003289E2 /* Model_5_to_6.xcmappingmodel */,
+				8D04D8A41AED0CDC003289E2 /* Response.h */,
 				8DD19C1719FE720000E87D44 /* Response.m */,
 				34D422AA17B670EC0051E84C /* Response+Create.h */,
 				34D422AB17B670EC0051E84C /* Response+Create.m */,
-				8DD19C1919FE724500E87D44 /* Run.h */,
+				8D04D8A61AED0CDC003289E2 /* Run.h */,
 				8DD19C1A19FE724500E87D44 /* Run.m */,
 				34D422AE17B670EC0051E84C /* Run+ARLearnBeanCreate.h */,
 				34D422AF17B670EC0051E84C /* Run+ARLearnBeanCreate.m */,
@@ -1289,6 +1293,7 @@
 				8D8B45C91973D590001FC6DF /* Game.m in Sources */,
 				8DDE2D2E19D95FCC00EC9230 /* UIImage+RoundedCorner.m in Sources */,
 				34D422BE17B670ED0051E84C /* Game+ARLearnBeanCreate.m in Sources */,
+				8D04D8A31AED0C48003289E2 /* Model_5_to_6.xcmappingmodel in Sources */,
 				8DD19C0F19FE708000E87D44 /* Model_3_to_4.xcmappingmodel in Sources */,
 				8DDE2D2D19D95FCC00EC9230 /* UIImage+Resize.m in Sources */,
 				8D6E80C718D5B7AC0077D70E /* ARLNotificationPlayer.m in Sources */,
@@ -1532,13 +1537,14 @@
 		34D4229017B670EC0051E84C /* ARLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8D2176651AED0B310066D789 /* ARLDatabase v6.xcdatamodel */,
 				8DDE2D2119D1AA9D00EC9230 /* ARLDatabase v4.xcdatamodel */,
 				8DB86E3E19FE6CE2001E8400 /* ARLDatabase v5.xcdatamodel */,
 				8D8B45B51973CF70001FC6DF /* ARLDatabase v3.xcdatamodel */,
 				8DA8305B195C365B009E7E4E /* ARLDatabase v1.xcdatamodel */,
 				34D4229117B670EC0051E84C /* ARLDatabase v2.xcdatamodel */,
 			);
-			currentVersion = 8DB86E3E19FE6CE2001E8400 /* ARLDatabase v5.xcdatamodel */;
+			currentVersion = 8D2176651AED0B310066D789 /* ARLDatabase v6.xcdatamodel */;
 			path = ARLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

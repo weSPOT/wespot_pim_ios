@@ -262,6 +262,25 @@
 }
 
 /*!
+ *  Get all Responses where synchronized is NO.
+ *
+ *  @param context The NSManagedObjectContext.
+ *
+ *  @return An array of Responses.
+ */
++ (NSArray *) getRevokedReponses: (NSManagedObjectContext *) context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"revoked = %d", YES];
+    
+    NSError *error = nil;
+    NSArray *revokedResponses = [context executeFetchRequest:request error:&error];
+    ELog(error);
+    
+    return revokedResponses;
+}
+
+/*!
  *  Get all Responses where no media is downloaded (where data is NULL but fileName is !NULL).
  *
  *  @param context The NSManagedObjectContext.

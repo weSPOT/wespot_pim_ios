@@ -43,7 +43,8 @@
                      inManagedObjectContext: (NSManagedObjectContext *) context {
     
     GeneralItem *gi = [self retrieveFromDb:giDict withManagedContext:context];
-    if ([[giDict objectForKey:@"deleted"] boolValue]) {
+    if ([[giDict objectForKey:@"deleted"] boolValue] ||
+        [[giDict objectForKey:@"revoked"] boolValue]) {
         if (gi) {
             //item is deleted
             [context deleteObject:gi];

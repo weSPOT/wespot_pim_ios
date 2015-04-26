@@ -433,37 +433,41 @@
     @autoreleasepool {
         Inquiry *inquiry = [Inquiry retrieveFromDbWithInquiryId:self.inquiryId withManagedContext:self.context];
 
-        // Get Hyptothesis
-        id hypDict =[[ARLNetwork getHypothesis:inquiry.inquiryId] objectForKey:@"result"];
-        if (hypDict) {
-            
-            if ([hypDict count] != 0) {
-                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
-                NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
-                if (hypString) {
-                    inquiry.hypothesis = hypString;
+        if (inquiry) {
+            // Get Hyptothesis
+            id hypDict =[[ARLNetwork getHypothesis:inquiry.inquiryId] objectForKey:@"result"];
+            if (hypDict) {
+                
+                if ([hypDict count] != 0) {
+                    //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
+                    NSString* hypString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+                    if (hypString) {
+                        inquiry.hypothesis = hypString;
+                    }
                 }
             }
-        }
-        
-        //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
-        //        if (refDict) {
-        //
-        //            if ([refDict count] != 0) {
-        //                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
-        //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
-        //                if (refString) {
-        //                    newInquiry.reflection = refString;
-        //                }
-        //            }
-        //        }
-        
-        //if (ARLAppDelegate.SyncAllowed) {
-        // [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
-        //}
-        
-        if (ARLAppDelegate.SyncAllowed) {
-            [INQLog SaveNLog:self.context];
+            
+            //        id refDict =[[ARLNetwork getReflection:newInquiry.inquiryId] objectForKey:@"result"];
+            //        if (refDict) {
+            //
+            //            if ([refDict count] != 0) {
+            //                //DLog(@"Hypothesis Dictionary: %@", [hypDict objectAtIndex:0] );
+            //                NSString* refString = [[hypDict objectAtIndex:0] objectForKey:@"description"];
+            //                if (refString) {
+            //                    newInquiry.reflection = refString;
+            //                }
+            //            }
+            //        }
+            
+            //if (ARLAppDelegate.SyncAllowed) {
+            // [ARLCloudSynchronizer syncVisibilityForInquiry:self.context run:inquiry.run];
+            //}
+            
+            if (ARLAppDelegate.SyncAllowed) {
+                [INQLog SaveNLog:self.context];
+            }
+        } else {
+            Log(@"Could not get Inquiry to sync Hypothesis!");
         }
     }
     

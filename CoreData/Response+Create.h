@@ -38,6 +38,8 @@ typedef NS_ENUM (NSInteger, ResponseTypes) {
 
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext *) context;
 
++ (NSArray *) getRevokedReponses: (NSManagedObjectContext *) context;
+
 + (NSArray *) getReponsesWithoutMedia: (NSManagedObjectContext *) context
                         generalItemId:(NSNumber *) generalItemId;
 

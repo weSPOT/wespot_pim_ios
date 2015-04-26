@@ -1,9 +1,9 @@
 //
 //  Response.m
-//  PersonalInquiryManager
+//  
 //
-//  Created by G.W. van der Vegt on 27/10/14.
-//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
+//  Created by G.W. van der Vegt on 26/04/15.
+//
 //
 
 #import "Response.h"
@@ -22,6 +22,7 @@
 @dynamic lng;
 @dynamic responseId;
 @dynamic responseType;
+@dynamic revoked;
 @dynamic synchronized;
 @dynamic thumb;
 @dynamic timeStamp;

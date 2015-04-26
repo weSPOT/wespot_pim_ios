@@ -1,9 +1,9 @@
 //
 //  Response.h
-//  PersonalInquiryManager
+//  
 //
-//  Created by G.W. van der Vegt on 27/10/14.
-//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
+//  Created by G.W. van der Vegt on 26/04/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSNumber * lng;
 @property (nonatomic, retain) NSNumber * responseId;
 @property (nonatomic, retain) NSNumber * responseType;
+@property (nonatomic, retain) NSNumber * revoked;
 @property (nonatomic, retain) NSNumber * synchronized;
 @property (nonatomic, retain) NSData * thumb;
 @property (nonatomic, retain) NSNumber * timeStamp;

@@ -1,9 +1,9 @@
 //
 //  Run.m
-//  PersonalInquiryManager
+//  
 //
-//  Created by G.W. van der Vegt on 27/10/14.
-//  Copyright (c) 2014 Stefaan Ternier. All rights reserved.
+//  Created by G.W. van der Vegt on 26/04/15.
+//
 //
 
 #import "Run.h"
@@ -18,9 +18,9 @@
 
 @implementation Run
 
-@dynamic deleted;
 @dynamic gameId;
 @dynamic owner;
+@dynamic revoked;
 @dynamic runId;
 @dynamic title;
 @dynamic actions;

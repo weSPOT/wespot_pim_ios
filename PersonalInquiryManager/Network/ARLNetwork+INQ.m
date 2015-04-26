@@ -97,18 +97,28 @@
     
     NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
     
-    NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
-                                              returningResponse:&response
-                                                          error:nil];
-    if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+    @try {
+        NSError *error  = nil;
+        NSData *jsonData = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:&response
+                                                             error:&error];
+        ELog(error);
+        
+        if (response.statusCode!=200) {
+            DLog(@"%@ %d", response.URL, response.statusCode);
+        }
+        
+        error = nil;
+        
+        //  [self dumpJsonData2:jsonData url:url];
+        
+        return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
     }
-    
-    NSError *error = nil;
-    
-    //  [self dumpJsonData2:jsonData url:url];
-    
-    return jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    @catch (NSException *exception) {
+        Log(@"Exception:%@",exception);
+        
+        return nil;
+    }
 }
 
 /*!
@@ -135,14 +145,17 @@
     
     NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
     
+    NSError *error = nil;
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
                                               returningResponse:&response
-                                                          error:nil];
+                                                          error:&error];
+    ELog(error);
+    
     if (response.statusCode!=200) {
         DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
-    NSError *error = nil;
+    error = nil;
     
     //[self dumpJsonData2:jsonData url:url];
     
@@ -172,15 +185,17 @@
     
     NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
     
+    NSError *error = nil;
     NSData *jsonData = [ NSURLConnection sendSynchronousRequest:request
                                               returningResponse:&response
-                                                          error:nil];
+                                                          error:&error];
+    ELog(error);
     
     if (response.statusCode!=200) {
         DLog(@"%@ %d", response.URL, response.statusCode);
     }
     
-    NSError *error = nil;
+    error = nil;
     
     //[self dumpJsonData2:jsonData url:url];
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="v5" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="v6" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="Account" syncable="YES">
         <attribute name="accountLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="accountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -98,6 +98,7 @@
         <attribute name="lng" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="responseId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="responseType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="revoked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="thumb" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -108,9 +109,9 @@
         <relationship name="run" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Run" inverseName="responses" inverseEntity="Run" syncable="YES"/>
     </entity>
     <entity name="Run" representedClassName="Run" syncable="YES">
-        <attribute name="deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="gameId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="owner" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="revoked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="runId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="actions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="run" inverseEntity="Action" syncable="YES"/>
@@ -136,8 +137,8 @@
         <element name="GeneralItemVisibility" positionX="-2349" positionY="-918" width="128" height="135"/>
         <element name="Inquiry" positionX="-3314" positionY="-958" width="128" height="163"/>
         <element name="Message" positionX="-2826" positionY="-711" width="128" height="148"/>
-        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="285"/>
-        <element name="Run" positionX="-3116" positionY="-1008" width="128" height="223"/>
+        <element name="Response" positionX="-2189" positionY="-1338" width="128" height="300"/>
+        <element name="Run" positionX="-3116" positionY="-1008" width="128" height="225"/>
         <element name="SynchronizationBookKeeping" positionX="-3116" positionY="-1134" width="128" height="90"/>
     </elements>
 </model>

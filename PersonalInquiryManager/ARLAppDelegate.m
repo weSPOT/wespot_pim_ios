@@ -525,13 +525,13 @@ static BOOL _syncAllowed = NO;
     if (!_managedObjectModel) {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ARLDatabase" withExtension:@"momd"];
     
-        DLog(@"Model Location: %@", modelURL);
+        Log(@"Model Location: %@", modelURL);
         
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 
         //_managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil] ;
         
-        DLog(@"Model Version: %@", [[_managedObjectModel.versionIdentifiers allObjects] objectAtIndex:0]);
+        Log(@"Model Version: %@", [[_managedObjectModel.versionIdentifiers allObjects] objectAtIndex:0]);
     }
  
     return _managedObjectModel;
@@ -549,7 +549,7 @@ static BOOL _syncAllowed = NO;
         
         NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ARLDatabase.sqlite"];
         
-        DLog(@"Database Location: %@", storeURL);
+        Log(@"Database Location: %@", storeURL);
         
         NSError *error = nil;
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -572,7 +572,7 @@ static BOOL _syncAllowed = NO;
             return nil;
         }
         
-        DLog(@"Model Version: %@", [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]);
+        Log(@"Model Version: %@", [[[self managedObjectModel].versionIdentifiers allObjects] objectAtIndex:0]);
     }
 
     return _persistentStoreCoordinator;
@@ -896,7 +896,7 @@ static BOOL _syncAllowed = NO;
         NSDate *eventDate = location.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
         
-        if (abs(howRecent) < 15.0) {
+        if (ABS(howRecent) < 15.0) {
             // If the event is recent, do something with it.
             DLog(@"Lat: %+.6f, Long: %+.6f\n",
                   location.coordinate.latitude,

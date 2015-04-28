@@ -32,6 +32,8 @@
 
 @implementation INQNewInquiryViewController
 
+@dynamic view;
+
 /*!
  *  viewDidLoad
  */

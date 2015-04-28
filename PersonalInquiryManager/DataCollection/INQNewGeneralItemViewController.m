@@ -32,6 +32,8 @@
 
 @synthesize run = _run;
 
+@dynamic view;
+
 /*!
  *  viewDidLoad
  */

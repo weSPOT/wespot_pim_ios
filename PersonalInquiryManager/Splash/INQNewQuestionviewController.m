@@ -28,6 +28,8 @@
 
 @synthesize inquiryId = _inquiryId;
 
+@dynamic view;
+
 /*!
  *  viewDidLoad
  */

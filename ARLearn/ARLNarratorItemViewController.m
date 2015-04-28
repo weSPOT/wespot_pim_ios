@@ -931,7 +931,7 @@ typedef NS_ENUM(NSInteger, responses) {
             
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:path];
             
-            Log("Deleting Item: %d - %@ %@", alertView.tag, response.responseId, response.fileName);
+            // Log("Deleting Item: %d - %@ %@", alertView.tag, response.responseId, response.fileName);
             
             //            if (ARLNetwork.networkAvailable) {
             //                [ARLNetwork executeARLearnDeleteWithAuthorization:
@@ -1185,7 +1185,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         if (indexPath) {
             // Check Ownership of Collected Item.
 
-            Log(@"CollectionItem: %@", indexPath);
+            // Log(@"CollectionItem: %@", indexPath);
             
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
             

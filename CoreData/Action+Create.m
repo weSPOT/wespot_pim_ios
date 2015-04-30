@@ -47,7 +47,7 @@
 + (NSArray *) getUnsyncedActions: (NSManagedObjectContext*) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Action"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"synchronized = %d", NO];
+    request.predicate = [NSPredicate predicateWithFormat:@"synchronized=NULL OR synchronized=%d", NO];
     
     NSError *error = nil;
     NSArray *unsyncedActions = [context executeFetchRequest:request error:&error];

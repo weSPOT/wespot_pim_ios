@@ -216,7 +216,7 @@ typedef NS_ENUM(NSInteger, responses) {
                                                                  ascending:YES selector:@selector(compare:)],
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"
                                                                  ascending:YES selector:@selector(compare:)],
-                                   nil];
+                                   nil]; 
     } else if (self.account) {
         request.predicate = [NSPredicate predicateWithFormat:
                              @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND responseType!= %@",

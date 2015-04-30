@@ -76,6 +76,7 @@
         run.owner = [runDict objectForKey:@"owner"];
         run.gameId = [runDict objectForKey:@"gameId"] ;
         run.runId = [runDict objectForKey:@"runId"] ;
+        
         run.revoked = [NSNumber numberWithBool:NO];
         
         [self setGame:run inManagedObjectContext:context];

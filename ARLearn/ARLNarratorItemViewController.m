@@ -206,7 +206,10 @@ typedef NS_ENUM(NSInteger, responses) {
         
         // See http://stackoverflow.com/questions/4476026/add-additional-argument-to-an-existing-nspredicate
         NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tmp];
-        NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId = %lld AND generalItem.generalItemId = %lld AND revoked = %d",[self.inquiry.run.runId longLongValue], [self.generalItem.generalItemId longLongValue], NO];
+        NSPredicate *andPredicate = [NSPredicate predicateWithFormat: @"run.runId=%lld AND generalItem.generalItemId=%lld AND (revoked=NULL OR revoked=%d)",
+                                     [self.inquiry.run.runId longLongValue],
+                                     [self.generalItem.generalItemId longLongValue],
+                                     NO];
         
         // Example Predicate: (run.runId == 5860462742732800 AND generalItem.generalItemId == 3713019) AND (contentType == "application/jpg" OR contentType == "video/quicktime" OR contentType == "audio/aac")
         request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:andPredicate, orPredicate, nil]];
@@ -219,8 +222,11 @@ typedef NS_ENUM(NSInteger, responses) {
                                    nil]; 
     } else if (self.account) {
         request.predicate = [NSPredicate predicateWithFormat:
-                             @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND responseType!= %@",
-                             self.account.localId, self.account.accountType, [NSNumber numberWithInt:UNKNOWN]];
+                             @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND responseType!= %@ AND (revoked=NULL OR revoked=%d)",
+                             self.account.localId,
+                             self.account.accountType,
+                             [NSNumber numberWithInt:UNKNOWN],
+                             NO];
         
         request.sortDescriptors = [NSArray arrayWithObjects:
                                    [NSSortDescriptor sortDescriptorWithKey:@"timeStamp"

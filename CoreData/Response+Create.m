@@ -183,6 +183,7 @@
     
     // Set TimeStamp.
     response.timeStamp = [NSNumber numberWithLongLong:[[respDict objectForKey:@"timestamp"] longLongValue]];
+    response.revoked = [NSNumber numberWithBool:NO];
     
     if (!response.account) {
         NSDictionary *acc = [ARLNetwork getUserInfo:response.run.runId userId:mail providerId:type];
@@ -252,7 +253,7 @@
 + (NSArray *) getUnsyncedReponses: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"synchronized = %d", NO];
+    request.predicate = [NSPredicate predicateWithFormat:@"synchronized=NULL OR synchronized=%d", NO];
     
     NSError *error = nil;
     NSArray *unsyncedResponses = [context executeFetchRequest:request error:&error];
@@ -271,7 +272,7 @@
 + (NSArray *) getRevokedReponses: (NSManagedObjectContext *) context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Response"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"revoked = %d", YES];
+    request.predicate = [NSPredicate predicateWithFormat:@"revoked=%d", YES];
     
     NSError *error = nil;
     NSArray *revokedResponses = [context executeFetchRequest:request error:&error];
@@ -368,6 +369,8 @@
                          inManagedObjectContext:generalItem.managedObjectContext];
     
     response.responseType = [NSNumber numberWithInt:TEXT];
+    response.revoked = [NSNumber numberWithBool:NO];
+    response.synchronized = [NSNumber numberWithBool:NO];
 }
 
 /*!
@@ -389,6 +392,8 @@
                          inManagedObjectContext:generalItem.managedObjectContext];
     
     response.responseType = [NSNumber numberWithInt:NUMBER];
+    response.revoked = [NSNumber numberWithBool:NO];
+    response.synchronized = [NSNumber numberWithBool:NO];
 }
 
 /*!
@@ -424,6 +429,8 @@
     response.thumb = UIImageJPEGRepresentation([img thumbnailImage:320 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationDefault], 1.0);
     
     response.account = [ARLNetwork CurrentAccount];
+    response.revoked = [NSNumber numberWithBool:NO];
+    response.synchronized = [NSNumber numberWithBool:NO];
 }
 
 /*!
@@ -449,6 +456,8 @@
     response.fileName =[NSString stringWithFormat:@"%u.%@", random, @"mov"];
     
     response.account = [ARLNetwork CurrentAccount];
+    response.revoked = [NSNumber numberWithBool:NO];
+    response.synchronized = [NSNumber numberWithBool:NO];
 }
 
 /*!
@@ -485,6 +494,8 @@
     response.fileName = fileName;//[NSString stringWithFormat:@"%u.%@", random, @"mp3"];
     
     response.account = [ARLNetwork CurrentAccount];
+    response.revoked = [NSNumber numberWithBool:NO];
+    response.synchronized = [NSNumber numberWithBool:NO];
 }
 
 @end

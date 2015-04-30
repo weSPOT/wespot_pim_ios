@@ -319,8 +319,10 @@ typedef NS_ENUM(NSInteger, tools) {
                 Account *account = ARLNetwork.CurrentAccount;
                 
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:
-                                          @"account.localId = %@ AND account.accountType = %@ AND contentType !=nil AND contentType!=''",
-                                          account.localId, account.accountType];
+                                          @"(account.localId = %@ AND account.accountType = %@ AND contentType!=NULL AND contentType!='') AND (revoked=NULL OR revoked=%@)",
+                                          account.localId,
+                                          account.accountType,
+                                          [NSNumber numberWithBool:NO]];
                 
                 NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
                 

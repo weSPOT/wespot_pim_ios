@@ -13,7 +13,7 @@
 #import "ARLAppDelegate.h"
 #import "ARLNetwork+INQ.h"
 
-@interface INQQuestionViewController : UITableViewController <UITextFieldDelegate>
+@interface INQQuestionViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) NSArray *Questions;
 

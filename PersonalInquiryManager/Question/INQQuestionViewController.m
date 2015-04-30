@@ -101,6 +101,17 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    //create long press gesture recognizer(gestureHandler will be triggered after gesture is detected)
+    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
+    
+    //adjust time interval(floating value CFTimeInterval in seconds)
+    longPressGesture.minimumPressDuration = 1.5;
+    longPressGesture.delegate = self;
+    longPressGesture.delaysTouchesBegan = YES;
+    
+    //add gesture to view you want to listen for it(note that if you want whole view to "listen" for gestures you should add gesture to self.view instead)
+    [self.tableView addGestureRecognizer:longPressGesture];
+    
     [self.navigationController setToolbarHidden:NO];
 }
 
@@ -119,6 +130,46 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark UIGestureRecognizer.
+
+-(void)gestureHandler:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    if(UIGestureRecognizerStateBegan == gestureRecognizer.state)
+    {
+        /*uncomment this to get which exact row was long pressed */
+        CGPoint location = [gestureRecognizer locationInView:self.tableView];
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+        
+        if (indexPath && indexPath.section == QUESTIONS) {
+            //            // Check Ownership of Collected Item.
+            //
+            //            // Log(@"CollectionItem: %@", indexPath);
+            //
+            NSDictionary *question = (NSDictionary *)[self.Questions objectAtIndex:indexPath.row];
+            //
+            //
+            //            if ([ARLNetwork isLoggedIn] && response.account == [ARLNetwork CurrentAccount]) {
+            //                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+            //                                                                      message:NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")
+            //                                                                     delegate:self
+            //                                                            cancelButtonTitle:NSLocalizedString(@"NO", @"NO")
+            //                                                            otherButtonTitles:NSLocalizedString(@"YES", @"YES"), nil];
+            //                myAlertView.tag = indexPath.row;
+            //
+            //                [myAlertView show];
+            // } else {
+            //                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+            //                                                                      message:NSLocalizedString(@"You can only delete your own collected items.", @"You can only delete your own collected items.")
+            //                                                                     delegate:nil
+            //                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+            //                                                            otherButtonTitles:nil, nil];
+            //                [myAlertView show];
+            // }
+        }
+    }
 }
 
 #pragma mark - Properties

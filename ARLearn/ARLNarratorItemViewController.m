@@ -244,6 +244,7 @@ typedef NS_ENUM(NSInteger, responses) {
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch:&error];
+    ELog(error);
     
     self.fetchedResultsController.delegate = self;
 }
@@ -301,7 +302,12 @@ typedef NS_ENUM(NSInteger, responses) {
     
     self.collectionView.opaque = NO;
     self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main"]];
- 
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     //create long press gesture recognizer(gestureHandler will be triggered after gesture is detected)
     UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
     
@@ -312,10 +318,6 @@ typedef NS_ENUM(NSInteger, responses) {
     
     //add gesture to view you want to listen for it(note that if you want whole view to "listen" for gestures you should add gesture to self.view instead)
     [self.collectionView addGestureRecognizer:longPressGesture];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
     if (self.inquiry.run) {
         NSDictionary *jsonDict = [NSKeyedUnarchiver unarchiveObjectWithData:self.generalItem.json];

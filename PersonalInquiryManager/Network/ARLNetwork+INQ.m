@@ -775,4 +775,35 @@
     return [self returnJsonPOST:url body:body];
 }
 
+//+ (NSDictionary *) addQuestionWithDictionary:(NSString *)name description:(NSString *)description {
+//    NSString *url = ARLNetwork.elgBaseUrl;
+//
+//    return [self addQuestion:[ARLNetwork dictionaryToParmeters:question]];
+//}
+
++ (id) deleteQuestionWithDictionary:(NSNumber *)questionId
+{
+    Account *account = [ARLNetwork CurrentAccount];
+    
+    NSString *user_uid = [NSString stringWithFormat:@"%@", account.localId];
+    NSString *provider = [ARLNetwork elggProviderId:account.accountType];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          @"remove.object",         @"method",
+                          apiKey,                   @"api_key",
+                          
+                          questionId,               @"objectId",
+                          
+                          provider,                 @"provider",            //@"Google"
+                          user_uid,                 @"user_uid",            //@"Google_localId",
+                          
+                          nil];
+    
+    NSString *body = [ARLNetwork dictionaryToParmeters:dict];
+
+    NSString *url = ARLNetwork.elgBaseUrl;
+    
+    return [self returnJsonPOST:url body:body];
+}
+
 @end

@@ -43,6 +43,8 @@
                             tags:(NSString *)tags
                        inquiryId:(NSNumber *)inquiryId;
 
++ (id) deleteQuestionWithDictionary:(NSNumber *)questionId;
+
 //+ (NSDictionary *) addQuestionWithDictionary:(NSDictionary *)question;
 
 + (NSString *) elggProviderId: (NSNumber *) oauthProvider;

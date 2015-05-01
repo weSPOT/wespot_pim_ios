@@ -149,6 +149,20 @@ typedef NS_ENUM(NSInteger, sections) {
             //            // Log(@"CollectionItem: %@", indexPath);
             //
             NSDictionary *question = (NSDictionary *)[self.Questions objectAtIndex:indexPath.row];
+            
+            // Sample:
+            //            {
+            //                description = "question 2";
+            //                question = Question;
+            //                questionId = 89067;
+            //                tags = tag;
+            //                url = "http://inquiry.wespot.net/answers/view/89067/question";
+            //            }
+            
+            // [ARLNetwork deleteQuestionWithDictionary:[question valueForKey:@"questionId"]];
+            
+            // [self updateQuestionsAndAnswers];
+            
             //
             //
             //            if ([ARLNetwork isLoggedIn] && response.account == [ARLNetwork CurrentAccount]) {
@@ -161,12 +175,12 @@ typedef NS_ENUM(NSInteger, sections) {
             //
             //                [myAlertView show];
             // } else {
-            //                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
-            //                                                                      message:NSLocalizedString(@"You can only delete your own collected items.", @"You can only delete your own collected items.")
-            //                                                                     delegate:nil
-            //                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-            //                                                            otherButtonTitles:nil, nil];
-            //                [myAlertView show];
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+                                                                  message:NSLocalizedString(@"You can only delete your own questions.", @"You can only delete your own questions.")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                        otherButtonTitles:nil, nil];
+            [myAlertView show];
             // }
         }
     }

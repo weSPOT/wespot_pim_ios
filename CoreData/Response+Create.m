@@ -174,7 +174,11 @@
     mail = [mail stringByReplacingOccurrencesOfString:@"2:" withString:@""];
     
     // Set Linked Objects
-    response.account = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
+    Account *owner = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
+    
+    if (owner) {
+        response.account = owner;
+    }
     
     response.generalItem = [GeneralItem retrieveFromDbWithId:[NSNumber numberWithLongLong:[[respDict objectForKey:@"generalItemId"] longLongValue]]
                                           withManagedContext:context];
@@ -185,7 +189,7 @@
     response.timeStamp = [NSNumber numberWithLongLong:[[respDict objectForKey:@"timestamp"] longLongValue]];
     response.revoked = [NSNumber numberWithBool:NO];
     
-    if (!response.account) {
+    if (!response.account && [ARLNetwork networkAvailable]) {
         NSDictionary *acc = [ARLNetwork getUserInfo:response.run.runId userId:mail providerId:type];
         
         response.account = [Account accountWithDictionary:acc inManagedObjectContext:context];

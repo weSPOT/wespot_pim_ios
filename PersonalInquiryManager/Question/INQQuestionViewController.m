@@ -132,6 +132,43 @@ typedef NS_ENUM(NSInteger, sections) {
     [super didReceiveMemoryWarning];
 }
 
+/*!
+ *  Click At Button Handler.
+ *
+ *  @param alertView   <#alertView description#>
+ *  @param buttonIndex <#buttonIndex description#>
+ */
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([alertView.message isEqualToString: NSLocalizedString(@"Delete Question?", @"Delete Question?")]) {
+        if ([title isEqualToString:NSLocalizedString(@"YES", @"YES")]) {
+            NSDictionary *question = (NSDictionary *)[self.Questions objectAtIndex:alertView.tag];
+            
+            // Sample:
+            //            {
+            //                description = "question 2";
+            //                question = Question;
+            //                questionId = 89067;
+            //                tags = tag;
+            //                url = "http://inquiry.wespot.net/answers/view/89067/question";
+            //            }
+            
+            // Response:
+            //            {
+            //                result = "Object successfully removed";
+            //                status = 0;
+            //            }
+            NSDictionary *response =  (NSDictionary *)[ARLNetwork deleteQuestionWithDictionary:[question valueForKey:@"questionId"]];
+            
+            [self syncData];
+        } else {
+            // Log("NOT Deleting Item %d", alertView.tag);
+        }
+    }
+}
+
 #pragma mark UIGestureRecognizer.
 
 -(void)gestureHandler:(UISwipeGestureRecognizer *)gestureRecognizer
@@ -159,28 +196,27 @@ typedef NS_ENUM(NSInteger, sections) {
             //                url = "http://inquiry.wespot.net/answers/view/89067/question";
             //            }
             
-            // [ARLNetwork deleteQuestionWithDictionary:[question valueForKey:@"questionId"]];
-            
             // [self updateQuestionsAndAnswers];
             
             //
             //
-            //            if ([ARLNetwork isLoggedIn] && response.account == [ARLNetwork CurrentAccount]) {
-            //                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
-            //                                                                      message:NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")
-            //                                                                     delegate:self
-            //                                                            cancelButtonTitle:NSLocalizedString(@"NO", @"NO")
-            //                                                            otherButtonTitles:NSLocalizedString(@"YES", @"YES"), nil];
-            //                myAlertView.tag = indexPath.row;
-            //
-            //                [myAlertView show];
-            // } else {
-            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
-                                                                  message:NSLocalizedString(@"You can only delete your own questions.", @"You can only delete your own questions.")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                        otherButtonTitles:nil, nil];
-            [myAlertView show];
+            if ([ARLNetwork networkAvailable] && [ARLNetwork isLoggedIn]) {
+                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+                                                                      message:NSLocalizedString(@"Delete Question?", @"Delete Question?")
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"NO", @"NO")
+                                                            otherButtonTitles:NSLocalizedString(@"YES", @"YES"), nil];
+                myAlertView.tag = indexPath.row;
+                
+                [myAlertView show];
+            }
+            //else {
+            //            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
+            //                                                                  message:NSLocalizedString(@"You can only delete your own questions.", @"You can only delete your own questions.")
+            //                                                                 delegate:nil
+            //                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+            //                                                        otherButtonTitles:nil, nil];
+            //            [myAlertView show];
             // }
         }
     }
@@ -199,25 +235,34 @@ typedef NS_ENUM(NSInteger, sections) {
 - (void)updateQuestionsAndAnswers {
     self.Questions = [[ARLNetwork getQuestions:_inquiryId] valueForKey:@"result"];
     
-    //            {
-    //                result =     (
-    //                              {
-    //                                  description = "Do the spanish people know?";
-    //                                  question = "Are there different kinds of Siesta?";
-    //                                  questionId = 80911;
-    //                                  tags =             (
-    //                                                      types,
-    //                                                      siesta,
-    //                                                      spanish,
-    //                                                      lazy
-    //                                                      );
-    //                                  url = "http://inquiry.wespot.net/answers/view/80911/are-there-different-kinds-of-siesta";
-    //                              },
-    //                              );
-    //                status = 0;
-    //            }
+    //{
+    //    result =     (
+    //                  {
+    //                      description = "Do the spanish people know?";
+    //                      question = "Are there different kinds of Siesta?";
+    //                      questionId = 80911;
+    //                      tags =             (
+    //                                          types,
+    //                                          siesta,
+    //                                          spanish,
+    //                                          lazy
+    //                                          );
+    //                      url = "http://inquiry.wespot.net/answers/view/80911/are-there-different-kinds-of-siesta";
+    //                  },
+    //                  );
+    //    status = 0;
+    //}
     
     self.Answers = [[ARLNetwork getAnswers:_inquiryId] valueForKey:@"result"];
+
+    //{
+    //    answer = "<p>How would you propose to study this issue?</p>";
+    //    answerId = 43176;
+    //    description = "<p>A siesta is a short nap taken in the early afternoon, often after the midday meal. Such a period of sleep is a common tradition in some countries, particularly those where the weather is warm.<br>The siesta is the traditional daytime sleep of Spain and, through Spanish influence, many Latin American countries and the Philippines. The word siesta of the Spanish language derives originally from the Latin word hora sexta \"sixth hour\" (counting from dawn, hence \"midday rest\").</p>";
+    //    question = "Do spanish people really take the siesta?";
+    //    questionId = 42913;
+    //    url = "http://inquiry.wespot.net/answers/view/42913/do-spanish-people-really-take-the-siesta#elgg-object-43176";
+    //}
     
     [self.tableView reloadData];
 }

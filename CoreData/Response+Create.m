@@ -167,14 +167,20 @@
             response.responseType = [NSNumber numberWithInt:NUMBER];
         }
     }
-
+    
     // Remove the account type to get the localAccountId?
     NSString *mail = [respDict objectForKey:@"userEmail"];
     NSString *type = [mail substringToIndex:1];
-    mail = [mail stringByReplacingOccurrencesOfString:@"2:" withString:@""];
+    
+    for (int i=INTERNAL ; i<numServices; i++) {
+        mail = [mail stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%d:",i] withString:@""];
+    }
     
     // Set Linked Objects
-    Account *owner = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
+    // Account *owner = [Account retrieveFromDbWithLocalId:mail accountType:type withManagedContext:context];
+    Account *owner = [Account retrieveFromDbWithLocalId:mail
+                                            accountType:type
+                                     withManagedContext:context];
     
     if (owner) {
         response.account = owner;
@@ -190,9 +196,12 @@
     response.revoked = [NSNumber numberWithBool:NO];
     
     if (!response.account && [ARLNetwork networkAvailable]) {
-        NSDictionary *acc = [ARLNetwork getUserInfo:response.run.runId userId:mail providerId:type];
+        NSDictionary *acc = [ARLNetwork getUserInfo:response.run.runId
+                                             userId:mail
+                                         providerId:type];
         
-        response.account = [Account accountWithDictionary:acc inManagedObjectContext:context];
+        response.account = [Account accountWithDictionary:acc
+                                   inManagedObjectContext:context];
     }
     
     [INQLog SaveNLog:context];

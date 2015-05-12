@@ -26,12 +26,12 @@ static BOOL _logOn = YES;
 //    
 //}
 
-+ (BOOL *)LogOn {
-    _logOn = [[NSUserDefaults standardUserDefaults] boolForKey:ENABLE_LOGGING];
++ (BOOL)LogOn {
+    _logOn = [[NSUserDefaults standardUserDefaults] boolForKey:ENABLE_LOGGING] == YES;
     return _logOn;
 }
 
-+ (BOOL *)SaveNLog:(NSManagedObjectContext *)managedObjectContext {
++ (BOOL)SaveNLog:(NSManagedObjectContext *)managedObjectContext {
     BOOL result = NO;
     
     if (managedObjectContext && [managedObjectContext hasChanges]) {
@@ -51,7 +51,7 @@ static BOOL _logOn = YES;
  *
  *  @return <#return value description#>
  */
-+ (BOOL *)SaveNLogAbort:(NSManagedObjectContext *)managedObjectContext func:(NSString *)func {
++ (BOOL)SaveNLogAbort:(NSManagedObjectContext *)managedObjectContext func:(NSString *)func {
     BOOL result = YES;
     
     NSError *error = nil;

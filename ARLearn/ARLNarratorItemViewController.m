@@ -1198,7 +1198,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             Response *response = (Response *)[self.fetchedResultsController objectAtIndexPath:indexPath];
             
             
-            if ([ARLNetwork isLoggedIn] && response.account == [ARLNetwork CurrentAccount]) {
+            if ([ARLNetwork isLoggedIn] &&
+                response.account &&
+                response.account.localId == [ARLNetwork CurrentAccount].localId &&
+                response.account.accountType == [ARLNetwork CurrentAccount].accountType) {
                 UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIM", @"PIM")
                                                                       message:NSLocalizedString(@"Delete Collected Item?", @"Delete Collected Item?")
                                                                      delegate:self

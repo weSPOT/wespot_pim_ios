@@ -600,8 +600,10 @@ static BOOL _RegisteredForAPN = NO;
 
 + (void) publishResponse:(NSNumber *)runId
            responseValue:(NSString *)value
-                  itemId:(NSNumber*)generalItemId
-               timeStamp:(NSNumber*)timeStamp
+                  itemId:(NSNumber *)generalItemId
+               timeStamp:(NSNumber *)timeStamp
+                     lat:(NSNumber *)lat
+                     lng:(NSNumber *)lng
 {
     NSString* accountType = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountType"];
     NSString* accountLocalId = [[NSUserDefaults standardUserDefaults] objectForKey:@"accountLocalId"];
@@ -613,6 +615,8 @@ static BOOL _RegisteredForAPN = NO;
                                 generalItemId,      @"generalItemId",
                                 timeStamp,          @"timestamp",
                                 account,            @"userEmail",
+                                lat,                @"lat",
+                                lng,                @"lng",
                                 nil];
     
     [self publishResponse:responseDict];

@@ -846,6 +846,13 @@ static BOOL _syncAllowed = NO;
     // already have one.
     if (nil == locationManager) {
         locationManager = [[CLLocationManager alloc] init];
+        
+        // veg 02-10-2015 iOS 8+
+        // see http://nevan.net/2014/09/core-location-manager-changes-in-ios-8/
+        // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
     }
     
     if (locationManager && CLLocationManager.locationServicesEnabled) {
@@ -870,6 +877,13 @@ static BOOL _syncAllowed = NO;
     // already have one.
     if (nil == locationManager) {
         locationManager = [[CLLocationManager alloc] init];
+        
+        // veg 02-10-2015 iOS 8+
+        // see http://nevan.net/2014/09/core-location-manager-changes-in-ios-8/
+        // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
     }
     
     if (locationManager && CLLocationManager.locationServicesEnabled) {

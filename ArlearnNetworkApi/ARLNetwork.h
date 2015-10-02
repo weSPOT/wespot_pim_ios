@@ -114,7 +114,9 @@
 + (void) publishResponse:(NSNumber *)runId
            responseValue:(NSString *)value
                   itemId:(NSNumber *)generalItemId
-               timeStamp:(NSNumber *)timeStamp;
+               timeStamp:(NSNumber *)timeStamp
+                     lat:(NSNumber *)lat
+                     lng:(NSNumber *)lng;
 
 //Upload
 + (NSString *) requestUploadUrl:(NSString *)fileName

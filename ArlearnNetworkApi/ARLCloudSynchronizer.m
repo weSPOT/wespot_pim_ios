@@ -238,6 +238,8 @@
                                       gi.richText,                                              @"description",
                                       gi.richText,                                              @"richText",
                                       openQuestion,                                             @"openQuestion",
+                                      gi.lat,                                                   @"lat",
+                                      gi.lng,                                                   @"lng",
                                       nil];
                 
                 NSDictionary *result = [ARLNetwork postGeneralItemWithDict:dict];
@@ -397,7 +399,9 @@
                             [ARLNetwork publishResponse:resp.run.runId
                                           responseValue:resp.value
                                                  itemId:resp.generalItem.generalItemId
-                                              timeStamp:resp.timeStamp];
+                                              timeStamp:resp.timeStamp
+                                                    lat:resp.lat
+                                                    lng:resp.lng];
                             
                             resp.synchronized = [NSNumber numberWithBool:YES];
                         } else {
@@ -448,7 +452,9 @@
                                 [ARLNetwork publishResponse:resp.run.runId
                                               responseValue:jsonString
                                                      itemId:resp.generalItem.generalItemId
-                                                  timeStamp:resp.timeStamp];
+                                                  timeStamp:resp.timeStamp
+                                                        lat:resp.lat
+                                                        lng:resp.lng];
                                 
                                 resp.synchronized = [NSNumber numberWithBool:YES];
                             }

@@ -34,6 +34,10 @@
     response.timeStamp = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]*1000];
     response.account = [ARLNetwork CurrentAccount];
     
+    // veg added 02-10-2015 GPS Support.
+    response.lat = [NSNumber numberWithDouble:(double)(ARLAppDelegate.CurrentLocation.latitude)];
+    response.lng = [NSNumber numberWithDouble:(double)(ARLAppDelegate.CurrentLocation.longitude)];
+    
     [INQLog SaveNLog:context];
     
     return response;
@@ -132,6 +136,10 @@
                                                               options: NSJSONReadingMutableContainers
                                                                 error: &e];
     
+    // veg added 02-10-2015 GPS Support.
+    response.lat = [NSNumber numberWithDouble:[[valueDict objectForKey:@"lat"] doubleValue]];
+    response.lng = [NSNumber numberWithDouble:[[valueDict objectForKey:@"lng"] doubleValue]];
+
     // Set responseValue specific fields.
     if (valueDict) {
         if ([valueDict objectForKey:@"imageUrl"]) {
@@ -384,6 +392,8 @@
     response.responseType = [NSNumber numberWithInt:TEXT];
     response.revoked = [NSNumber numberWithBool:NO];
     response.synchronized = [NSNumber numberWithBool:NO];
+    
+    
 }
 
 /*!

@@ -79,6 +79,8 @@ static BOOL _syncAllowed = NO;
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSSetUncaughtExceptionHandler(&exceptionHandler);
+
     // Override point for customization after application launch.
     _networkAvailable = NO;
     
@@ -496,6 +498,15 @@ static BOOL _syncAllowed = NO;
 #pragma mark - CoreData
 
 /*!
+ *  Retrieve the number of records from a specified table.
+ *
+ *  See http://stackoverflow.com/questions/1134289/cocoa-core-data-efficient-way-to-count-entities
+ */
+- (NSInteger *) entityCount:(NSString *) entityName {
+    return [self entityCount:entityName predicate:nil];
+}
+
+/*!
  *  If the context doesn't already exist, it is created from the application's Store Coordinator.
  *
  *  @return Returns the managed object context for the application.
@@ -654,24 +665,6 @@ static BOOL _syncAllowed = NO;
 }
 
 /*!
- *  Synchronize data at first run (after login) or manually with the Sync button.
- */
-- (void) syncData {
-    if (ARLNetwork.networkAvailable) {
-        // DLog(@"%s", "Syncing Data\r\n*******************************************");
-
-        // syncActions is also triggered by syncResponses!
-        [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
-        [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
-        
-        [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
-        [INQCloudSynchronizer syncUsers:self.managedObjectContext];
-        
-        [ARLFileCloudSynchronizer syncGeneralItems:self.managedObjectContext];
-    }
-}
-
-/*!
  *  On a save notification, merge the conext into the main one.
  *
  *  @param notification <#notification description#>
@@ -697,6 +690,40 @@ static BOOL _syncAllowed = NO;
  */
 - (void) saveContext {
     [INQLog SaveNLogAbort:self.managedObjectContext func:[NSString stringWithFormat:@"%s",__func__]];
+}
+
+#pragma mark - Methods
+
+/*!
+ *  See http://stackoverflow.com/questions/10501358/objective-c-getting-line-number-or-full-stack-trace-from-debugger-error
+ *
+ *  @param exception <#exception description#>
+ */
+void exceptionHandler(NSException *exception)
+{
+    Log(@"%@",[exception name]);
+    Log(@"%@",[exception reason]);
+    Log(@"%@",[exception userInfo]);
+    Log(@"%@",[exception callStackSymbols]);
+    Log(@"%@",[exception callStackReturnAddresses]);
+}
+
+/*!
+ *  Synchronize data at first run (after login) or manually with the Sync button.
+ */
+- (void) syncData {
+    if (ARLNetwork.networkAvailable) {
+        // DLog(@"%s", "Syncing Data\r\n*******************************************");
+        
+        // syncActions is also triggered by syncResponses!
+        [ARLCloudSynchronizer syncGamesAndRuns:self.managedObjectContext];
+        [ARLCloudSynchronizer syncResponses:self.managedObjectContext];
+        
+        [INQCloudSynchronizer syncInquiries:self.managedObjectContext];
+        [INQCloudSynchronizer syncUsers:self.managedObjectContext];
+        
+        [ARLFileCloudSynchronizer syncGeneralItems:self.managedObjectContext];
+    }
 }
 
 /*!
@@ -824,15 +851,6 @@ static BOOL _syncAllowed = NO;
     NSInteger count =[self.managedObjectContext countForFetchRequest:request error:&error];
     
     return count;
-}
-
-/*!
- *  Retrieve the number of records from a specified table.
- *
- *  See http://stackoverflow.com/questions/1134289/cocoa-core-data-efficient-way-to-count-entities
- */
-- (NSInteger *) entityCount:(NSString *) entityName {
-    return [self entityCount:entityName predicate:nil];
 }
 
 /*!

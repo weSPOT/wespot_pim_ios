@@ -46,6 +46,8 @@ NSDictionary *attr;
 
 typedef void (^WaitCompletionBlock)();
 
+void waitFor(NSTimeInterval duration, WaitCompletionBlock completion);
+
 void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC),
@@ -642,7 +644,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
  *
  *  @return <#return value description#>
  */
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

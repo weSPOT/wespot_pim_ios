@@ -1103,7 +1103,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ARL;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Stefaan Ternier";
 				TargetAttributes = {
 					3477E6841769C9A000F3A5F3 = {
@@ -1393,6 +1393,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;

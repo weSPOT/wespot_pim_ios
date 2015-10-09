@@ -16,6 +16,8 @@
 
 @implementation ARLAppDelegate
 
+void exceptionHandler(NSException *exception);
+
 // veg: These three need to stay as we implement the getter (so NO default _ prefixed backing field).
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;

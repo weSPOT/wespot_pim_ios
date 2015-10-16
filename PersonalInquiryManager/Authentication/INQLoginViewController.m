@@ -199,9 +199,9 @@
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) redirectResponse;
     
-    int statusCode = [httpResponse statusCode];
+    long statusCode = [httpResponse statusCode];
     
-    DLog (@"HTTP status: %d", statusCode);
+    DLog (@"HTTP status: %ld", statusCode);
     
     // http statuscodes between 300 & 400 is a redirect ...
     if (httpResponse && statusCode >= 300 && statusCode < 400)
@@ -490,13 +490,13 @@
 #pragma mark UIPickerViewDataSource
 
 // The number of columns of data
-- (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
 }
 
 // The number of rows of data
-- (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return _pickerData.count;
 }

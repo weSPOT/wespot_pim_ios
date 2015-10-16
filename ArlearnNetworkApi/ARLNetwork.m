@@ -43,7 +43,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -83,7 +83,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -126,7 +126,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -159,7 +159,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -182,7 +182,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -226,7 +226,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
 
     error = nil;
@@ -700,7 +700,7 @@ static BOOL _RegisteredForAPN = NO;
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     DLog(@"Uploaded %@ - %@", contentTypeIn, fileName);
@@ -749,7 +749,7 @@ static BOOL _RegisteredForAPN = NO;
 + (NSDictionary *) defaultThreadRecentMessages:(NSNumber *)runId
                                             cnt:(NSInteger)cnt
 {
-    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/recentFirst/%d", runId, cnt]];
+    return [self executeARLearnGetWithAuthorization:[NSString stringWithFormat:@"messages/runId/%@/recentFirst/%ld", runId, (long)cnt]];
 }
 
 + (NSDictionary *) defaultThreadMessages:(NSNumber *)runId

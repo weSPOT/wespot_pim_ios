@@ -99,8 +99,8 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
     
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
-    
-    DLog(@"Messages: %d", [[self.fetchedResultsController fetchedObjects] count]);
+    //xx
+    DLog(@"Messages: %lu", [[self.fetchedResultsController fetchedObjects] count]);
 }
 
 /*!
@@ -253,7 +253,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
                 
                 tmDict = nil;
                 
-                DLog(@"Retrieved %d Messages", [messages count]);
+                DLog(@"Retrieved %lu Messages", (unsigned long)[messages count]);
                 
                 for (NSDictionary *mDict in messages)
                 {
@@ -266,7 +266,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];
             
-            Log(@"Latest Records: %d", self.fetchedResultsController.fetchedObjects.count);
+            Log(@"Latest Records: %lu", self.fetchedResultsController.fetchedObjects.count);
         }
         
         waitFor(1.0, ^
@@ -326,7 +326,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
 {
     switch (section){
         case MESSAGES:
-            return [NSString stringWithFormat:@"Chat (Latest %d)", self.fetchedResultsController.fetchedObjects.count];
+            return [NSString stringWithFormat:@"Chat (Latest %lu)", self.fetchedResultsController.fetchedObjects.count];
     }
     
     // Error

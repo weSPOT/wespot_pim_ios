@@ -105,7 +105,7 @@
         ELog(error);
         
         if (response.statusCode!=200) {
-            DLog(@"%@ %d", response.URL, response.statusCode);
+            DLog(@"%@ %ld", response.URL, (long)(response.statusCode));
         }
         
         error = nil;
@@ -152,7 +152,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -192,7 +192,7 @@
     ELog(error);
     
     if (response.statusCode!=200) {
-        DLog(@"%@ %d", response.URL, response.statusCode);
+        DLog(@"%@ %ld", response.URL, (long)response.statusCode);
     }
     
     error = nil;
@@ -682,7 +682,7 @@
 
 + (void)ShowAbortMessage: (NSError *) error func:(NSString *)func {
     
-    NSString *msg = [NSString stringWithFormat:@"%@\n\nUnresolved error code %d,\n\n%@", func, [error code], [error localizedDescription]];
+    NSString *msg = [NSString stringWithFormat:@"%@\n\nUnresolved error code %ld,\n\n%@", func, (long)[error code], [error localizedDescription]];
     
      [ARLNetwork ShowAbortMessage:NSLocalizedString(@"Error", @"Error")
                          message:msg];

@@ -143,8 +143,8 @@
     // Set responseValue specific fields.
     if (valueDict) {
         if ([valueDict objectForKey:@"imageUrl"]) {
-            response.height = [NSNumber numberWithInt:[[valueDict objectForKey:@"height"] integerValue]];
-            response.width = [NSNumber numberWithInt:[[valueDict objectForKey:@"width"] integerValue]];
+            response.height = [NSNumber numberWithInt:[valueDict objectForKey:@"height"]];
+            response.width = [NSNumber numberWithInt:[valueDict objectForKey:@"width"]];
             response.fileName = [valueDict objectForKey:@"imageUrl"];
             response.contentType = @"application/jpg";
             response.responseType = [NSNumber numberWithInt:PHOTO];

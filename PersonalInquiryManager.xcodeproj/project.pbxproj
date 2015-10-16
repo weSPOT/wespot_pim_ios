@@ -127,7 +127,6 @@
 		8D6E80EE18D5BAFB0077D70E /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E80E918D5BAFA0077D70E /* zbar-help.html */; };
 		8D6E80EF18D5BAFB0077D70E /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E80EA18D5BAFA0077D70E /* zbar-helpicons.png */; };
 		8D6E80F018D5BAFB0077D70E /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E80EB18D5BAFA0077D70E /* zbar-samples.png */; };
-		8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6E80E618D5BAFA0077D70E /* libzbar.a */; };
 		8D6F237C196592060063DFA8 /* UIViewController+UI.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F237B196592060063DFA8 /* UIViewController+UI.m */; };
 		8D750DCA18D74BEB0005C41D /* INQProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D750DC918D74BEB0005C41D /* INQProfileTableViewController.m */; };
 		8D76FF4C1A94D65C0066D1FC /* INQDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D76FF4B1A94D65C0066D1FC /* INQDescriptionViewController.m */; };
@@ -446,7 +445,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC3AA64192CD3D400C16A31 /* CoreLocation.framework in Frameworks */,
-				8D6E80F218D5BB740077D70E /* libzbar.a in Frameworks */,
 				8DAF9E7B18D0A9A2003D6B98 /* SystemConfiguration.framework in Frameworks */,
 				34D422CE17B671150051E84C /* MobileCoreServices.framework in Frameworks */,
 				347ACF9317B2865C00B4B345 /* AddressBook.framework in Frameworks */,
@@ -1407,12 +1405,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "bf0ceddd-cf31-49f9-8967-31823a98e1da";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 arm64 armv7s i386";
 			};
 			name = Debug;
 		};
@@ -1442,7 +1440,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 arm64 armv7s i386";
 			};
 			name = Release;
 		};
@@ -1465,15 +1463,11 @@
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/External/ZBarSDK",
-				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 arm64 armv7s i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1497,16 +1491,12 @@
 				INFOPLIST_FILE = "PersonalInquiryManager/PersonalInquiryManager-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*]" = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/External/ZBarSDK",
-				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5CF4AC90-C41C-4A43-969E-68CE7C9D6610";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 arm64 armv7s i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

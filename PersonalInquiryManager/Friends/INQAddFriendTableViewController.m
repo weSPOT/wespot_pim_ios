@@ -61,7 +61,7 @@
     // We cannot be invited to be friends with ourselfs.
     NSMutableArray *tmp = [NSMutableArray arrayWithArray:self.AllUsers];
     
-    DLog(@"%d users", [tmp count]);
+    DLog(@"%lu users", (unsigned long)[tmp count]);
     DLog(@"removing ourselves");
     
     for (NSDictionary *dict in self.AllUsers) {
@@ -74,7 +74,7 @@
         }
     }
     
-    DLog(@"%d users", [tmp count]);
+    DLog(@"%lu users", (unsigned long)[tmp count]);
     
     self.AllUsers = tmp;
 }

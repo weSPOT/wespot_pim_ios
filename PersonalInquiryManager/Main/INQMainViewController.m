@@ -297,7 +297,7 @@ typedef NS_ENUM(NSInteger, tools) {
                 NSInteger count = [appDelegate entityCount:@"Inquiry"];
                 
                 if (count!=0) {
-                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                     NSRange range=[value rangeOfString:value];
                     
@@ -327,7 +327,7 @@ typedef NS_ENUM(NSInteger, tools) {
                 NSInteger count = [appDelegate entityCount:@"Response" predicate:predicate];
                 
                 if (count!=0) {
-                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                     NSRange range=[value rangeOfString:value];
                     
@@ -358,7 +358,7 @@ typedef NS_ENUM(NSInteger, tools) {
                         NSInteger count = [self.Friends count]; //[appDelegate entityCount:@"Account"];
                         
                         if (count > 0) {
-                            NSString *value = [NSString stringWithFormat:@"%d", count];
+                            NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                             NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                             NSRange range=[value rangeOfString:value];
                             

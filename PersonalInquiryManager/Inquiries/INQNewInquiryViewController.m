@@ -101,8 +101,8 @@
 - (void) createInquiry:(NSString *)title description:(NSString *)description {
     NSString *html = description; //[NSString stringWithFormat:@"<p>%@</p>", description];
    
-    NSNumber *visibility =  [NSNumber numberWithInt:self.visibilitySegments.selectedSegmentIndex];
-    NSNumber *membership = [NSNumber numberWithInt:2 *self.membershipSegments.selectedSegmentIndex];
+    NSNumber *visibility =  [NSNumber numberWithInteger:self.visibilitySegments.selectedSegmentIndex];
+    NSNumber *membership = [NSNumber numberWithInteger:2 *self.membershipSegments.selectedSegmentIndex];
     
     NSDictionary *dict = [ARLNetwork createInquiry:title description:html visibility:visibility membership:membership];
     

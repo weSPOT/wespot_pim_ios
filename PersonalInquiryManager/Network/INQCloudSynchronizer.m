@@ -588,7 +588,7 @@
             
             tmDict = nil;
             
-            DLog(@"Retrieved %d Messages", [messages count]);
+            DLog(@"Retrieved %lu Messages", (unsigned long)[messages count]);
             
             for (NSDictionary *mDict in messages)
             {

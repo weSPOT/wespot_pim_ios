@@ -185,6 +185,7 @@ typedef NS_ENUM(NSInteger, sections) {
             //
             //            // Log(@"CollectionItem: %@", indexPath);
             //
+            
             NSDictionary *question = (NSDictionary *)[self.Questions objectAtIndex:indexPath.row];
             
             // Sample:
@@ -380,7 +381,7 @@ typedef NS_ENUM(NSInteger, sections) {
                 NSInteger count = [[self getAnswersOfQuestion:indexPath] count];
                 
                 if (count!=0) {
-                    NSString *value = [NSString stringWithFormat:@"%d", count];
+                    NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                     NSRange range=[value rangeOfString:value];
                     

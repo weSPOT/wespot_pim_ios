@@ -395,7 +395,7 @@ typedef NS_ENUM(NSInteger, sections) {
                                                      predicate:[NSPredicate predicateWithFormat:@"gameId = %lld", [self.inquiry.run.gameId longLongValue]]];
                     
                     if (count!=0) {
-                        NSString *value = [NSString stringWithFormat:@"%d", count];
+                        NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                         NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                         NSRange range=[value rangeOfString:value];
                         
@@ -425,7 +425,7 @@ typedef NS_ENUM(NSInteger, sections) {
                     NSInteger count = [appDelegate entityCount:@"Message"
                                                      predicate:[NSPredicate predicateWithFormat:@"run.runId = %lld", [self.inquiry.run.runId longLongValue]]];
                     if (count!=0) {
-                        NSString *value = [NSString stringWithFormat:@"%d", count];
+                        NSString *value = [NSString stringWithFormat:@"%ld", (long)count];
                         NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:value];
                         NSRange range=[value rangeOfString:value];
                         

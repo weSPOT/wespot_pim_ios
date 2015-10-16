@@ -100,7 +100,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
     //xx
-    DLog(@"Messages: %lu", [[self.fetchedResultsController fetchedObjects] count]);
+    DLog(@"Messages: %lu", (unsigned long)[[self.fetchedResultsController fetchedObjects] count]);
 }
 
 /*!
@@ -266,7 +266,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
             NSError *error = nil;
             [self.fetchedResultsController performFetch:&error];
             
-            Log(@"Latest Records: %lu", self.fetchedResultsController.fetchedObjects.count);
+            Log(@"Latest Records: %lu",(unsigned long)self.fetchedResultsController.fetchedObjects.count);
         }
         
         waitFor(1.0, ^
@@ -326,7 +326,7 @@ void waitFor(NSTimeInterval duration, WaitCompletionBlock completion)
 {
     switch (section){
         case MESSAGES:
-            return [NSString stringWithFormat:@"Chat (Latest %lu)", self.fetchedResultsController.fetchedObjects.count];
+            return [NSString stringWithFormat:@"Chat (Latest %lu)",(unsigned long)self.fetchedResultsController.fetchedObjects.count];
     }
     
     // Error

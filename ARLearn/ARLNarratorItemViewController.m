@@ -963,6 +963,11 @@ typedef NS_ENUM(NSInteger, responses) {
             ELog(error);
             
             [self.collectionView reloadData];
+            
+            //veg 12-11-2015 Preliminary fix for sync problems. Added sync after deletion.
+            if (ARLNetwork.networkAvailable) {
+                [ ARLCloudSynchronizer syncResponses:self.generalItem.managedObjectContext];
+            }
         } else {
             // Log("NOT Deleting Item %d", alertView.tag);
         }

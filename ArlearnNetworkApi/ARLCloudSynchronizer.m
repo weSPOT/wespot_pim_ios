@@ -294,7 +294,13 @@
     
     if (ARLNetwork.networkAvailable) {
         NSNumber *lastDate = [SynchronizationBookKeeping getLastSynchronizationDate:self.context type:@"response" context:run.runId];
+
+        //veg 12-11-2015 Preliminary fix for sync problems (substact 2 hours from last sync).
         
+        if ([lastDate longLongValue] != 0) {
+              lastDate = [NSNumber numberWithLongLong: [lastDate longLongValue] - 2*1000*60*60];
+        }
+
         NSString *token = @"";
         NSNumber *serverTime = @0;
         
@@ -332,16 +338,16 @@
                     //userEmail = "5:aitor";
                     //},
                     
-                    if ([[response valueForKey:@"revoked"] integerValue] == 0) {
-                        /*Response *resp =*/ [Response responseWithDictionary:response inManagedObjectContext:self.context];
-                        
-                        // resp.account
-                        
-                        //getUserInfo
-                        
-                        [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
-                                                                            object:NSStringFromClass([Response class])];
-                    }
+                    //veg 10-11-2015 Preliminary fix for sync problems. Disabled revoked test, so update revoked records.
+                    
+                    // if ([[response valueForKey:@"revoked"] integerValue] == 0) {
+                    /*Response *resp =*/ [Response responseWithDictionary:response inManagedObjectContext:self.context];
+                    
+                    // getUserInfo
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:INQ_SYNCPROGRESS
+                                                                        object:NSStringFromClass([Response class])];
+                    // }
                 }
                 
                 // Done in responseWithDictionary [INQLog SaveNLog:self.context];
@@ -465,6 +471,9 @@
                     }
                 }
             }
+            
+            
+#pragma warn if i do notleave the screen in numbers it it not properly deleted and shows up again in next sync. then delete works.
             
             // Deleted Revoked Responses.
             NSArray* revoked = [Response getRevokedReponses:self.context];
